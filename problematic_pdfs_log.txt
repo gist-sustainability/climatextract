@@ -1,0 +1,12 @@
+PDF: ./data/pdfs/NEUCA SA_2023.pdf, Page: 141
+PDF: ./data/pdfs/Sitowise Group Oyj_2024.pdf, Page: III
+PDF: ./data/pdfs/bawag_group_2023_sustainability_report.pdf, Page: 72
+PDF: ./data/pdfs/Wordline_2024.pdf, Page: 366
+PDF: ./data/pdfs/cie_financiere_richemo_2023_sustainability_report.pdf - RetryError[<Future at 0x22a24960350 state=finished raised FileNotDecryptedError>] 
+PDF: ./data/pdfs/Trifork Group AG_2024.pdf - RetryError[<Future at 0x1b9ce0f7950 state=finished raised UnicodeDecodeError>] 
+PDF: ./data/pdfs/Fraport AG_2024.pdf, Page: 95
+PDF: ./data/pdfs/Fraport AG_2024.pdf, Page: 193
+PDF: ./data/pdfs/sato holdings_2022_report.pdf - RetryError[<Future at 0x1c1e1c850 state=finished raised FileNotFoundError>] 
+PDF: ./data/pdfs/sato holdings_2022_report.pdf - RetryError[<Future at 0x1c21a97d0 state=finished raised FileNotFoundError>] 
+PDF: ./data/pdfs/sato holdings_2022_report.pdf - RetryError[<Future at 0x1c21ad490 state=finished raised FileNotFoundError>] 
+PDF: ./data/pdfs/sato holdings_2022_report.pdf - RetryError[<Future at 0x1c21ae250 state=finished raised FileNotFoundError>] 

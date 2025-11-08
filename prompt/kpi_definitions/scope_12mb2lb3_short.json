@@ -1,0 +1,6 @@
+{
+    "Scope 1": "Scope 1 CO2 Emissions: Direct GHG emissions from sources owned or controlled by the organization (e.g., fuel combustion, company-owned vehicles). \n",
+    "Scope 2 (market-based)": "Scope 2 (market-based) CO2 Emissions: Indirect GHG emissions from purchased energy, calculated based on energy procurement choices (e.g., renewable energy contracts). \n",
+    "Scope 2 (location-based)": "Scope 2 (location-based) CO2 Emissions: Indirect GHG emissions from purchased energy, calculated using the average emissions intensity of the local electricity grid. \n",
+    "Scope 3": "Scope 3 CO2 Emissions: Indirect GHG emissions from the organization’s value chain, both upstream and downstream (e.g., supply chain, business travel, product use). \n"
+}
