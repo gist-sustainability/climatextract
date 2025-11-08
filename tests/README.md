@@ -6,6 +6,12 @@ Ensure you have the `pytest` library installed. If not, run the following comman
 
 `pip install pytest~=8.3.5`
 
+Before the tests execute successfully, you will need to download the embeddings and extract table information from the pdf files. Run `src/main.py` once with the following settings: 
+
+`'filename_list': ['./data/pdfs/sato holdings_2022_report.pdf']`
+and
+`'input_mode': 'text+table'`
+
 ### Running Tests
 
 To run the tests, follow these steps:
