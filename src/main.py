@@ -4,7 +4,7 @@ from dataclasses import asdict
 import logging
 import os
 import sys
-from typing import Dict
+from typing import Dict, List, Optional
 
 import mlflow
 
@@ -17,7 +17,6 @@ import semantic_search
 import prompts_with_prompt_parsers
 from data_lake_manager import DataLakeManager
 
-
 def main(mlflow_params: Dict[str, str],
          config_params: Dict[str, str],
          experiment_params: Dict[str, str]):
@@ -28,7 +27,53 @@ def main(mlflow_params: Dict[str, str],
     experiment.setup_experiment()
     mlflow.openai.autolog()
 
-    # Initialize embedding model, llm, prompt, pipeline
+    # Initiate the MLflow run context
+    with mlflow.start_run(run_name=mlflow_params.mlflow_run_name) as run:
+        run_id = run.info.run_id
+        path_to_results = FileConfig.get_path_to_results(run_id=run_id)
+
+        mlflow.log_params(MlflowParams.filter_params(mlflow_params))
+        mlflow.log_param("mlflow_run_name", mlflow_params.mlflow_run_name)
+        mlflow.log_params(asdict(config_params))
+        mlflow.log_param("filename_list", config_params.filename_list)
+        mlflow.log_params(asdict(experiment_params.pipeline_params))
+        mlflow.log_params(
+            asdict(experiment_params.semantic_search_params))
+        mlflow.log_params(asdict(experiment_params.llm_params))
+
+        # call the extraction pipeline
+        extraction_output = extract(
+            config_params=config_params,
+            experiment_params=experiment_params,
+            path_to_results=path_to_results
+        )
+        if extraction_output is None:
+            return run_id
+
+        mlflow.log_param("prompt", extraction_output["prompt"])
+        mlflow.log_metrics(extraction_output["llm_costs"])
+        # log the results to mlflow
+
+        # call the evaluation pipeline
+        if extraction_output["has_results"] and config_params.evaluation_mode != "no_evaluation":
+            evaluation_metrics = evaluate(
+                path_to_results=path_to_results,
+                gold_standard=config_params.gold_standard,
+                mode=config_params.evaluation_mode
+            )
+            if evaluation_metrics is not None:
+                mlflow.log_metrics(evaluation_metrics)
+
+        mlflow.log_artifacts(path_to_results)
+    return run_id
+
+
+def extract(
+    config_params: ConfigParams,
+    experiment_params: ExperimentParams,
+    path_to_results: str
+) -> Optional[Dict[str, object]]:
+    """Run the extraction pipeline and return logging payload."""
     embeddings_repo = semantic_search.EmbeddingsRepository(
         database_name=(
             f"data/processed/embeddings/"
@@ -47,9 +92,7 @@ def main(mlflow_params: Dict[str, str],
         search_query=experiment_params.semantic_search_params.search_query,
         repository=embeddings_repo)
 
-    # Handle data lake operations with dedicated manager
     storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
-
     data_lake_manager = DataLakeManager(storage_account_url)
 
     if not data_lake_manager.execute_complete_workflow(
@@ -88,67 +131,48 @@ def main(mlflow_params: Dict[str, str],
         llm_single_prompt=llm_single_prompt
     )
 
-    # Initiate the MLflow run context
-    with mlflow.start_run(run_name=mlflow_params.mlflow_run_name) as run:
-        run_id = run.info.run_id
-        path_to_results = FileConfig.get_path_to_results(run_id=run_id)
+    results = asyncio.run(
+        retriever_pipeline.retrieve_values_for_doc_list(
+            filename_list=config_params.filename_list,
+            path_to_results=path_to_results
+        )
+    )
+    if not results:
+        print("No pdfs were processed. Exiting.")
+        return None
 
-        mlflow.log_params(MlflowParams.filter_params(mlflow_params))
-        mlflow.log_param("mlflow_run_name", mlflow_params.mlflow_run_name)
-        mlflow.log_params(asdict(config_params))
-        mlflow.log_param("filename_list", config_params.filename_list)
-        mlflow.log_params(asdict(experiment_params.pipeline_params))
-        mlflow.log_params(
-            asdict(experiment_params.semantic_search_params))
-        mlflow.log_params(asdict(experiment_params.llm_params))
+    raw_results, invalid_llm_outputs = rearrange_results(results)
 
-        results = asyncio.run(
-            retriever_pipeline.retrieve_values_for_doc_list(
-                filename_list=config_params.filename_list,
-                path_to_results=path_to_results))
-        if not results:
-            print("No pdfs were processed. Exiting.")
-            return run_id
+    # Create combined token counts from both LLM and embedding model
+    llm_costs = llm.create_llm_costs_dict()
+    
+    # Add embedding tokens from embedding model to the LLM costs
+    if hasattr(embed_model, 'token_counter') and hasattr(
+            embed_model.token_counter, 'total_embedding_token_count'):
+        llm_costs["embedding_tokens"] += embed_model.token_counter.total_embedding_token_count
 
-        raw_results, invalid_llm_outputs = rearrange_results(results)
+    # Reset token counters
+    llm.token_counter.reset_counts()
+    if hasattr(embed_model, 'token_counter'):
+        embed_model.token_counter.reset_counts()
 
-        mlflow.log_param("prompt", llm_single_prompt.query)
+    with open(os.path.join(
+            path_to_results, "invalid_llm_outputs.txt"), 'w', encoding='utf-8') as f:
+        f.write(str(invalid_llm_outputs))
 
-        # Create combined token counts from both LLM and embedding model
-        llm_costs = llm.create_llm_costs_dict()
+    has_results = False
+    if raw_results != [None]:
+        save_results(raw_results=raw_results,
+                     path_to_results=path_to_results,
+                     first_write=True,
+                     results_type='final')
+        has_results = True
 
-        # Add embedding tokens from embedding model to the LLM costs
-        if hasattr(embed_model, 'token_counter') and hasattr(
-                embed_model.token_counter, 'total_embedding_token_count'):
-            llm_costs["embedding_tokens"] += embed_model.token_counter.total_embedding_token_count
-
-        # Reset token counters
-        llm.token_counter.reset_counts()
-        if hasattr(embed_model, 'token_counter'):
-            embed_model.token_counter.reset_counts()
-
-        with open(os.path.join(
-                path_to_results, "invalid_llm_outputs.txt"), 'w', encoding='utf-8') as f:
-            f.write(str(invalid_llm_outputs))
-
-        mlflow.log_metrics(llm_costs)
-
-        if raw_results != [None]:
-
-            results = save_results(raw_results=raw_results,
-                                   path_to_results=path_to_results,
-                                   first_write=True,
-                                   results_type='final')
-            if config_params.evaluation_mode != "no_evaluation":
-                evaluate_dict = evaluate(
-                    path_to_results=path_to_results,
-                    gold_standard=config_params.gold_standard,
-                    mode=config_params.evaluation_mode)
-                if evaluate_dict is not None:
-                    mlflow.log_metrics(evaluate_dict)
-
-        mlflow.log_artifacts(path_to_results)
-    return run_id
+    return {
+        "prompt": llm_single_prompt.query,
+        "llm_costs": llm_costs,
+        "has_results": has_results
+    }
 
 
 def rearrange_results(results):
@@ -193,6 +217,7 @@ if __name__ == "__main__":
                          # gpt-35-turbo-16k OR
                          # gpt-4o-2024-11-20 OR
                          # gpt-5-chat-2025-08-07
+                         # gpt-4.1-2025-04-14
                          'llm_model': "gpt-4o-mini-2024-07-18",
                          'prompt_type': 'default',  # default oder custom_gaia
                          'year_min': 2013,
