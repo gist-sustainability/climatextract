@@ -1,10 +1,11 @@
 """Main script to run the pipeline."""
 import asyncio
 from dataclasses import asdict
+import json
 import logging
 import os
 import sys
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Any
 
 import mlflow
 
@@ -27,19 +28,37 @@ def main(mlflow_params: Dict[str, str],
     experiment.setup_experiment()
     mlflow.openai.autolog()
 
+    # Initialize JSON log structure
+    json_logs = {
+        "parameters": {},
+        "metrics": {},
+        "run_info": {}
+    }
+
     # Initiate the MLflow run context
     with mlflow.start_run(run_name=mlflow_params.mlflow_run_name) as run:
         run_id = run.info.run_id
         path_to_results = FileConfig.get_path_to_results(run_id=run_id)
+        
+        # Set run_id and path for JSON log
+        json_log_path = os.path.join(path_to_results, "logs.json")
+        json_logs["run_info"]["run_id"] = run_id
 
         mlflow.log_params(MlflowParams.filter_params(mlflow_params))
-        mlflow.log_param("mlflow_run_name", mlflow_params.mlflow_run_name)
+        _log_json(json_log_path, json_logs, MlflowParams.filter_params(mlflow_params), "parameters")
+        
         mlflow.log_params(asdict(config_params))
-        mlflow.log_param("filename_list", config_params.filename_list)
+        _log_json(json_log_path, json_logs, asdict(config_params), "parameters")
+        
         mlflow.log_params(asdict(experiment_params.pipeline_params))
+        _log_json(json_log_path, json_logs, asdict(experiment_params.pipeline_params), "parameters")
+        
         mlflow.log_params(
             asdict(experiment_params.semantic_search_params))
+        _log_json(json_log_path, json_logs, asdict(experiment_params.semantic_search_params), "parameters")
+        
         mlflow.log_params(asdict(experiment_params.llm_params))
+        _log_json(json_log_path, json_logs, asdict(experiment_params.llm_params), "parameters")
 
         # call the extraction pipeline
         extraction_output = extract(
@@ -51,7 +70,10 @@ def main(mlflow_params: Dict[str, str],
             return run_id
 
         mlflow.log_param("prompt", extraction_output["prompt"])
+        _log_json(json_log_path, json_logs, {"prompt": extraction_output["prompt"]}, "parameters")
+        
         mlflow.log_metrics(extraction_output["llm_costs"])
+        _log_json(json_log_path, json_logs, extraction_output["llm_costs"], "metrics")
         # log the results to mlflow
 
         # call the evaluation pipeline
@@ -63,6 +85,7 @@ def main(mlflow_params: Dict[str, str],
             )
             if evaluation_metrics is not None:
                 mlflow.log_metrics(evaluation_metrics)
+                _log_json(json_log_path, json_logs, evaluation_metrics, "metrics")
 
         mlflow.log_artifacts(path_to_results)
     return run_id
@@ -92,6 +115,7 @@ def extract(
         search_query=experiment_params.semantic_search_params.search_query,
         repository=embeddings_repo)
 
+    # Handle data lake operations with dedicated manager
     storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
     data_lake_manager = DataLakeManager(storage_account_url)
 
@@ -175,6 +199,29 @@ def extract(
     }
 
 
+def _save_json_logs(json_log_path: str, json_logs: Dict[str, Any]):
+    """Save JSON logs to file."""
+    try:
+        with open(json_log_path, 'w', encoding='utf-8') as f:
+            json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
+    except Exception as e:
+        print(f"Warning: Failed to write to JSON log file: {e}")
+
+
+def _log_json(json_log_path: str, json_logs: Dict[str, Any], 
+              data: Dict[str, Any], data_type: str = "parameters"):
+    """Update parameters or metrics in JSON logs and save.
+    
+    Args:
+        json_log_path: Path to JSON log file
+        json_logs: The JSON logs dictionary
+        data: Dictionary of parameters or metrics to add
+        data_type: Either "parameters" or "metrics"
+    """
+    json_logs[data_type].update(data)
+    _save_json_logs(json_log_path, json_logs)
+
+
 def rearrange_results(results):
     """Rearrange the results."""
     raw_results, invalid_llm_outputs = zip(*results)
@@ -225,7 +272,7 @@ if __name__ == "__main__":
                      })
 
     mlflow_params = MlflowParams(
-        mlflow_experiment_path='/Shared/Experiments_prompt_engineering/lisa_test',
+        mlflow_experiment_path='/Shared/Experiments_prompt_engineering/precision_recall_analysis',
     )
     mlflow_params.construct_mlflow_run_name([config_params, experiment_params])
     main(mlflow_params, config_params, experiment_params)
