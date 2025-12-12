@@ -5,9 +5,9 @@ from typing import Dict, List, Optional
 import ast
 import pandas as pd
 
-import evaluate_helpers
-from helpers import get_unit_normalization_mapping, get_value_standardization
-from resolve_duplicates import handle_duplicates_in_ground_truth
+import src.evaluate_helpers as evaluate_helpers
+from src.helpers import get_unit_normalization_mapping, get_value_standardization
+from src.resolve_duplicates import handle_duplicates_in_ground_truth
 
 
 class EvaluatorData:
@@ -487,15 +487,21 @@ class EvaluatorPrecisionRecallF1(EvaluatorData):
 
 
 def evaluate(path_to_results: str, gold_standard: str, mode: str):
-    """Sets up path to ground truth and runs evaluation routine."""
-    # Set path to ground truth using path_to_data
-    path_to_ground_truth = None
-
-    if gold_standard in (None, "gist_2025"):
-        path_to_ground_truth = './data/evaluation_dataset/gist_2025.csv'
-    else:
-        raise ValueError(
-            f"Invalid gold_standard '{gold_standard}'. Only 'gist_2025' is supported.")
+    """Sets up path to ground truth and runs evaluation routine.
+    
+    Args:
+        path_to_results: Path to the extraction results directory.
+        gold_standard: Path to the gold standard CSV file.
+        mode: Evaluation mode ('default', 'precision_recall_f1', or 'both').
+    """
+    # Verify gold standard file exists
+    if not os.path.exists(gold_standard):
+        raise FileNotFoundError(
+            f"Gold standard file not found at '{gold_standard}'. "
+            "Please provide a valid path to the gold standard CSV file."
+        )
+    
+    path_to_ground_truth = gold_standard
 
     evaluation_metrics = None
 
@@ -521,4 +527,8 @@ def evaluate(path_to_results: str, gold_standard: str, mode: str):
 
 
 if __name__ == "__main__":
-    evaluate("output/290144e0b01b493390c2c466a87ad1f4", "gist_2025", "both")
+    evaluate(
+        "output/290144e0b01b493390c2c466a87ad1f4",
+        "./data/evaluation_dataset/gist_2025.csv",
+        "both"
+    )

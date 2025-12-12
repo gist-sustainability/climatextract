@@ -8,10 +8,10 @@ from dotenv import load_dotenv
 import mlflow
 from mlflow.entities import SpanType
 
-import semantic_search
-import helpers
-from page_text_and_table_extractor import PageTextAndTableExtractor
-from resolve_duplicates import handle_duplicates_in_output, select_duplicates_in_output
+import src.semantic_search as semantic_search
+import src.helpers as helpers
+from src.page_text_and_table_extractor import PageTextAndTableExtractor
+from src.resolve_duplicates import handle_duplicates_in_output, select_duplicates_in_output
 
 load_dotenv()  # load environment variables from .env file
 os.chdir(helpers.get_project_directory(path_to_file="src"))

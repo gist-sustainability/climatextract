@@ -4,7 +4,7 @@ import mlflow
 from mlflow.tracking import MlflowClient
 import pandas as pd
 
-from tests.helpers_testing import save_run_id, get_run_id, create_test_config
+from tests.helpers_testing import save_run_id, get_run_id, create_test_config, cleanup_test_config
 from src.main import main
 
 
@@ -29,12 +29,18 @@ def test_functionality(prompt_type, input_mode):
     - input_mode: The input mode to use ('text' or 'text+table').
     """
     # Configuration
-    mlflow_params, config_params, experiment_params = create_test_config(
-        prompt_type, input_mode)
+    mlflow_experiment_path, config_path = create_test_config(prompt_type, input_mode)
 
-    # Execution
-    run_id = main(mlflow_params, config_params, experiment_params)
-    save_run_id(run_id, prompt_type, input_mode)
+    try:
+        # Execution with new main() signature
+        run_id = main(
+            mlflow_experiment_path=mlflow_experiment_path,
+            config_path=config_path
+        )
+        save_run_id(run_id, prompt_type, input_mode)
+    finally:
+        # Cleanup test config file
+        cleanup_test_config(config_path)
 
     # Connection to MLflow
     client = MlflowClient()

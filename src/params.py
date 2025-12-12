@@ -18,7 +18,7 @@ class MlflowParams:
             if config_params.in_sample == "sample_160" \
             else config_params.in_sample
         run_name = (
-            f"{in_sample}_{experiment_params.llm_params.prompt_type}_"
+            f"{experiment_params.llm_params.prompt_type}_"
             f"{experiment_params.pipeline_params.input_mode}_"
             f"{experiment_params.llm_params.llm_model}_"
             f"{experiment_params.semantic_search_params.emb_model}"
@@ -147,7 +147,9 @@ class SemanticSearchParams:
     search_query: str = field(default="""What are the total CO2 emissions in different years?
                             Include Scope 1, Scope 2, and Scope 3 emissions if available.""")
     similarity_top_k: int = field(default=7)
-    context_window: int = field(default=1)
+    similarity_min_k: int = field(default=4)
+    percentile_threshold: int = field(default=95)
+    context_window: int = field(default=0)
     search_method: str = field(default="vector_search")
 
 
