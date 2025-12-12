@@ -7,17 +7,18 @@ import datetime
 from hashlib import sha256
 import os.path
 import json
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 import tiktoken
 
 import pandas as pd
+import numpy as np
 
 from llama_index.readers.file import PDFReader
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.ingestion import IngestionPipeline
 import duckdb
 
-from config import EmbeddingModel
+from src.config import EmbeddingModel
 
 
 class Page:
@@ -260,7 +261,7 @@ class EmbeddingsRepository:
     def pdf_vector_search(self,
                           short_file_name: str,
                           search_vector: List[float],
-                          limit: int,
+                          limit: Optional[int],
                           similarity: str,
                           embed_dim: int
                           ) -> pd.DataFrame:
@@ -271,7 +272,7 @@ class EmbeddingsRepository:
         """
         with duckdb.connect(self.database_name) as con:
             if similarity == "cosine":
-                return con.execute(f"""
+                base_query = f"""
                     FROM pages
                     LEFT JOIN pdf_files
                         ON (pdf_files.short_file_name = pages.short_file_name)
@@ -283,14 +284,18 @@ class EmbeddingsRepository:
                         array_cosine_similarity(embedding, $searchVector::FLOAT[{embed_dim}]) AS similarity
                     WHERE pages.short_file_name = ($file_name)
                     ORDER BY similarity DESC
-                    LIMIT ($limit)
-                """, {
+                """
+                if limit:
+                    base_query += " LIMIT ($limit)"
+                params = {
                     "searchVector": search_vector,
-                    "limit": limit,
                     "file_name": short_file_name
-                }).fetch_df()
+                }
+                if limit:
+                    params["limit"] = limit
+                return con.execute(base_query, params).fetch_df()
             elif similarity == "euclidean":
-                return con.execute(f"""
+                base_query = f"""
                     FROM pages
                     LEFT JOIN pdf_files
                         ON (pdf_files.short_file_name = pages.short_file_name)
@@ -302,12 +307,16 @@ class EmbeddingsRepository:
                         array_distance(embedding, $searchVector::FLOAT[{embed_dim}]) AS similarity
                     WHERE pages.short_file_name = ($file_name)
                     ORDER BY similarity
-                    LIMIT ($limit)
-                """, {
+                """
+                if limit:
+                    base_query += " LIMIT ($limit)"
+                params = {
                     "searchVector": search_vector,
-                    "limit": limit,
                     "file_name": short_file_name
-                }).fetch_df()
+                }
+                if limit:
+                    params["limit"] = limit
+                return con.execute(base_query, params).fetch_df()
             else:
                 raise ValueError(
                     "Unknown similarity measure: use 'cosine' or 'euclidean'.")
@@ -531,6 +540,7 @@ class Pdfdoc:
             params = SemanticSearchParams()
 
         similarity_top_k = params.similarity_top_k
+        similarity_min_k = getattr(params, "similarity_min_k", None)
         context_window = params.context_window
         search_method = params.search_method
 
@@ -546,13 +556,36 @@ class Pdfdoc:
         search_embed_created_at = search_query.get_query_embedding_creation_date()
 
         if search_method == "vector_search":
-            res_df = self._repository.pdf_vector_search(
+            # Fetch all pages, then apply percentile-based filtering with safeguards
+            base_df = self._repository.pdf_vector_search(
                 short_file_name=self.short_filename,
                 search_vector=query_embedding,
-                limit=similarity_top_k,
+                limit=None,  # no limit; we'll cap after thresholding
                 similarity="cosine",
                 embed_dim=embed_dim
             )
+            if base_df.empty:
+                res_df = base_df
+            else:
+                # Compute percentile threshold across all pages in this PDF
+                percentile = getattr(params, "percentile_threshold", 95) or 95
+                percentile_cutoff = np.percentile(base_df["similarity"], percentile)
+                filtered = base_df[base_df["similarity"] >= percentile_cutoff]
+
+                max_pages = similarity_top_k if similarity_top_k else 7
+                min_pages = similarity_min_k if similarity_min_k else 0
+                # Respect the cap: a floor above the cap is not possible
+                if max_pages and min_pages:
+                    min_pages = min(min_pages, max_pages)
+
+                filtered = filtered.sort_values("similarity", ascending=False)
+                res_df = filtered.head(max_pages)
+
+                # Floor: ensure at least min_pages are processed by falling back to top-N overall
+                if min_pages and len(res_df) < min_pages:
+                    fallback_df = base_df.sort_values(
+                        "similarity", ascending=False)
+                    res_df = fallback_df.head(min_pages)
         elif search_method == "full_text_search":
             res_df = self._repository.pdf_full_text_search(
                 short_file_name=self.short_filename,
@@ -636,6 +669,13 @@ class Pdfdoc:
             except Exception as e:
                 print(f"Fehler beim Laden von {self.filename}: {str(e)}")
                 self._handle_problematic_pdf(str(e))
+                return False
+
+            if not pages_nodes:
+                # No pages extracted (image-only/blank/unreadable PDF)
+                msg = "No pages extracted from PDF (empty reader output)"
+                print(f"PDF {self.filename}: {msg}. Skipping.")
+                self._handle_problematic_pdf(msg)
                 return False
 
             # Tokenization setup
@@ -778,7 +818,9 @@ if __name__ == "__main__":
         search_query: str = field(default="""What are the total CO2 emissions in different years?
                                 Include Scope 1, Scope 2, and Scope 3 emissions if available.""")
         similarity_top_k: int = field(default=7)
-        context_window: int = field(default=1)
+        similarity_min_k: int = field(default=4)
+        percentile_threshold: int = field(default=95)
+        context_window: int = field(default=0)
         search_method: str = field(default="vector_search")
 
     semantic_search_params = SemanticSearchParams()

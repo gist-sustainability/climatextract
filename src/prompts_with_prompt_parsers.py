@@ -14,7 +14,7 @@ from mlflow.entities import SpanType
 from llama_index.core import PromptTemplate
 
 
-import helpers
+import src.helpers as helpers
 import math, bisect
 from itertools import accumulate
 
@@ -104,21 +104,43 @@ class KpiEntries(BaseModel):
 class PromptRoleAndTask:
     """Describes LLM role and task for prompt."""
 
-    role: str = helpers.read_txt_file('./prompt/role_task/role_task_1.txt')
+    # role: str = helpers.read_txt_file('./prompt/role_task/role_task_1.txt')
+    role: str = (
+        "You are a climate analyst tasked with extracting specific absolute numerical data from corporate reports. \n"
+        "Your objective is to extract only the absolute values for the following Key Performance Indicators (KPIs) related to CO2 emissions across the entire company.\n\n"
+    )
 
 
 class PromptKpiDefinitions:
     """Provides definitions to each KPI in prompt."""
 
-    definitions_string: str = helpers.read_json_to_str(
-        './prompt/kpi_definitions/scope_12mb2lb3_short.json')
+    # definitions_string: str = helpers.read_json_to_str(
+    #     './prompt/kpi_definitions/scope_12mb2lb3_short.json')
+    definitions_string: str = (
+        "Scope 1: Scope 1 CO2 Emissions: Direct GHG emissions from sources owned or controlled by the organization (e.g., fuel combustion, company-owned vehicles). \n"
+        "Scope 2 (market-based): Scope 2 (market-based) CO2 Emissions: Indirect GHG emissions from purchased energy, calculated based on energy procurement choices (e.g., renewable energy contracts). \n"
+        "Scope 2 (location-based): Scope 2 (location-based) CO2 Emissions: Indirect GHG emissions from purchased energy, calculated using the average emissions intensity of the local electricity grid. \n"
+        "Scope 3: Scope 3 CO2 Emissions: Indirect GHG emissions from the organization's value chain, both upstream and downstream (e.g., supply chain, business travel, product use). \n"
+    )
 
 
 class PromptSpecifications:
     """Describes the specifications for the prompt."""
 
-    specifications: str = helpers.read_txt_file(
-        './prompt/specifications/specifications_1.txt')
+    # specifications: str = helpers.read_txt_file(
+    #     './prompt/specifications/specifications_1.txt')
+    specifications: str = (
+        "Only extract values which refer to the whole company.\n"
+        "Only extract absolute values representing total CO2 emissions (e.g., in tons).\n"
+        "Do not extract any relative values such as percentages, year-over-year changes, or trends. Ignore all values that are expressed as percentages (%) or involve relative comparisons (e.g., increases, decreases, or changes over time).\n"
+        "Footnotes or annotations in metric names should be treated as references and ignored for the extraction process. \n"
+        "Do not modify values based on footnotes, annotations, or any external data sources.\n"
+        "Do not perform any calculations or transformations on the values. Extract and report the data exactly as presented. Do not invent values.\n"
+        "Ensure your extraction only includes absolute values for the defined KPIs, strictly following these guidelines. \n"
+        "If the subtype \"market-based\" or \"location-based\" is not mentioned for a value of Scope 2, always assume that the value refers to the KPI Scope 2 (location-based).\n"
+        "Do not extract all subcategories of Scope 3, but only total values if total values are available for Scope 3. \n"
+        "Only extract value referring to Scope 1, Scope 2 or Scope 3 separately. Do not extract values representing a sum of any the scopes.\n"
+    )
 
 
 class CustomPromptGaia(PromptProcessorInterface):
