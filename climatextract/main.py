@@ -12,14 +12,14 @@ from typing import Dict, List, Optional, Any
 
 import mlflow
 
-from src.pipeline import FileConfig, ValueRetrieverPipeline, save_results
-from src.experiment_setup import Experiment
-import src.config as config
-from src.params import ConfigParams, ExperimentParams, MlflowParams
-from src.evaluator import evaluate
-import src.semantic_search as semantic_search
-import src.prompts_with_prompt_parsers as prompts_with_prompt_parsers
-from src.data_lake_manager import DataLakeManager
+from climatextract.pipeline import FileConfig, ValueRetrieverPipeline, save_results
+from climatextract.experiment_setup import Experiment
+import climatextract.config as config
+from climatextract.params import ConfigParams, ExperimentParams, MlflowParams
+from climatextract.evaluator import evaluate
+import climatextract.semantic_search as semantic_search
+import climatextract.prompts_with_prompt_parsers as prompts_with_prompt_parsers
+from climatextract.data_lake_manager import DataLakeManager
 
 from dotenv import load_dotenv
 load_dotenv()

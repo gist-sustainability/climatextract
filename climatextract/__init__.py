@@ -10,7 +10,7 @@ Configuration:
     See the package documentation for available options.
 
 Example:
-    from src import extract, extract_and_evaluate
+    from climatextract import extract, extract_and_evaluate
     
     # Simple extraction
     results_path = extract("./reports/")
@@ -22,7 +22,7 @@ Example:
     )
 """
 
-from src.main import extract, extract_and_evaluate
+from climatextract.main import extract, extract_and_evaluate
 
 __version__ = "0.1.0"
 __all__ = ["extract", "extract_and_evaluate"]

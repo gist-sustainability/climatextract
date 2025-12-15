@@ -14,7 +14,7 @@ from mlflow.entities import SpanType
 from llama_index.core import PromptTemplate
 
 
-import src.helpers as helpers
+import climatextract.helpers as helpers
 import math, bisect
 from itertools import accumulate
 
