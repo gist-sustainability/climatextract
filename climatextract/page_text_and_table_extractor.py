@@ -11,7 +11,7 @@ from transformers import DetrImageProcessor
 from transformers import TableTransformerForObjectDetection
 from docling.document_converter import DocumentConverter
 
-from src.semantic_search import Page
+from climatextract.semantic_search import Page
 
 class PageTextAndTableExtractor:
     """Handles extraction of text and tables from PDF pages

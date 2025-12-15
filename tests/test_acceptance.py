@@ -5,7 +5,7 @@ from mlflow.tracking import MlflowClient
 import pandas as pd
 
 from tests.helpers_testing import save_run_id, get_run_id, create_test_config, cleanup_test_config
-from src.main import main
+from climatextract.main import main
 
 
 # Test general functionality

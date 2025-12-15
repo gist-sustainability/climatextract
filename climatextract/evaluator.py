@@ -5,9 +5,9 @@ from typing import Dict, List, Optional
 import ast
 import pandas as pd
 
-import src.evaluate_helpers as evaluate_helpers
-from src.helpers import get_unit_normalization_mapping, get_value_standardization
-from src.resolve_duplicates import handle_duplicates_in_ground_truth
+import climatextract.evaluate_helpers as evaluate_helpers
+from climatextract.helpers import get_unit_normalization_mapping, get_value_standardization
+from climatextract.resolve_duplicates import handle_duplicates_in_ground_truth
 
 
 class EvaluatorData:

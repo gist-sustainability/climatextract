@@ -18,7 +18,7 @@ from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.ingestion import IngestionPipeline
 import duckdb
 
-from src.config import EmbeddingModel
+from climatextract.config import EmbeddingModel
 
 
 class Page:
