@@ -210,12 +210,15 @@ class FileConfig:
     """Configuration to select input files and determine folder for output files."""
 
     @staticmethod
-    def get_path_to_results(run_id: str):
-        """Return the path to the data/output/<run_id > folder. 
-        Create folder if not existent"""
-
-        path_to_results = os.path.join(
-            'output', run_id)
+    def get_path_to_results(run_id: str, output_dir: str = "output"):
+        """Return the path to the {output_dir}/{run_id} folder. 
+        Create folder if not existent.
+        
+        Args:
+            run_id: Unique identifier for the run (MLflow run_id or UUID).
+            output_dir: Base output directory. Defaults to "output".
+        """
+        path_to_results = os.path.join(output_dir, run_id)
         if not os.path.exists(path_to_results):
             os.makedirs(path_to_results)
 

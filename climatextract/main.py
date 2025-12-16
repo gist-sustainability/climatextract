@@ -1,4 +1,4 @@
-"""Main script to run the pipeline."""
+"""Main module for ClimXtract - CO2 emissions extraction from PDF reports."""
 import asyncio
 from dataclasses import asdict
 import json
@@ -24,39 +24,90 @@ from climatextract.data_lake_manager import DataLakeManager
 from dotenv import load_dotenv
 load_dotenv()
 
+
 def main(
-    mlflow_experiment_path: str,
     pdf_input: str | List[str] | None = None,
     gold_standard_path: str | None = None,
-    config_path: str = "climxtract.toml"
+    config_path: str = "climxtract.toml",
+    use_mlflow: bool = True
 ):
     """
-    Run extraction with MLflow tracking.
+    Run extraction with optional MLflow tracking.
     
-    Starts MLflow first to get run_id, checks evaluation_mode, calls appropriate function
+    Starts MLflow first to get run_id (if enabled), checks evaluation_mode, 
+    calls appropriate function.
     
     Args:
-        mlflow_experiment_path: MLflow experiment path for tracking.
         pdf_input: PDF file(s) to process. If None, uses config.
         gold_standard_path: Path to gold standard. If None, uses config.
         config_path: Path to config file. Defaults to "climxtract.toml".
+        use_mlflow: Whether to enable MLflow tracking. Defaults to True.
     """
     # Load config to construct run name and check evaluation_mode
-    config_params, experiment_params, _ = _load_config(config_path)
+    config_params, experiment_params, output_dir, mlflow_config = _load_config(config_path)
     
-    # Set up MLflow
-    mlflow_params = MlflowParams(mlflow_experiment_path=mlflow_experiment_path)
-    mlflow_params.construct_mlflow_run_name([config_params, experiment_params])
+    if use_mlflow:
+        # Set up MLflow (experiment path and tracking URI come from config)
+        mlflow_params = MlflowParams(mlflow_experiment_path=mlflow_config["experiment_name"])
+        mlflow_params.construct_mlflow_run_name([config_params, experiment_params])
+        
+        experiment = Experiment(mlflow_params=mlflow_params, tracking_uri=mlflow_config["tracking_uri"])
+        experiment.setup_experiment()
+        mlflow.openai.autolog()
+
+        # Initiate the MLflow run context
+        with mlflow.start_run(run_name=mlflow_params.mlflow_run_name) as run:
+            run_id = run.info.run_id
+            path_to_results = FileConfig.get_path_to_results(run_id=run_id, output_dir=output_dir)
+
+            # Check evaluation_mode to decide which function to call
+            if config_params.evaluation_mode == "no_evaluation":
+                result = _extract_with_metadata(pdf_input, path_to_results, config_path)
+            else:
+                result = _extract_and_evaluate_with_metadata(
+                    pdf_input, gold_standard_path, path_to_results, config_path)
+            
+            if result is None:
+                print("Extraction failed or returned no results.")
+                return run_id
+            
+            # Get params from extract/evaluate that were actually used
+            config_params = result["config_params"]
+            experiment_params = result["experiment_params"]
+            
+            # Read logs.json created by extract/evaluate, add run_info
+            json_log_path = os.path.join(path_to_results, "logs.json")
+            with open(json_log_path, 'r', encoding='utf-8') as f:
+                json_logs = json.load(f)
+            json_logs["run_info"]["run_id"] = run_id
+            json_logs["parameters"].update(MlflowParams.filter_params(mlflow_params))
+
+            # Log everything to MLflow
+            mlflow.log_params(MlflowParams.filter_params(mlflow_params))
+            mlflow.log_params(asdict(config_params))
+            mlflow.log_params(asdict(experiment_params.pipeline_params))
+            mlflow.log_params(asdict(experiment_params.semantic_search_params))
+            mlflow.log_params(asdict(experiment_params.llm_params))
+            mlflow.log_param("prompt", result["prompt"])
+            mlflow.log_metrics(result["llm_costs"])
+
+            # Log evaluation metrics to MLflow if they exist
+            if result.get("evaluation_metrics"):
+                mlflow.log_metrics(result["evaluation_metrics"])
+
+            # Save updated logs.json with run_info
+            with open(json_log_path, 'w', encoding='utf-8') as f:
+                json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
+
+            mlflow.log_artifacts(result["path_to_results"])
+        
+        return run_id
     
-    experiment = Experiment(mlflow_params=mlflow_params)
-    experiment.setup_experiment()
-    mlflow.openai.autolog()
-
-    # Initiate the MLflow run context
-    with mlflow.start_run(run_name=mlflow_params.mlflow_run_name) as run:
-        run_id = run.info.run_id
-        path_to_results = FileConfig.get_path_to_results(run_id=run_id)
-
+    else:
+        # MLflow disabled - run extraction without tracking
+        run_id = uuid.uuid4().hex
+        path_to_results = FileConfig.get_path_to_results(run_id=run_id, output_dir=output_dir)
+        
         # Check evaluation_mode to decide which function to call
         if config_params.evaluation_mode == "no_evaluation":
             result = _extract_with_metadata(pdf_input, path_to_results, config_path)
@@ -68,40 +119,22 @@ def main(
             print("Extraction failed or returned no results.")
             return run_id
         
-        # Get params from extract/evaluate that were actually used
-        config_params = result["config_params"]
-        experiment_params = result["experiment_params"]
-        
-        # Read logs.json created by extract/evaluate, add run_info
+        # Update logs.json with run_id (no MLflow params)
         json_log_path = os.path.join(path_to_results, "logs.json")
         with open(json_log_path, 'r', encoding='utf-8') as f:
             json_logs = json.load(f)
         json_logs["run_info"]["run_id"] = run_id
-        json_logs["parameters"].update(MlflowParams.filter_params(mlflow_params))
-
-        # Log everything to MLflow
-        mlflow.log_params(MlflowParams.filter_params(mlflow_params))
-        mlflow.log_params(asdict(config_params))
-        mlflow.log_params(asdict(experiment_params.pipeline_params))
-        mlflow.log_params(asdict(experiment_params.semantic_search_params))
-        mlflow.log_params(asdict(experiment_params.llm_params))
-        mlflow.log_param("prompt", result["prompt"])
-        mlflow.log_metrics(result["llm_costs"])
-
-        # Log evaluation metrics to MLflow if they exist
-        if result.get("evaluation_metrics"):
-            mlflow.log_metrics(result["evaluation_metrics"])
-
-        # Save updated logs.json with run_info
         with open(json_log_path, 'w', encoding='utf-8') as f:
             json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
-
-        mlflow.log_artifacts(result["path_to_results"])
-    
-    return run_id
+        
+        return run_id
 
 
-def extract(pdf_input: str | List[str] | None = None) -> Optional[str]:
+def extract(
+    pdf_input: str | List[str] | None = None,
+    config_path: str = "climxtract.toml",
+    enable_mlflow: bool = False
+) -> Optional[str]:
     """
     Extract CO2 emissions data from PDF reports.
     
@@ -110,19 +143,73 @@ def extract(pdf_input: str | List[str] | None = None) -> Optional[str]:
     Args:
         pdf_input: A directory path (processes all PDFs), a single file path,
                    or a list of file paths. If None, uses filename_list from config.
+        config_path: Path to config file. Defaults to "climxtract.toml".
+        enable_mlflow: Whether to log results to MLflow. If True, uses MLflow settings
+                       from config file (tracking_uri and experiment_name). Enables
+                       full MLflow tracking including OpenAI autolog and traces.
     
     Returns:
         Path to the results directory, or None if extraction failed.
     """
-    result = _extract_with_metadata(pdf_input)
-    if result is None:
-        return None
-    return result["path_to_results"]
+    if enable_mlflow:
+        # Load config to get MLflow settings
+        config_params, experiment_params, output_dir, mlflow_config = _load_config(config_path)
+        
+        # Set up MLflow with proper run name
+        mlflow_params = MlflowParams(mlflow_experiment_path=mlflow_config["experiment_name"])
+        mlflow_params.construct_mlflow_run_name([config_params, experiment_params])
+        
+        experiment = Experiment(mlflow_params=mlflow_params, tracking_uri=mlflow_config["tracking_uri"])
+        experiment.setup_experiment()
+        mlflow.openai.autolog()  # Capture all OpenAI API calls
+        
+        with mlflow.start_run(run_name=mlflow_params.mlflow_run_name) as run:
+            run_id = run.info.run_id
+            path_to_results = FileConfig.get_path_to_results(run_id=run_id, output_dir=output_dir)
+            
+            # Run extraction inside MLflow context
+            result = _extract_with_metadata(pdf_input, path_to_results, config_path)
+            if result is None:
+                print("Extraction failed or returned no results.")
+                return None
+            
+            # Get params from extraction that were actually used
+            config_params = result["config_params"]
+            experiment_params = result["experiment_params"]
+            
+            # Update logs.json with run_id and MLflow params
+            json_log_path = os.path.join(path_to_results, "logs.json")
+            with open(json_log_path, 'r', encoding='utf-8') as f:
+                json_logs = json.load(f)
+            json_logs["run_info"]["run_id"] = run_id
+            json_logs["parameters"].update(MlflowParams.filter_params(mlflow_params))
+            with open(json_log_path, 'w', encoding='utf-8') as f:
+                json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
+            
+            # Log everything to MLflow
+            mlflow.log_params(MlflowParams.filter_params(mlflow_params))
+            mlflow.log_params(asdict(config_params))
+            mlflow.log_params(asdict(experiment_params.pipeline_params))
+            mlflow.log_params(asdict(experiment_params.semantic_search_params))
+            mlflow.log_params(asdict(experiment_params.llm_params))
+            mlflow.log_param("prompt", result["prompt"])
+            mlflow.log_metrics(result["llm_costs"])
+            mlflow.log_artifacts(path_to_results)
+            
+            return path_to_results
+    else:
+        # No MLflow - simple extraction
+        result = _extract_with_metadata(pdf_input, config_path=config_path)
+        if result is None:
+            return None
+        return result["path_to_results"]
 
 
 def extract_and_evaluate(
     pdf_input: str | List[str] | None = None,
-    gold_standard_path: str | None = None
+    gold_standard_path: str | None = None,
+    config_path: str = "climxtract.toml",
+    enable_mlflow: bool = False
 ) -> Optional[str]:
     """
     Extract CO2 emissions data and evaluate against gold standard.
@@ -133,14 +220,72 @@ def extract_and_evaluate(
         pdf_input: A directory path (processes all PDFs), a single file path,
                    or a list of file paths. If None, uses filename_list from config.
         gold_standard_path: Path to gold standard dataset. If None, uses config.
+        config_path: Path to config file. Defaults to "climxtract.toml".
+        enable_mlflow: Whether to log results to MLflow. If True, uses MLflow settings
+                       from config file (tracking_uri and experiment_name). Enables
+                       full MLflow tracking including OpenAI autolog and traces.
     
     Returns:
         Path to the results directory, or None if extraction failed.
     """
-    result = _extract_and_evaluate_with_metadata(pdf_input, gold_standard_path)
-    if result is None:
-        return None
-    return result["path_to_results"]
+    if enable_mlflow:
+        # Load config to get MLflow settings
+        config_params, experiment_params, output_dir, mlflow_config = _load_config(config_path)
+        
+        # Set up MLflow with proper run name
+        mlflow_params = MlflowParams(mlflow_experiment_path=mlflow_config["experiment_name"])
+        mlflow_params.construct_mlflow_run_name([config_params, experiment_params])
+        
+        experiment = Experiment(mlflow_params=mlflow_params, tracking_uri=mlflow_config["tracking_uri"])
+        experiment.setup_experiment()
+        mlflow.openai.autolog()  # Capture all OpenAI API calls
+        
+        with mlflow.start_run(run_name=mlflow_params.mlflow_run_name) as run:
+            run_id = run.info.run_id
+            path_to_results = FileConfig.get_path_to_results(run_id=run_id, output_dir=output_dir)
+            
+            # Run extraction+evaluation inside MLflow context
+            result = _extract_and_evaluate_with_metadata(
+                pdf_input, gold_standard_path, path_to_results, config_path)
+            if result is None:
+                print("Extraction failed or returned no results.")
+                return None
+            
+            # Get params from extraction that were actually used
+            config_params = result["config_params"]
+            experiment_params = result["experiment_params"]
+            
+            # Update logs.json with run_id and MLflow params
+            json_log_path = os.path.join(path_to_results, "logs.json")
+            with open(json_log_path, 'r', encoding='utf-8') as f:
+                json_logs = json.load(f)
+            json_logs["run_info"]["run_id"] = run_id
+            json_logs["parameters"].update(MlflowParams.filter_params(mlflow_params))
+            with open(json_log_path, 'w', encoding='utf-8') as f:
+                json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
+            
+            # Log everything to MLflow
+            mlflow.log_params(MlflowParams.filter_params(mlflow_params))
+            mlflow.log_params(asdict(config_params))
+            mlflow.log_params(asdict(experiment_params.pipeline_params))
+            mlflow.log_params(asdict(experiment_params.semantic_search_params))
+            mlflow.log_params(asdict(experiment_params.llm_params))
+            mlflow.log_param("prompt", result["prompt"])
+            mlflow.log_metrics(result["llm_costs"])
+            
+            # Log evaluation metrics if they exist
+            if result.get("evaluation_metrics"):
+                mlflow.log_metrics(result["evaluation_metrics"])
+            
+            mlflow.log_artifacts(path_to_results)
+            
+            return path_to_results
+    else:
+        # No MLflow - simple extraction + evaluation
+        result = _extract_and_evaluate_with_metadata(pdf_input, gold_standard_path, config_path=config_path)
+        if result is None:
+            return None
+        return result["path_to_results"]
 
 
 def _extract_with_metadata(pdf_input: str | List[str] | None = None, 
@@ -166,7 +311,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         - has_results: Whether any results were extracted
     """
     # Load config (defaults + config file overrides)
-    config_params, experiment_params, output_dir = _load_config(config_path)
+    config_params, experiment_params, output_dir, _ = _load_config(config_path)
     
     # Resolve PDF files: argument takes priority, then config
     if pdf_input is not None:
@@ -324,7 +469,7 @@ def _extract_and_evaluate_with_metadata(
     """
 
     # Load config (for filenames and eval mode)
-    config_params, experiment_params, output_dir = _load_config(config_path)
+    config_params, experiment_params, output_dir, _ = _load_config(config_path)
 
     # Resolve PDF files: argument takes priority, then config
     if pdf_input is not None:
@@ -391,14 +536,22 @@ def _extract_and_evaluate_with_metadata(
 
 
 def _load_config(config_path: str = "climxtract.toml"):
-    """Load config from TOML file, with defaults from dataclasses."""
+    """Load config from TOML file, with defaults from dataclasses.
+    
+    Returns:
+        Tuple of (config_params, experiment_params, output_dir, mlflow_config)
+    """
     config_params = ConfigParams()
     experiment_params = ExperimentParams()
     output_dir = "output"  # Default output directory
+    mlflow_config = {
+        "tracking_uri": "./mlruns",  # Default, can be overridden in config file
+        "experiment_name": "climatextract_experiments"
+    }
     
     config_file = Path(config_path)
     if not config_file.exists():
-        return config_params, experiment_params, output_dir
+        return config_params, experiment_params, output_dir, mlflow_config
     
     with open(config_file, "rb") as f:
         file_config = tomllib.load(f)
@@ -425,7 +578,14 @@ def _load_config(config_path: str = "climxtract.toml"):
     if "output" in file_config and "output_dir" in file_config["output"]:
         output_dir = file_config["output"]["output_dir"]
     
-    return config_params, experiment_params, output_dir
+    # Get MLflow settings from config (with fallbacks)
+    if "mlflow" in file_config:
+        if "tracking_uri" in file_config["mlflow"]:
+            mlflow_config["tracking_uri"] = file_config["mlflow"]["tracking_uri"]
+        if "experiment_name" in file_config["mlflow"]:
+            mlflow_config["experiment_name"] = file_config["mlflow"]["experiment_name"]
+    
+    return config_params, experiment_params, output_dir, mlflow_config
 
 
 def _resolve_pdf_input(pdf_input: str | List[str]) -> List[str]:
@@ -457,9 +617,9 @@ if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
     logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
+    # All settings come from climxtract.toml config file
     # pdf_input is optional - if not specified, uses filename_list from config
     main(
-        # pdf_input=['./data/pdfs/sato holdings_2022_report.pdf'], # Optional: overrides config
-        # mlflow_experiment_path='/Shared/Experiments_prompt_engineering/lisa_test'
-        mlflow_experiment_path='/Shared/Experiments_prompt_engineering/precision_recall_analysis'
+        # pdf_input=['./data/pdfs/sato holdings_2022_report.pdf'],  # Optional: overrides config
+        # use_mlflow=False  # Set to False to disable MLflow tracking
     )
