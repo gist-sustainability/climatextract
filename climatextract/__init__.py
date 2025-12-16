@@ -2,8 +2,8 @@
 ClimXtract - Extract CO2 emissions data from PDF sustainability reports.
 
 Public API:
-    extract(pdf_input) - Extract emissions data, returns path to results
-    extract_and_evaluate(pdf_input, gold_standard_path) - Extract and evaluate against gold standard
+    extract(pdf_input, enable_mlflow, config_path) - Extract emissions data
+    extract_and_evaluate(pdf_input, gold_standard_path, enable_mlflow, config_path) - Extract and evaluate
 
 Configuration:
     Create a `climxtract.toml` file in your project root to configure the extraction.
@@ -12,13 +12,23 @@ Configuration:
 Example:
     from climatextract import extract, extract_and_evaluate
     
-    # Simple extraction
+    # Simple extraction (no MLflow)
     results_path = extract("./reports/")
+    
+    # Extraction with full MLflow tracking (params, metrics, artifacts, traces, OpenAI calls)
+    results_path = extract("./reports/", enable_mlflow=True)
     
     # Extraction with evaluation
     results_path = extract_and_evaluate(
         "./reports/",
         gold_standard_path="./gold_standard.csv"
+    )
+    
+    # Extraction with evaluation and MLflow tracking
+    results_path = extract_and_evaluate(
+        "./reports/",
+        gold_standard_path="./gold_standard.csv",
+        enable_mlflow=True
     )
 """
 

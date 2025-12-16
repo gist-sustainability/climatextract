@@ -11,14 +11,17 @@ class Experiment:
     This class is responsible for setting up the MLflow experiment.
     """
 
-    def __init__(self, mlflow_params: Dict[str, str]):
+    def __init__(self, mlflow_params: Dict[str, str], tracking_uri: str = None):
         self.mlflow_params = mlflow_params
+        self.tracking_uri = tracking_uri
 
     def setup_experiment(self) -> List[str]:
         """
         Sets up the MLflow experiment with the given parameters.
         """
-        mlflow.set_tracking_uri(os.environ.get("MLFLOW_TRACKING_URI"))
+        # Use provided tracking_uri
+        uri = self.tracking_uri
+        mlflow.set_tracking_uri(uri)
 
         self.get_or_create_experiment(
             self.mlflow_params.mlflow_experiment_path)
