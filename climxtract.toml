@@ -8,7 +8,7 @@
 # =============================================================================
 [input]
 # Can be a list of specific files:
-filename_list = ["./data/pdfs/clas ohlson_2021_report.pdf", "./data/pdfs/sato holdings_2022_report.pdf"]
+filename_list = ["data/pdfs/clas ohlson_2021_report.pdf", "data/pdfs/sato holdings_2022_report.pdf"]
 # Or a directory path (processes all PDFs in it):
 #    filename_list = "./data/pdfs/sample_160"
 
@@ -61,6 +61,12 @@ similarity_top_k = 7
 similarity_min_k = 4
 percentile_threshold = 95
 
+# Custom embeddings repository path (optional)
+# If specified, uses this path instead of the default
+# embeddings_repository = "./data/processed/embeddings/custom_test_embeddings.duckdb"
+
+embeddings_repository = "text-embedding-ada-002_from_2025_03_06.duckdb"
+
 # =============================================================================
 # OUTPUT - Where to save results
 # =============================================================================
@@ -83,7 +89,7 @@ output_dir = "output"
 evaluation_mode = "no_evaluation"
 
 # Path to gold standard CSV file for evaluation
-gold_standard = "./data/evaluation_dataset/gist_2025.csv"
+gold_standard = "data/evaluation_dataset/gist_2025.csv"
 
 # =============================================================================
 # MLFLOW - Experiment tracking (optional)
