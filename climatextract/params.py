@@ -172,6 +172,9 @@ class LLMParams:
     # value probabilities by default
     return_logprobs: bool = field(default=True)
 
+    # Maximum number of concurrent LLM API calls. If None, uses model-specific defaults:
+    max_parallel_llm_prompts_running: int = field(default=None)
+
 
 @dataclass
 class PipelineParams:

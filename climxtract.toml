@@ -8,7 +8,7 @@
 # =============================================================================
 [input]
 # Can be a list of specific files:
-filename_list = ["data/pdfs/clas ohlson_2021_report.pdf", "data/pdfs/sato holdings_2022_report.pdf"]
+filename_list = ["data/pdfs/sato holdings_2022_report.pdf", "data/pdfs/Allianz_2022_report.pdf", "data/pdfs/aixtron_2020_report.pdf"]
 # Or a directory path (processes all PDFs in it):
 #    filename_list = "./data/pdfs/sample_160"
 
@@ -31,6 +31,16 @@ llm_model = "gpt-4.1-2025-04-14"
 #   - text-embedding-ada-002 (default)
 #   - text-embedding-3-large (higher quality)
 emb_model = "text-embedding-ada-002"
+
+# Maximum number of concurrent LLM API calls.
+# Adjust based on your Azure/OpenAI rate limits and pricing tier.
+# If not specified, uses model-specific defaults:
+#   - gpt-4o, gpt-4o-mini, gpt-oss-120b: 25
+#   - gpt-35-turbo-16k, gpt-5-chat: 8
+#   - gpt-4.1: 4
+#   - o3-mini: 2
+# Higher values = faster processing, but may hit rate limits.
+max_parallel_llm_prompts_running = 4
 
 # =============================================================================
 # EXTRACTION - Fine-tune extraction behavior
