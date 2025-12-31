@@ -350,7 +350,8 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         model_name=experiment_params.semantic_search_params.emb_model)
     llm = config.Llm(
         model_name=experiment_params.llm_params.llm_model,
-        return_logprobs=experiment_params.llm_params.return_logprobs
+        return_logprobs=experiment_params.llm_params.return_logprobs,
+        max_parallel_llm_prompts_running=experiment_params.llm_params.max_parallel_llm_prompts_running
     )
 
     search_query = semantic_search.SearchQuery(
