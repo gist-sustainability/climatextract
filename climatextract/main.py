@@ -333,12 +333,18 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     os.makedirs(path_to_results, exist_ok=True)
     
     # Set up components
-    embeddings_repo = semantic_search.EmbeddingsRepository(
-        database_name=(
-            f"data/processed/embeddings/"
-            f"{experiment_params.semantic_search_params.emb_model}"
-            f"_from_2025_03_06.duckdb")
-    )
+    # Use custom embeddings repository if specified, otherwise fall back to default
+    if experiment_params.semantic_search_params.embeddings_repository:
+        embeddings_repo = semantic_search.EmbeddingsRepository(
+            database_name=experiment_params.semantic_search_params.embeddings_repository
+        )
+    else:
+        embeddings_repo = semantic_search.EmbeddingsRepository(
+            database_name=(
+                f"data/processed/embeddings/"
+                f"{experiment_params.semantic_search_params.emb_model}"
+                f"_from_2025_03_06.duckdb")
+        )
 
     embed_model = config.EmbeddingModel(
         model_name=experiment_params.semantic_search_params.emb_model)

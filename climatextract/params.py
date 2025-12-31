@@ -151,6 +151,9 @@ class SemanticSearchParams:
     percentile_threshold: int = field(default=95)
     context_window: int = field(default=0)
     search_method: str = field(default="vector_search")
+    # Path to custom embeddings repository. If None, uses default path:
+    # data/processed/embeddings/{emb_model}_from_2025_03_06.duckdb
+    embeddings_repository: str = field(default=None)
 
 
 @dataclass
