@@ -16,7 +16,7 @@ def create_test_config(prompt_type, input_mode):
     config_content = f'''# Test configuration for {prompt_type}_{input_mode}
 
 [input]
-filename_list = ["./data/pdfs/sato holdings_2022_report.pdf"]
+filename_list = ["./data/pdfs/sato oyj_2022_report.pdf"]
 
 [extraction]
 input_mode = "{input_mode}"
