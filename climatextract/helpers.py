@@ -15,6 +15,13 @@ from itertools import accumulate
 import numpy as np
 import pandas as pd
 
+# Default path to the bundled unit normalization CSV file.
+# Uses __file__ to locate it relative to this module, works both when running
+# from source and when installed as a package
+_DEFAULT_UNIT_NORMALIZATION_PATH = os.path.join(
+    os.path.dirname(__file__), "data", "unit_normalization_dict.csv"
+)
+
 
 def remove_decimal_commas_in_numbers(raw_number: str) -> str:
     """Remove commas in numbers (e.g: 53,452,349 -> 53452349)
@@ -250,7 +257,7 @@ def compute_substring_probability(match_obj, group_num: int, log_blocks) -> floa
 def get_unit_normalization_mapping(df: pd.DataFrame,
                                    unit_col_name: str,
                                    pipeline_output_flag: bool,
-                                   unit_normalization_path: str = "data/normalization_units/unit_normalization_dict.csv") -> pd.DataFrame:
+                                   unit_normalization_path: str = _DEFAULT_UNIT_NORMALIZATION_PATH) -> pd.DataFrame:
     """Adds a normalized unit column to the df"""
     unit_normalization_dict = pd.read_csv(unit_normalization_path)
     # Create a mapping/dictionary from `unit_normalization_df`
@@ -283,7 +290,7 @@ def get_unit_normalization_mapping(df: pd.DataFrame,
 def get_value_standardization(df: pd.DataFrame,
                               value_column_name: str,
                               unit_column_name: str,
-                              unit_normalization_path: str = "data/normalization_units/unit_normalization_dict.csv") -> pd.DataFrame:
+                              unit_normalization_path: str = _DEFAULT_UNIT_NORMALIZATION_PATH) -> pd.DataFrame:
     """Adds a standardized value column to the df"""
     standardized_value_column_name = 'standardized_' + value_column_name
     df[standardized_value_column_name] = pd.NA
