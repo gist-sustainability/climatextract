@@ -347,7 +347,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
             database_name=(
                 f"data/processed/embeddings/"
                 f"{experiment_params.semantic_search_params.emb_model}"
-                f"_from_2025_03_06.duckdb")
+                f"_from_2025_12_23.duckdb")
         )
 
     embed_model = config.EmbeddingModel(
