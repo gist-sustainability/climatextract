@@ -303,6 +303,8 @@ class LlmSinglePromptQueryScope123(PromptProcessorInterface):
     async def prepare_prompt(self, doc_text: str) -> str:
         parts = [
             "Extract key pieces of information from this sustainability report.",
+            "IMPORTANT: Do NOT use any markdown formatting like **bold**, *italic*, or headers.",
+            "Write CO2 (not CO₂) when specifying units.",
             "If a particular piece of information is not present, output 'Not specified'.",
             "If the report does not mention if Scope 2 is location-based or market-based, assume it is Scope 2 location-based. Do not extract it as Scope 2 market-based.",
             "",
@@ -451,6 +453,8 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
     async def prepare_prompt(self, doc_text: str) -> str:
         parts = [
             "Extract key pieces of information from this sustainability report.",
+            "IMPORTANT: Do NOT use any markdown formatting like **bold**, *italic*, or headers.",
+            "Write CO2 (not CO₂) when specifying units.",
             "If a particular piece of information is not present, output 'Not specified'.",
             "If the report does not mention if Scope 2 is location-based or market-based, assume it is Scope 2 location-based. Do not extract it as Scope 2 market-based.",
             "",
