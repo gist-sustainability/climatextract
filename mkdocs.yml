@@ -1,0 +1,67 @@
+site_name: climatextract
+site_url: https://github.com/gist-sustainability/climatextract
+site_description: A RAG-based pipeline for extracting CO₂ emissions data from corporate sustainability reports
+
+theme:
+  name: material
+  palette:
+    scheme: default
+    primary: custom
+    accent: custom
+  features:
+    - navigation.sections
+    - navigation.expand
+    - toc.integrate
+    - content.code.copy
+    - content.tabs.link
+
+extra_css:
+  - stylesheets/extra.css
+
+markdown_extensions:
+  # Code highlighting
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  # Admonitions
+  - admonition
+  - pymdownx.details
+  # Content tabs
+  - pymdownx.tabbed:
+      alternate_style: true
+  # Math support
+  - pymdownx.arithmatex:
+      generic: true
+  # Mermaid diagrams
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Quickstart: getting-started/quickstart.md
+  - User Guide:
+    - Configuration: user-guide/configuration.md
+    - Running Extraction: user-guide/running-extraction.md
+    - Understanding Output: user-guide/understanding-output.md
+  - Concepts:
+    - Architecture: concepts/architecture.md
+    - RAG Pipeline: concepts/rag-pipeline.md
+    - Prompts: concepts/prompts.md
+    - Evaluation: concepts/evaluation.md
+  - API Reference: api-reference/public-api.md
+  - Research:
+    - Background: research/background.md
+    - Methodology: research/methodology.md
+    - Citation: research/citation.md
