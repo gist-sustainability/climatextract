@@ -274,6 +274,9 @@ class CustomPromptGaia(PromptProcessorInterface):
             for col in ("value_original", "unit_original"):
                 if col in output_table.columns:
                     output_table = output_table.drop(columns=[col])
+        else:
+            output_table["value_probability"] = pd.NA
+            output_table["unit_probability"] = pd.NA
 
         output_table["raw_llm_response"] = llm_output
 
