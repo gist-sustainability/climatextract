@@ -1,6 +1,6 @@
 # Installation
 
-This guide walks you through setting up climatextract on your machine.
+This guide walks you through installing climatextract.
 
 ---
 
@@ -9,38 +9,21 @@ This guide walks you through setting up climatextract on your machine.
 Before installing, ensure you have:
 
 - **Python 3.11+** – [Download Python](https://www.python.org/downloads/)
-- **pip** – Included with Python 3.4+
 - **Azure credentials** – Access to Azure OpenAI services
 
 ---
 
-## Step 1: Clone the Repository
+## Step 1: Install the Package
 
 ```bash
-git clone https://github.com/gist-sustainability/climatextract.git
-cd climatextract
+pip install climatextract
 ```
+
+This installs climatextract and all required dependencies.
 
 ---
 
-## Step 2: Create a Virtual Environment
-
-```bash
-python3.11 -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
----
-
-## Step 3: Install Dependencies
-
-```bash
-pip install -r requirements.txt
-```
-
----
-
-## Step 4: Install System Dependencies
+## Step 2: Install System Dependencies
 
 climatextract uses `pdf2image` which requires **Poppler**:
 
@@ -62,9 +45,9 @@ climatextract uses `pdf2image` which requires **Poppler**:
 
 ---
 
-## Step 5: Configure Azure Authentication
+## Step 3: Configure Azure Authentication
 
-Create a `.env` file in the project root with your Azure credentials:
+Create a `.env` file in your working directory with your Azure credentials:
 
 ```bash
 AZURE_OPENAI_API_KEY=your-api-key

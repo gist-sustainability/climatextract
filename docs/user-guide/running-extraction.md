@@ -11,7 +11,7 @@ This guide covers different ways to run climatextract on your PDF reports.
 ```python
 from climatextract import extract
 
-result_path = extract("./data/pdfs/company_2023_report.pdf")
+result_path = extract("./reports/company_2023_report.pdf")
 ```
 
 ### Multiple PDFs
@@ -20,8 +20,8 @@ result_path = extract("./data/pdfs/company_2023_report.pdf")
 from climatextract import extract
 
 files = [
-    "./data/pdfs/apple_2021_en.pdf",
-    "./data/pdfs/allianz_2022_report.pdf",
+    "./reports/apple_2021.pdf",
+    "./reports/allianz_2022.pdf",
 ]
 result_path = extract(files)
 ```
@@ -32,14 +32,14 @@ result_path = extract(files)
 from climatextract import extract
 
 # Processes all .pdf files in the directory
-result_path = extract("./data/pdfs/sample_reports/")
+result_path = extract("./reports/")
 ```
 
 ---
 
 ## Using Configuration File
 
-For reproducible runs, use the configuration file:
+For reproducible runs, create a `climxtract.toml` configuration file:
 
 ```python
 from climatextract import extract
@@ -54,10 +54,12 @@ Override specific inputs while using config defaults:
 from climatextract import extract
 
 result_path = extract(
-    pdf_input="./data/pdfs/new_report.pdf",
+    pdf_input="./reports/new_report.pdf",
     config_path="climxtract.toml"
 )
 ```
+
+See [Configuration](configuration.md) for all available options.
 
 ---
 
@@ -69,8 +71,8 @@ Compare results against a gold standard dataset:
 from climatextract import extract_and_evaluate
 
 result_path = extract_and_evaluate(
-    pdf_input="./data/pdfs/sample_reports/",
-    gold_standard_path="./data/evaluation_dataset/gist_2025.csv"
+    pdf_input="./reports/",
+    gold_standard_path="./evaluation/gold_standard.csv"
 )
 ```
 
@@ -79,31 +81,20 @@ result_path = extract_and_evaluate(
 
 ---
 
-## Command Line Usage
-
-You can also run extraction from the command line:
-
-```bash
-python -m climatextract.main
-```
-
-This uses settings from `climxtract.toml` by default.
-
----
-
 ## MLflow Tracking
 
-Enable experiment tracking:
+Enable experiment tracking by setting `enable_mlflow=True`:
 
 ```python
-from climatextract.main import main
+from climatextract import extract
 
-# With MLflow tracking
-main(use_mlflow=True)
-
-# Without MLflow tracking  
-main(use_mlflow=False)
+result_path = extract(
+    pdf_input="./reports/",
+    enable_mlflow=True
+)
 ```
+
+When enabled, metrics and parameters are logged to your configured MLflow server.
 
 ---
 
