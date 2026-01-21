@@ -4,9 +4,9 @@ climatextract uses a TOML configuration file (`climxtract.toml`) to control all 
 
 ---
 
-## Configuration File Location
+## Configuration File
 
-By default, the pipeline looks for `climxtract.toml` in the project root. You can specify a different path:
+Create a `climxtract.toml` file in your working directory. You can specify a different path:
 
 ```python
 from climatextract import extract
@@ -24,12 +24,12 @@ Control which PDF files to process:
 [input]
 # Option 1: List specific files
 filename_list = [
-    "data/pdfs/company_2022_report.pdf",
-    "data/pdfs/company_2023_report.pdf"
+    "reports/company_2022_report.pdf",
+    "reports/company_2023_report.pdf"
 ]
 
 # Option 2: Process all PDFs in a directory
-# filename_list = "./data/pdfs/sample_reports"
+# filename_list = "./reports/"
 ```
 
 ---
@@ -101,7 +101,7 @@ Configure evaluation against a gold standard:
 evaluation_mode = "no_evaluation"
 
 # Path to gold standard dataset
-gold_standard = "data/evaluation_dataset/gist_2025.csv"
+gold_standard = "evaluation/gold_standard.csv"
 ```
 
 ---
@@ -127,7 +127,7 @@ Here's a complete configuration file:
 
 ```toml
 [input]
-filename_list = ["data/pdfs/company_2023_report.pdf"]
+filename_list = ["reports/company_2023_report.pdf"]
 
 [models]
 llm_model = "gpt-4o-mini-2024-07-18"

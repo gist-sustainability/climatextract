@@ -12,7 +12,7 @@ The simplest way to extract emissions data from a PDF:
 from climatextract import extract
 
 # Extract from a single PDF
-result_path = extract("./data/pdfs/company_2023_report.pdf")
+result_path = extract("./reports/company_2023_report.pdf")
 print(f"Results saved to: {result_path}")
 ```
 
@@ -33,7 +33,7 @@ Process an entire directory of reports:
 from climatextract import extract
 
 # Process all PDFs in a directory
-result_path = extract("./data/pdfs/")
+result_path = extract("./reports/")
 ```
 
 Or provide a specific list:
@@ -42,8 +42,8 @@ Or provide a specific list:
 from climatextract import extract
 
 files = [
-    "./data/pdfs/apple_2021_en.pdf",
-    "./data/pdfs/allianz_2022_report.pdf",
+    "./reports/apple_2021.pdf",
+    "./reports/microsoft_2022.pdf",
 ]
 result_path = extract(files)
 ```
@@ -58,8 +58,8 @@ If you have a gold standard dataset, validate your results:
 from climatextract import extract_and_evaluate
 
 result_path = extract_and_evaluate(
-    pdf_input="./data/pdfs/sample_reports/",
-    gold_standard_path="./data/evaluation_dataset/gist_2025.csv"
+    pdf_input="./reports/",
+    gold_standard_path="./evaluation/gold_standard.csv"
 )
 ```
 
@@ -67,7 +67,7 @@ result_path = extract_and_evaluate(
 
 ## Using a Configuration File
 
-For more control, use the `climxtract.toml` configuration file:
+For more control, create a `climxtract.toml` configuration file:
 
 ```python
 from climatextract import extract
