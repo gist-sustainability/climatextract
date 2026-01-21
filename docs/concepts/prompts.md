@@ -1,6 +1,6 @@
 # Prompts
 
-climatextract uses carefully structured prompts to instruct the LLM on extracting emissions data. This page explains the prompt design and how to customize it.
+climatextract uses carefully structured prompts to instruct the LLM on extracting emissions data. This page explains the prompt design.
 
 ---
 
@@ -72,15 +72,7 @@ The LLM is instructed to return JSON matching this schema:
 }
 ```
 
-This is validated using Pydantic models:
-
-```python
-class KpiEntry(BaseModel):
-    year: Optional[int]
-    scope: Optional[str]
-    value: Optional[float]
-    unit: Optional[str]
-```
+This is validated using Pydantic models to ensure data quality.
 
 ---
 
@@ -105,24 +97,3 @@ Advanced prompt with Pydantic-based structured output parsing. Recommended for p
 [extraction]
 prompt_type = "custom_gaia"
 ```
-
----
-
-## Customizing Prompts
-
-Prompt components are loaded from files in the `prompt/` directory:
-
-```
-prompt/
-├── kpi_definitions/
-│   └── default.txt
-├── role_task/
-│   └── default.txt
-└── specifications/
-    └── default.txt
-```
-
-To use custom prompts, modify these files or create new ones and reference them in your configuration.
-
-!!! warning "Prompt Changes"
-    Modifying prompts can significantly affect extraction quality. Test thoroughly against the gold standard dataset when making changes.
