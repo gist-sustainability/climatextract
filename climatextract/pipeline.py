@@ -8,10 +8,10 @@ from dotenv import load_dotenv
 import mlflow
 from mlflow.entities import SpanType
 
-import semantic_search
-import helpers
-from page_text_and_table_extractor import PageTextAndTableExtractor
-from resolve_duplicates import handle_duplicates_in_output, select_duplicates_in_output
+import climatextract.semantic_search as semantic_search
+import climatextract.helpers as helpers
+from climatextract.page_text_and_table_extractor import PageTextAndTableExtractor
+from climatextract.resolve_duplicates import handle_duplicates_in_output, select_duplicates_in_output
 
 load_dotenv()  # load environment variables from .env file
 os.chdir(helpers.get_project_directory(path_to_file="src"))
@@ -210,12 +210,15 @@ class FileConfig:
     """Configuration to select input files and determine folder for output files."""
 
     @staticmethod
-    def get_path_to_results(run_id: str):
-        """Return the path to the data/output/<run_id > folder. 
-        Create folder if not existent"""
-
-        path_to_results = os.path.join(
-            'output', run_id)
+    def get_path_to_results(run_id: str, output_dir: str = "output"):
+        """Return the path to the {output_dir}/{run_id} folder. 
+        Create folder if not existent.
+        
+        Args:
+            run_id: Unique identifier for the run (MLflow run_id or UUID).
+            output_dir: Base output directory. Defaults to "output".
+        """
+        path_to_results = os.path.join(output_dir, run_id)
         if not os.path.exists(path_to_results):
             os.makedirs(path_to_results)
 
