@@ -93,7 +93,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/apollo medical holdings_2022_report.pdf": {
+    "./data/pdfs/apollo hospitals_2022_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -118,7 +118,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/arteria networks corp_2019_report.pdf": {
+    "./data/pdfs/atlas arteria_2019_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -245,7 +245,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/blackline inc_2021_report.pdf": {
+    "./data/pdfs/blackline safety_2021_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -269,7 +269,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/boss energy ltd_2019_report.pdf": {
+    "./data/pdfs/hugo boss_2019_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -307,7 +307,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/century communities inc_2019_report.pdf": {
+    "./data/pdfs/centurylink_2019_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -315,7 +315,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/chase corp_2020_report.pdf": {
+    "./data/pdfs/jpmorgan chase_2020_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -332,7 +332,7 @@
             "bbk_2023"
         ]
     },
-    "./data/pdfs/chord energy corp_2020_report.pdf": {
+    "./data/pdfs/whiting petroleum_2020_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -340,7 +340,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/city holding_2020_report.pdf": {
+    "./data/pdfs/ctbc holding_2020_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -408,7 +408,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/customers bancorp inc_2020_report.pdf": {
+    "./data/pdfs/customer bank_2020_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -572,7 +572,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/fastly inc_2018_report.pdf": {
+    "./data/pdfs/weleda_2018_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -594,7 +594,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/first bancorp_2018_report.pdf": {
+    "./data/pdfs/fbn holdings_2018_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -602,7 +602,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/first bancshares inc_2017_report.pdf": {
+    "./data/pdfs/fbn holdings_2017_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -634,7 +634,7 @@
             "bbk_2023"
         ]
     },
-    "./data/pdfs/fuji soft inc_2022_report.pdf": {
+    "./data/pdfs/fujifilm_2022_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -698,7 +698,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/hang lung group_2018_report.pdf": {
+    "./data/pdfs/hang lung properties_2018_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -786,7 +786,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/independence realty inc_2017_report.pdf": {
+    "./data/pdfs/kilroy realty_2017_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -794,7 +794,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/independence realty inc_2018_report.pdf": {
+    "./data/pdfs/kilroy realty_2018_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -834,7 +834,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/japan steel works ltd_2017_report.pdf": {
+    "./data/pdfs/nippon steel and sumitomo metal_2017_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1033,7 +1033,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/mfa financial inc_2021_report.pdf": {
+    "./data/pdfs/municipal finance authority of bc_2021_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1117,7 +1117,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/nok cash_2021_report.pdf": {
+    "./data/pdfs/nok corporation_2021_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1150,7 +1150,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/paramount group_2020_report.pdf": {
+    "./data/pdfs/viacomcbs_2020_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1207,7 +1207,7 @@
             "bbk_2023"
         ]
     },
-    "./data/pdfs/polaris industries_2021_report.pdf": {
+    "./data/pdfs/polaris_2021_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1223,7 +1223,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/preferred bank_2017_report.pdf": {
+    "./data/pdfs/nordea_2017_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1262,7 +1262,7 @@
         ],
         "in_gold_standard": []
     },
-    "./data/pdfs/relay therapeutics inc_2022_report.pdf": {
+    "./data/pdfs/amicus therapeutics_2022_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1346,7 +1346,7 @@
         ],
         "in_gold_standard": []
     },
-    "./data/pdfs/sato holdings_2022_report.pdf": {
+    "./data/pdfs/sato oyj_2022_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1376,7 +1376,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/sps commerce inc_2020_report.pdf": {
+    "./data/pdfs/swiss prime site_2020_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1408,7 +1408,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/sumitomo warehouse ltd_2021_report.pdf": {
+    "./data/pdfs/sumitomo corporation_2021_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1436,7 +1436,7 @@
         ],
         "in_gold_standard": []
     },
-    "./data/pdfs/the simply good foods company_2018_report.pdf": {
+    "./data/pdfs/kfw_2018_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1452,7 +1452,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/tokyu reit_2018_report.pdf": {
+    "./data/pdfs/tokyu construction_2018_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
@@ -1500,7 +1500,7 @@
             "gist_2025"
         ]
     },
-    "./data/pdfs/vital energy inc_2019_report.pdf": {
+    "./data/pdfs/uniper_2019_report.pdf": {
         "in_sample": [
             "sample_160"
         ],
