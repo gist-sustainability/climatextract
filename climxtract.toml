@@ -8,7 +8,7 @@
 # =============================================================================
 [input]
 # Can be a list of specific files:
-filename_list = ["data/pdfs/sato holdings_2022_report.pdf", "data/pdfs/Allianz_2022_report.pdf", "data/pdfs/aixtron_2020_report.pdf"]
+filename_list = ["data/pdfs/sato oyj_2022_report.pdf", "data/pdfs/Allianz_2022_report.pdf", "data/pdfs/aixtron_2020_report.pdf"]
 # Or a directory path (processes all PDFs in it):
 #    filename_list = "./data/pdfs/sample_160"
 
@@ -74,8 +74,6 @@ percentile_threshold = 95
 # Custom embeddings repository path (optional)
 # If specified, uses this path instead of the default
 # embeddings_repository = "./data/processed/embeddings/custom_test_embeddings.duckdb"
-
-embeddings_repository = "text-embedding-ada-002_from_2025_12_23.duckdb"
 
 # =============================================================================
 # OUTPUT - Where to save results

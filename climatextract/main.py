@@ -631,6 +631,6 @@ if __name__ == "__main__":
     # All settings come from climxtract.toml config file
     # pdf_input is optional - if not specified, uses filename_list from config
     main(
-        # pdf_input=['./data/pdfs/sato holdings_2022_report.pdf'],  # Optional: overrides config
+        # pdf_input=['./data/pdfs/sato oyj_2022_report.pdf'],  # Optional: overrides config
         # use_mlflow=False  # Set to False to disable MLflow tracking
     )
