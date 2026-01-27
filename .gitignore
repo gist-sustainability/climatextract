@@ -10,6 +10,8 @@ output/**/*.xlsx
 output/**/*.csv
 output/**/*.txt
 
+output/
+
 tests/last_run_ids.json
 tests/output_tests.txt
 
