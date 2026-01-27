@@ -32,7 +32,7 @@ load_dotenv()
 def main(
     pdf_input: str | List[str] | None = None,
     gold_standard_path: str | None = None,
-    config_path: str = "climxtract.toml",
+    config_path: str = "climatextract.toml",
     use_mlflow: bool = True
 ):
     """
@@ -44,7 +44,7 @@ def main(
     Args:
         pdf_input: PDF file(s) to process. If None, uses config.
         gold_standard_path: Path to gold standard. If None, uses config.
-        config_path: Path to config file. Defaults to "climxtract.toml".
+        config_path: Path to config file. Defaults to "climatextract.toml".
         use_mlflow: Whether to enable MLflow tracking. Defaults to True.
     """
     # Load config to construct run name and check evaluation_mode
@@ -136,7 +136,7 @@ def main(
 
 def extract(
     pdf_input: str | List[str] | None = None,
-    config_path: str = "climxtract.toml",
+    config_path: str = "climatextract.toml",
     enable_mlflow: bool = False
 ) -> Optional[str]:
     """
@@ -147,7 +147,7 @@ def extract(
     Args:
         pdf_input: A directory path (processes all PDFs), a single file path,
                    or a list of file paths. If None, uses filename_list from config.
-        config_path: Path to config file. Defaults to "climxtract.toml".
+        config_path: Path to config file. Defaults to "climatextract.toml".
         enable_mlflow: Whether to log results to MLflow. If True, uses MLflow settings
                        from config file (tracking_uri and experiment_name). Enables
                        full MLflow tracking including OpenAI autolog and traces.
@@ -212,7 +212,7 @@ def extract(
 def extract_and_evaluate(
     pdf_input: str | List[str] | None = None,
     gold_standard_path: str | None = None,
-    config_path: str = "climxtract.toml",
+    config_path: str = "climatextract.toml",
     enable_mlflow: bool = False
 ) -> Optional[str]:
     """
@@ -224,7 +224,7 @@ def extract_and_evaluate(
         pdf_input: A directory path (processes all PDFs), a single file path,
                    or a list of file paths. If None, uses filename_list from config.
         gold_standard_path: Path to gold standard dataset. If None, uses config.
-        config_path: Path to config file. Defaults to "climxtract.toml".
+        config_path: Path to config file. Defaults to "climatextract.toml".
         enable_mlflow: Whether to log results to MLflow. If True, uses MLflow settings
                        from config file (tracking_uri and experiment_name). Enables
                        full MLflow tracking including OpenAI autolog and traces.
@@ -294,7 +294,7 @@ def extract_and_evaluate(
 
 def _extract_with_metadata(pdf_input: str | List[str] | None = None, 
                            path_to_results: str | None = None,
-                           config_path: str = "climxtract.toml") -> Optional[Dict[str, Any]]:
+                           config_path: str = "climatextract.toml") -> Optional[Dict[str, Any]]:
     """
     Internal extraction function that returns full metadata for main().
     
@@ -303,7 +303,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
                    or a list of file paths. If None, uses filename_list from config.
         path_to_results: Full path to save results. If None, uses {output_dir}/{uuid}
                          where output_dir comes from config or defaults to "output".
-        config_path: Path to config file. Defaults to "climxtract.toml".
+        config_path: Path to config file. Defaults to "climatextract.toml".
     
     Returns:
         Dictionary containing:
@@ -464,7 +464,7 @@ def _extract_and_evaluate_with_metadata(
     pdf_input: str | List[str] | None = None,
     gold_standard_path: str | None = None,
     path_to_results: str | None = None,
-    config_path: str = "climxtract.toml"
+    config_path: str = "climatextract.toml"
 ) -> Optional[Dict[str, Any]]:
     """
     Internal: extraction + evaluation, returns full metadata.
@@ -473,7 +473,7 @@ def _extract_and_evaluate_with_metadata(
         pdf_input: PDF files to process. If None, uses config.
         gold_standard_path: Path to gold standard. If None, uses config.
         path_to_results: Full path to save results. If None, auto-generates.
-        config_path: Path to config file. Defaults to "climxtract.toml".
+        config_path: Path to config file. Defaults to "climatextract.toml".
     
     Returns:
         Dictionary with extraction results + evaluation_metrics.
@@ -546,7 +546,7 @@ def _extract_and_evaluate_with_metadata(
     return result
 
 
-def _load_config(config_path: str = "climxtract.toml"):
+def _load_config(config_path: str = "climatextract.toml"):
     """Load config from TOML file, with defaults from dataclasses.
     
     Returns:
@@ -628,7 +628,7 @@ if __name__ == "__main__":
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)
     logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
-    # All settings come from climxtract.toml config file
+    # All settings come from climatextract.toml config file
     # pdf_input is optional - if not specified, uses filename_list from config
     main(
         # pdf_input=['./data/pdfs/sato oyj_2022_report.pdf'],  # Optional: overrides config

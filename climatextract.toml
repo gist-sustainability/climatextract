@@ -73,6 +73,7 @@ percentile_threshold = 95
 
 # Custom embeddings repository path (optional)
 # If specified, uses this path instead of the default
+# Note: Leave commented out to use the default path: data/processed/embeddings/{emb_model}_from_2025_03_06.duckdb
 # embeddings_repository = "./data/processed/embeddings/custom_test_embeddings.duckdb"
 
 # =============================================================================

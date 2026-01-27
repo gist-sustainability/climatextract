@@ -6,7 +6,7 @@ Public API:
     extract_and_evaluate(pdf_input, gold_standard_path, enable_mlflow, config_path) - Extract and evaluate
 
 Configuration:
-    Create a `climxtract.toml` file in your project root to configure the extraction.
+    Create a `climatextract.toml` file in your project root to configure the extraction.
     See the package documentation for available options.
 
 Example:
