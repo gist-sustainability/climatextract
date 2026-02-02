@@ -296,6 +296,9 @@ class CustomPromptGaia(PromptProcessorInterface):
             for col in ("value_original", "unit_original"):
                 if col in output_table.columns:
                     output_table = output_table.drop(columns=[col])
+        else:
+            output_table["value_probability"] = pd.NA
+            output_table["unit_probability"] = pd.NA
 
         output_table["raw_llm_response"] = llm_output
 
@@ -325,6 +328,8 @@ class LlmSinglePromptQueryScope123(PromptProcessorInterface):
     async def prepare_prompt(self, doc_text: str) -> str:
         parts = [
             "Extract key pieces of information from this sustainability report.",
+            "IMPORTANT: Do NOT use any markdown formatting like **bold**, *italic*, or headers.",
+            "Write CO2 (not CO₂) when specifying units.",
             "If a particular piece of information is not present, output 'Not specified'.",
             "If the report does not mention if Scope 2 is location-based or market-based, assume it is Scope 2 location-based. Do not extract it as Scope 2 market-based.",
             "",
@@ -473,28 +478,30 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
     async def prepare_prompt(self, doc_text: str) -> str:
         parts = [
             "Extract key pieces of information from this sustainability report.",
-            "If a particular piece of information is not present, output 'Not specified'.",
+            "IMPORTANT: Do NOT use any markdown formatting like **bold**, *italic*, or headers.",
+            "Write CO2 (not CO₂) when specifying units.",
+            "If a particular piece of information is not present, output 'NA'.",
             "If the report does not mention if Scope 2 is location-based or market-based, assume it is Scope 2 location-based. Do not extract it as Scope 2 market-based.",
             "",
             "Use the following format:",
-            "0. What is the title"
+            "0. Title"
         ]
 
         index = 1
         for year in range(self.min_year, self.max_year + 1):
-            parts.append(f"{index}. What are the Scope 1 emissions in {year}")
+            parts.append(f"{index}. Scope 1, {year}")
             index += 1
 
         for year in range(self.min_year, self.max_year + 1):
-            parts.append(f"{index}. What are the Scope 2 (market-based) emissions in {year}")
+            parts.append(f"{index}. Scope 2mb, {year}")
             index += 1
 
         for year in range(self.min_year, self.max_year + 1):
-            parts.append(f"{index}. What are the Scope 2 (location-based) emissions in {year}")
+            parts.append(f"{index}. Scope 2lb, {year}")
             index += 1
 
         for year in range(self.min_year, self.max_year + 1):
-            parts.append(f"{index}. What are the Scope 3 emissions in {year}")
+            parts.append(f"{index}. Scope 3, {year}")
             index += 1
 
         parts.append("")
@@ -502,9 +509,9 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
 
         # example response at the end of the prompt
         parts.append("")
-        parts.append("0. What is the title: Our responsibility. Report {self.min_year}")
-        parts.append(f"1. What are the Scope 1 emissions in {self.min_year}: <value> <unit>")
-        parts.append(f"2. What are the Scope 1 emissions in {self.min_year + 1}: <value> <unit>")
+        parts.append(f"0. Title: <report title>")
+        parts.append(f"1. Scope 1, {self.min_year}: <value> <unit>")
+        parts.append(f"2. Scope 1, {self.min_year + 1}: <value> <unit>")
 
         self.query = "\n".join(parts)
 
@@ -542,14 +549,14 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
         str_llm_output = str(llm_output)
 
         # In case we did find information for a specific year and scope, GPT should provide it in the following format
-        # pattern = r'What are the Scope ([123]{1}) emissions in (20[12]\d): ([0-9\.,]+) (.{0,50})'
+        # pattern = r'Scope (1|2mb|2lb|3), (20[12]\d): ([0-9\.,]+) (.{0,50})'
         # the previous expression does not work if no unit is provided
         if information_found:
-            pattern = r'What are the Scope \b([13]{1}|(2 \(market-based\))|(2 \(location-based\))) emissions in (20[12]\d): ([0-9\.,]+)( (.{0,50})|\\n|\n)'
+            pattern = r'Scope (1|2mb|2lb|3), (20[12]\d): ([0-9\.,]+)( (.{0,50})|\\n|\n)'
         # In case we did NOT find information for a specific year and scope,
         # our LLM query asks GPT to provide it in the following format
         else:
-            pattern = r'What are the Scope \b([13]{1}|(2 \(market-based\))|(2 \(location-based\))) emissions in (20[12]\d): (Not specified)$'
+            pattern = r'Scope (1|2mb|2lb|3), (20[12]\d): (NA)$'
 
         matches = re.finditer(pattern, str_llm_output, re.MULTILINE)
 
@@ -558,28 +565,28 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
 
         for _, match in enumerate(matches, start=1):
             if information_found:
-                original_value = match.group(5)
+                original_value = match.group(3)
                 cleaned_value = helpers.remove_decimal_commas_in_numbers(original_value)
 
                 # Compute value and unit probabilities using helper function
-                probability = helpers.compute_substring_probability(match, 5, log_blocks)
-                unit_probability = helpers.compute_substring_probability(match, 7, log_blocks)
+                probability = helpers.compute_substring_probability(match, 3, log_blocks)
+                unit_probability = helpers.compute_substring_probability(match, 5, log_blocks)
 
                 entry = pd.DataFrame.from_dict({
-                    "year": [match.group(4)],
+                    "year": [match.group(2)],
                     "scope": [match.group(1)],
                     "value": [cleaned_value],
-                    "unit": [match.group(7)],
+                    "unit": [match.group(5)],
                     "value_probability": [probability],
                     "unit_probability": [unit_probability],
                 })
-                
+
             else:
                 entry = pd.DataFrame.from_dict({
-                    "year": [match.group(4)],
+                    "year": [match.group(2)],
                     "scope": [match.group(1)],
-                    "value": [match.group(5)],
-                    "unit": [match.group(5)]
+                    "value": [match.group(3)],
+                    "unit": [match.group(3)]
                 })
             output_list.append(entry)
 
@@ -593,14 +600,8 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
             output_table = self._fill_no_extractions_table()
 
         def convert_values(x):
-            if x == "1":
-                return "1"
-            elif x == "2 (market-based)":
-                return "2mb"
-            elif x == "2 (location-based)":
-                return "2lb"
-            elif x == "3":
-                return "3"
+            if x in ["1", "2mb", "2lb", "3"]:
+                return x
             else:
                 return pd.NA
 
@@ -618,7 +619,7 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
     def _fill_no_extractions_table(self) -> pd.DataFrame:
         """Create table when nothing was extracted."""
         output_table_dict = {'year': [str(num) for num in range(2013, 2023)],
-                             'scope': ["1", "2 (market-based)", "2 (location-based)", "3"]}
+                             'scope': ["1", "2mb", "2lb", "3"]}
         output_table = helpers.expand_grid(output_table_dict)
         output_table['value'] = "Nothing extracted. No Regex match"
         output_table['unit'] = "Nothing extracted. No Regex match"

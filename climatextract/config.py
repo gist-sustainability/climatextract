@@ -193,6 +193,14 @@ class Llm:
                 tokenizer=tiktoken.encoding_for_model("gpt-5-chat").encode
             )
 
+        elif self.model_name == "gpt-5.2-chat-2025-12-11":
+            self.api_version = "2024-12-01-preview"
+            self.azure_endpoint = os.environ["AZURE_AI_FOUNDRY_ENDPOINT"]
+            self.max_parallel_llm_prompts_running = 8
+            self.token_counter = TokenCounter(
+                tokenizer=tiktoken.encoding_for_model("gpt-5-chat").encode
+            )
+
         elif self.model_name == "o1-2024-1217":
             raise Exception("Model not implemented yet")
 
@@ -269,10 +277,12 @@ class Llm:
             return 2 * input_tokens / 1000000 + 8 * output_tokens / 1000000
         elif self.model_name == "gpt-5-chat-2025-08-07":
             return 1.25 * input_tokens / 1000000 + 10 * output_tokens / 1000000
+        elif self.model_name == "gpt-5.2-chat-2025-12-11":
+            return 1.75 * input_tokens / 1000000 + 14.00 * output_tokens / 1000000
         elif self.model_name == "Llama-4-Maverick-17B-128E-Instruct-FP8":
             return 0.35 * input_tokens / 1000000 + 1.41 * output_tokens / 1000000 # according to this site it is a bit cheaper: https://azure.microsoft.com/en-us/pricing/details/phi-3/#pricing
-        
-        
+
+
         else:
             return -1.0
 
@@ -303,8 +313,7 @@ class Llm:
             response = await self.client.chat.completions.create(
                 model=self.azure_deployment,
                 messages=[{"role": "user", "content": formatted_prompt}],
-                temperature=0.0,
-                logprobs=self.return_logprobs
+                temperature=1
             )
 
             # Use the QueryPipeline without CallbackManager

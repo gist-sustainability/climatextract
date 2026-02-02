@@ -170,7 +170,7 @@ class LLMParams:
     # If True, the pipeline will request per-token log-probabilities from the LLM
     # and compute a value-level confidence score. Defaults to True to enable
     # value probabilities by default
-    return_logprobs: bool = field(default=True)
+    return_logprobs: bool = field(default=False)
 
     # Maximum number of concurrent LLM API calls. If None, uses model-specific defaults:
     max_parallel_llm_prompts_running: int = field(default=None)
