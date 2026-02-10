@@ -9,7 +9,7 @@
 [input]
 # Can be a list of specific files:
 # filename_list = ["data/pdfs/sato holdings_2022_report.pdf", "data/pdfs/Allianz_2022_report.pdf", "data/pdfs/aixtron_2020_report.pdf"]
-filename_list = ["data/pdfs/sato holdings_2022_report.pdf", "data/pdfs/stantec inc_2019_report.pdf"]
+filename_list = ["data/pdfs/sato oyj_2022_report.pdf", "data/pdfs/stantec inc_2019_report.pdf"]
 # Or a directory path (processes all PDFs in it):
 #    filename_list = "./data/pdfs/sample_160"
 
@@ -26,7 +26,9 @@ filename_list = ["data/pdfs/sato holdings_2022_report.pdf", "data/pdfs/stantec i
 # - gpt-4o-2024-11-20 OR
 # - gpt-5-chat-2025-08-07
 # - gpt-4.1-2025-04-14
-llm_model = "gpt-4.1-2025-04-14"
+# - Llama-4-Maverick-17B-128E-Instruct-FP8
+# - gpt-5.2-chat-2025-12-11
+llm_model = "gpt-5.2-chat-2025-12-11"
 
 # Supported embedding models:
 #   - text-embedding-ada-002 (default)
@@ -37,8 +39,9 @@ emb_model = "text-embedding-ada-002"
 # Adjust based on your Azure/OpenAI rate limits and pricing tier.
 # If not specified, uses model-specific defaults:
 #   - gpt-4o, gpt-4o-mini, gpt-oss-120b: 25
-#   - gpt-35-turbo-16k, gpt-5-chat: 8
+#   - gpt-35-turbo-16k, gpt-5-chat, gpt-5.2-chat: 8
 #   - gpt-4.1: 4
+#   - Llama-4-Maverick: 25
 #   - o3-mini: 2
 # Higher values = faster processing, but may hit rate limits.
 max_parallel_llm_prompts_running = 4
@@ -54,7 +57,7 @@ year_max = 2024
 # Input mode: what content to analyze from PDFs
 # - "text+table": Extract both text and tables (default)
 # - "text": Extract text only
-input_mode = "text+table"
+input_mode = "text"
 
 # Whether to only embed documents without extraction
 embed_only = false

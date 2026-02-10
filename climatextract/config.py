@@ -13,7 +13,7 @@ from llama_index.embeddings.azure_openai import AzureOpenAIEmbedding
 
 # from llama_index.core.callbacks import TokenCountingHandler
 # from llama_index.llms.azure_openai import AzureOpenAI
-from openai import APIStatusError, AsyncAzureOpenAI, RateLimitError
+from openai import APIStatusError, AsyncAzureOpenAI, AsyncOpenAI, RateLimitError
 
 load_dotenv()  # load environment variables from .env file
 
@@ -121,6 +121,9 @@ class Llm:
         self.azure_deployment = model_name
         self.api_version = api_version
         self.return_logprobs = return_logprobs
+        self.supports_logprobs = True  # Default; overridden per-model if needed
+        self.use_openai_client = False  # Default; Llama overrides to True
+        self.temperature = 0.0         # Default; overridden per-model if needed
         self.azure_endpoint = os.environ["AZURE_ENDPOINT"]
 
         self.api_key = os.getenv("API_KEY")
@@ -196,6 +199,22 @@ class Llm:
                 tokenizer=tiktoken.encoding_for_model("gpt-5-chat").encode
             )
 
+        elif self.model_name == "Llama-4-Maverick-17B-128E-Instruct-FP8":
+            self.use_openai_client = True
+            self.openai_base_url = os.environ["AZURE_AI_FOUNDRY_ENDPOINT"].rstrip('/') + "/openai/v1/"
+            self.token_counter = TokenCounter(
+                tokenizer=tiktoken.encoding_for_model("gpt-4o").encode
+            )
+
+        elif self.model_name == "gpt-5.2-chat-2025-12-11":
+            self.api_version = "2024-12-01-preview"
+            self.azure_endpoint = os.environ["AZURE_AI_FOUNDRY_ENDPOINT"]
+            self.supports_logprobs = False
+            self.temperature = 1.0  # GPT 5.2 does not accept temperature=0.0
+            self.token_counter = TokenCounter(
+                tokenizer=tiktoken.encoding_for_model("gpt-5-chat").encode
+            )
+
         elif self.model_name == "o1-2024-1217":
             raise Exception("Model not implemented yet")
 
@@ -216,6 +235,10 @@ class Llm:
                 self.max_parallel_llm_prompts_running = 4
             elif self.model_name == "gpt-5-chat-2025-08-07":
                 self.max_parallel_llm_prompts_running = 8
+            elif self.model_name == "Llama-4-Maverick-17B-128E-Instruct-FP8":
+                self.max_parallel_llm_prompts_running = 25
+            elif self.model_name == "gpt-5.2-chat-2025-12-11":
+                self.max_parallel_llm_prompts_running = 8
             elif (
                 self.model_name == "gpt-4o-mini-2024-07-18"
                 or self.model_name == "gpt-4o-2024-11-20"
@@ -224,23 +247,31 @@ class Llm:
             ):
                 self.max_parallel_llm_prompts_running = 25
 
-        # Initialize the OpenAI client directly
-        # Argumente für den Client vorbereiten
-        client_args = {
-            "azure_endpoint": self.azure_endpoint,
-            "api_version": self.api_version,
-            "max_retries": 4,
-            "timeout": 340.0,
-        }
-        if self.api_key:
-            client_args["api_key"] = self.api_key
-        else:
-            client_args["azure_ad_token_provider"] = (
-                login_token_provider  # wird automatisch aktualisiert, falls die Klasse das unterstützt
+        # Initialize the OpenAI client
+        if self.use_openai_client:
+            # OpenAI-compatible endpoint (e.g., Llama on Azure AI Foundry)
+            self.client = AsyncOpenAI(
+                base_url=self.openai_base_url,
+                api_key=self.api_key,
+                max_retries=4,
+                timeout=340.0,
             )
-
-        # Client initialisieren
-        self.client = AsyncAzureOpenAI(**client_args)
+        else:
+            # Azure OpenAI endpoint (existing behavior)
+            client_args = {
+                "azure_endpoint": self.azure_endpoint,
+                "api_version": self.api_version,
+                "max_retries": 4,
+                "timeout": 340.0,
+            }
+            if self.api_key:
+                client_args["api_key"] = self.api_key
+            else:
+                client_args["azure_ad_token_provider"] = (
+                    login_token_provider  # wird automatisch aktualisiert, falls die Klasse das unterstützt
+                )
+            # Client initialisieren
+            self.client = AsyncAzureOpenAI(**client_args)
 
         self.semaphore = asyncio.Semaphore(self.max_parallel_llm_prompts_running)
 
@@ -272,8 +303,10 @@ class Llm:
             return 2 * input_tokens / 1000000 + 8 * output_tokens / 1000000
         elif self.model_name == "gpt-5-chat-2025-08-07":
             return 1.25 * input_tokens / 1000000 + 10 * output_tokens / 1000000
+        elif self.model_name == "gpt-5.2-chat-2025-12-11":
+            return 1.75 * input_tokens / 1000000 + 14.00 * output_tokens / 1000000
         elif self.model_name == "Llama-4-Maverick-17B-128E-Instruct-FP8":
-            return 0.35 * input_tokens / 1000000 + 1.41 * output_tokens / 1000000 # according to this site it is a bit cheaper: https://azure.microsoft.com/en-us/pricing/details/phi-3/#pricing
+            return 0.303 * input_tokens / 1000000 + 1.21 * output_tokens / 1000000 # according to this site it is a bit cheaper: https://azure.microsoft.com/en-us/pricing/details/phi-3/#pricing
         
         
         else:
@@ -302,13 +335,14 @@ class Llm:
         cur_time = time.perf_counter()
 
         try:
-            # Correctly pass a boolean for the logprobs parameter
-            response = await self.client.chat.completions.create(
-                model=self.azure_deployment,
-                messages=[{"role": "user", "content": formatted_prompt}],
-                temperature=0.0,
-                logprobs=self.return_logprobs
-            )
+            api_kwargs = {
+                "model": self.azure_deployment,
+                "messages": [{"role": "user", "content": formatted_prompt}],
+                "temperature": self.temperature,
+            }
+            if self.supports_logprobs:
+                api_kwargs["logprobs"] = self.return_logprobs
+            response = await self.client.chat.completions.create(**api_kwargs)
 
             # Use the QueryPipeline without CallbackManager
             # results = await p.arun_multi({"llm_prompt": {"context_str": doc_text}})
