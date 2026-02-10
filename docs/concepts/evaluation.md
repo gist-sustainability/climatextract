@@ -145,10 +145,11 @@ Evaluation creates additional files in the output directory:
 
 | File | Contents |
 |------|----------|
-| `comparison_info_in_report.csv` | Values where info exists in report |
-| `comparison_info_not_in_report.csv` | Values where info doesn't exist |
-| `metrics_per_doc.csv` | Per-document metrics |
-| `aggregated_results.csv` | Overall metrics |
+| `04a_results_available_in_report.csv` | Values where info exists in report |
+| `04b_results_not_available_in_report.csv` | Values where info doesn't exist |
+| `05_results_aggregated_by_*.csv` | Metrics aggregated by different dimensions |
+| `error_analysis_per_doc.csv` | Per-document error analysis (precision_recall_f1 mode) |
+| `error_analysis_per_row.csv` | Per-row error analysis (precision_recall_f1 mode) |
 
 ---
 

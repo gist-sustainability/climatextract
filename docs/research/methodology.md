@@ -8,7 +8,7 @@ This page describes the scientific methodology behind climatextract, suitable fo
 
 **Objective:** Given a corporate sustainability report (PDF), extract all reported CO₂ emissions values for Scope 1, 2, and 3 across available years.
 
-**Output:** Structured table with columns: `year`, `scope`, `value`, `unit`
+**Output:** Structured table with columns: `report_id`, `year`, `indicator`, `value_std`, `unit_std`, `page` (plus detail columns such as `value_raw`, `value_score`, `unit_raw`, `unit_score`, `unit_cat`, `dupl_flag`, `select_flag`)
 
 ---
 
@@ -18,14 +18,14 @@ We use a RAG pipeline consisting of:
 
 ### 1. Document Preprocessing
 
-- PDF pages are extracted as text using `pdf2image` with OCR fallback
+- PDF pages are extracted as text using Docling for text and table extraction
 - Each page is treated as an independent document chunk
 - Metadata (page number, filename) is preserved for traceability
 
 ### 2. Semantic Retrieval
 
 - Pages are embedded using OpenAI's `text-embedding-ada-002` model
-- A task-specific query ("CO₂ emissions Scope 1 2 3...") is embedded
+- A task-specific query ("What are the total CO2 emissions in different years? Include Scope 1, Scope 2, and Scope 3 emissions if available.") is embedded
 - Cosine similarity identifies the most relevant pages
 - Top-k pages are selected based on score thresholds
 
@@ -78,12 +78,12 @@ An extraction is considered correct if:
 All experiments are logged with:
 
 - **MLflow:** Parameters, metrics, and artifacts
-- **Configuration files:** `climxtract.toml` snapshots
+- **Configuration files:** `climatextract.toml` snapshots
 - **Version control:** Git commit hashes
 
 To reproduce results:
 
-1. Use the same `climxtract.toml` configuration
+1. Use the same `climatextract.toml` configuration
 2. Ensure identical model versions (specified in config)
 3. Run against the same gold standard dataset
 

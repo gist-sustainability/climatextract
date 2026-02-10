@@ -67,13 +67,13 @@ result_path = extract_and_evaluate(
 
 ## Using a Configuration File
 
-For more control, create a `climxtract.toml` configuration file:
+For more control, create a `climatextract.toml` configuration file:
 
 ```python
 from climatextract import extract
 
-# Uses settings from climxtract.toml
-result_path = extract(config_path="climxtract.toml")
+# Uses settings from climatextract.toml
+result_path = extract(config_path="climatextract.toml")
 ```
 
 See [Configuration](../user-guide/configuration.md) for all available options.
@@ -87,9 +87,13 @@ After extraction, you'll find results in `output/<run-id>/`:
 ```
 output/
 └── abc123-uuid/
-    ├── results_long.csv      # Main results in long format
-    ├── results_wide.csv      # Results pivoted by scope
-    └── query_responses.csv   # Page-level LLM responses
+    ├── 03_co2_emission_table2_w_query_responses.csv           # Page-level LLM responses (with duplicates)
+    ├── 03_co2_emission_table2_w_query_responses_filtered.csv  # Deduplicated responses
+    ├── intermediate_results.csv                               # Pre-normalization extraction results
+    ├── results_long_format.csv                                # Main results in long format
+    ├── results_wide_format.csv                                # Results pivoted by year
+    ├── invalid_llm_outputs.txt                                # Invalid LLM responses
+    └── logs.json                                              # Parameters, metrics, run info
 ```
 
 See [Understanding Output](../user-guide/understanding-output.md) for column definitions.

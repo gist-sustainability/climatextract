@@ -4,3 +4,12 @@
   --md-primary-fg-color--dark: #006B2E;
   --md-accent-fg-color: #00883A;
 }
+
+/* Hide right-side table of contents */
+.md-sidebar--secondary {
+  display: none !important;
+}
+
+.md-nav--secondary {
+  display: none !important;
+}

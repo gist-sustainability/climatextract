@@ -1,12 +1,12 @@
 # Configuration
 
-climatextract uses a TOML configuration file (`climxtract.toml`) to control all aspects of extraction. This guide explains each option.
+climatextract uses a TOML configuration file (`climatextract.toml`) to control all aspects of extraction. This guide explains each option.
 
 ---
 
 ## Configuration File
 
-Create a `climxtract.toml` file in your working directory. You can specify a different path:
+Create a `climatextract.toml` file in your working directory. You can specify a different path:
 
 ```python
 from climatextract import extract
@@ -51,7 +51,19 @@ max_parallel_llm_prompts_running = 4
 ```
 
 !!! note "Available LLM Models"
-    Supported models include: `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-35-turbo-16k`, `o3-mini-2025-01-31`
+    Supported models include: `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-35-turbo-16k`, `o3-mini-2025-01-31`, `gpt-4.1-2025-04-14`, `gpt-5-chat-2025-08-07`, `gpt-oss-120b`
+
+If `max_parallel_llm_prompts_running` is not set, the following model-specific defaults apply:
+
+| Model | Default concurrency |
+|-------|-------------------|
+| `gpt-4o-mini-2024-07-18` | 25 |
+| `gpt-4o-2024-11-20` | 25 |
+| `gpt-oss-120b` | 25 |
+| `gpt-35-turbo-16k` | 8 |
+| `gpt-5-chat-2025-08-07` | 8 |
+| `gpt-4.1-2025-04-14` | 4 |
+| `o3-mini-2025-01-31` | 2 |
 
 ---
 
@@ -65,16 +77,26 @@ Fine-tune the extraction behavior:
 year_min = 2013
 year_max = 2024
 
-# Input mode: "text" or "text+table"
-input_mode = "text"
+# Input mode: "text+table" (default) or "text"
+input_mode = "text+table"
+
+# Only embed documents, skip extraction (default: false)
+embed_only = false
 
 # Prompt type: "default" or "custom_gaia"
 prompt_type = "default"
+
+# Context window for semantic search (default: 0)
+context_window = 0
 
 # Semantic search settings
 similarity_top_k = 7      # Maximum pages to retrieve
 similarity_min_k = 4      # Minimum pages to retrieve
 percentile_threshold = 95 # Score cutoff percentile
+
+# Custom path to a DuckDB embeddings file (optional)
+# If omitted, uses default: data/processed/embeddings/{emb_model}_from_2025_03_06.duckdb
+# embeddings_repository = "./data/processed/embeddings/custom_embeddings.duckdb"
 ```
 
 ---
@@ -123,7 +145,7 @@ experiment_name = "/Shared/Experiments/my_experiment"
 
 ## Full Example
 
-Here's a complete configuration file:
+Here's a complete configuration file showing all available options:
 
 ```toml
 [input]
@@ -132,20 +154,28 @@ filename_list = ["reports/company_2023_report.pdf"]
 [models]
 llm_model = "gpt-4o-mini-2024-07-18"
 emb_model = "text-embedding-ada-002"
-max_parallel_llm_prompts_running = 4
+max_parallel_llm_prompts_running = 4  # omit to use model-specific default
 
 [extraction]
 year_min = 2018
 year_max = 2024
-input_mode = "text"
-prompt_type = "default"
+input_mode = "text+table"             # "text+table" (default) or "text"
+embed_only = false                    # only embed, skip extraction
+prompt_type = "default"               # "default" or "custom_gaia"
+context_window = 0                    # context window for semantic search
+similarity_top_k = 7                  # max pages to retrieve
+similarity_min_k = 4                  # min pages to retrieve
+percentile_threshold = 95             # score cutoff percentile
+# embeddings_repository = "./data/processed/embeddings/custom_embeddings.duckdb"
 
 [output]
 output_dir = "output"
 
 [evaluation]
-evaluation_mode = "no_evaluation"
+evaluation_mode = "no_evaluation"     # "no_evaluation", "default", "precision_recall_f1", "both"
+gold_standard = "evaluation/gold_standard.csv"
 
 [mlflow]
-tracking_uri = "./mlruns"
+tracking_uri = "./mlruns"             # "databricks", "./mlruns", or server URL
+experiment_name = "climatextract_experiments"
 ```

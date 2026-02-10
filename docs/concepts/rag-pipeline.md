@@ -45,7 +45,7 @@ When processing a report, the pipeline:
 
 ```mermaid
 flowchart LR
-    Q[Query: CO₂ emissions Scope 1 2 3] --> E[Query Embedding]
+    Q[Query: What are the total CO2 emissions...] --> E[Query Embedding]
     E --> S[Similarity Search]
     DB[(Page Embeddings)] --> S
     S --> R[Top-K Pages]
@@ -53,7 +53,7 @@ flowchart LR
 
 ### Search Configuration
 
-Control retrieval behavior in `climxtract.toml`:
+Control retrieval behavior in `climatextract.toml`:
 
 ```toml
 [extraction]
