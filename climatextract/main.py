@@ -743,5 +743,5 @@ if __name__ == "__main__":
     main(
         # pdf_input=['./data/pdfs/sato oyj_2022_report.pdf'],  # Optional: overrides config
         # use_mlflow=False  # Set to False to disable MLflow tracking
-        verbose=True
+        # verbose=True
     )

@@ -297,6 +297,9 @@ class CustomPromptGaia(PromptProcessorInterface):
             for col in ("value_original", "unit_original"):
                 if col in output_table.columns:
                     output_table = output_table.drop(columns=[col])
+        else:
+            output_table["value_probability"] = pd.NA
+            output_table["unit_probability"] = pd.NA
 
         output_table["raw_llm_response"] = llm_output
 
@@ -326,6 +329,8 @@ class LlmSinglePromptQueryScope123(PromptProcessorInterface):
     async def prepare_prompt(self, doc_text: str) -> str:
         parts = [
             "Extract key pieces of information from this sustainability report.",
+            "IMPORTANT: Do NOT use any markdown formatting like **bold**, *italic*, or headers.",
+            "Write CO2 (not CO₂) when specifying units.",
             "If a particular piece of information is not present, output 'Not specified'.",
             "If the report does not mention if Scope 2 is location-based or market-based, assume it is Scope 2 location-based. Do not extract it as Scope 2 market-based.",
             "",
@@ -474,6 +479,8 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
     async def prepare_prompt(self, doc_text: str) -> str:
         parts = [
             "Extract key pieces of information from this sustainability report.",
+            "IMPORTANT: Do NOT use any markdown formatting like **bold**, *italic*, or headers.",
+            "Write CO2 (not CO₂) when specifying units.",
             "If a particular piece of information is not present, output 'Not specified'.",
             "If the report does not mention if Scope 2 is location-based or market-based, assume it is Scope 2 location-based. Do not extract it as Scope 2 market-based.",
             "",
