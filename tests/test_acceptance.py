@@ -29,12 +29,11 @@ def test_functionality(prompt_type, input_mode):
     - input_mode: The input mode to use ('text' or 'text+table').
     """
     # Configuration
-    mlflow_experiment_path, config_path = create_test_config(prompt_type, input_mode)
+    config_path = create_test_config(prompt_type, input_mode)
 
     try:
-        # Execution with new main() signature
+        # Execution
         run_id = main(
-            mlflow_experiment_path=mlflow_experiment_path,
             config_path=config_path
         )
         save_run_id(run_id, prompt_type, input_mode)
