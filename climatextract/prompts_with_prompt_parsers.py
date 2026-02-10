@@ -1,5 +1,6 @@
 """Defines prompts with respective parsing methods"""
 # very unclear if this file name & content is a good structure
+import logging
 from typing import List, Optional, Literal, Tuple
 from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
@@ -220,7 +221,7 @@ class CustomPromptGaia(PromptProcessorInterface):
 
         except Exception as e:
             # RateLimitError, APIStatusError, RuntimeError
-            print(f"Error while processing LLM output: {e}")
+            logging.getLogger(__name__).warning("Error while processing LLM output: %s", e)
             emtpy_table = self._fill_no_extractions_table()
             output_table = self._reformat_output_table(emtpy_table, raw_output_str, log_blocks)
 

@@ -114,7 +114,7 @@ class EvaluatorData:
         # create additional variables "automatic_extraction_tried" and
         # "page_numbers_tried_by_llm" in ground_truth
         grtruth_extended = self.results[[
-            "report_name_short", "automatic_extraction_tried",  "page_numbers_tried_by_llm"]]
+            "report_name_short", "automatic_extraction_tried",  "page_numbers_tried_by_llm"]].copy()
         # Need to convert list to tuple to be hashable for groupby
         grtruth_extended['page_numbers_tried_by_llm'] = grtruth_extended[
             'page_numbers_tried_by_llm'].apply(
@@ -247,45 +247,45 @@ class EvaluatorDefault(EvaluatorData):
         # self.small_results.to_excel(os.path.join(path_to_analysis, "results_zwischenstand.xlsx"))
 
     def _perform_and_print_checks(self):
+        """Perform basic data checks."""
         # TODO: save checks to txt file instead just console
-        """Perform basic data checks and print results."""
-        print("Please check that automatic extraction was tried with all reports \
-            (we will discard other reports now)")
-        print(self.small_results.groupby('ReportName')['automatic_extraction_tried'].apply(
-            lambda x: x.all()).value_counts())
+        # print("Please check that automatic extraction was tried with all reports \
+        #     (we will discard other reports now)")
+        # print(self.small_results.groupby('ReportName')['automatic_extraction_tried'].apply(
+        #     lambda x: x.all()).value_counts())
 
         # Keep reports only if we actually tried to extract information automatically
-        results_subset = self._subset_reports()
+        self._subset_reports()
 
-        print("Count for how many reports a human annotator found CO2 emissions \
-            in the report (both groups will be analyzed separately)")
-        print(results_subset.groupby('ReportName')[
-            'human_found_co2_emissions'].apply(lambda x: x.all()).value_counts())
-
-        num_reports = results_subset['ReportName'].nunique()
-        # TODO: update this check to 4 scopes and 10 years
-        print("Size of universe (expected): " + str(3 * 16 * num_reports) +
-              " (3 scopes * 16 years * " + str(num_reports) + " reports)")
-        print("Size of universe (manual): " + str(len(self.ground_truth)))
-        print("We would expect just one value(by construction) for each \
-            (Report, Scope, Year)-combination, but humans found sometimes more than one: ")
-        temp = self.ground_truth.groupby(
-            ['ReportName', 'scope_man', 'year_man']).size()
-        print(temp[temp > 1])
-        print("Size of universe (manual + automatic): " +
-              str(len(self.small_results)))
-        print("If more than one value gets extracted automatically for for any  \
-            (Report, Scope, Year)-combination, then (manual + automatic) > manual. \
-            It is quite unclear how this would influence self.small_results below and \
-            would need to be checked carefully.")
-
-        # By construction, we should have 3 * 16 = 48 rows for each report. If we have more rows,
-        # multiple values were extracted from different pages
-        # but referring to the same scope and year.
-        # (If we believe that reports mention the desired value a single time,
-        # this indicates extraction errors!)
-        self.small_results.groupby('ReportName')[
-            'automatic_extraction_tried'].value_counts()
+        # print("Count for how many reports a human annotator found CO2 emissions \
+        #     in the report (both groups will be analyzed separately)")
+        # print(results_subset.groupby('ReportName')[
+        #     'human_found_co2_emissions'].apply(lambda x: x.all()).value_counts())
+        #
+        # num_reports = results_subset['ReportName'].nunique()
+        # # TODO: update this check to 4 scopes and 10 years
+        # print("Size of universe (expected): " + str(3 * 16 * num_reports) +
+        #       " (3 scopes * 16 years * " + str(num_reports) + " reports)")
+        # print("Size of universe (manual): " + str(len(self.ground_truth)))
+        # print("We would expect just one value(by construction) for each \
+        #     (Report, Scope, Year)-combination, but humans found sometimes more than one: ")
+        # temp = self.ground_truth.groupby(
+        #     ['ReportName', 'scope_man', 'year_man']).size()
+        # print(temp[temp > 1])
+        # print("Size of universe (manual + automatic): " +
+        #       str(len(self.small_results)))
+        # print("If more than one value gets extracted automatically for for any  \
+        #     (Report, Scope, Year)-combination, then (manual + automatic) > manual. \
+        #     It is quite unclear how this would influence self.small_results below and \
+        #     would need to be checked carefully.")
+        #
+        # # By construction, we should have 3 * 16 = 48 rows for each report. If we have more rows,
+        # # multiple values were extracted from different pages
+        # # but referring to the same scope and year.
+        # # (If we believe that reports mention the desired value a single time,
+        # # this indicates extraction errors!)
+        # self.small_results.groupby('ReportName')[
+        #     'automatic_extraction_tried'].value_counts()
 
     def _save_comparison_reports(self):
         """Save detailed comparisons between human & automated annotations \
@@ -406,7 +406,7 @@ class EvaluatorPrecisionRecallF1(EvaluatorData):
         """Compare the results and ground truth data sets."""
         # For now only comparison on value
         # Later: extend to unit and value AND unit
-        eval_data = merged_data[merged_data['automatic_extraction_tried']]
+        eval_data = merged_data[merged_data['automatic_extraction_tried']].copy()
         eval_data['error_value'] = eval_data.apply(
             evaluate_helpers.classify_error, axis=1, on="value")
 

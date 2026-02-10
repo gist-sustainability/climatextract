@@ -1,6 +1,7 @@
 """Sets up value retriever pipeline and gets emissions."""
+import logging
 import os
-from typing import List
+from typing import List, Optional, TYPE_CHECKING
 import asyncio
 import pandas as pd
 
@@ -13,6 +14,9 @@ import climatextract.helpers as helpers
 from climatextract.page_text_and_table_extractor import PageTextAndTableExtractor
 from climatextract.resolve_duplicates import handle_duplicates_in_output, select_duplicates_in_output
 
+if TYPE_CHECKING:
+    from climatextract.console import Console
+
 load_dotenv()  # load environment variables from .env file
 os.chdir(helpers.get_project_directory(path_to_file="src"))
 
@@ -23,7 +27,7 @@ class ValueRetrieverPipeline():
         Uses text and tables from documents to retrieve emissions."""
 
     def __init__(self, experiment_params, embed_model, embeddings_repository,
-                 search_query, llm, llm_single_prompt):
+                 search_query, llm, llm_single_prompt, console: Optional["Console"] = None):
 
         self.embed_model = embed_model
         self.search_query = search_query
@@ -41,6 +45,7 @@ class ValueRetrieverPipeline():
         self.pipeline_semaphore = asyncio.Semaphore(max_concurrent_pdfs)
 
         self.page_extractor = PageTextAndTableExtractor()
+        self.console = console
 
     @mlflow.trace(span_type=SpanType.CHAIN, attributes={"pipeline": "ValueRetrieverPipeline"})
     async def retrieve_values_for_doc_list(self, filename_list: List[str], path_to_results: str):
@@ -70,7 +75,7 @@ class ValueRetrieverPipeline():
         for future in asyncio.as_completed(tasks):
 
             result = await future
-            intermediate_results, invalid_outputs = result
+            intermediate_results, invalid_outputs, was_cached, num_tables = result
 
             if self.embed_only:
                 # Skip processing but ensure coroutine was awaited
@@ -78,17 +83,30 @@ class ValueRetrieverPipeline():
 
             # Skip saving if both results are empty
             if not intermediate_results and not invalid_outputs:
-                print("Skipped empty results for a PDF that could not be processed.")
+                logging.getLogger(__name__).warning(
+                    "Skipped empty results for a PDF that could not be processed.")
+                if self.console:
+                    self.console.update_extraction_progress()
                 continue
 
             # save results
-            final_results.append(result)
+            final_results.append((intermediate_results, invalid_outputs))
             save_results([intermediate_results], path_to_results, first_write,
                          results_type="intermediate_results")
             first_write = False
 
-            print(
-                f"Processed and appended results for {result[0]['doc_overview']['report_name'][0]}")
+            # Update progress via console
+            pdf_name = os.path.basename(intermediate_results['doc_overview']['report_name'][0])
+            num_pages = len(intermediate_results['doc_overview'])
+            num_values = len(intermediate_results['co2_emissions']) if 'co2_emissions' in intermediate_results else 0
+
+            if self.console:
+                self.console.update_extraction_progress(
+                    pdf_name=pdf_name,
+                    pages=num_pages,
+                    tables=num_tables,
+                    values=num_values
+                )
 
         return final_results
 
@@ -96,24 +114,30 @@ class ValueRetrieverPipeline():
     async def retrieve_values_per_doc(self, filename: str):
         """
             Identifies relevant pages, passes context to LLM and retrieves emissions.
-            Depending on input_mode, it also extracts tables from relevant pages and 
+            Depending on input_mode, it also extracts tables from relevant pages and
             passes them to LLM.
         """
         doc = semantic_search.Pdfdoc(filename=filename,
                                      repository=self.embeddings_repository)
 
         async with self.pipeline_semaphore:
+            # Capture cache status before embedding
+            was_cached = self.embeddings_repository.pdf_exists(doc.short_filename)
+
             pdf_embedded = await doc.load_pdf_and_embed_and_save_to_database(
-                self.embed_model, self.embed_only)
+                self.embed_model, self.embed_only, self.console)
             # Return empty results for this PDF if it could not be processed
-            if not pdf_embedded:
-                print(
-                    f"PDF {filename} could not be processed and will be skipped.")
-                return [], []
+            if not pdf_embedded or pdf_embedded == "encrypted":
+                if self.console:
+                    if pdf_embedded == "encrypted":
+                        self.console.record_encrypted_pdf(os.path.basename(filename))
+                    else:
+                        self.console.record_failed_pdf(os.path.basename(filename))
+                return [], [], was_cached, 0
 
             # Finish processing if only embedding is required
             if self.embed_only:
-                return [], []
+                return [], [], was_cached, 0
 
             relevant_pages = doc.retrieve_relevant_pages(
                 search_query=self.search_query,
@@ -121,18 +145,22 @@ class ValueRetrieverPipeline():
                 return_df=False)
 
             if self.input_mode == "text+table":
-                relevant_raw_page_contents = await \
+                if self.console and self.console.verbose:
+                    self.console._console.print(
+                        f"  [dim]Extracting tables from {os.path.basename(filename)}...[/dim]")
+                relevant_raw_page_contents, num_tables = await \
                     self.page_extractor.extract_text_and_tables_from_pages(
                         relevant_pages, filename)
             else:
                 relevant_raw_page_contents = await self.extract_text_from_pages(relevant_pages)
+                num_tables = 0
 
             raw_results = await self.get_llm_response_from_document_foreach_page(
                 doc_relevant_pages=relevant_raw_page_contents)
             table_results, invalid_output = self.transform_llm_output_and_create_tables(
                 doc_relevant_pages=relevant_pages, output=raw_results, filename=filename)
 
-            return table_results, invalid_output
+            return table_results, invalid_output, was_cached, num_tables
 
     async def extract_text_from_pages(self, relevant_pages):
         """Extract text from relevant pages."""
@@ -200,8 +228,7 @@ class ValueRetrieverPipeline():
             return result, invalid_outputs
 
         except ValueError as e:
-
-            print(f"Error in {filename}: {e}")
+            logging.getLogger(__name__).warning("Error in %s: %s", filename, e)
 
             return None, None
 
@@ -225,7 +252,8 @@ class FileConfig:
         return path_to_results
 
 
-def save_results(raw_results, path_to_results: str, first_write: bool, results_type: str):
+def save_results(raw_results, path_to_results: str, first_write: bool, results_type: str,
+                 console: Optional["Console"] = None):
     """Save the results in a nice format."""
 
     query_responses = concat_prepare_document_wide_information_from(
@@ -273,7 +301,7 @@ def save_results(raw_results, path_to_results: str, first_write: bool, results_t
 
     # save results in more compact format (wide, deduplicated)
     wide_format_df = prepare_wide_formate_output_table_from(
-        co2_emission_table2_w_query_responses_filtered, dupl_columns)
+        co2_emission_table2_w_query_responses_filtered, dupl_columns, console)
     if wide_format_df is not None:
         wide_format_df.to_csv(
             os.path.join(path_to_results, "results_wide_format.csv"), index=False)
@@ -297,7 +325,7 @@ def concat_prepare_document_wide_information_from(raw_results: List[dict]):
                      "page_text": "page_texts_to_llm",
                      "llm_response": "text_response_from_llm"})
     except TypeError as e:
-        print(f"Error: {e}")
+        logging.getLogger(__name__).warning("Error concatenating results: %s", e)
         query_responses = pd.DataFrame()
 
     return query_responses
@@ -386,7 +414,8 @@ def prepare_long_format_output_table_from(
 
 def prepare_wide_formate_output_table_from(
         co2_emission_table2_w_query_responses_filtered: pd.DataFrame,
-        col_names: List[str]) -> pd.DataFrame:
+        col_names: List[str],
+        console: Optional["Console"] = None) -> pd.DataFrame:
     """Prepare a wide format output table."""
     # Make a copy to avoid mutating original data
     df = co2_emission_table2_w_query_responses_filtered.copy()
@@ -398,12 +427,8 @@ def prepare_wide_formate_output_table_from(
     dupl_columns = col_names[:3]
     duplicates = df.duplicated(subset=dupl_columns, keep=False)
     if duplicates.any():
-        print(
-            "Warning: There are still duplicates in the filtered output, \
-                no wide format output produced!"
-        )
-        print("Duplicate rows:")
-        print(df[duplicates][dupl_columns])
+        if console:
+            console.record_unresolved_duplicates()
         return None
 
     # Pivot the DataFrame to wide format
