@@ -1,6 +1,7 @@
 """
 Module to identify and resolve duplicates in the extracted data and the ground truth.
 """
+import logging
 from typing import List
 
 import pandas as pd
@@ -141,7 +142,7 @@ def mark_selected_rows(
 
     # Fill NA in 'select_flag' for duplicates that were not resolved (set False)
     updated_df.loc[updated_df['duplicate_flag'],
-                   'select_flag'] = updated_df['select_flag'].fillna(False)
+                   'select_flag'] = updated_df['select_flag'].fillna(False).infer_objects(copy=False)
 
     return updated_df
 
@@ -216,10 +217,10 @@ def identify_duplicates_in_output(df: pd.DataFrame,
             how="left"
         )
         marked_non_unique_rows["select_flag"] = marked_non_unique_rows["select_flag"].fillna(
-            False)
+            False).infer_objects(copy=False)
         # Fill dupl_reason for non-selected rows with 0
         marked_non_unique_rows["dupl_reason"] = marked_non_unique_rows["dupl_reason"].fillna(
-            0)
+            0).infer_objects(copy=False)
 
     else:
         marked_non_unique_rows = pd.DataFrame(
@@ -236,7 +237,7 @@ def identify_duplicates_in_output(df: pd.DataFrame,
 
     # Step 10: Add back all-NA reports
     df_filtered = pd.concat([combined_rows, all_na_reports])
-    df_filtered["duplicate_flag"] = df_filtered["duplicate_flag"].fillna(False)
+    df_filtered["duplicate_flag"] = df_filtered["duplicate_flag"].fillna(False).infer_objects(copy=False)
 
     # Mark filtered rows in original dataframe
     # Drop unnecessary columns before merging
@@ -328,7 +329,8 @@ def _apply_prioritization_rules_for_output(df: pd.DataFrame,
     # Check if any group has more than one row left
     duplicates_check = prioritized_rows.groupby(group_cols).size()
     if any(duplicates_check > 1):
-        print("Warning: Some groups still have multiple rows after prioritization.")
+        logging.getLogger(__name__).warning(
+            "Some groups still have multiple rows after prioritization.")
 
     return prioritized_rows
 

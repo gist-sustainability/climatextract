@@ -8,7 +8,8 @@
 # =============================================================================
 [input]
 # Can be a list of specific files:
-filename_list = ["data/pdfs/sato oyj_2022_report.pdf", "data/pdfs/Allianz_2022_report.pdf", "data/pdfs/aixtron_2020_report.pdf"]
+# filename_list = ["data/pdfs/sato holdings_2022_report.pdf", "data/pdfs/Allianz_2022_report.pdf", "data/pdfs/aixtron_2020_report.pdf"]
+filename_list = ["data/pdfs/sato holdings_2022_report.pdf", "data/pdfs/stantec inc_2019_report.pdf"]
 # Or a directory path (processes all PDFs in it):
 #    filename_list = "./data/pdfs/sample_160"
 
@@ -53,7 +54,7 @@ year_max = 2024
 # Input mode: what content to analyze from PDFs
 # - "text+table": Extract both text and tables (default)
 # - "text": Extract text only
-input_mode = "text"
+input_mode = "text+table"
 
 # Whether to only embed documents without extraction
 embed_only = false
@@ -95,7 +96,7 @@ output_dir = "output"
 # - "both": Run both evaluation modes
 #
 # Note: Public API users should call extract() or extract_and_evaluate() directly.
-evaluation_mode = "no_evaluation"
+evaluation_mode = "both"
 
 # Path to gold standard CSV file for evaluation
 gold_standard = "data/evaluation_dataset/gist_2025.csv"

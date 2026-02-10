@@ -1,8 +1,9 @@
 import asyncio
+import logging
 import os
 import time
 import datetime
-import threading 
+import threading
 from typing import List
 
 import tiktoken
@@ -16,6 +17,8 @@ from openai import APIStatusError, AsyncAzureOpenAI, RateLimitError
 
 load_dotenv()  # load environment variables from .env file
 
+logger = logging.getLogger(__name__)
+
 class ThreadSafeTokenProvider: 
     def __init__(self, credential, scope="https://cognitiveservices.azure.com/.default"): 
         self.credential = credential 
@@ -24,25 +27,23 @@ class ThreadSafeTokenProvider:
         self.expires_on = 0 
         self.lock = threading.Lock() 
 
-    def __call__(self): 
-        # Renew Token, if it expires in <2min 
-        if self.token is None or (self.expires_on - time.time() < 120): 
-            with self.lock: 
-                # Check again in Lock 
-                if self.token is None or (self.expires_on - time.time() < 120): 
-                    t = self.credential.get_token(self.scope) 
-                    self.token = t.token 
-                    self.expires_on = t.expires_on 
-                    print("Token renewed, valid until:", 
-                        datetime.datetime.fromtimestamp(self.expires_on).strftime('%A, %B %d, %Y %H:%M:%S')) 
+    def __call__(self):
+        # Renew Token, if it expires in <2min
+        if self.token is None or (self.expires_on - time.time() < 120):
+            with self.lock:
+                # Check again in Lock
+                if self.token is None or (self.expires_on - time.time() < 120):
+                    t = self.credential.get_token(self.scope)
+                    self.token = t.token
+                    self.expires_on = t.expires_on
         return self.token 
 
 try:
     from azure_authentication import customized_azure_login
     credential = customized_azure_login.CredentialFactory().select_credential()
 except Exception as e:
-    print(f"Error applying azure authentication, using API key: {e}")
-    credential = None  
+    logger.warning("Azure authentication failed, falling back to API key: %s", e)
+    credential = None
 
 
 # Custom token counter to replace TokenCountingHandler
@@ -111,8 +112,10 @@ class Llm:
         model_name="gpt-4o-mini-2024-07-18",
         api_version=os.environ["API_VERSION"],
         return_logprobs: bool = False,
-        max_parallel_llm_prompts_running: int = None
+        max_parallel_llm_prompts_running: int = None,
+        print_query_duration: bool = False
     ):
+        self.print_query_duration = print_query_duration
 
         self.model_name = model_name
         self.azure_deployment = model_name
@@ -295,7 +298,7 @@ class Llm:
         async with self.semaphore:
             return await self.run_llm(formatted_prompt=formatted_prompt)
 
-    async def run_llm(self, formatted_prompt, print_query_duration=True):
+    async def run_llm(self, formatted_prompt):
         cur_time = time.perf_counter()
 
         try:
@@ -313,14 +316,14 @@ class Llm:
 
             raw_response = response.choices[0].message.content
             logprob_data = response.choices[0].logprobs if self.return_logprobs else None
-            
+
             # First try to get token counts from response usage (most accurate)
             token_usage_found = False
             if hasattr(self.token_counter, "update_from_response"):
                 try:
                     token_usage_found = self.token_counter.update_from_response(response)
                 except Exception as e:
-                    print(f"Error updating token counts from response: {e}")
+                    logger.debug("Error updating token counts from response: %s", e)
 
             # Only count tokens manually if we couldn't get them from usage
             if not token_usage_found:
@@ -335,60 +338,45 @@ class Llm:
                             completion_tokens = self.token_counter.count_tokens(raw_response)
                             self.token_counter.add_completion_tokens(completion_tokens)
                     except Exception as e:
-                        print(f"Error counting tokens: {e}")
+                        logger.debug("Error counting tokens: %s", e)
 
-            if print_query_duration:
-                duration_time = time.perf_counter() - cur_time
-                print("LLM query execution time: " + str(duration_time) + " seconds")
+            duration_time = time.perf_counter() - cur_time
+            if self.print_query_duration:
+                logger.info("LLM query duration: %.2f seconds", duration_time)
 
-            return {"content": raw_response, "logprobs": logprob_data}, None
+            return {"content": raw_response, "logprobs": logprob_data, "duration": duration_time}, None
 
         except RateLimitError as e:
-            print("A 429 status code (Rate Limit error) was received; we should back off a bit.")
-
-            raw_response = ""
-
-            return {"content": raw_response, "logprobs": None}, e
+            logger.warning("Rate limit error (429) received; backing off. Error: %s", e)
+            return {"content": "", "logprobs": None}, e
 
         except APIStatusError as e:
-            raw_response = ""
-
-            print("Another non-200-range status code was received")
-            print(e.status_code)
-            print(e.response)
-
-            return {"content": raw_response, "logprobs": None}, e
+            logger.warning("API error (status %s): %s", e.status_code, e)
+            return {"content": "", "logprobs": None}, e
 
         except RuntimeError as e:
-            raw_response = ""
-            print("RuntimeError: ", e)
-
-            return {"content": raw_response, "logprobs": None}, e
+            logger.warning("RuntimeError during LLM call: %s", e)
+            return {"content": "", "logprobs": None}, e
 
 
     def print_llm_costs(self):
-        """Prints the costs of the LLM."""
-        print(
-            "Embedding Tokens (used for search, but not counted here): ",
+        """Log the costs of the LLM.
+
+        Note: Currently unused. Costs are tracked via create_llm_costs_dict() instead.
+        Available for ad-hoc debugging.
+        """
+        logger.info(
+            "Embedding Tokens: %d | LLM Prompt Tokens: %d | "
+            "LLM Completion Tokens: %d | Total LLM Tokens: %d | "
+            "Total LLM costs (Euro): %.4f",
             self.token_counter.total_embedding_token_count,
-            "\n",
-            "LLM Prompt Tokens: ",
             self.token_counter.prompt_llm_token_count,
-            "\n",
-            "LLM Completion Tokens: ",
             self.token_counter.completion_llm_token_count,
-            "\n",
-            "Total LLM Token Count: ",
             self.token_counter.total_llm_token_count,
-            "\n",
-            "Total LLM costs (Euro): ",
             self.calculate_llm_calling_price(
                 self.token_counter.prompt_llm_token_count,
                 self.token_counter.completion_llm_token_count,
             ),
-            "\n",
-            "We now reset the token counter to zero.",
-            "\n",
         )
 
 
@@ -426,8 +414,10 @@ class EmbeddingModel:
             self.embedding_semaphore = asyncio.Semaphore(1)
             self.embed_batch_size = 64
 
-            print(
-                f"Warning: Could not initialize tokenizer for EmbeddingModel {model_name}. Counting words instead."
+            logger.warning(
+                "No tiktoken tokenizer available for EmbeddingModel %s. "
+                "Counting words instead of tokens.",
+                model_name,
             )
             self.token_counter = TokenCounter(tokenizer=lambda text: text.split())
 

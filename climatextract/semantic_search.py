@@ -5,9 +5,10 @@ import asyncio
 from dataclasses import dataclass, field
 import datetime
 from hashlib import sha256
+import logging
 import os.path
 import json
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, TYPE_CHECKING
 import tiktoken
 
 import pandas as pd
@@ -19,6 +20,9 @@ from llama_index.core.ingestion import IngestionPipeline
 import duckdb
 
 from climatextract.config import EmbeddingModel
+
+if TYPE_CHECKING:
+    from climatextract.console import Console
 
 
 class Page:
@@ -68,11 +72,8 @@ class EmbeddingsRepository:
     def __init__(self, database_name: str):
         self.database_name = database_name
         self.database_existent = False
-
-        if self.database_exists():
-            print(f"""Embedding database with name '{self.database_name}' already exists.
-                  It is your resposibility to ensure newly added embeddings are created
-                  in the same way as the existing ones.""")
+        # Check if database exists (sets self.database_existent)
+        self.database_exists()
 
     def database_exists(self) -> bool:
         """Checks if a file named 'database_name' already exists."""
@@ -368,7 +369,7 @@ class EmbeddingsRepository:
             str(index) for index in page_index_list_subset)
 
         if page_indices_str == "":
-            print("Warning: No pages found. Returning empty dataframe.")
+            logging.getLogger(__name__).warning("No pages found for %s. Returning empty dataframe.", short_file_name)
             return pd.DataFrame(columns=["complete_file_path",
                                          "short_file_name",
                                          "page_index",
@@ -424,23 +425,11 @@ class SearchQuery:
         """Embed the search query and save it to the database."""
 
         if not self._repository.database_exists():
-            print(
-                f"Database '{self._repository.database_name}' not found. Creating new database.")
             self._repository.create_database(embed_model.get_embed_dimension())
 
         if self._repository.search_query_exists(self._search_query):
-            print(
-                (
-                    f"Search query '{self._search_query}'"
-                    f" already exists in the database. Nothing added.\n"
-                ))
             return True
         else:
-            print(
-                (
-                    f"Embed search query '{self._search_query}'"
-                    f" with {embed_model}. Persist it in the database."
-                ))
             self._embedding = embed_model.get_embeddings(
                 [self._search_query])[0]
             self._embed_model_repr = repr(embed_model)
@@ -455,8 +444,8 @@ class SearchQuery:
             self._repository.remove_search_query_record(
                 self._search_query, self.get_query_embedding_creation_date())
         else:
-            print(
-                f"Search query '{self._search_query}' not found in database. Nothing removed.\n")
+            logging.getLogger(__name__).warning(
+                "Search query '%s' not found in database. Nothing removed.", self._search_query)
 
     def get_query_text(self):
         """Return the search query text."""
@@ -618,19 +607,16 @@ class Pdfdoc:
 
     async def load_pdf_and_embed_and_save_to_database(self,
                                                       embed_model: EmbeddingModel,
-                                                      embed_only: bool = False):
-        """Load raw text from PDF file (each page is one document), 
+                                                      embed_only: bool = False,
+                                                      console: Optional["Console"] = None):
+        """Load raw text from PDF file (each page is one document),
         convert to "nodes", create embeddings, and persist results in database"""
 
         if not self._repository.database_exists():
             # Create the DB schema if this is the first PDF
-            print(
-                f"Database '{self._repository.database_name}' not found. Creating new database.")
             self._repository.create_database(embed_model.get_embed_dimension())
 
         if self._repository.pdf_exists(self.short_filename):
-            print(
-                f"PDF {self.filename} already exists in the database. Nothing added.\n")
             return True
 
             # Typically, we don't create embeddings for the pdfs everytime
@@ -654,27 +640,24 @@ class Pdfdoc:
 
             # return True
         else:
-            # check if the pdf is marked as "encrypted_pdf" and if yes, skip embeding
+            # check if the pdf is marked as "encrypted_pdf" and if yes, skip embedding
             with open('./data/docs/pdf_info.json', "r", encoding="utf-8") as f:
                 pdf_info = json.load(f)
                 if (self.filename in pdf_info
                     and "in_sample" in pdf_info[self.filename]
                         and "encrypted_pdf" in pdf_info[self.filename]["in_sample"]):
-                    print(
-                        f"PDF {self.filename} marked as 'encrypted_pdf' and hence will be skipped.")
-                    return False
-            print(f"Load PDF {self.filename}")
+                    return "encrypted"
+
             try:
                 pages_nodes = self._load_raw_text_pagewise_from_pdf()
             except Exception as e:
-                print(f"Fehler beim Laden von {self.filename}: {str(e)}")
+                # print(f"Fehler beim Laden von {self.filename}: {str(e)}")
                 self._handle_problematic_pdf(str(e))
                 return False
 
             if not pages_nodes:
                 # No pages extracted (image-only/blank/unreadable PDF)
                 msg = "No pages extracted from PDF (empty reader output)"
-                print(f"PDF {self.filename}: {msg}. Skipping.")
                 self._handle_problematic_pdf(msg)
                 return False
 
@@ -700,12 +683,6 @@ class Pdfdoc:
                 else:
                     processed_texts.append(original_text)
 
-            # Modified print statement
-            print(
-                (
-                    f"Embedding {len(processed_texts)}"
-                    f" pages with {embed_model} ({truncated_count} page(s) truncated)"
-                ))
             embeddings = await embed_model.aget_embeddings(processed_texts)
 
             # Save results
@@ -713,9 +690,13 @@ class Pdfdoc:
             embed_created_at = datetime.datetime.now()
             self._repository.persist_pdf_with_pages_in_database(
                 pages_nodes, embeddings, embed_model_repr, embed_created_at)
-            if embed_only:
-                print(
-                    f"PDF {self.filename} was embedded successfully, no further processing.")
+
+            # Report progress via console
+            if console:
+                console.update_embedding_progress(
+                    pdf_name=self.short_filename,
+                    pages=len(processed_texts)
+                )
 
             return True
 

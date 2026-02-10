@@ -1,5 +1,6 @@
 """Data Lake Manager for handling Azure storage operations."""
 
+import logging
 import os
 from typing import List, Optional
 
@@ -12,9 +13,9 @@ except Exception:
 try:
     from azure_authentication import customized_azure_login
     credential = customized_azure_login.CredentialFactory().select_credential()
-except Exception as e:
-    print(f"Error applying azure authentication, data lake not available")
+except Exception:
     credential = None
+    logging.getLogger(__name__).warning("Azure authentication failed — data lake not available")
 
 
 class DataLakeManager:
@@ -60,17 +61,15 @@ class DataLakeManager:
         if not self.handle_embedding_database(embeddings_repo):
             return False
         
-        # Add user messaging for text+table mode
-        if input_mode == "text+table":
-            print("text+table mode requires PDF files for table extraction.")
-            print("Checking for missing PDF files...")
-        
         # Step 2: Check which files need embedding
         missing_files = self.check_files_needing_embedding(filename_list, embeddings_repo)
         
         if not missing_files and input_mode == "text":
             return True
-        
+
+        if input_mode == "text+table":
+            logging.getLogger(__name__).info("text+table mode requires PDF files for table extraction")
+
         # Step 3: Check which files need download
         files_to_download = self.check_files_needing_download(missing_files, filename_list, input_mode)
         
@@ -79,21 +78,21 @@ class DataLakeManager:
     
     def handle_embedding_database(self, embeddings_repo) -> bool:
         """Step 1: Handle embedding database download if needed.
-        
+
         Args:
             embeddings_repo: Repository object to check if database exists.
-            
+
         Returns:
             bool: True if database is available or successfully downloaded, False on failure.
         """
         blob_service = self._get_blob_service()
         if not blob_service:
-            print("Cannot access data lake.")
+            logging.getLogger(__name__).info("Data lake not configured — database will be created locally if needed")
             return True
-        
+
         # Handle embedding database
         if not embeddings_repo.database_exists():
-            print("Embedding database not found locally.")
+            logging.getLogger(__name__).info("Embedding database not found locally")
             response = input("Download database from data lake? [y/N] ").strip().lower()
             embeddings_db_path = embeddings_repo.get_database_name()
 
@@ -102,17 +101,14 @@ class DataLakeManager:
                     container_client = blob_service.get_container_client("embeddings")
                     blob_name = os.path.basename(embeddings_db_path)
                     blob_client = container_client.get_blob_client(blob_name)
-                    
+
                     os.makedirs(os.path.dirname(embeddings_db_path), exist_ok=True)
                     with open(embeddings_db_path, "wb") as f:
                         blob_client.download_blob().readinto(f)
-                    print("Database downloaded.")
                 except Exception:
-                    print("Database download failed.")
+                    logging.getLogger(__name__).warning("Embedding database download failed")
                     return False
-            else:
-                print("Database will be created when needed.")
-        
+
         return True
     
     def check_files_needing_embedding(self, filename_list: List[str], embeddings_repo) -> List[str]:
@@ -133,10 +129,7 @@ class DataLakeManager:
                     missing_files.append(filepath)
         else:
             missing_files = filename_list.copy()
-        
-        if missing_files:
-            print(f"Number of files that need embedding: {len(missing_files)}")
-        
+
         return missing_files
     
     def check_files_needing_download(self, missing_files: List[str], all_files: List[str], input_mode: str) -> List[str]:
@@ -176,12 +169,12 @@ class DataLakeManager:
         """
         if not files_to_download:
             return True
-        
+
         blob_service = self._get_blob_service()
         if not blob_service:
-            print("Cannot access data lake.")
+            logging.getLogger(__name__).warning("PDF files needed but data lake is not available")
             return False
-        
+
         # Calculate total size
         total_size_bytes = 0
         try:
@@ -193,48 +186,48 @@ class DataLakeManager:
                 total_size_bytes += int(props.size or 0)
         except Exception:
             total_size_bytes = 0  # If we can't get sizes, proceed anyway
-        
+
         # Convert to readable format
         total_size_mb = total_size_bytes / (1024 * 1024)
-        
+
         if total_size_mb > 0:
-            print(f"Files to download: {len(files_to_download)} ({total_size_mb:.1f} MB)")
+            logging.getLogger(__name__).info(
+                "Files to download: %d (%.1f MB)", len(files_to_download), total_size_mb)
         else:
-            print(f"Files to download: {len(files_to_download)}")
-        
+            logging.getLogger(__name__).info(
+                "Files to download: %d", len(files_to_download))
+
         response = input("Download PDFs from data lake? [y/N] ").strip().lower()
-        
+
         if response != "y":
-            print("Download declined.")
             return False
-            
+
         try:
             container_client = blob_service.get_container_client("pdfs")
             for filepath in files_to_download:
                 blob_name = os.path.basename(filepath)
                 blob_client = container_client.get_blob_client(blob_name)
-                
+
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
                 with open(filepath, "wb") as f:
                     blob_client.download_blob().readinto(f)
-            print("PDFs downloaded.")
         except Exception:
-            print("PDF download failed.")
+            logging.getLogger(__name__).warning("PDF download failed")
             return False
-        
+
         return True
     
     def _get_blob_service(self):
         """Get or create the blob service client."""
         if self._blob_service is None:
             if not self.storage_account_url:
-                print("No storage account configured.")
+                logging.getLogger(__name__).debug("No storage account URL configured")
                 return None
             if BlobServiceClient is None or credential is None:
-                print("Azure libraries not available.")
+                logging.getLogger(__name__).debug("Azure storage libraries or credentials not available")
                 return None
             self._blob_service = BlobServiceClient(
-                account_url=self.storage_account_url, 
+                account_url=self.storage_account_url,
                 credential=credential
             )
         return self._blob_service
