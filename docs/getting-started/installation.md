@@ -25,7 +25,7 @@ This installs climatextract and all required dependencies.
 
 ## Step 2: Install System Dependencies
 
-climatextract uses `pdf2image` which requires **Poppler**:
+climatextract uses Docling for PDF processing, which requires **Poppler**:
 
 === "macOS"
 
@@ -50,12 +50,10 @@ climatextract uses `pdf2image` which requires **Poppler**:
 Create a `.env` file in your working directory with your Azure credentials:
 
 ```bash
-AZURE_OPENAI_API_KEY=your-api-key
-AZURE_OPENAI_ENDPOINT=https://your-endpoint.openai.azure.com/
+AZURE_ENDPOINT=https://your-endpoint.openai.azure.com/
+API_KEY=your-api-key
+API_VERSION=2024-12-01-preview
 ```
-
-!!! note "Authentication Options"
-    See the [Azure Auth Helper documentation](https://github.com/soda-lmu/azure-auth-helper-python/blob/main/AuthenticationWorkflowSetup.md) for alternative authentication workflows.
 
 ---
 

@@ -39,13 +39,13 @@ result_path = extract("./reports/")
 
 ## Using Configuration File
 
-For reproducible runs, create a `climxtract.toml` configuration file:
+For reproducible runs, create a `climatextract.toml` configuration file:
 
 ```python
 from climatextract import extract
 
-# All settings from climxtract.toml
-result_path = extract(config_path="climxtract.toml")
+# All settings from climatextract.toml
+result_path = extract(config_path="climatextract.toml")
 ```
 
 Override specific inputs while using config defaults:
@@ -55,7 +55,7 @@ from climatextract import extract
 
 result_path = extract(
     pdf_input="./reports/new_report.pdf",
-    config_path="climxtract.toml"
+    config_path="climatextract.toml"
 )
 ```
 

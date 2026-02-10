@@ -27,9 +27,9 @@ flowchart LR
 
 ### 1. PDF Processing
 
-The pipeline starts by extracting text from PDF pages:
+The pipeline starts by extracting text and tables from PDF pages:
 
-- Uses `pdf2image` and OCR fallback for scanned documents
+- Uses Docling for text and table extraction
 - Each page is processed independently
 - Maintains page number metadata for traceability
 
@@ -45,7 +45,7 @@ Text is converted to vector embeddings for semantic search:
 
 When processing a document, the pipeline:
 
-1. Embeds the search query (e.g., "CO₂ emissions Scope 1 2 3")
+1. Embeds the search query (e.g., "What are the total CO2 emissions in different years? Include Scope 1, Scope 2, and Scope 3 emissions if available.")
 2. Computes cosine similarity against all page embeddings
 3. Retrieves top-k most relevant pages
 
@@ -54,7 +54,7 @@ When processing a document, the pipeline:
 Relevant pages are passed to a large language model:
 
 - Structured prompts define the extraction task
-- Pydantic models parse and validate output
+- Output parsed via Pydantic models (`custom_gaia`) or regex (`default`)
 - Each scope-year combination is extracted independently
 
 ### 5. Post-Processing
@@ -75,6 +75,9 @@ Raw LLM output is cleaned and structured:
 | `EmbeddingsRepository` | Manages DuckDB storage for embeddings |
 | `CustomPromptGaia` | Structures LLM prompts with Pydantic parsing |
 | `EvaluatorPrecisionRecallF1` | Computes evaluation metrics |
+| `Pdfdoc` | PDF document representation with page data |
+| `Llm` | LLM client with token counting and rate limiting |
+| `DataLakeManager` | Manages PDF downloads and file checks |
 
 ---
 

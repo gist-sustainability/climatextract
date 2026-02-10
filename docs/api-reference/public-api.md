@@ -13,7 +13,7 @@ from climatextract import extract
 
 result_path = extract(
     pdf_input="./data/pdfs/company_report.pdf",
-    config_path="climxtract.toml",
+    config_path="climatextract.toml",
     enable_mlflow=False
 )
 ```
@@ -23,8 +23,9 @@ result_path = extract(
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `pdf_input` | `str \| List[str] \| None` | `None` | A directory path (processes all PDFs), a single file path, or a list of file paths. If `None`, uses `filename_list` from config. |
-| `config_path` | `str` | `"climxtract.toml"` | Path to configuration file. |
+| `config_path` | `str` | `"climatextract.toml"` | Path to configuration file. |
 | `enable_mlflow` | `bool` | `False` | Whether to log results to MLflow. If `True`, uses MLflow settings from config. |
+| `verbose` | `bool` | `False` | Show detailed per-PDF output. |
 
 ### Returns
 
@@ -76,7 +77,7 @@ from climatextract import extract_and_evaluate
 result_path = extract_and_evaluate(
     pdf_input="./data/pdfs/sample_reports/",
     gold_standard_path="./data/evaluation_dataset/gist_2025.csv",
-    config_path="climxtract.toml",
+    config_path="climatextract.toml",
     enable_mlflow=False
 )
 ```
@@ -87,8 +88,9 @@ result_path = extract_and_evaluate(
 |-----------|------|---------|-------------|
 | `pdf_input` | `str \| List[str] \| None` | `None` | A directory path, single file path, or list of file paths. If `None`, uses config. |
 | `gold_standard_path` | `str \| None` | `None` | Path to gold standard CSV. If `None`, uses `gold_standard` from config. |
-| `config_path` | `str` | `"climxtract.toml"` | Path to configuration file. |
+| `config_path` | `str` | `"climatextract.toml"` | Path to configuration file. |
 | `enable_mlflow` | `bool` | `False` | Whether to log results and metrics to MLflow. |
+| `verbose` | `bool` | `False` | Show detailed per-PDF output. |
 
 ### Returns
 
@@ -110,7 +112,7 @@ result = extract_and_evaluate(
 **Using config defaults:**
 
 ```python
-# Uses pdf_input and gold_standard from climxtract.toml
+# Uses pdf_input and gold_standard from climatextract.toml
 result = extract_and_evaluate()
 ```
 

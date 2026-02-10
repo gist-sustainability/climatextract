@@ -57,7 +57,9 @@ The prompt includes rules to ensure data quality:
 
 ## Output Format
 
-The LLM is instructed to return JSON matching this schema:
+The output format depends on the prompt type.
+
+**`custom_gaia`** instructs the LLM to return JSON matching this schema:
 
 ```json
 {
@@ -74,6 +76,8 @@ The LLM is instructed to return JSON matching this schema:
 
 This is validated using Pydantic models to ensure data quality.
 
+**`default`** uses a structured Q&A format where each scope-year combination is a separate question. Responses are parsed using regex-based extraction.
+
 ---
 
 ## Prompt Types
@@ -82,7 +86,7 @@ climatextract supports two prompt types:
 
 ### Default Prompt
 
-Standard extraction with regex-based parsing. Good for simpler use cases.
+Structured Q&A format with regex-based parsing. One slot per scope-year combination, which prevents same-page duplicates. Higher recall, higher cost.
 
 ```toml
 [extraction]
@@ -91,7 +95,7 @@ prompt_type = "default"
 
 ### Custom GAIA Prompt
 
-Advanced prompt with Pydantic-based structured output parsing. Recommended for production use.
+Compact JSON output with Pydantic-based structured output parsing. ~75% cost reduction compared to `default` due to compact output (only found values are returned). Higher precision, but can extract multiple values per scope-year.
 
 ```toml
 [extraction]
