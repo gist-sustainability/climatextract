@@ -47,7 +47,7 @@ When processing a document, the pipeline:
 
 1. Embeds the search query (e.g., "What are the total CO2 emissions in different years? Include Scope 1, Scope 2, and Scope 3 emissions if available.")
 2. Computes cosine similarity against all page embeddings
-3. Retrieves top-k most relevant pages
+3. Retrieves top-k% (default: 5%) most relevant pages. Default: 4 pages at minimum, 7 pages at maximum.
 
 ### 4. LLM Extraction
 
@@ -63,6 +63,7 @@ Raw LLM output is cleaned and structured:
 
 - Unit normalization (e.g., "tonnes" → "tCO2e")
 - Duplicate resolution across pages
+- Multiple Scope X values for a given years are not allowed. Use priority rules to determine a single value.
 - Value standardization and validation
 
 ---

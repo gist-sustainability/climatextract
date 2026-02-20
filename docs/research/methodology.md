@@ -1,5 +1,7 @@
 # Methodology
 
+> **_NOTE:_** Initial draft. This page has not been reviewed by the project team and may not be up to date.
+
 This page describes the scientific methodology behind climatextract, suitable for academic citations and reproducibility.
 
 ---

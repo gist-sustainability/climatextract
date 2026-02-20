@@ -115,6 +115,7 @@ Values are classified as:
 | **True Positive** | Extracted value matches gold standard |
 | **False Positive** | Extracted value not in gold standard |
 | **False Negative** | Gold standard value not extracted |
+| **True Negative** | No value for a specific scope/year extracted, also not given in gold standard |
 
 Matching considers:
 

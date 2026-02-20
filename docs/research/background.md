@@ -1,5 +1,7 @@
 # Background
 
+> **_NOTE:_** Initial draft. This page has not been reviewed by the project team and may not be up to date.
+
 climatextract is a research project developed at the [LMU SODA Lab](https://www.soda.statistik.uni-muenchen.de/) (Statistics and Data Science in Social Sciences and the Humanities) at Ludwig-Maximilians-Universität München.
 
 ---
