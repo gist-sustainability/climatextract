@@ -90,3 +90,13 @@ Modify the parameters in `main.py` by updating the relevant dataclass instances.
 -   Set the desired log level in the `logging.basicConfig()` call, e.g., `logging.DEBUG` for verbose logs.
 
 -   Outputs and errors will appear in the console.
+
+## Docs
+
+The documentation is generated using mkdocs/Zensical, using the [material](https://squidfunk.github.io/mkdocs-material/) theme. 
+You can run it locally with
+
+```
+python -m pip install -e '.[docs]'
+mkdocs serve
+```
