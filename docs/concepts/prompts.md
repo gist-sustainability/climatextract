@@ -1,12 +1,51 @@
 # Prompts
 
-climatextract uses carefully structured prompts to instruct the LLM on extracting emissions data. This page explains the prompt design.
+climatextract uses carefully designed prompts to instruct the LLM on extracting emissions data. This page explains the prompt design.
 
 ---
 
-## Prompt Structure
+## Prompt Types
 
-Each prompt consists of three parts:
+climatextract supports two prompt types:
+
+### Question Prompt
+
+Q&A format with regex-based parsing.
+
+Pros & Cons: Higher recall, higher cost.  One slot per scope-year combination, which prevents same-page duplicates.
+
+```toml
+[extraction]
+prompt_type = "default"
+```
+
+### Structured Prompt
+
+Compact JSON output with Pydantic-based structured output parsing. 
+
+Pros & Cons: ~75% cost reduction compared to `default` due to compact output (only found values are returned). Higher precision, but can extract multiple values per scope-year.
+
+```toml
+[extraction]
+prompt_type = "custom_gaia"
+```
+
+---
+
+## Question Prompt (``default``)
+
+![Question prompt template](../assets/new_question_prompt_small.png)
+
+The question prompt template consists of a
+question for every scope-year combination in the respective year range 2013-2023 for every scope type Scope
+1, 2 (market-based), 2 (location-based) and 3. The text in the red box had to be added to run our pipeline with
+gpt5.2.
+
+The question prompt uses a structured Q&A format where each scope-year combination is a separate question. Responses are parsed using regex-based extraction.
+
+## Structured Prompt (``custom_gaia``)
+
+The prompt consists of three parts:
 
 1. **Role** – Defines the LLM's persona
 2. **Task** – Specifies what to extract
@@ -21,9 +60,16 @@ flowchart LR
     P --> LLM[LLM]
 ```
 
+![Structured prompt](../assets/structured_prompt_small.png)
+
+The structured prompt template consists of
+role and objective, definitions of scope types, extraction
+rules and desired year range.
+
+
 ---
 
-## Role Definition
+### Role Definition
 
 The LLM is instructed to act as a climate analyst:
 
@@ -31,7 +77,7 @@ The LLM is instructed to act as a climate analyst:
 
 ---
 
-## KPI Definitions
+### KPI Definitions
 
 The prompt provides clear definitions for each scope:
 
@@ -43,7 +89,7 @@ The prompt provides clear definitions for each scope:
 
 ---
 
-## Extraction Specifications
+### Extraction Specifications
 
 The prompt includes rules to ensure data quality:
 
@@ -55,9 +101,7 @@ The prompt includes rules to ensure data quality:
 
 ---
 
-## Output Format
-
-The output format depends on the prompt type.
+### Output Format
 
 **`custom_gaia`** instructs the LLM to return JSON matching this schema:
 
@@ -75,29 +119,3 @@ The output format depends on the prompt type.
 ```
 
 This is validated using Pydantic models to ensure data quality.
-
-**`default`** uses a structured Q&A format where each scope-year combination is a separate question. Responses are parsed using regex-based extraction.
-
----
-
-## Prompt Types
-
-climatextract supports two prompt types:
-
-### Default Prompt
-
-Structured Q&A format with regex-based parsing. One slot per scope-year combination, which prevents same-page duplicates. Higher recall, higher cost.
-
-```toml
-[extraction]
-prompt_type = "default"
-```
-
-### Custom GAIA Prompt
-
-Compact JSON output with Pydantic-based structured output parsing. ~75% cost reduction compared to `default` due to compact output (only found values are returned). Higher precision, but can extract multiple values per scope-year.
-
-```toml
-[extraction]
-prompt_type = "custom_gaia"
-```

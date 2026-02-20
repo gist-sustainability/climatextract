@@ -11,7 +11,7 @@ This guide covers different ways to run climatextract on your PDF reports.
 ```python
 from climatextract import extract
 
-result_path = extract("./reports/company_2023_report.pdf")
+result_path = extract("./data/pdfs/company_2023_report.pdf")
 ```
 
 ### Multiple PDFs
@@ -20,8 +20,8 @@ result_path = extract("./reports/company_2023_report.pdf")
 from climatextract import extract
 
 files = [
-    "./reports/apple_2021.pdf",
-    "./reports/allianz_2022.pdf",
+    "./data/pdfs/apple_2021.pdf",
+    "./data/pdfs/allianz_2022.pdf",
 ]
 result_path = extract(files)
 ```
@@ -32,7 +32,7 @@ result_path = extract(files)
 from climatextract import extract
 
 # Processes all .pdf files in the directory
-result_path = extract("./reports/")
+result_path = extract("./data/pdfs/")
 ```
 
 ---
@@ -54,7 +54,7 @@ Override specific inputs while using config defaults:
 from climatextract import extract
 
 result_path = extract(
-    pdf_input="./reports/new_report.pdf",
+    pdf_input="./data/pdfs/new_report.pdf",
     config_path="climatextract.toml"
 )
 ```
@@ -71,8 +71,8 @@ Compare results against a gold standard dataset:
 from climatextract import extract_and_evaluate
 
 result_path = extract_and_evaluate(
-    pdf_input="./reports/",
-    gold_standard_path="./evaluation/gold_standard.csv"
+    pdf_input="./data/pdfs/",
+    gold_standard_path="./data/evaluation_dataset/gold_standard.csv"
 )
 ```
 
@@ -89,7 +89,7 @@ Enable experiment tracking by setting `enable_mlflow=True`:
 from climatextract import extract
 
 result_path = extract(
-    pdf_input="./reports/",
+    pdf_input="./data/pdfs/",
     enable_mlflow=True
 )
 ```

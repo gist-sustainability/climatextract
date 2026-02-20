@@ -1,12 +1,16 @@
 # Citation
 
+> **_NOTE:_** Initial draft. This page has not been reviewed by the project team and may not be up to date.
+
 If you use climatextract in your research, please cite our work.
 
 ---
 
 ## BibTeX
 
-```bibtex
+Initial draft, we still have to agree how this package should be cited.
+
+[comment]: <> (```bibtex
 @inproceedings{climatextract2024,
   title     = {climatextract: Automated CO2 Emissions Extraction from Sustainability Reports using RAG},
   author    = {LMU SODA Lab},
@@ -16,7 +20,7 @@ If you use climatextract in your research, please cite our work.
   publisher = {Association for Computational Linguistics},
   url       = {https://github.com/gist-sustainability/climatextract}
 }
-```
+```)
 
 !!! note "Citation Update"
     Please check the [GitHub repository](https://github.com/gist-sustainability/climatextract) for the most up-to-date citation information, including DOI if available.
@@ -25,7 +29,7 @@ If you use climatextract in your research, please cite our work.
 
 ## Plain Text
 
-> LMU SODA Lab (2024). climatextract: Automated CO2 Emissions Extraction from Sustainability Reports using RAG. In Proceedings of the ClimateNLP Workshop at ACL 2024. Bangkok, Thailand: Association for Computational Linguistics. https://github.com/gist-sustainability/climatextract
+[comment]: <> (> LMU SODA Lab (2024). climatextract: Automated CO2 Emissions Extraction from Sustainability Reports using RAG. In Proceedings of the ClimateNLP Workshop at ACL 2024. Bangkok, Thailand: Association for Computational Linguistics. https://github.com/gist-sustainability/climatextract)
 
 ---
 
