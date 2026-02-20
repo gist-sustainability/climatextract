@@ -1,0 +1,7 @@
+[project]
+name = "climatextract"
+version = "0.2.3"
+
+[project.optional-dependencies]
+# test = ["pytest", "ruff"]
+docs = ["zensical", "mkdocs-material", "mkdocstrings[python]", "mkdocs-click"]
