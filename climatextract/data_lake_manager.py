@@ -2,6 +2,7 @@
 
 import logging
 import os
+from pathlib import Path
 from typing import List, Optional
 
 # Optional Azure imports for data lake downloads
@@ -231,3 +232,31 @@ class DataLakeManager:
                 credential=credential
             )
         return self._blob_service
+    
+    def download_pdfs_if_not_locally_available(self, pdf_input: str | List[str]) -> bool:
+        """Given a (list of) string(s), try downloading every PDF from data lake that is not locally available."""
+
+        def is_list_of_strings(variable):
+            # Check if it's a list
+            if isinstance(variable, list):
+                return all(isinstance(item, str) for item in variable)
+            return False
+
+        if isinstance(pdf_input, str):
+            pdf_input = [pdf_input]
+
+        if not is_list_of_strings(pdf_input):
+            raise FileNotFoundError(f"pdf_input must be a string or list of strings, got: {type(pdf_input)}")
+        
+        files_to_download = []
+
+        for file_name in pdf_input:
+            if not file_name.endswith('.pdf'):
+                raise FileNotFoundError(f"Invalid file name: {file_name}. Every item must end with '.pdf'")
+            if not Path(file_name).is_file():
+                files_to_download.append(file_name)
+                
+        if not files_to_download:
+            return True
+        else:
+            return self.download_missing_pdfs(files_to_download)

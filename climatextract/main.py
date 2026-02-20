@@ -362,6 +362,18 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     # Load config (defaults + config file overrides)
     config_params, experiment_params, output_dir, _ = _load_config(config_path)
 
+    # Handle data lake operations with dedicated manager
+    storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
+    data_lake_manager = DataLakeManager(storage_account_url)
+    if bool(os.environ.get("AZURE_STORAGE_AUTODOWNLOAD_PDFS")):
+        if pdf_input is not None:
+            if not data_lake_manager.download_pdfs_if_not_locally_available(pdf_input):
+                logger.warning("Some or all PDFs specified in argument were not found locally or in data lake.")
+        elif config_params.filename_list:
+            if not data_lake_manager.download_pdfs_if_not_locally_available(config_params.filename_list):
+                logger.warning("Some or all PDFs specified in config file were not found locally or in data lake.")
+
+
     # Resolve PDF files: argument takes priority, then config
     if pdf_input is not None:
         pdf_files = _resolve_pdf_input(pdf_input)
@@ -416,10 +428,6 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     search_query = semantic_search.SearchQuery(
         search_query=experiment_params.semantic_search_params.search_query,
         repository=embeddings_repo)
-
-    # Handle data lake operations with dedicated manager
-    storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
-    data_lake_manager = DataLakeManager(storage_account_url)
 
     # Check database and file status for console output
     database_exists = embeddings_repo.database_exists()
@@ -723,7 +731,10 @@ def _resolve_pdf_input(pdf_input: str | List[str]) -> List[str]:
         elif path.is_file():
             return [pdf_input]
         else:
-            raise FileNotFoundError(f"Path not found: {pdf_input}")
+            response = input("File " + pdf_input + " not found locally. Errors will occur if the file is not already available in the embedding database and not downloadable from datalake. Continue anyway? (y/n): ").strip().lower()
+            if response not in ['y', 'yes']:
+                raise FileNotFoundError(f"File not found: {pdf_input}")
+            return [pdf_input]
     else:
         # pdf_input is List[str]
         return pdf_input
