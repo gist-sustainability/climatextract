@@ -84,10 +84,10 @@ class ThreadSafeTokenProvider:
 class EmbeddingModelHandler(ABC):
 
     @abstractmethod
-    def get_embedding(self, texts: list[str]) -> Tuple[EmbeddingResponse, float]: ...
+    def get_embedding_and_cost(self, texts: list[str]) -> Tuple[EmbeddingResponse, float]: ...
 
     @abstractmethod
-    async def aget_embedding(self, texts: list[str]) -> Tuple[EmbeddingResponse, float]: ...
+    async def aget_embedding_and_cost(self, texts: list[str]) -> Tuple[EmbeddingResponse, float]: ...
 
     @abstractmethod
     def get_model_dict(self) -> dict: ...
@@ -112,7 +112,7 @@ class EmbeddingModel:
     def get_embedding(self, texts: list[str]) -> list[dict[float]]:
         """Create embeddings for a list of texts."""
 
-        response, costs = self.embedding_handler.get_embedding(texts)
+        response, costs = self.embedding_handler.get_embedding_and_cost(texts)
 
         self.usage_counter.add_embedding_tokens(response.usage.prompt_tokens)
         self.usage_counter.add_cost(costs)
@@ -128,7 +128,7 @@ class EmbeddingModel:
     async def aget_embedding(self, texts: list[str]) -> list[dict[float]]:
         """Create embeddings for a list of texts asynchronously."""
 
-        response, costs = self.embedding_handler.aget_embedding(texts)
+        response, costs = self.embedding_handler.aget_embedding_and_cost(texts)
 
         self.usage_counter.add_embedding_tokens(response.usage.prompt_tokens)
         self.usage_counter.add_cost(costs)

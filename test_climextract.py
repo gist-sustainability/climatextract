@@ -85,7 +85,7 @@ class EmbeddingModel(llm_embedding_api_bridge.EmbeddingModelHandler):
         else:
             return 1
 
-    def get_embedding(self, texts: list[str]) -> Tuple[litellm.EmbeddingResponse, float]:
+    def get_embedding_and_cost(self, texts: list[str]) -> Tuple[litellm.EmbeddingResponse, float]:
         response = litellm.embedding(input=texts, **self.model_dict)
         costs = litellm.completion_cost(response)
         return response, costs
