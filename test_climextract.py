@@ -33,7 +33,7 @@ from climatextract import llm_embedding_api_bridge
 
 class EmbeddingModel(llm_embedding_api_bridge.EmbeddingModelHandler):
 
-    def __init__(self, model="text-embedding-3-large", model_dict=None):
+    def __init__(self, model="text-embedding-ada-002", model_dict=None):
         """You should change the __init()__ function, especially the model dict,
         in a way that this class runs on your machine.
 
@@ -90,7 +90,7 @@ class EmbeddingModel(llm_embedding_api_bridge.EmbeddingModelHandler):
         costs = litellm.completion_cost(response)
         return response, costs
 
-    async def aget_embedding(self, texts: list[str]) -> Tuple[litellm.EmbeddingResponse, float]:
+    async def aget_embedding_and_cost(self, texts: list[str]) -> Tuple[litellm.EmbeddingResponse, float]:
         response = await litellm.aembedding(input=texts, **self.model_dict)
         costs = litellm.completion_cost(response)
         return response, costs
@@ -98,7 +98,7 @@ class EmbeddingModel(llm_embedding_api_bridge.EmbeddingModelHandler):
     def test_embedding_setup(self):
         """"Check that your setup and connection works by running this function."""
 
-        response, costs = self.get_embedding(["test string", "another test string"])
+        response, costs = self.get_embedding_and_cost(["test string", "another test string"])
         print(f"Test successful!! Your embedding model is working.")
         print(f"It is configured to run at most {self.get_max_concurrent_calls()} concurrent calls in parallel to avoid RateLimitErrors.")
         print(f"Your embedding model returns a vector of length {len(response.data[0]['embedding'])} for each input text.")
