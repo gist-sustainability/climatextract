@@ -1,0 +1,6 @@
+
+[docs]
+zensical
+mkdocs-material
+mkdocstrings[python]
+mkdocs-click
