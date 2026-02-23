@@ -1,8 +1,0 @@
-README.md
-pyproject.toml
-src/climatextract.egg-info/PKG-INFO
-src/climatextract.egg-info/SOURCES.txt
-src/climatextract.egg-info/dependency_links.txt
-src/climatextract.egg-info/requires.txt
-src/climatextract.egg-info/top_level.txt
-tests/test_acceptance.py
