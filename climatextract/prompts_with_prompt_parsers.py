@@ -172,17 +172,17 @@ class CustomPromptGaia(PromptProcessorInterface):
             specifications = prompt_params.prompt_specifications
 
         if prompt_params.year_min is None:
-            min_year = 2010
+            self.min_year = 2010
         else:
-            min_year = prompt_params.year_min
+            self.min_year = prompt_params.year_min
 
         if prompt_params.year_max is None:
-            max_year = 2024
+            self.max_year = 2024
         else:
-            max_year = prompt_params.year_max
+            self.max_year = prompt_params.year_max
 
         self.query = f'{role}\n{kpi_definitions}\n{specifications} \n \
-        Year range for the search: only extract values from {min_year} to {max_year}.\n\n \
+        Year range for the search: only extract values from {self.min_year} to {self.max_year}.\n\n \
         Here is the excerpt: \n {{context_str}}'
 
         self.parser = PydanticOutputParser(output_cls=KpiEntries)
@@ -308,7 +308,7 @@ class CustomPromptGaia(PromptProcessorInterface):
     def _fill_no_extractions_table(self) -> pd.DataFrame:
         """Create table when nothing was extracted."""
 
-        output_table_dict = {'year': [str(num) for num in range(2010, 2026)],
+        output_table_dict = {'year': [str(num) for num in range(self.min_year, self.max_year + 1)],
                              'scope': ["1", "2 (market-based)", "2 (location-based)", "3"]}
         output_table = helpers.expand_grid(output_table_dict)
         output_table['value'] = "Nothing extracted. No Regex match"
@@ -402,7 +402,7 @@ class LlmSinglePromptQueryScope123(PromptProcessorInterface):
         # In case we did NOT find information for a specific year and scope,
         # our LLM query asks GPT to provide it in the following format
         else:
-            pattern = r'What are the Scope ([123]{1}) emissions in (20[12]\d): (Not specified)$'
+            pattern = r'What are the Scope ([123]{1}) emissions in (20[12]\d): (Not specified) *$'
 
         matches = re.finditer(pattern, llm_output, re.MULTILINE)
 
@@ -457,7 +457,7 @@ class LlmSinglePromptQueryScope123(PromptProcessorInterface):
     def _fill_no_extractions_table(self) -> pd.DataFrame:
         """Create table when nothing was extracted."""
 
-        output_table_dict = {'year': [str(num) for num in range(2010, 2026)],
+        output_table_dict = {'year': [str(num) for num in range(self.min_year, self.max_year + 1)],
                              'scope': [str(num) for num in range(1, 4)]}
         output_table = helpers.expand_grid(output_table_dict)
         output_table['value'] = "Nothing extracted. No Regex match"
@@ -557,7 +557,7 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
         # In case we did NOT find information for a specific year and scope,
         # our LLM query asks GPT to provide it in the following format
         else:
-            pattern = r'What are the Scope \b([13]{1}|(2 \(market-based\))|(2 \(location-based\))) emissions in (20[12]\d): (Not specified)$'
+            pattern = r'What are the Scope \b([13]{1}|(2 \(market-based\))|(2 \(location-based\))) emissions in (20[12]\d): (Not specified).*$'
 
         matches = re.finditer(pattern, str_llm_output, re.MULTILINE)
 
@@ -625,7 +625,7 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
 
     def _fill_no_extractions_table(self) -> pd.DataFrame:
         """Create table when nothing was extracted."""
-        output_table_dict = {'year': [str(num) for num in range(2013, 2023)],
+        output_table_dict = {'year': [str(num) for num in range(self.min_year, self.max_year + 1)],
                              'scope': ["1", "2 (market-based)", "2 (location-based)", "3"]}
         output_table = helpers.expand_grid(output_table_dict)
         output_table['value'] = "Nothing extracted. No Regex match"
