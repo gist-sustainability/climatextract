@@ -1,0 +1,8 @@
+Metadata-Version: 2.4
+Name: climatextract
+Version: 0.2.3
+Provides-Extra: docs
+Requires-Dist: zensical; extra == "docs"
+Requires-Dist: mkdocs-material; extra == "docs"
+Requires-Dist: mkdocstrings[python]; extra == "docs"
+Requires-Dist: mkdocs-click; extra == "docs"
