@@ -251,11 +251,12 @@ class DataLakeManager:
         files_to_download = []
 
         for file_name in pdf_input:
-            if not file_name.endswith('.pdf'):
-                raise FileNotFoundError(f"Invalid file name: {file_name}. Every item must end with '.pdf'")
-            if not Path(file_name).is_file():
-                files_to_download.append(file_name)
-                
+            if file_name.endswith('.pdf') and not Path(file_name).is_file():
+                 files_to_download.append(file_name)
+
+        if files_to_download:
+            print("Some PDFs are not locally available. Downloading them is necessary if they are not in the embedding database.\n")
+
         if not files_to_download:
             return True
         else:

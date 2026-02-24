@@ -365,14 +365,12 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     # Handle data lake operations with dedicated manager
     storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
     data_lake_manager = DataLakeManager(storage_account_url)
-    if bool(os.environ.get("AZURE_STORAGE_AUTODOWNLOAD_PDFS")):
-        if pdf_input is not None:
-            if not data_lake_manager.download_pdfs_if_not_locally_available(pdf_input):
-                logger.warning("Some or all PDFs specified in argument were not found locally or in data lake.")
-        elif config_params.filename_list:
-            if not data_lake_manager.download_pdfs_if_not_locally_available(config_params.filename_list):
-                logger.warning("Some or all PDFs specified in config file were not found locally or in data lake.")
-
+    if pdf_input is not None:
+        if not data_lake_manager.download_pdfs_if_not_locally_available(pdf_input):
+            logger.warning("Some or all PDFs specified in argument were not found locally or in data lake.")
+    elif config_params.filename_list:
+        if not data_lake_manager.download_pdfs_if_not_locally_available(config_params.filename_list):
+            logger.warning("Some or all PDFs specified in config file were not found locally or in data lake.")
 
     # Resolve PDF files: argument takes priority, then config
     if pdf_input is not None:

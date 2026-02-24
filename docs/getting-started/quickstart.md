@@ -23,6 +23,8 @@ This will:
 3. Use an LLM to extract Scope 1, 2, and 3 data
 4. Save results to the `output/` directory
 
+Many corporate annual reports / sustainability reports are available for download online, for example at the [https://www.srnav.com/reports](https://www.srnav.com/reports) repository.
+
 ---
 
 ## Extract from Multiple PDFs
@@ -116,7 +118,6 @@ Add to your `.env` file:
 
 ```bash
 AZURE_STORAGE_ACCOUNT_URL=https://<your-datalake-name>.blob.core.windows.net/
-AZURE_STORAGE_AUTODOWNLOAD_PDFS=True # This will download PDFs if not available locally. This can fill up your local storage. Not needed if embeddings are already generated and stored in the embeddings database.
 ```
 
 See [Datalake configuration](../user-guide/datalake-configuration.md) for details.
