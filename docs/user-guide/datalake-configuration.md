@@ -13,7 +13,6 @@ Add to your `.env` file:
 
 ```bash
 AZURE_STORAGE_ACCOUNT_URL=https://<your-datalake-name>.blob.core.windows.net/
-AZURE_STORAGE_AUTODOWNLOAD_PDFS=True # This will download PDFs if not available locally. This can fill up your local storage. Not needed if embeddings are already generated and stored in the embeddings database.
 ```
 
 ## More documentation needed
