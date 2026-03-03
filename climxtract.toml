@@ -1,0 +1,116 @@
+# ClimXtract Configuration File
+# 
+# Values here override the defaults from params.py.
+# Delete or comment out any setting to use its default value.
+
+# =============================================================================
+# INPUT - Which PDF files to process
+# =============================================================================
+[input]
+# Can be a list of specific files:
+filename_list = ["data/pdfs/sato oyj_2022_report.pdf", "data/pdfs/Allianz_2022_report.pdf", "data/pdfs/aixtron_2020_report.pdf"]
+# Or a directory path (processes all PDFs in it):
+#    filename_list = "./data/pdfs/sample_160"
+
+# =============================================================================
+# MODELS - LLM and embedding model selection
+# =============================================================================
+[models]
+# Supported LLM models:
+# - gpt-4o-mini-2024-07-18 OR
+# - gpt-oss-120b OR
+# - o3-mini-2025-01-31 OR
+# - gpt-4o-mini-2024-07-18 OR
+# - gpt-35-turbo-16k OR
+# - gpt-4o-2024-11-20 OR
+# - gpt-5-chat-2025-08-07
+# - gpt-4.1-2025-04-14
+llm_model = "gpt-4.1-2025-04-14"
+
+# Supported embedding models:
+#   - text-embedding-ada-002 (default)
+#   - text-embedding-3-large (higher quality)
+emb_model = "text-embedding-ada-002"
+
+# Maximum number of concurrent LLM API calls.
+# Adjust based on your Azure/OpenAI rate limits and pricing tier.
+# If not specified, uses model-specific defaults:
+#   - gpt-4o, gpt-4o-mini, gpt-oss-120b: 25
+#   - gpt-35-turbo-16k, gpt-5-chat: 8
+#   - gpt-4.1: 4
+#   - o3-mini: 2
+# Higher values = faster processing, but may hit rate limits.
+max_parallel_llm_prompts_running = 4
+
+# =============================================================================
+# EXTRACTION - Fine-tune extraction behavior
+# =============================================================================
+[extraction]
+# Year range for CO2 emissions to extract
+year_min = 2013
+year_max = 2024
+
+# Input mode: what content to analyze from PDFs
+# - "text+table": Extract both text and tables (default)
+# - "text": Extract text only
+input_mode = "text"
+
+# Whether to only embed documents without extraction
+embed_only = false
+
+# Prompt type: "default" or "custom_gaia"
+prompt_type = "default"
+
+# Context window for semantic search
+context_window = 0
+# Semantic search thresholds
+# similarity_top_k: cap after filtering (default 7)
+# similarity_min_k: floor to keep at least this many (default 4)
+# percentile_threshold: percentile cutoff for vector scores (default 95)
+similarity_top_k = 7
+similarity_min_k = 4
+percentile_threshold = 95
+
+# Custom embeddings repository path (optional)
+# If specified, uses this path instead of the default
+# embeddings_repository = "./data/processed/embeddings/custom_test_embeddings.duckdb"
+
+# =============================================================================
+# OUTPUT - Where to save results
+# =============================================================================
+[output]
+# Base directory for output. A unique subdirectory (UUID) will be created
+# for each run to prevent overwriting previous results.
+# Default: "output" → results saved to output/{uuid}/
+output_dir = "output"
+
+# =============================================================================
+# EVALUATION - Compare results against a gold standard dataset
+# =============================================================================
+[evaluation]
+# Evaluation mode:
+# - "default": Standard evaluation metrics
+# - "precision_recall_f1": Precision, recall, and F1 scores
+# - "both": Run both evaluation modes
+#
+# Note: Public API users should call extract() or extract_and_evaluate() directly.
+evaluation_mode = "no_evaluation"
+
+# Path to gold standard CSV file for evaluation
+gold_standard = "data/evaluation_dataset/gist_2025.csv"
+
+# =============================================================================
+# MLFLOW - Experiment tracking (optional)
+# =============================================================================
+[mlflow]
+# MLflow tracking URI - where to log experiments
+# Options:
+# - "databricks" for Databricks MLflow
+# - "./mlruns" for local file tracking (view with `mlflow ui`)
+# - "http://server:5000" for remote MLflow server
+tracking_uri = "databricks"
+
+# Experiment name/path
+# For Databricks, use paths like "/Shared/Experiments/my_experiment"
+# For local/remote, use simple names like "climatextract_experiments"
+experiment_name = "/Shared/Experiments_prompt_engineering/precision_recall_analysis"

@@ -110,7 +110,8 @@ class Llm:
         self,
         model_name="gpt-4o-mini-2024-07-18",
         api_version=os.environ["API_VERSION"],
-        return_logprobs: bool = False
+        return_logprobs: bool = False,
+        max_parallel_llm_prompts_running: int = None
     ):
 
         self.model_name = model_name
@@ -139,7 +140,6 @@ class Llm:
         if self.model_name == "gpt-35-turbo-16k":
             self.azure_deployment = "gpt-35-turbo-0301"
             self.azure_endpoint = os.environ["AZURE_ENDPOINT_GIST_PROJECT_WESTEUROPE"]
-            self.max_parallel_llm_prompts_running = 8
             self.token_counter = TokenCounter(
                 tokenizer=tiktoken.encoding_for_model("gpt-35-turbo").encode
             )
@@ -154,7 +154,6 @@ class Llm:
             or self.model_name == "gpt-4o-2024-11-20"
             or self.model_name in bbk_models
         ):
-            self.max_parallel_llm_prompts_running = 25
                     # Initialize token counter
             # both gpt-3.5-turbo and gpt-4 are based on the same cl100k_base encoding -> doesn't matter which model we use here
             # gpt-4o, o1, and o3 all use the same o200k_base encoding -> doesn't matter which model we use here
@@ -166,7 +165,6 @@ class Llm:
 
         elif self.model_name == "o3-mini-2025-01-31":
             self.api_version = "2024-12-01-preview"
-            self.max_parallel_llm_prompts_running = 2
             self.token_counter = TokenCounter(
                 tokenizer=tiktoken.encoding_for_model("o3").encode
             )
@@ -175,7 +173,6 @@ class Llm:
             # Modell-ID: azureml://registries/azureml-openai-oss/models/gpt-oss-120b/versions/4
             self.api_version = "2025-01-01-preview"
             self.azure_endpoint = os.environ["AZURE_AI_FOUNDRY_ENDPOINT"]
-            self.max_parallel_llm_prompts_running = 25
             self.token_counter = TokenCounter(
                 tokenizer=tiktoken.encoding_for_model("gpt-oss-120b").encode
             )
@@ -184,7 +181,6 @@ class Llm:
             # Modell-ID: azureml://registries/azureml-openai-oss/models/gpt-oss-120b/versions/4
             self.api_version = "2025-01-01-preview"
             self.azure_endpoint = os.environ["AZURE_AI_FOUNDRY_ENDPOINT"]
-            self.max_parallel_llm_prompts_running = 4
             self.token_counter = TokenCounter(
                 tokenizer=tiktoken.encoding_for_model("gpt-4.1").encode
             )
@@ -193,7 +189,6 @@ class Llm:
             # Modell-ID: azureml://registries/azureml-openai-oss/models/gpt-oss-120b/versions/4
             self.api_version = "2025-01-01-preview"
             self.azure_endpoint = os.environ["AZURE_AI_FOUNDRY_ENDPOINT"]
-            self.max_parallel_llm_prompts_running = 8
             self.token_counter = TokenCounter(
                 tokenizer=tiktoken.encoding_for_model("gpt-5-chat").encode
             )
@@ -221,29 +216,42 @@ class Llm:
         else:
             raise Exception(f"Unknown model name: {self.model_name}")
 
-        # Initialize the OpenAI client
-        if getattr(self, 'use_openai_client', False):
-            # Use standard OpenAI client for OpenAI-compatible endpoints (e.g., Llama)
-            self.client = AsyncOpenAI(
-                base_url=self.openai_base_url,
-                api_key=self.api_key,
-                max_retries=4,
-                timeout=340.0,
-            )
+
+        # Set max_parallel_llm_prompts_running based on user-provided value or model-specific defaults
+        if max_parallel_llm_prompts_running is not None:
+            self.max_parallel_llm_prompts_running = max_parallel_llm_prompts_running
         else:
-            # Use Azure OpenAI client for Azure-specific endpoints
-            client_args = {
-                "azure_endpoint": self.azure_endpoint,
-                "api_version": self.api_version,
-                "max_retries": 4,
-                "timeout": 340.0,
-            }
-            if self.api_key:
-                client_args["api_key"] = self.api_key
-            else:
-                client_args["azure_ad_token_provider"] = (
-                    login_token_provider  # wird automatisch aktualisiert, falls die Klasse das unterstützt
-                )
+            # Use model-specific defaults
+            if self.model_name == "gpt-35-turbo-16k":
+                self.max_parallel_llm_prompts_running = 8
+            elif self.model_name == "o3-mini-2025-01-31":
+                self.max_parallel_llm_prompts_running = 2
+            elif self.model_name == "gpt-4.1-2025-04-14":
+                self.max_parallel_llm_prompts_running = 4
+            elif self.model_name == "gpt-5-chat-2025-08-07":
+                self.max_parallel_llm_prompts_running = 8
+            elif (
+                self.model_name == "gpt-4o-mini-2024-07-18"
+                or self.model_name == "gpt-4o-2024-11-20"
+                or self.model_name == "gpt-oss-120b"
+                or self.model_name in bbk_models
+            ):
+                self.max_parallel_llm_prompts_running = 25
+
+        # Initialize the OpenAI client directly
+        # Argumente für den Client vorbereiten
+        client_args = {
+            "azure_endpoint": self.azure_endpoint,
+            "api_version": self.api_version,
+            "max_retries": 4,
+            "timeout": 340.0,
+        }
+        if self.api_key:
+            client_args["api_key"] = self.api_key
+        else:
+            client_args["azure_ad_token_provider"] = (
+                login_token_provider  # wird automatisch aktualisiert, falls die Klasse das unterstützt
+            )
 
             # Client initialisieren
             self.client = AsyncAzureOpenAI(**client_args)

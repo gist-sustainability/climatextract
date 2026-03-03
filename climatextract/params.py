@@ -18,7 +18,7 @@ class MlflowParams:
             if config_params.in_sample == "sample_160" \
             else config_params.in_sample
         run_name = (
-            f"{in_sample}_{experiment_params.llm_params.prompt_type}_"
+            f"{experiment_params.llm_params.prompt_type}_"
             f"{experiment_params.pipeline_params.input_mode}_"
             f"{experiment_params.llm_params.llm_model}_"
             f"{experiment_params.semantic_search_params.emb_model}"
@@ -147,8 +147,13 @@ class SemanticSearchParams:
     search_query: str = field(default="""What are the total CO2 emissions in different years?
                             Include Scope 1, Scope 2, and Scope 3 emissions if available.""")
     similarity_top_k: int = field(default=7)
-    context_window: int = field(default=1)
+    similarity_min_k: int = field(default=4)
+    percentile_threshold: int = field(default=95)
+    context_window: int = field(default=0)
     search_method: str = field(default="vector_search")
+    # Path to custom embeddings repository. If None, uses default path:
+    # data/processed/embeddings/{emb_model}_from_2025_03_06.duckdb
+    embeddings_repository: str = field(default=None)
 
 
 @dataclass
@@ -166,6 +171,9 @@ class LLMParams:
     # and compute a value-level confidence score. Defaults to True to enable
     # value probabilities by default
     return_logprobs: bool = field(default=True)
+
+    # Maximum number of concurrent LLM API calls. If None, uses model-specific defaults:
+    max_parallel_llm_prompts_running: int = field(default=None)
 
 
 @dataclass
