@@ -179,7 +179,7 @@ class LLMParams:
 @dataclass
 class PipelineParams:
     """Parameters for the pipeline."""
-    input_mode: str = field(default='text+table')
+    input_mode: str = field(default='text')
     embed_only: bool = field(default=False)
 
 

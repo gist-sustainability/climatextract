@@ -55,8 +55,8 @@ year_min = 2013
 year_max = 2024
 
 # Input mode: what content to analyze from PDFs
-# - "text+table": Extract both text and tables (default)
-# - "text": Extract text only
+# - "text": Extract text only (default)
+# - "text+table": Extract both text and tables
 input_mode = "text"
 
 # Whether to only embed documents without extraction
