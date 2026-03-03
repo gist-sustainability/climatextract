@@ -59,7 +59,7 @@ def main(
     console = init_console(verbose=verbose)
 
     # Load config to construct run name and check evaluation_mode
-    config_params, experiment_params, output_dir, mlflow_config = _load_config(config_path)
+    config_params, experiment_params, output_dir, mlflow_config, _ = _load_config(config_path)
 
     if use_mlflow:
         # Set up MLflow (experiment path and tracking URI come from config)
@@ -179,7 +179,7 @@ def extract(
 
     if enable_mlflow:
         # Load config to get MLflow settings
-        config_params, experiment_params, output_dir, mlflow_config = _load_config(config_path)
+        config_params, experiment_params, output_dir, mlflow_config, _ = _load_config(config_path)
 
         # Set up MLflow with proper run name
         mlflow_params = MlflowParams(mlflow_experiment_path=mlflow_config["experiment_name"])
@@ -269,7 +269,7 @@ def extract_and_evaluate(
 
     if enable_mlflow:
         # Load config to get MLflow settings
-        config_params, experiment_params, output_dir, mlflow_config = _load_config(config_path)
+        config_params, experiment_params, output_dir, mlflow_config, _ = _load_config(config_path)
 
         # Set up MLflow with proper run name
         mlflow_params = MlflowParams(mlflow_experiment_path=mlflow_config["experiment_name"])
@@ -360,11 +360,15 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     console = get_console()
 
     # Load config (defaults + config file overrides)
-    config_params, experiment_params, output_dir, _ = _load_config(config_path)
+    config_params, experiment_params, output_dir, _, datalake_config = _load_config(config_path)
 
     # Handle data lake operations with dedicated manager
     storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
-    data_lake_manager = DataLakeManager(storage_account_url)
+    data_lake_manager = DataLakeManager(
+        storage_account_url,
+        blob_path_pdfs=datalake_config["blob_path_pdfs"],
+        blob_path_embeddings=datalake_config["blob_path_embeddings"],
+    )
     if pdf_input is not None:
         if not data_lake_manager.download_pdfs_if_not_locally_available(pdf_input):
             logger.warning("Some or all PDFs specified in argument were not found locally or in data lake.")
@@ -588,7 +592,7 @@ def _extract_and_evaluate_with_metadata(
     console = get_console()
 
     # Load config (for filenames and eval mode)
-    config_params, experiment_params, output_dir, _ = _load_config(config_path)
+    config_params, experiment_params, output_dir, _, _ = _load_config(config_path)
 
     # Resolve PDF files: argument takes priority, then config
     if pdf_input is not None:
@@ -677,6 +681,10 @@ def _load_config(config_path: str = "climatextract.toml"):
         "tracking_uri": "./mlruns",  # Default, can be overridden in config file
         "experiment_name": "climatextract_experiments"
     }
+    datalake_config = {
+        "blob_path_pdfs": "pdfs",
+        "blob_path_embeddings": "embeddings",
+    }
 
     config_file = Path(config_path)
     if not config_file.exists():
@@ -714,7 +722,13 @@ def _load_config(config_path: str = "climatextract.toml"):
         if "experiment_name" in file_config["mlflow"]:
             mlflow_config["experiment_name"] = file_config["mlflow"]["experiment_name"]
 
-    return config_params, experiment_params, output_dir, mlflow_config
+    # Get datalake settings from config (with fallbacks)
+    if "datalake" in file_config:
+        for key in datalake_config:
+            if key in file_config["datalake"]:
+                datalake_config[key] = file_config["datalake"][key]
+
+    return config_params, experiment_params, output_dir, mlflow_config, datalake_config
 
 
 def _resolve_pdf_input(pdf_input: str | List[str]) -> List[str]:

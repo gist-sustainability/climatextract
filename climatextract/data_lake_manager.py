@@ -29,13 +29,19 @@ class DataLakeManager:
     4. download_missing_pdfs()
     """
     
-    def __init__(self, storage_account_url: Optional[str]):
+    def __init__(self, storage_account_url: Optional[str],
+                 blob_path_pdfs: str = "pdfs",
+                 blob_path_embeddings: str = "embeddings"):
         """Initialize the DataLakeManager.
         
         Args:
             storage_account_url: Azure storage account URL for data lake access.
+            blob_path_pdfs: Blob container/path for PDF files.
+            blob_path_embeddings: Blob container/path for embedding databases.
         """
         self.storage_account_url = storage_account_url
+        self.blob_path_pdfs = blob_path_pdfs
+        self.blob_path_embeddings = blob_path_embeddings
         self._blob_service = None
         
     def execute_complete_workflow(self, 
@@ -99,8 +105,9 @@ class DataLakeManager:
 
             if response == "y":
                 try:
-                    container_client = blob_service.get_container_client("embeddings")
-                    blob_name = os.path.basename(embeddings_db_path)
+                    container, prefix = self._split_blob_path(self.blob_path_embeddings)
+                    container_client = blob_service.get_container_client(container)
+                    blob_name = prefix + os.path.basename(embeddings_db_path)
                     blob_client = container_client.get_blob_client(blob_name)
 
                     os.makedirs(os.path.dirname(embeddings_db_path), exist_ok=True)
@@ -176,12 +183,14 @@ class DataLakeManager:
             logging.getLogger(__name__).warning("PDF files needed but data lake is not available")
             return False
 
+        container, prefix = self._split_blob_path(self.blob_path_pdfs)
+
         # Calculate total size
         total_size_bytes = 0
         try:
-            container_client = blob_service.get_container_client("pdfs")
+            container_client = blob_service.get_container_client(container)
             for filepath in files_to_download:
-                blob_name = os.path.basename(filepath)
+                blob_name = prefix + os.path.basename(filepath)
                 blob_client = container_client.get_blob_client(blob_name)
                 props = blob_client.get_blob_properties()
                 total_size_bytes += int(props.size or 0)
@@ -204,9 +213,9 @@ class DataLakeManager:
             return False
 
         try:
-            container_client = blob_service.get_container_client("pdfs")
+            container_client = blob_service.get_container_client(container)
             for filepath in files_to_download:
-                blob_name = os.path.basename(filepath)
+                blob_name = prefix + os.path.basename(filepath)
                 blob_client = container_client.get_blob_client(blob_name)
 
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
@@ -218,6 +227,20 @@ class DataLakeManager:
 
         return True
     
+    @staticmethod
+    def _split_blob_path(blob_path: str) -> tuple:
+        """Split a blob path into container name and optional prefix.
+        
+        Examples:
+            "pdfs"                -> ("pdfs", "")
+            "mycontainer/folder"  -> ("mycontainer", "folder/")
+            "mycontainer/a/b"     -> ("mycontainer", "a/b/")
+        """
+        parts = blob_path.strip("/").split("/", 1)
+        container = parts[0]
+        prefix = (parts[1].rstrip("/") + "/") if len(parts) > 1 else ""
+        return container, prefix
+
     def _get_blob_service(self):
         """Get or create the blob service client."""
         if self._blob_service is None:

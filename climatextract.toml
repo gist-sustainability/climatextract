@@ -105,6 +105,16 @@ evaluation_mode = "both"
 gold_standard = "data/evaluation_dataset/gist_2025.csv"
 
 # =============================================================================
+# DATALAKE - Azure Blob Storage for shared files (optional)
+# =============================================================================
+[datalake]
+# Blob paths for PDF files and embedding databases.
+# Format: "container_name" or "container_name/subfolder/path"
+# Default values match the flat container structure: files sit at the root of each container.
+blob_path_pdfs = "pdfs"
+blob_path_embeddings = "embeddings"
+
+# =============================================================================
 # MLFLOW - Experiment tracking (optional)
 # =============================================================================
 [mlflow]

@@ -128,6 +128,21 @@ gold_standard = "/data/evaluation_dataset/gold_standard.csv"
 
 ---
 
+## Datalake Configuration
+
+Optional Azure Blob Storage paths for shared PDF files and embedding databases:
+
+```toml
+[datalake]
+# Blob paths: "container_name" or "container_name/subfolder/path"
+blob_path_pdfs = "pdfs"
+blob_path_embeddings = "embeddings"
+```
+
+See [Datalake configuration](./datalake-configuration.md) for details on setting up and using the data lake.
+
+---
+
 ## MLflow Tracking
 
 Optional experiment tracking with MLflow:
@@ -177,6 +192,10 @@ output_dir = "output"
 [evaluation]
 evaluation_mode = "no_evaluation"     # "no_evaluation", "default", "precision_recall_f1", "both"
 gold_standard = "data/evaluation_dataset/gold_standard.csv"
+
+[datalake]
+blob_path_pdfs = "pdfs"              # "container" or "container/subfolder"
+blob_path_embeddings = "embeddings"  # "container" or "container/subfolder"
 
 [mlflow]
 tracking_uri = "./mlruns"             # "databricks", "./mlruns", or server URL
