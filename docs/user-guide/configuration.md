@@ -77,8 +77,8 @@ Fine-tune the extraction behavior:
 year_min = 2013
 year_max = 2024
 
-# Input mode: "text+table" (default) or "text"
-input_mode = "text+table"
+# Input mode: "text" (default) or "text+table"
+input_mode = "text"
 
 # Only embed documents, skip extraction (default: false)
 embed_only = false
@@ -177,7 +177,7 @@ max_parallel_llm_prompts_running = 4  # omit to use model-specific default
 [extraction]
 year_min = 2018
 year_max = 2024
-input_mode = "text+table"             # "text+table" (default) or "text"
+input_mode = "text"                   # "text" (default) or "text+table"
 embed_only = false                    # only embed, skip extraction
 prompt_type = "default"               # "default" or "custom_gaia"
 context_window = 0                    # context window for semantic search
