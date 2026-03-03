@@ -253,8 +253,8 @@ class Llm:
                 login_token_provider  # wird automatisch aktualisiert, falls die Klasse das unterstützt
             )
 
-            # Client initialisieren
-            self.client = AsyncAzureOpenAI(**client_args)
+        # Client initialisieren
+        self.client = AsyncAzureOpenAI(**client_args)
 
         self.semaphore = asyncio.Semaphore(self.max_parallel_llm_prompts_running)
 
