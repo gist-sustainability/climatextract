@@ -167,7 +167,7 @@ def extract(
                    or a list of file paths. If None, uses filename_list from config.
         config_path: Path to config file. Defaults to "climatextract.toml".
         enable_mlflow: Whether to log results to MLflow. If True, uses MLflow settings
-                       from config file (tracking_uri and experiment_name). Enables
+                       from .env (tracking_uri) and config file (experiment_name). Enables
                        full MLflow tracking including OpenAI autolog and traces.
         verbose: Whether to show detailed per-PDF output. Defaults to False.
 
@@ -257,7 +257,7 @@ def extract_and_evaluate(
         gold_standard_path: Path to gold standard dataset. If None, uses config.
         config_path: Path to config file. Defaults to "climatextract.toml".
         enable_mlflow: Whether to log results to MLflow. If True, uses MLflow settings
-                       from config file (tracking_uri and experiment_name). Enables
+                       from .env (tracking_uri) and config file (experiment_name). Enables
                        full MLflow tracking including OpenAI autolog and traces.
         verbose: Whether to show detailed per-PDF output. Defaults to False.
 
@@ -678,7 +678,7 @@ def _load_config(config_path: str = "climatextract.toml"):
     experiment_params = ExperimentParams()
     output_dir = "output"  # Default output directory
     mlflow_config = {
-        "tracking_uri": "./mlruns",  # Default, can be overridden in config file
+        "tracking_uri": os.environ.get("MLFLOW_TRACKING_URI", "./mlruns"),
         "experiment_name": "climatextract_experiments"
     }
     datalake_config = {
@@ -688,7 +688,7 @@ def _load_config(config_path: str = "climatextract.toml"):
 
     config_file = Path(config_path)
     if not config_file.exists():
-        return config_params, experiment_params, output_dir, mlflow_config
+        return config_params, experiment_params, output_dir, mlflow_config, datalake_config
 
     with open(config_file, "rb") as f:
         file_config = tomllib.load(f)
@@ -715,10 +715,8 @@ def _load_config(config_path: str = "climatextract.toml"):
     if "output" in file_config and "output_dir" in file_config["output"]:
         output_dir = file_config["output"]["output_dir"]
 
-    # Get MLflow settings from config (with fallbacks)
+    # Get MLflow experiment name from config (tracking_uri comes from .env)
     if "mlflow" in file_config:
-        if "tracking_uri" in file_config["mlflow"]:
-            mlflow_config["tracking_uri"] = file_config["mlflow"]["tracking_uri"]
         if "experiment_name" in file_config["mlflow"]:
             mlflow_config["experiment_name"] = file_config["mlflow"]["experiment_name"]
 

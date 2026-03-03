@@ -164,6 +164,5 @@ When MLflow is enabled, metrics are logged for experiment tracking:
 
 ```toml
 [mlflow]
-tracking_uri = "databricks"
 experiment_name = "/Shared/Experiments/precision_recall_analysis"
 ```

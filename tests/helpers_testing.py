@@ -25,7 +25,6 @@ evaluation_mode = "both"
 gold_standard = "./data/evaluation_dataset/gist_2025.csv"
 
 [mlflow]
-tracking_uri = "databricks"
 experiment_name = "/Shared/Experiments_prompt_engineering/acceptance_testing"
 '''
 
