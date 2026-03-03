@@ -165,7 +165,7 @@ class LLMParams:
     # If True, the pipeline will request per-token log-probabilities from the LLM
     # and compute a value-level confidence score. Defaults to True to enable
     # value probabilities by default
-    return_logprobs: bool = field(default=False)
+    return_logprobs: bool = field(default=True)
 
 
 @dataclass
