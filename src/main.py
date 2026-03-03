@@ -193,14 +193,15 @@ if __name__ == "__main__":
                          # gpt-35-turbo-16k OR
                          # gpt-4o-2024-11-20 OR
                          # gpt-5-chat-2025-08-07
-                         'llm_model': "gpt-4o-mini-2024-07-18",
+                         # gpt-5.2-chat-2025-12-11
+                         'llm_model': "gpt-5.2-chat-2025-12-11",
                          'prompt_type': 'default',  # default oder custom_gaia
                          'year_min': 2013,
                          'year_max': 2024,
                      })
 
     mlflow_params = MlflowParams(
-        mlflow_experiment_path='/Shared/Experiments_prompt_engineering/lisa_test',
+        mlflow_experiment_path='/Shared/Experiments_prompt_engineering/anna_test',
     )
     mlflow_params.construct_mlflow_run_name([config_params, experiment_params])
     main(mlflow_params, config_params, experiment_params)

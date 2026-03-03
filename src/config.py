@@ -309,12 +309,20 @@ class Llm:
         cur_time = time.perf_counter()
 
         try:
-            # Correctly pass a boolean for the logprobs parameter
-            response = await self.client.chat.completions.create(
-                model=self.azure_deployment,
-                messages=[{"role": "user", "content": formatted_prompt}],
-                temperature=1
-            )
+            if self.model_name == "gpt-5.2-chat-2025-12-11":
+                response = await self.client.chat.completions.create(
+                    model=self.azure_deployment,
+                    messages=[{"role": "user", "content": formatted_prompt}],
+                    reasoning_effort="none"
+                    )
+            else:
+                # Correctly pass a boolean for the logprobs parameter
+                response = await self.client.chat.completions.create(
+                    model=self.azure_deployment,
+                    messages=[{"role": "user", "content": formatted_prompt}],
+                    temperature=0.0, 
+                    logprobs=self.return_logprobs
+                )
 
             # Use the QueryPipeline without CallbackManager
             # results = await p.arun_multi({"llm_prompt": {"context_str": doc_text}})
