@@ -118,14 +118,11 @@ blob_path_embeddings = "embeddings"
 # MLFLOW - Experiment tracking (optional)
 # =============================================================================
 [mlflow]
-# MLflow tracking URI - where to log experiments
-# Options:
-# - "databricks" for Databricks MLflow
-# - "./mlruns" for local file tracking (view with `mlflow ui`)
-# - "http://server:5000" for remote MLflow server
-tracking_uri = "databricks"
-
 # Experiment name/path
 # For Databricks, use paths like "/Shared/Experiments/my_experiment"
 # For local/remote, use simple names like "climatextract_experiments"
 experiment_name = "/Shared/Experiments_prompt_engineering/precision_recall_analysis"
+
+# Note: The tracking URI (databricks, ./mlruns, or a server URL) is configured
+# via the MLFLOW_TRACKING_URI environment variable in your .env file.
+# See docs/user-guide/mlflow-setup.md for details.

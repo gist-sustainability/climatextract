@@ -149,15 +149,11 @@ Optional experiment tracking with MLflow:
 
 ```toml
 [mlflow]
-# Tracking URI: "databricks", "./mlruns", or server URL
-tracking_uri = "databricks"
-TODO: tracking_uri should not be part of the configuration file, but this should live in .env
-
 # Experiment name
 experiment_name = "/Shared/Experiments/my_experiment"
 ```
 
-See [MLflow setup](./mlflow-setup.md) for details and how to set this up.
+The tracking URI (`databricks`, `./mlruns`, or a server URL) is configured via the `MLFLOW_TRACKING_URI` environment variable in your `.env` file. See [MLflow setup](./mlflow-setup.md) for details.
 
 ---
 
@@ -198,6 +194,5 @@ blob_path_pdfs = "pdfs"              # "container" or "container/subfolder"
 blob_path_embeddings = "embeddings"  # "container" or "container/subfolder"
 
 [mlflow]
-tracking_uri = "./mlruns"             # "databricks", "./mlruns", or server URL
 experiment_name = "climatextract_experiments"
 ```
