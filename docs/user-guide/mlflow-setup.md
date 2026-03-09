@@ -35,3 +35,10 @@ In your ``climatextract.toml`` configuration file you can specify the experiment
 # Experiment name
 experiment_name = "/Shared/Experiments/my_experiment"
 ```
+
+---
+
+## Next Steps
+
+- [Sharing Large Files](datalake-configuration.md) – Share PDFs and embeddings with your team
+- [Architecture](../concepts/architecture.md) – Understand how the pipeline works

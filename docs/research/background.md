@@ -2,7 +2,7 @@
 
 > **_NOTE:_** Initial draft. This page has not been reviewed by the project team and may not be up to date.
 
-climatextract is a research project developed at the [LMU SODA Lab](https://www.soda.statistik.uni-muenchen.de/) (Statistics and Data Science in Social Sciences and the Humanities) at Ludwig-Maximilians-Universität München.
+climatextract is a research project developed at the [LMU SODA Lab](https://www.soda.statistik.uni-muenchen.de/) (Statistics and Data Science in Social Sciences and the Humanities) at Ludwig-Maximilians-Universität München, in collaboration with the [Data Service Centre of Deutsche Bundesbank](https://www.bundesbank.de/de/statistiken/nachhaltigkeit).
 
 ---
 
@@ -59,3 +59,10 @@ climatextract builds on advances in:
 - **Climate NLP** – Applying NLP to environmental text
 
 For technical details, see [Architecture](../concepts/architecture.md) and [Methodology](methodology.md).
+
+---
+
+## Next Steps
+
+- [Methodology](methodology.md) – Scientific methodology and reproducibility
+- [Citation](citation.md) – How to cite this work

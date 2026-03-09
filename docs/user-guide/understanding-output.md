@@ -12,7 +12,7 @@ output/
     ├── 03_co2_emission_table2_w_query_responses.csv           # Page-level details (with duplicates)
     ├── 03_co2_emission_table2_w_query_responses_filtered.csv  # Deduplicated responses
     ├── intermediate_results.csv                               # Intermediate extraction results
-    ├── results_long_format.csv                                # Main results (long format)
+    ├── results_long_format.csv                                # Main results (long format, with duplicates)
     ├── results_wide_format.csv                                # Results pivoted by year
     ├── invalid_llm_outputs.txt                                # Invalid LLM responses
     ├── logs.json                                              # Parameters, metrics, run info
@@ -47,13 +47,13 @@ The primary output file with one row per extracted value. No row included if the
 
 **Example:**
 
-| report_id | year | indicator | value_std | unit_std | page | ... |
-|-----------|------|-----------|-----------|----------|------| --- |
-| sato holdings_2022_report.pdf | 2015 | scope 1 | 135.0 | t CO2e | 34 | ... |
-| sato holdings_2022_report.pdf | 2015 | scope 2lb | 41962.0 | t CO2e | 34 | ... |
-| sato holdings_2022_report.pdf | 2015 | scope 2mb | 37674.0 | t CO2e | 34 | ... |
-| sato holdings_2022_report.pdf | 2015 | scope 3 | 1834.0 | t CO2e | 34 | ... |
-| sato holdings_2022_report.pdf | 2016 | scope 1 | 170.0 | t CO2e | 34 | ... |
+| report_id | year | indicator | value_std | ... | unit_std | ... | page |
+|-----------|------|-----------|-----------|-----|----------|-----|------|
+| company_2023_report.pdf | 2015 | scope 1 | 135.0 | ... | t CO2e | ... | 34 |
+| company_2023_report.pdf | 2015 | scope 2lb | 41962.0 | ... | t CO2e | ... | 34 |
+| company_2023_report.pdf | 2015 | scope 2mb | 37674.0 | ... | t CO2e | ... | 34 |
+| company_2023_report.pdf | 2015 | scope 3 | 1834.0 | ... | t CO2e | ... | 34 |
+| company_2023_report.pdf | 2016 | scope 1 | 170.0 | ... | t CO2e | ... | 34 |
 
 ---
 
@@ -72,7 +72,7 @@ The same data pivoted for easier comparison across scopes: Wide format, with a s
 
 Each scope also has additional detail columns following the pattern `scope_{type}_{field}`, where `type` is `1`, `2lb`, `2mb`, or `3`, and `{field}` is one of: `value_raw`, `value_score`, `unit_std`, `unit_raw`, `unit_score`, `unit_cat`, `dupl_reason`, `page`.
 
-`dupl_reason` (e.g., `scope_1_dupl_reason`) contains the priorization rule used during duplicate resolution. It is related to `dupl_flag` and `select_flag` in the wide format. Only the selected values from the wide format are included in the long format.
+`dupl_reason` (e.g., `scope_1_dupl_reason`) contains the priorization rule used during duplicate resolution. It is related to `dupl_flag` and `select_flag` in the long format. The wide format contains only the selected/resolved values from the long format, with `dupl_reason` explaining how each duplicate was resolved.
 
 ---
 
@@ -154,3 +154,10 @@ When using `precision_recall_f1` or `both` evaluation mode, additional files are
 
 - `error_analysis_per_doc.csv` — Error analysis aggregated per document
 - `error_analysis_per_row.csv` — Error analysis per individual row
+
+---
+
+## Next Steps
+
+- [MLflow Setup](mlflow-setup.md) – Configure experiment tracking
+- [Sharing Large Files](datalake-configuration.md) – Share PDFs and embeddings with your team

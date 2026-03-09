@@ -47,9 +47,9 @@ climatextract uses Docling for PDF processing, which requires **Poppler**:
 
 ## Step 3: Configure Access to Large Language Models via Azure
 
-You will need to set up a Large Language Model in Azure. This package supports some models via Azure Openai and others via Azure's AI foundry.
+You will need to set up a Large Language Model in Azure. This package supports some models via Azure OpenAI and others via Azure's AI foundry.
 
-In addition, set up an embedding model that is accessible via ``AZURE_ENDPOINT`` and named ``text-embedding-ada-002``.
+In addition, set up an embedding model that is accessible via ``AZURE_ENDPOINT`` and named ``text-embedding-ada-002``. Alternatively, you can use a local HuggingFace ``sentence-transformers/*`` model, which does not require Azure (see [Configuration](../user-guide/configuration.md)).
 
 This package is currently very much tailored towards our Azure configuration and may not suit yours. Please check out the LLM class in [config.py](https://github.com/gist-sustainability/climatextract/blob/separate-extract-evaluate/climatextract/config.py) to explore our supported models and hard-coded parameters.
 

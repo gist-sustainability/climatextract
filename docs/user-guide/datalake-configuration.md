@@ -1,4 +1,4 @@
-# Datalake Configuration
+# Sharing Large Files
 
 Use Azure Blob Storage to share PDF files and embedding databases across your team. This is optional — if all your files are available locally, you don't need a data lake.
 
@@ -128,3 +128,10 @@ If `AZURE_STORAGE_ACCOUNT_URL` is not set in your `.env` file, the data lake is 
 - The embedding database is created from scratch if it doesn't exist
 
 This is the default behavior and requires no additional setup.
+
+---
+
+## Next Steps
+
+- [Architecture](../concepts/architecture.md) – Understand how the pipeline works
+- [RAG Pipeline](../concepts/rag-pipeline.md) – Deep dive into retrieval and generation

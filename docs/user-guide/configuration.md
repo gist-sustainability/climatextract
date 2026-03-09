@@ -53,6 +53,11 @@ max_parallel_llm_prompts_running = 4
 !!! note "Available LLM Models"
     Supported models include: `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-35-turbo-16k`, `o3-mini-2025-01-31`, `gpt-4.1-2025-04-14`, `gpt-5-chat-2025-08-07`, `gpt-oss-120b`
 
+!!! example "Available Embedding Models"
+    **Azure OpenAI:** `text-embedding-ada-002`, `text-embedding-3-large`
+
+    **Local (HuggingFace):** Any `sentence-transformers/*` model (e.g., `sentence-transformers/all-MiniLM-L6-v2`). Runs locally without Azure. Install with: `pip install sentence-transformers torch`
+
 If `max_parallel_llm_prompts_running` is not set, the following model-specific defaults apply:
 
 | Model | Default concurrency |
@@ -128,7 +133,7 @@ gold_standard = "/data/evaluation_dataset/gold_standard.csv"
 
 ---
 
-## Datalake Configuration
+## Sharing Large Files
 
 Optional Azure Blob Storage paths for shared PDF files and embedding databases:
 
@@ -139,7 +144,7 @@ blob_path_pdfs = "pdfs"
 blob_path_embeddings = "embeddings"
 ```
 
-See [Datalake configuration](./datalake-configuration.md) for details on setting up and using the data lake.
+See [Sharing Large Files](./datalake-configuration.md) for details on setting up and using the data lake.
 
 ---
 
@@ -196,3 +201,10 @@ blob_path_embeddings = "embeddings"  # "container" or "container/subfolder"
 [mlflow]
 experiment_name = "climatextract_experiments"
 ```
+
+---
+
+## Next Steps
+
+- [Running Extraction](running-extraction.md) – How to run the pipeline
+- [Understanding Output](understanding-output.md) – What the output files contain

@@ -2,7 +2,7 @@
 
 **Extract CO₂ emissions data from corporate sustainability reports using AI.**
 
-climatextract is an information extraction pipeline that surfaces Scope 1, 2, and 3 emissions data from PDF sustainability reports. Built by the [LMU SODA Lab](https://www.soda.statistik.uni-muenchen.de/), it combines research around ESG reporting and Intelligent Document Processing. Employing semantic search and large language models, climatextract automates what was previously a tedious manual annotation process.
+climatextract is an information extraction pipeline that surfaces Scope 1, 2, and 3 emissions data from PDF sustainability reports. Built by the [LMU SODA Lab](https://www.soda.statistik.uni-muenchen.de/) in collaboration with the [Data Service Centre of Deutsche Bundesbank](https://www.bundesbank.de/de/statistiken/nachhaltigkeit), it combines research around ESG reporting and Intelligent Document Processing. Employing semantic search and large language models, climatextract automates what was previously a tedious manual annotation process.
 
 
 
@@ -30,14 +30,14 @@ print(f"Results saved to: {result_path}")
 
 The main output is a well structured table, saved in .csv format.
 
-| report_id | year | indicator | value_std | unit_std | page | 
-|-----------|------|-----------|-----------|----------|------|
-| company_2023_report.pdf | 2015 | scope 1 | 135.0 | t CO2e | 34 |
-| company_2023_report.pdf | 2015 | scope 2lb | 41962.0 | t CO2e | 34 | 
-| company_2023_report.pdf | 2015 | scope 2mb | 37674.0 | t CO2e | 34 | 
-| company_2023_report.pdf | 2015 | scope 3 | 1834.0 | t CO2e | 34 | 
-| company_2023_report.pdf | 2016 | scope 1 | 170.0 | t CO2e | 34 |
-| ... | ... |... |... |... |... |
+| report_id | year | indicator | value_std | ... | unit_std | ... | page |
+|-----------|------|-----------|-----------|-----|----------|-----|------|
+| company_2023_report.pdf | 2015 | scope 1 | 135.0 | ... | t CO2e | ... | 34 |
+| company_2023_report.pdf | 2015 | scope 2lb | 41962.0 | ... | t CO2e | ... | 34 |
+| company_2023_report.pdf | 2015 | scope 2mb | 37674.0 | ... | t CO2e | ... | 34 |
+| company_2023_report.pdf | 2015 | scope 3 | 1834.0 | ... | t CO2e | ... | 34 |
+| company_2023_report.pdf | 2016 | scope 1 | 170.0 | ... | t CO2e | ... | 34 |
+| ... | ... | ... | ... | ... | ... | ... | ... |
 
 ---
 

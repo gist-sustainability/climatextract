@@ -106,3 +106,10 @@ To reproduce results:
 - Improved table extraction
 - Fine-tuned extraction models
 - Expanded KPI coverage beyond emissions
+
+---
+
+## Next Steps
+
+- [Citation](citation.md) – How to cite this work
+- [Background](background.md) – Academic context and motivation
