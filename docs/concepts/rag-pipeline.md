@@ -130,3 +130,10 @@ The database stores:
 
 !!! note "Parallel Processing"
     LLM calls are made concurrently. Adjust `max_parallel_llm_prompts_running` based on your API rate limits.
+
+---
+
+## Next Steps
+
+- [Prompts](prompts.md) – How prompts are structured
+- [Evaluation](evaluation.md) – Measuring extraction quality

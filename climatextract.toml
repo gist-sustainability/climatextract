@@ -33,6 +33,7 @@ llm_model = "gpt-5.2-chat-2025-12-11"
 # Supported embedding models:
 #   - text-embedding-ada-002 (default)
 #   - text-embedding-3-large (higher quality)
+#   - sentence-transformers/* (local HuggingFace, e.g. sentence-transformers/all-MiniLM-L6-v2)
 emb_model = "text-embedding-ada-002"
 
 # Maximum number of concurrent LLM API calls.

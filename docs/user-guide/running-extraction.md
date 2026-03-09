@@ -94,7 +94,7 @@ result_path = extract(
 )
 ```
 
-When enabled, metrics and parameters are logged to your configured MLflow server.
+When enabled, metrics and parameters are logged to your configured MLflow server. See [MLflow Setup](mlflow-setup.md) for configuration details.
 
 ---
 
@@ -109,3 +109,10 @@ When enabled, metrics and parameters are logged to your configured MLflow server
 
 !!! warning "Memory Usage"
     Large PDF files can consume significant memory during embedding. Process in smaller batches if you encounter memory issues.
+
+---
+
+## Next Steps
+
+- [Understanding Output](understanding-output.md) – What the output files contain
+- [MLflow Setup](mlflow-setup.md) – Configure experiment tracking

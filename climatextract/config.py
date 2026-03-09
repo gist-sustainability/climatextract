@@ -511,7 +511,7 @@ class EmbeddingModel:
                     tokens = self.token_counter.count_tokens(text)
                     self.token_counter.add_embedding_tokens(tokens)
             return self.model.encode(
-                texts_with_content, batch_size=self.embed_batch_size, show_progress_bar=True
+                texts_with_content, batch_size=self.embed_batch_size, show_progress_bar=False
             ).tolist()
 
         else:

@@ -166,3 +166,10 @@ When MLflow is enabled, metrics are logged for experiment tracking:
 [mlflow]
 experiment_name = "/Shared/Experiments/precision_recall_analysis"
 ```
+
+---
+
+## Next Steps
+
+- [API Reference](../api-reference/public-api.md) – Public API functions
+- [Background](../research/background.md) – Academic context and motivation

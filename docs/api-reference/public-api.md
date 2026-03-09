@@ -135,3 +135,10 @@ Both functions are available directly from the `climatextract` package:
 ```python
 from climatextract import extract, extract_and_evaluate
 ```
+
+---
+
+## Next Steps
+
+- [Configuration](../user-guide/configuration.md) – Customize extraction behavior
+- [Background](../research/background.md) – Academic context and motivation

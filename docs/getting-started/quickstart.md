@@ -120,7 +120,7 @@ Add to your `.env` file:
 AZURE_STORAGE_ACCOUNT_URL=https://<your-datalake-name>.blob.core.windows.net/
 ```
 
-See [Datalake configuration](../user-guide/datalake-configuration.md) for details.
+See [Sharing Large Files](../user-guide/datalake-configuration.md) for details.
 
 ---
 
@@ -134,7 +134,7 @@ output/
     ├── 03_co2_emission_table2_w_query_responses.csv           # Page-level LLM responses (with duplicates)
     ├── 03_co2_emission_table2_w_query_responses_filtered.csv  # Deduplicated responses
     ├── intermediate_results.csv                               # Pre-normalization extraction results
-    ├── results_long_format.csv                                # Main results in long format
+    ├── results_long_format.csv                                # Main results in long format (with duplicates)
     ├── results_wide_format.csv                                # Results pivoted by year
     ├── invalid_llm_outputs.txt                                # Invalid LLM responses
     └── logs.json                                              # Parameters, metrics, run info

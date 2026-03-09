@@ -23,7 +23,7 @@ prompt_type = "default"
 
 Compact JSON output with Pydantic-based structured output parsing. 
 
-Pros & Cons: ~75% cost reduction compared to `default` due to compact output (only found values are returned). Higher precision, but can extract multiple values per scope-year.
+Pros & Cons: ~75% cost reduction compared to `default` due to compact output (only found values are returned). Higher precision but lower recall, resulting in a lower F1 score compared to `default`. Can extract multiple values per scope-year from the same page, which increases duplicates.
 
 ```toml
 [extraction]
@@ -119,3 +119,10 @@ The prompt includes rules to ensure data quality:
 ```
 
 This is validated using Pydantic models to ensure data quality.
+
+---
+
+## Next Steps
+
+- [Evaluation](evaluation.md) – Measuring extraction quality
+- [API Reference](../api-reference/public-api.md) – Public API functions
