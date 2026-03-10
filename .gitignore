@@ -28,3 +28,5 @@ __pycache__
 /mlruns
 
 data/evaluation_dataset/
+data/docs/pdf_info.json
+problematic_pdfs_log.txt
