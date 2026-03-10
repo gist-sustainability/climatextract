@@ -7,7 +7,6 @@ import datetime
 from hashlib import sha256
 import logging
 import os.path
-import json
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 import tiktoken
 
@@ -640,14 +639,6 @@ class Pdfdoc:
 
             # return True
         else:
-            # check if the pdf is marked as "encrypted_pdf" and if yes, skip embedding
-            with open('./data/docs/pdf_info.json', "r", encoding="utf-8") as f:
-                pdf_info = json.load(f)
-                if (self.filename in pdf_info
-                    and "in_sample" in pdf_info[self.filename]
-                        and "encrypted_pdf" in pdf_info[self.filename]["in_sample"]):
-                    return "encrypted"
-
             try:
                 pages_nodes = self._load_raw_text_pagewise_from_pdf()
             except Exception as e:
@@ -701,24 +692,9 @@ class Pdfdoc:
             return True
 
     def _handle_problematic_pdf(self, error_message):
-        """Loggt problematische PDFs und aktualisiert die JSON-Datei mit os.path"""
-        # Add log entry
+        """Log problematic PDFs to a text file."""
         with open("problematic_pdfs_log.txt", "a", encoding="utf-8") as log_file:
             log_file.write(f"PDF: {self.filename} - {error_message} \n")
-
-        with open('./data/docs/pdf_info.json', "r", encoding="utf-8") as f:
-            pdf_info = json.load(f)
-
-        # add entry in json file
-        if self.filename in pdf_info:
-            if "in_sample" not in pdf_info[self.filename]:
-                pdf_info[self.filename]["in_sample"] = []
-            if "encrypted_pdf" not in pdf_info[self.filename]["in_sample"]:
-                pdf_info[self.filename]["in_sample"].append("encrypted_pdf")
-
-        # save json
-        with open('./data/docs/pdf_info.json', "w", encoding="utf-8") as f:
-            json.dump(pdf_info, f, indent=4, ensure_ascii=False)
 
     def remove_pdf_from_database(self):
         """Remove this PDF file from the database."""
