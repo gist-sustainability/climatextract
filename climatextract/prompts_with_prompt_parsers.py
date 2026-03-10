@@ -144,7 +144,7 @@ class PromptSpecifications:
     )
 
 
-class CustomPromptGaia(PromptProcessorInterface):
+class StructuredJsonPrompt(PromptProcessorInterface):
     """Implements PromptProcessorInterface using Pydantic parsing.
     Strategy: We make a single query to the LLM to extract all the Scope 1, 2, 3 values."""
 

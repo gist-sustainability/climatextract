@@ -54,7 +54,7 @@ When processing a document, the pipeline:
 Relevant pages are passed to a large language model:
 
 - Structured prompts define the extraction task
-- Output parsed via Pydantic models (`custom_gaia`) or regex (`default`)
+- Output parsed via Pydantic models (`structured_json`) or regex (`default`)
 - Each scope-year combination is extracted independently
 
 ### 5. Post-Processing
@@ -74,7 +74,7 @@ Raw LLM output is cleaned and structured:
 |-------|---------|
 | `ValueRetrieverPipeline` | Orchestrates the full extraction workflow |
 | `EmbeddingsRepository` | Manages DuckDB storage for embeddings |
-| `CustomPromptGaia` | Structures LLM prompts with Pydantic parsing |
+| `StructuredJsonPrompt` | Structures LLM prompts with Pydantic parsing |
 | `EvaluatorPrecisionRecallF1` | Computes evaluation metrics |
 | `Pdfdoc` | PDF document representation with page data |
 | `Llm` | LLM client with token counting and rate limiting |
