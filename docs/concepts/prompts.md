@@ -27,7 +27,7 @@ Pros & Cons: ~75% cost reduction compared to `default` due to compact output (on
 
 ```toml
 [extraction]
-prompt_type = "custom_gaia"
+prompt_type = "structured_json"
 ```
 
 ---
@@ -43,7 +43,7 @@ gpt5.2.
 
 The question prompt uses a structured Q&A format where each scope-year combination is a separate question. Responses are parsed using regex-based extraction.
 
-## Structured Prompt (``custom_gaia``)
+## Structured Prompt (``structured_json``)
 
 The prompt consists of three parts:
 
@@ -103,7 +103,7 @@ The prompt includes rules to ensure data quality:
 
 ### Output Format
 
-**`custom_gaia`** instructs the LLM to return JSON matching this schema:
+**`structured_json`** instructs the LLM to return JSON matching this schema:
 
 ```json
 {

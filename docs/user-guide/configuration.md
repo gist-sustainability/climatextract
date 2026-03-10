@@ -88,7 +88,7 @@ input_mode = "text"
 # Only embed documents, skip extraction (default: false)
 embed_only = false
 
-# Prompt type: "default" or "custom_gaia"
+# Prompt type: "default" or "structured_json"
 prompt_type = "default"
 
 # Semantic search settings
@@ -180,7 +180,7 @@ year_min = 2018
 year_max = 2024
 input_mode = "text"                   # "text" (default) or "text+table"
 embed_only = false                    # only embed, skip extraction
-prompt_type = "default"               # "default" or "custom_gaia"
+prompt_type = "default"               # "default" or "structured_json"
 context_window = 0                    # context window for semantic search
 similarity_top_k = 7                  # max pages to retrieve
 similarity_min_k = 4                  # min pages to retrieve

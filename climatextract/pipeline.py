@@ -183,7 +183,7 @@ class ValueRetrieverPipeline():
     def transform_llm_output_and_create_tables(self, doc_relevant_pages, output, filename: str):
         """Parse LLM output, combine it with document-level info and transform it into tables.
 
-        Parsing is dependent on prompt_type. If prompt_type is 'custom_gaia', the output is parsed
+        Parsing is dependent on prompt_type. If prompt_type is 'structured_json', the output is parsed
         using a Pydantic parser. If prompt_type is empty string, regex parsing.
         """
 

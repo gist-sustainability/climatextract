@@ -61,11 +61,11 @@ To show a dataframe with mismatches between goldstandard and extracted values:
 
 FAILED tests/test_acceptance.py::test_quality[default-text] - AssertionError: Expected 32 True values in 'value_match', got 11
 
-FAILED tests/test_acceptance.py::test_quality[custom_gaia-text] - AssertionError: Expected 32 True values in 'value_match', got 11
+FAILED tests/test_acceptance.py::test_quality[structured_json-text] - AssertionError: Expected 32 True values in 'value_match', got 11
 
 FAILED tests/test_acceptance.py::test_quality[default-text+table] - AssertionError: Expected 32 True values in 'value_match', got 11
 
-FAILED tests/test_acceptance.py::test_quality[custom_gaia-text+table] - AssertionError: Expected 32 True values in 'value_match', got 11
+FAILED tests/test_acceptance.py::test_quality[structured_json-text+table] - AssertionError: Expected 32 True values in 'value_match', got 11
 
 ==================== 4 failed, 4 passed, 45 warnings in 127.73s (0:02:07) ====================
 

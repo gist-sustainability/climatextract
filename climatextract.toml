@@ -63,7 +63,7 @@ input_mode = "text"
 # Whether to only embed documents without extraction
 embed_only = false
 
-# Prompt type: "default" or "custom_gaia"
+# Prompt type: "default" or "structured_json"
 prompt_type = "default"
 
 # Context window for semantic search

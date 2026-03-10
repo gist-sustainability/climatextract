@@ -477,8 +477,8 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
             "Failed to embed the search query and save it to the database.")
 
     # Build prompt handler
-    if experiment_params.llm_params.prompt_type == 'custom_gaia':
-        llm_single_prompt = prompts_with_prompt_parsers.CustomPromptGaia(
+    if experiment_params.llm_params.prompt_type == 'structured_json':
+        llm_single_prompt = prompts_with_prompt_parsers.StructuredJsonPrompt(
             prompt_params=experiment_params.llm_params)
     else:
         llm_single_prompt = prompts_with_prompt_parsers.LlmSinglePromptQueryScope12lb2mb3(
