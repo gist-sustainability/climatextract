@@ -26,3 +26,5 @@ __pycache__
 .conda
 /01-data/004-test
 /mlruns
+
+data/evaluation_dataset/
