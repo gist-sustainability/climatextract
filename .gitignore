@@ -8,6 +8,8 @@ data/processed/
 
 output/
 
+output/
+
 tests/last_run_ids.json
 tests/output_tests.txt
 
@@ -24,3 +26,8 @@ __pycache__
 .conda
 /01-data/004-test
 /mlruns
+
+data/evaluation_dataset/
+data/docs/
+problematic_pdfs_log.txt
+*.egg-info/
