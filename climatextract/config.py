@@ -392,6 +392,10 @@ class Llm:
             logger.warning("RuntimeError during LLM call: %s", e)
             return {"content": "", "logprobs": None}, e
 
+        except AttributeError as e:
+            logger.warning("Unexpected response format from LLM (AttributeError): %s", e)
+            return {"content": "", "logprobs": None}, e
+
 
     def print_llm_costs(self):
         """Log the costs of the LLM.

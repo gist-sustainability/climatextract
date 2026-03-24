@@ -1,7 +1,32 @@
 [project]
 name = "climatextract"
 version = "0.2.3"
+description = "Extract CO2 emissions data from PDF sustainability reports using LLMs"
+authors = [{name = "ClimateXtract Team"}]
+keywords = ["co2", "emissions", "sustainability", "pdf", "extraction", "llm", "nlp"]
+requires-python = ">=3.11"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+dependencies = [
+    "azure-storage-blob",
+    "docling>=2.28.4",
+    "duckdb>=1.2.2",
+    "llama-index>=0.12.29",
+    "llama-index-embeddings-azure-openai>=0.3.2",
+    "mlflow>=2.21.3",
+    "nest-asyncio>=1.6.0",
+    "pdf2image>=1.17.0",
+    "PyPDF2>=3.0.1",
+    "rich>=14.0.0",
+    "tiktoken>=0.11.0",
+    "timm>=1.0.15",
+    "pandas",
+    "numpy",
+]
 
 [project.optional-dependencies]
-# test = ["pytest", "ruff"]
+dev = ["pytest>=8.3.5"]
 docs = ["zensical", "mkdocs-material", "mkdocstrings[python]", "mkdocs-click"]

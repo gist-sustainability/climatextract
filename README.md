@@ -25,7 +25,6 @@ First, check out the code, then create a virtual environment and install all dep
 cd climatextract
 python -m venv co2_info_extraction
 source co2_info_extraction/bin/activate
-pip install -r requirements.txt
 pip install -e .
 ```
 
@@ -47,40 +46,15 @@ sudo apt-get install poppler-utils
 
 ### Azure OpenAI
 
-climatextract uses Azure-hosted large language models for extraction and embedding. You will need to set up the following in your Azure account:
+climatextract uses Azure-hosted large language models for extraction and embedding. You will need an LLM and an embedding model accessible via Azure OpenAI or Azure AI Foundry.
 
-1. **A Large Language Model** accessible via Azure OpenAI or Azure AI Foundry. See the [configuration documentation](docs/user-guide/configuration.md) for supported models.
-2. **An embedding model** accessible via Azure OpenAI (default: `text-embedding-ada-002`). Alternatively, you can use a local HuggingFace `sentence-transformers/*` model, which does not require Azure.
-
-This package is currently tailored towards our Azure configuration and may not suit yours. Please check out the LLM class in [config.py](climatextract/config.py) to explore supported models and their parameters.
-
-Create a `.env` file in the project root with your Azure credentials:
-
-```bash
-AZURE_ENDPOINT=https://your-endpoint.openai.azure.com/
-API_KEY=your-api-key
-API_VERSION=2024-12-01-preview
-```
-
-If your LLM is hosted via Azure AI Foundry (on a different endpoint), also add:
-
-```bash
-AZURE_AI_FOUNDRY_ENDPOINT=https://your-other-endpoint.openai.azure.com/
-```
-
-Instead of using an API key, you can also authenticate with your personal Azure account. See the [installation guide](docs/getting-started/installation.md) for details on personalized authentication via the [azure_authentication](https://github.com/soda-lmu/azure-auth-helper-python) package.
+See the [Installation guide](docs/getting-started/installation.md) for how to configure your `.env` file with Azure credentials and authentication options.
 
 ### MLflow experiment tracking (optional)
 
-climatextract uses MLflow for experiment tracking. By default, experiments are tracked locally in a `./mlruns` directory. If you want to use a remote MLflow server (e.g. on Azure Databricks), add the following to your `.env` file:
+climatextract uses MLflow for experiment tracking. By default, experiments are tracked locally in a `./mlruns` directory.
 
-```bash
-MLFLOW_TRACKING_URI=databricks
-DATABRICKS_HOST=https://your-databricks-instance.azuredatabricks.net
-DATABRICKS_TOKEN=your-personal-access-token
-```
-
-See the [MLflow setup guide](docs/user-guide/mlflow-setup.md) for how to create a Databricks personal access token.
+To set up remote tracking via Azure Databricks, see the [MLflow setup guide](docs/user-guide/mlflow-setup.md).
 
 ## Usage
 

@@ -110,7 +110,9 @@ class DataLakeManager:
                     blob_name = prefix + os.path.basename(embeddings_db_path)
                     blob_client = container_client.get_blob_client(blob_name)
 
-                    os.makedirs(os.path.dirname(embeddings_db_path), exist_ok=True)
+                    dir_path = os.path.dirname(embeddings_db_path)
+                    if dir_path:
+                        os.makedirs(dir_path, exist_ok=True)
                     with open(embeddings_db_path, "wb") as f:
                         blob_client.download_blob().readinto(f)
                 except Exception:
@@ -256,6 +258,61 @@ class DataLakeManager:
             )
         return self._blob_service
     
+    def download_directory_from_blob(self, local_dir: str) -> bool:
+        """Download all PDFs from a matching blob prefix into a local directory.
+
+        Uses the directory name as a blob prefix to select which files to download.
+        E.g. local_dir="data/pdfs/sample_160" looks for blobs under "sample_160/" in
+        the configured blob_path_pdfs container.
+
+        Args:
+            local_dir: Local directory path to download PDFs into.
+
+        Returns:
+            bool: True if download succeeded, False otherwise.
+        """
+        blob_service = self._get_blob_service()
+        if not blob_service:
+            logging.getLogger(__name__).warning("Data lake not available — cannot download directory contents")
+            return False
+
+        container, base_prefix = self._split_blob_path(self.blob_path_pdfs)
+        dir_name = os.path.basename(os.path.normpath(local_dir))
+        prefix = base_prefix + dir_name + "/"
+
+        try:
+            container_client = blob_service.get_container_client(container)
+            blobs = [b for b in container_client.list_blobs(name_starts_with=prefix)
+                     if b.name.endswith(".pdf")]
+        except Exception:
+            logging.getLogger(__name__).warning("Failed to list blobs under prefix '%s'", prefix)
+            return False
+
+        if not blobs:
+            logging.getLogger(__name__).info("No PDFs found in data lake under '%s'", prefix)
+            return False
+
+        total_size_mb = sum(b.size or 0 for b in blobs) / (1024 * 1024)
+        logging.getLogger(__name__).info(
+            "Found %d PDFs (%.1f MB) in data lake under '%s'", len(blobs), total_size_mb, prefix)
+
+        response = input("Download from data lake? [y/N] ").strip().lower()
+        if response != "y":
+            return False
+
+        try:
+            os.makedirs(local_dir, exist_ok=True)
+            for blob in blobs:
+                blob_client = container_client.get_blob_client(blob.name)
+                local_path = os.path.join(local_dir, os.path.basename(blob.name))
+                with open(local_path, "wb") as f:
+                    blob_client.download_blob().readinto(f)
+        except Exception:
+            logging.getLogger(__name__).warning("Failed to download PDFs from data lake")
+            return False
+
+        return True
+
     def download_pdfs_if_not_locally_available(self, pdf_input: str | List[str]) -> bool:
         """Given a (list of) string(s), try downloading every PDF from data lake that is not locally available."""
 
