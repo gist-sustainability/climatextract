@@ -1,92 +1,102 @@
-# information-extraction-pilot
+# climatextract
 
-Information-extraction-pilot is a retrieval-augmented generation (RAG) pipeline that surfaces CO₂ emissions data from corporate sustainability reports. It embeds PDF pages, ranks relevant context, and prompts a large language model to extract Scope 1–3 emissions into structured tables for downstream analysis.
+climatextract is a retrieval-augmented generation (RAG) pipeline that surfaces CO₂ emissions data from corporate sustainability reports. It embeds PDF pages, ranks relevant context, and prompts a large language model to extract Scope 1-3 emissions into structured tables for downstream analysis.
 
 ## Background
 
-This pilot began as the team’s submission for the 2024 ClimateNLP workshop at ACL. The repository now serves as the maintained codebase for automating emissions extraction, while retaining the project’s research lineage.
+This project began as the team's submission for the 2024 ClimateNLP workshop at ACL. Built by the [LMU SODA Lab](https://www.soda.statistik.uni-muenchen.de/) in collaboration with the [Data Service Centre of Deutsche Bundesbank](https://www.bundesbank.de/de/statistiken/nachhaltigkeit), climatextract combines research around ESG reporting and Intelligent Document Processing to automate what was previously a tedious manual annotation process.
 
 This repository is organized as follows:
 
-- `data`: source data to be analyzed and the gold standard dataset
-- `output`: pipeline results
-- `prompt`: prompt templates and queries
-- `src`: pipeline source code
-- `tests`: automated checks for the pilot
+- `climatextract`: package source code
+- `data`: source data to be analyzed
+- `docs`: package documentation (built with mkdocs)
+- `tests`: acceptance tests
 
-# Setup
+## Setup
 
-## Python environment
+### Python environment
 
-It is recommended to run the code in a virtual environment using at least Python 3.11:
+It is recommended to run the code in a virtual environment using at least Python 3.11.
 
-If you are using `pip`, run
+First, check out the code, then create a virtual environment and install all dependencies:
 
-`python3.11 -m venv co2_info_extraction` `pip install -r requirements.txt`
+```bash
+cd climatextract
+python -m venv co2_info_extraction
+source co2_info_extraction/bin/activate
+pip install -e .
+```
 
-to install all dependencies.
+### System dependencies
 
-## Other dependencies
+The Python package `pdf2image` is a wrapper around `poppler`, so you will need to install it as a system dependency.
 
-Since the python package `pdf2image` is a wrapper around `poppler`, you will need to install it. See https://pypi.org/project/pdf2image/
+**macOS:**
+```bash
+brew install poppler
+```
 
-## Azure Authentication
+**Ubuntu/Debian:**
+```bash
+sudo apt-get install poppler-utils
+```
 
-This repository uses Azure modules, so you need to have access to it. The code relies on the presence of an `.env` file that stores your credentials. Configure your own authentication workflow with environment variables, see the [description](https://github.com/soda-lmu/azure-auth-helper-python/blob/main/AuthenticationWorkflowSetup.md).
+**Windows:** Download from the [@oschwartz10612 poppler build](https://github.com/oschwartz10612/poppler-windows/releases/), extract the archive, and add the `bin/` folder to your system's PATH environment variable. See the [pdf2image documentation](https://pypi.org/project/pdf2image/) for details.
 
-## Azure Databricks
+### Azure OpenAI
 
-Furthermore, the repository uses `mlflow` for tracking of experiments. To set up access to the Mlflow Tracking Server on Azure Databricks, you need to create a personal access token. Follow the following steps: 
+climatextract uses Azure-hosted large language models for extraction and embedding. You will need an LLM and an embedding model accessible via Azure OpenAI or Azure AI Foundry.
 
-1. Log into [Azure](https://portal.azure.com). 
-2. Search for `gist-mlflow-tracking-server` to find the respective Databricks instance. 
-3. Copy the URL which contains azuredatabricks.net and save it in the `.env` file as `DATABRICKS_HOST` variable. 
-4. Save the variable `MLFLOW_TRACKING_URI` with the value `databricks` to the `.env` file.  
-5. Launch the workspace and click on your initial in the upper right corner. 
-6. Navigate to `Settings > User > Developer > Access tokens`and click on `Manage`. Generate a new access token and save it in the `.env` file as `DATABRICKS_TOKEN` variable. Be aware that it takes some time for the token to get activated, so you might get 401 authentication errors in the beginning when running the code. This should be resolved after some time.
+See the [Installation guide](docs/getting-started/installation.md) for how to configure your `.env` file with Azure credentials and authentication options.
 
-## Run of main.py
+### MLflow experiment tracking (optional)
 
-The script uses three dataclasses to manage configurations: `MlflowParams`, `ConfigParams`, and `ExperimentParams`. These can be customized directly in `main.py` or through external configuration files integrated into `config.py`.
+climatextract uses MLflow for experiment tracking. By default, experiments are tracked locally in a `./mlruns` directory.
 
-### Key Parameters
+To set up remote tracking via Azure Databricks, see the [MLflow setup guide](docs/user-guide/mlflow-setup.md).
 
-Parameters that can be updated through the `helpers.update_dataclass()` function.
+## Usage
 
-**ConfigParams:**
+Place your PDF sustainability reports in the `data/pdfs/` directory, then run the extraction pipeline:
 
-- `gold_standard`: Currently supports `gist_2025` (default)
+```python
+from climatextract import extract
 
-- `filename_list`: List of filenames that will be input into the pipeline, can be adjusted manually or via the function `helpers.get_file_paths`
+result_path = extract("./data/pdfs/company_2023_report.pdf")
+```
 
-**ExperimentParams:**
+Results are saved as CSV files in `output/<run-id>/`. See the [Quickstart](docs/getting-started/quickstart.md) for more examples.
 
--   `emb_model`: Name of the embedding model.
+### Configuration
 
--   `llm_model`: Name of the LLM to use.
+Extraction behavior is controlled via a `climatextract.toml` file in your working directory. It lets you configure the LLM model, embedding model, prompt type, year range, semantic search parameters, and more. See the [Configuration guide](docs/user-guide/configuration.md) for all available options.
 
--   `prompt_type`: Type of prompt (default or custom_gaia).
+### Running tests
 
--   `search_query`: Query passed to the pipeline.
+```bash
+python -m pytest
+```
 
--   `year_min` and `year_max`: Filters for data based on year.
+See `tests/README.md` for details on the acceptance test suite.
 
-## Running the Script
+## Documentation
 
-### Standard Execution
+The full documentation covers usage, configuration, architecture, and API reference:
 
-To run the pipeline, execute:
+| Section | Description |
+|---------|-------------|
+| [Installation](docs/getting-started/installation.md) | Detailed setup instructions |
+| [Quickstart](docs/getting-started/quickstart.md) | First extraction walkthrough |
+| [Configuration](docs/user-guide/configuration.md) | All TOML configuration options |
+| [Architecture](docs/concepts/architecture.md) | Pipeline design and components |
+| [Prompts](docs/concepts/prompts.md) | How extraction prompts work |
+| [Evaluation](docs/concepts/evaluation.md) | Measuring extraction quality |
+| [API Reference](docs/api-reference/public-api.md) | Public API functions |
 
-`python main.py`
+To build and serve the docs locally:
 
-### Customizing Parameters
-
-Modify the parameters in `main.py` by updating the relevant dataclass instances. For example:
-
-`helpers.update_dataclass(config_params, {      'filename_list': ['./data/pdfs/apple_2021_en.pdf'], }) helpers.update_dataclass(experiment_params, {     'prompt_type': 'custom_gaia',     'search_query': "What are the carbon emissions for the last 10 years?", })`
-
-### Logging and Debugging
-
--   Set the desired log level in the `logging.basicConfig()` call, e.g., `logging.DEBUG` for verbose logs.
-
--   Outputs and errors will appear in the console.
+```bash
+pip install -e '.[docs]'
+mkdocs serve
+```

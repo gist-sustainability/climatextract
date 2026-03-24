@@ -1,19 +1,20 @@
 import logging
+import os
 import pytest
 import mlflow
 from mlflow.tracking import MlflowClient
 import pandas as pd
 
 from tests.helpers_testing import save_run_id, get_run_id, create_test_config, cleanup_test_config
-from climatextract.main import main
+from climatextract import extract_and_evaluate
 
 
 # Test general functionality
 @pytest.mark.parametrize("prompt_type,input_mode", [
     ("default", "text"),
-    ("custom_gaia", "text"),
+    ("structured_json", "text"),
     ("default", "text+table"),
-    ("custom_gaia", "text+table")
+    ("structured_json", "text+table")
 ])
 def test_functionality(prompt_type, input_mode):
     """
@@ -25,18 +26,19 @@ def test_functionality(prompt_type, input_mode):
     3. Artifacts are generated and contain at least one row of data.
 
     Parameters:
-    - prompt_type: The type of prompt to use ('default' or 'custom_gaia').
+    - prompt_type: The type of prompt to use ('default' or 'structured_json').
     - input_mode: The input mode to use ('text' or 'text+table').
     """
     # Configuration
-    mlflow_experiment_path, config_path = create_test_config(prompt_type, input_mode)
+    config_path = create_test_config(prompt_type, input_mode)
 
     try:
-        # Execution with new main() signature
-        run_id = main(
-            mlflow_experiment_path=mlflow_experiment_path,
-            config_path=config_path
+        # Execution
+        path_to_results = extract_and_evaluate(
+            config_path=config_path,
+            enable_mlflow=True
         )
+        run_id = os.path.basename(path_to_results)
         save_run_id(run_id, prompt_type, input_mode)
     finally:
         # Cleanup test config file
@@ -73,9 +75,9 @@ def test_functionality(prompt_type, input_mode):
 # Test quality of results
 @pytest.mark.parametrize("prompt_type,input_mode", [
     ("default", "text"),
-    ("custom_gaia", "text"),
+    ("structured_json", "text"),
     ("default", "text+table"),
-    ("custom_gaia", "text+table")
+    ("structured_json", "text+table")
 ])
 def test_quality(prompt_type, input_mode):
     """
@@ -88,7 +90,7 @@ def test_quality(prompt_type, input_mode):
         4. Optionally, the number of True values in 'unit_match' and mismatches are reported.
 
         Parameters:
-        - prompt_type: The type of prompt to use ('default' or 'custom_gaia').
+        - prompt_type: The type of prompt to use ('default' or 'structured_json').
         - input_mode: The input mode to use ('text' or 'text+table').
         """
     # Configuration

@@ -200,7 +200,7 @@ def compute_value_confidence(value_str: str, logprobs_content) -> float | None:
     if not relevant_logprobs:
         return 0.0  # Fallback for no meaningful tokens
 
-    # NOTE: Substring matching over tokens with Custom GAIA
+    # NOTE: Substring matching over tokens with Structured JSON prompt
     # can over-include unrelated tokens if the same token text (value)
     # appears elsewhere in the completion (LLM output).
 

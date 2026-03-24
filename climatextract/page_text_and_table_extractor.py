@@ -3,7 +3,7 @@ import html
 import os
 import csv
 import re
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import torch
 from pdf2image import convert_from_path
@@ -23,14 +23,19 @@ class PageTextAndTableExtractor:
         pass
     
 
-    async def extract_text_and_tables_from_pages(self, relevant_pages: List[Page], filename: str) -> List[str]:
-        """Extract both text and tables from relevant pages."""
+    async def extract_text_and_tables_from_pages(self, relevant_pages: List[Page], filename: str) -> Tuple[List[str], int]:
+        """Extract both text and tables from relevant pages.
+
+        Returns:
+            Tuple of (page contents with tables merged in, number of tables extracted).
+        """
         relevant_tables = self.get_tables_for_relevant_pages(relevant_pages, filename)
+        num_tables = sum(1 for t in relevant_tables if t)
         # If there are relevant pages with tables, pass them to LLM
         if any(inner_list for inner_list in relevant_tables):
-            return [''.join(str(x) for x in relevant_tables[idx]) + ' ' +  page.page_content for idx, page in enumerate(relevant_pages)]
+            return ([''.join(str(x) for x in relevant_tables[idx]) + ' ' +  page.page_content for idx, page in enumerate(relevant_pages)], num_tables)
         else:
-            return [page.page_content for page in relevant_pages]
+            return ([page.page_content for page in relevant_pages], 0)
         
     def get_tables_for_relevant_pages(self, relevant_pages, filename):
         """Extract tables from relevant pages and return them with the filtered relevant pages."""

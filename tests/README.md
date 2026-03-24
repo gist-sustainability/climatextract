@@ -6,11 +6,12 @@ Ensure you have the `pytest` library installed. If not, run the following comman
 
 `pip install pytest~=8.3.5`
 
-Before the tests execute successfully, you will need to download the embeddings and extract table information from the pdf files. Run `src/main.py` once with the following settings: 
+Before the tests execute successfully, you will need to download the embeddings and extract table information from the PDF files. Either configure `climatextract.toml` with `filename_list = ["./data/pdfs/sato holdings_2022_report.pdf"]` and `input_mode = "text+table"`, or use the public API:
 
-`'filename_list': ['./data/pdfs/sato holdings_2022_report.pdf']`
-and
-`'input_mode': 'text+table'`
+```python
+from climatextract import extract
+extract(["./data/pdfs/sato holdings_2022_report.pdf"])
+```
 
 ### Running Tests
 
@@ -60,11 +61,11 @@ To show a dataframe with mismatches between goldstandard and extracted values:
 
 FAILED tests/test_acceptance.py::test_quality[default-text] - AssertionError: Expected 32 True values in 'value_match', got 11
 
-FAILED tests/test_acceptance.py::test_quality[custom_gaia-text] - AssertionError: Expected 32 True values in 'value_match', got 11
+FAILED tests/test_acceptance.py::test_quality[structured_json-text] - AssertionError: Expected 32 True values in 'value_match', got 11
 
 FAILED tests/test_acceptance.py::test_quality[default-text+table] - AssertionError: Expected 32 True values in 'value_match', got 11
 
-FAILED tests/test_acceptance.py::test_quality[custom_gaia-text+table] - AssertionError: Expected 32 True values in 'value_match', got 11
+FAILED tests/test_acceptance.py::test_quality[structured_json-text+table] - AssertionError: Expected 32 True values in 'value_match', got 11
 
 ==================== 4 failed, 4 passed, 45 warnings in 127.73s (0:02:07) ====================
 
