@@ -1,11 +1,12 @@
 import logging
+import os
 import pytest
 import mlflow
 from mlflow.tracking import MlflowClient
 import pandas as pd
 
 from tests.helpers_testing import save_run_id, get_run_id, create_test_config, cleanup_test_config
-from climatextract.main import main
+from climatextract import extract_and_evaluate
 
 
 # Test general functionality
@@ -33,9 +34,11 @@ def test_functionality(prompt_type, input_mode):
 
     try:
         # Execution
-        run_id = main(
-            config_path=config_path
+        path_to_results = extract_and_evaluate(
+            config_path=config_path,
+            enable_mlflow=True
         )
+        run_id = os.path.basename(path_to_results)
         save_run_id(run_id, prompt_type, input_mode)
     finally:
         # Cleanup test config file

@@ -4,7 +4,6 @@ from dataclasses import asdict
 import json
 import logging
 import os
-import sys
 try:
     import tomllib
 except ImportError:
@@ -33,122 +32,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 logger = logging.getLogger(__name__)
-
-
-def main(
-    pdf_input: str | List[str] | None = None,
-    gold_standard_path: str | None = None,
-    config_path: str = "climatextract.toml",
-    use_mlflow: bool = True,
-    verbose: bool = False
-):
-    """
-    Run extraction with optional MLflow tracking.
-
-    Starts MLflow first to get run_id (if enabled), checks evaluation_mode,
-    calls appropriate function.
-
-    Args:
-        pdf_input: PDF file(s) to process. If None, uses config.
-        gold_standard_path: Path to gold standard. If None, uses config.
-        config_path: Path to config file. Defaults to "climatextract.toml".
-        use_mlflow: Whether to enable MLflow tracking. Defaults to True.
-        verbose: Whether to show detailed per-PDF output. Defaults to False.
-    """
-    # Initialize console
-    console = init_console(verbose=verbose)
-
-    # Load config to construct run name and check evaluation_mode
-    config_params, experiment_params, output_dir, mlflow_config, _ = _load_config(config_path)
-
-    if use_mlflow:
-        # Set up MLflow (experiment path and tracking URI come from config)
-        mlflow_params = MlflowParams(mlflow_experiment_path=mlflow_config["experiment_name"])
-        mlflow_params.construct_mlflow_run_name([config_params, experiment_params])
-
-        experiment = Experiment(mlflow_params=mlflow_params, tracking_uri=mlflow_config["tracking_uri"])
-        experiment.setup_experiment()
-        mlflow.openai.autolog()
-
-        # Initiate the MLflow run context
-        with mlflow.start_run(run_name=mlflow_params.mlflow_run_name) as run:
-            run_id = run.info.run_id
-            path_to_results = FileConfig.get_path_to_results(run_id=run_id, output_dir=output_dir)
-
-            # Check evaluation_mode to decide which function to call
-            if config_params.evaluation_mode == "no_evaluation":
-                result = _extract_with_metadata(pdf_input, path_to_results, config_path)
-            else:
-                result = _extract_and_evaluate_with_metadata(
-                    pdf_input, gold_standard_path, path_to_results, config_path)
-
-            if result is None:
-                return run_id
-
-            # Get params from extract/evaluate that were actually used
-            config_params = result["config_params"]
-            experiment_params = result["experiment_params"]
-
-            # Read logs.json created by extract/evaluate, add run_info
-            json_log_path = os.path.join(path_to_results, "logs.json")
-            with open(json_log_path, 'r', encoding='utf-8') as f:
-                json_logs = json.load(f)
-            json_logs["run_info"]["run_id"] = run_id
-            json_logs["parameters"].update(MlflowParams.filter_params(mlflow_params))
-
-            # Log everything to MLflow
-            mlflow.log_params(MlflowParams.filter_params(mlflow_params))
-            mlflow.log_params(asdict(config_params))
-            mlflow.log_params(asdict(experiment_params.pipeline_params))
-            mlflow.log_params(asdict(experiment_params.semantic_search_params))
-            mlflow.log_params(asdict(experiment_params.llm_params))
-            mlflow.log_param("prompt", result["prompt"])
-            mlflow.log_metrics(result["llm_costs"])
-
-            # Log evaluation metrics to MLflow if they exist
-            if result.get("evaluation_metrics"):
-                mlflow.log_metrics(result["evaluation_metrics"])
-
-            # Save updated logs.json with run_info
-            with open(json_log_path, 'w', encoding='utf-8') as f:
-                json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
-
-            mlflow.log_artifacts(result["path_to_results"])
-
-            # Print results (top line + path inside `with` block)
-            console.print_results_start(path_to_results)
-
-        # Bottom line after `with` block (MLflow prints 🏃/🧪 URLs during __exit__)
-        console.print_results_end()
-        return run_id
-
-    else:
-        # MLflow disabled - run extraction without tracking
-        run_id = uuid.uuid4().hex
-        path_to_results = FileConfig.get_path_to_results(run_id=run_id, output_dir=output_dir)
-
-        # Check evaluation_mode to decide which function to call
-        if config_params.evaluation_mode == "no_evaluation":
-            result = _extract_with_metadata(pdf_input, path_to_results, config_path)
-        else:
-            result = _extract_and_evaluate_with_metadata(
-                pdf_input, gold_standard_path, path_to_results, config_path)
-
-        if result is None:
-            return run_id
-
-        # Update logs.json with run_id (no MLflow params)
-        json_log_path = os.path.join(path_to_results, "logs.json")
-        with open(json_log_path, 'r', encoding='utf-8') as f:
-            json_logs = json.load(f)
-        json_logs["run_info"]["run_id"] = run_id
-        with open(json_log_path, 'w', encoding='utf-8') as f:
-            json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
-
-        # Print results
-        console.print_results(path_to_results)
-
-        return run_id
 
 
 def extract(
@@ -369,12 +252,15 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         blob_path_pdfs=datalake_config["blob_path_pdfs"],
         blob_path_embeddings=datalake_config["blob_path_embeddings"],
     )
-    if pdf_input is not None:
-        if not data_lake_manager.download_pdfs_if_not_locally_available(pdf_input):
-            logger.warning("Some or all PDFs specified in argument were not found locally or in data lake.")
-    elif config_params.filename_list:
-        if not data_lake_manager.download_pdfs_if_not_locally_available(config_params.filename_list):
-            logger.warning("Some or all PDFs specified in config file were not found locally or in data lake.")
+
+    # If input is a directory (existing but empty, or not yet created), try populating from data lake
+    raw_input = pdf_input if pdf_input is not None else config_params.filename_list
+    if isinstance(raw_input, str) and not raw_input.endswith(".pdf"):
+        input_path = Path(raw_input)
+        is_empty_dir = input_path.is_dir() and not any(input_path.glob("*.pdf"))
+        is_missing_dir = not input_path.exists()
+        if is_empty_dir or is_missing_dir:
+            data_lake_manager.download_directory_from_blob(raw_input)
 
     # Resolve PDF files: argument takes priority, then config
     if pdf_input is not None:
@@ -592,7 +478,22 @@ def _extract_and_evaluate_with_metadata(
     console = get_console()
 
     # Load config (for filenames and eval mode)
-    config_params, experiment_params, output_dir, _, _ = _load_config(config_path)
+    config_params, experiment_params, output_dir, _, datalake_config = _load_config(config_path)
+
+    # If input is an empty directory, try populating it from the data lake
+    storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
+    data_lake_manager = DataLakeManager(
+        storage_account_url,
+        blob_path_pdfs=datalake_config["blob_path_pdfs"],
+        blob_path_embeddings=datalake_config["blob_path_embeddings"],
+    )
+    raw_input = pdf_input if pdf_input is not None else config_params.filename_list
+    if isinstance(raw_input, str) and not raw_input.endswith(".pdf"):
+        input_path = Path(raw_input)
+        is_empty_dir = input_path.is_dir() and not any(input_path.glob("*.pdf"))
+        is_missing_dir = not input_path.exists()
+        if is_empty_dir or is_missing_dir:
+            data_lake_manager.download_directory_from_blob(raw_input)
 
     # Resolve PDF files: argument takes priority, then config
     if pdf_input is not None:
@@ -755,14 +656,3 @@ def _rearrange_results(results):
     return list(raw_results), list(invalid_llm_outputs)
 
 
-if __name__ == "__main__":
-    # logging.DEBUG for more verbose output, normal logging.INFO, less verbose logging.ERROR
-    logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-
-    # All settings come from climatextract.toml config file
-    # pdf_input is optional - if not specified, uses filename_list from config
-    main(
-        # pdf_input=['./data/pdfs/sato oyj_2022_report.pdf'],  # Optional: overrides config
-        # use_mlflow=False  # Set to False to disable MLflow tracking
-        # verbose=True
-    )
