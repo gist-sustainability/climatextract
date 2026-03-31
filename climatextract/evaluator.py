@@ -34,7 +34,7 @@ class EvaluatorData:
         self.small_results_subset = None
 
     def _read_ground_truth(self, path_to_ground_truth: str) -> pd.DataFrame:
-        if "gist_2025.csv" not in path_to_ground_truth:
+        if "gist_2025.csv" not in path_to_ground_truth and "gold_standard.csv" not in path_to_ground_truth:
             raise ValueError(
                 f"Unsupported ground truth source '{path_to_ground_truth}'. "
             )
