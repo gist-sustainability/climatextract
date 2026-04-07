@@ -2,15 +2,13 @@
 
 ### Prerequisites
 
-Ensure you have the `pytest` library installed. If not, run the following command 
+Ensure you have the `pytest` library installed. If not, run the following command
 
 `pip install pytest~=8.3.5`
 
-Before the tests execute successfully, you will need to download the embeddings and extract table information from the pdf files. Run `src/main.py` once with the following settings: 
+Test data (report PDF, pre-computed embeddings, and gold standard) is included in the repo — no manual setup needed. You will need Azure OpenAI API keys configured in `.env` for the LLM extraction step.
 
-`'filename_list': ['./data/pdfs/sato holdings_2022_report.pdf']`
-and
-`'input_mode': 'text+table'`
+> **Note:** If test data files are missing for any reason, the pipeline may prompt for data lake input. In that case, run tests with `pytest -s` to allow interactive input.
 
 ### Running Tests
 
@@ -60,11 +58,11 @@ To show a dataframe with mismatches between goldstandard and extracted values:
 
 FAILED tests/test_acceptance.py::test_quality[default-text] - AssertionError: Expected 32 True values in 'value_match', got 11
 
-FAILED tests/test_acceptance.py::test_quality[custom_gaia-text] - AssertionError: Expected 32 True values in 'value_match', got 11
+FAILED tests/test_acceptance.py::test_quality[structured_json-text] - AssertionError: Expected 32 True values in 'value_match', got 11
 
 FAILED tests/test_acceptance.py::test_quality[default-text+table] - AssertionError: Expected 32 True values in 'value_match', got 11
 
-FAILED tests/test_acceptance.py::test_quality[custom_gaia-text+table] - AssertionError: Expected 32 True values in 'value_match', got 11
+FAILED tests/test_acceptance.py::test_quality[structured_json-text+table] - AssertionError: Expected 32 True values in 'value_match', got 11
 
 ==================== 4 failed, 4 passed, 45 warnings in 127.73s (0:02:07) ====================
 

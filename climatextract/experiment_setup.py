@@ -37,15 +37,10 @@ class Experiment:
 
         if experiment:
             # Experiment exists, set it as the active experiment
-            experiment_id = experiment.experiment_id
-            print(
-                f"Experiment already exists with ID: {experiment_id}. "
-                f"Setting as active experiment."
-            )
+            pass
         else:
             # Experiment does not exist, create it
-            experiment_id = mlflow.create_experiment(experiment_name)
-            print(f"Experiment created with ID: {experiment_id}.")
+            mlflow.create_experiment(experiment_name)
 
         # Set the experiment as the active one
         mlflow.set_experiment(experiment_name)
