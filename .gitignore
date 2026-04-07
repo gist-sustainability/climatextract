@@ -3,8 +3,14 @@
 private/
 
 data/output/
-data/pdfs/
-data/processed/
+data/pdfs/*
+!data/pdfs/test_report/
+data/processed/*
+!data/processed/embeddings/
+data/processed/embeddings/*
+!data/processed/embeddings/test_embeddings/
+
+output/
 
 output/
 
@@ -24,3 +30,9 @@ __pycache__
 .conda
 /01-data/004-test
 /mlruns
+
+data/evaluation_dataset/*
+!data/evaluation_dataset/test_evaluation/
+data/docs/
+problematic_pdfs_log.txt
+*.egg-info/
