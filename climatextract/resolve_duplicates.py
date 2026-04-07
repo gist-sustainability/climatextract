@@ -49,7 +49,7 @@ def identify_duplicates_in_ground_truth(
         pd.DataFrame: Updated dataframe with duplicate-related flags applied.
     """
     # Extract column names
-    report_name_col, scope_col, year_col, _, _, _ = col_names
+    report_name_col, scope_col, year_col, page_col, _, _ = col_names
 
     # Step 1: Identify duplicates
     grouped_counts = df.groupby([report_name_col, scope_col, year_col]).size()
@@ -63,8 +63,16 @@ def identify_duplicates_in_ground_truth(
     df_duplicates = df[df["duplicate_flag"]].copy()
 
     # Apply prioritization steps
+    # Need to compute majority page per report first
+    majority_page_per_report = (
+        df
+        .dropna(subset=[page_col]) # only consider rows with extractions
+        .groupby(report_name_col)[page_col]
+        .agg(lambda s: s.value_counts().idxmax()) # mode
+        .to_dict()
+    )
     df_duplicates = _apply_prioritization_rules_for_ground_truth(
-        df_duplicates, col_names, preferred_unit)
+        df_duplicates, col_names, preferred_unit, majority_page_per_report)
 
     # Mark resolved rows as selected in the original dataframe
     df = mark_selected_rows(df, df_duplicates, col_names)
@@ -74,7 +82,8 @@ def identify_duplicates_in_ground_truth(
 
 def _apply_prioritization_rules_for_ground_truth(df: pd.DataFrame,
                                                  col_names: List[str],
-                                                 preferred_unit: str) -> pd.DataFrame:
+                                                 preferred_unit: str,
+                                                 majority_page_per_report: dict) -> pd.DataFrame:
     """
     Resolve duplicate rows using prioritization rules in three steps.
     1. Keep first occurrence of identical entries (identical = same value and unit on same page).
@@ -85,7 +94,7 @@ def _apply_prioritization_rules_for_ground_truth(df: pd.DataFrame,
         df (pd.DataFrame): Duplicate rows to resolve.
         col_names (List[str]): Columns for grouping and identifying duplicates.
         preferred_unit (str): Preferred unit for resolving duplicates (e.g., "t CO2e").
-
+        majority_page_per_report (dict): Mapping of report names to their majority page.
     Returns:
         pd.DataFrame: Resolved duplicate rows.
     """
@@ -97,11 +106,14 @@ def _apply_prioritization_rules_for_ground_truth(df: pd.DataFrame,
             return group[group[unit_norm_col] == preferred_unit]
         return group
 
-    def majority_page(group: pd.DataFrame) -> pd.DataFrame:
+    def majority_page(group: pd.DataFrame, majority_page_per_report: dict) -> pd.DataFrame:
         """Keep rows with the most frequent page (`mode`)."""
-        mode_page = group[page_col].mode()
-        if not mode_page.empty:
-            return group[group[page_col] == mode_page.iloc[0]]
+        # Only if there are still multiple rows in the group (aka duplicates)
+        if len(group) > 1:
+            # if there are multiple modes, take the first one
+            mode_page = majority_page_per_report.get(group[report_name_col].iloc[0], None)
+            if mode_page is not None:
+                return group[group[page_col] == mode_page]
         return group
 
     # Step 1: Drop identical entries
@@ -113,7 +125,7 @@ def _apply_prioritization_rules_for_ground_truth(df: pd.DataFrame,
 
     # Step 3: Majority page
     df = df.groupby([report_name_col, scope_col, year_col]).apply(
-        majority_page).reset_index(drop=True)
+        lambda g: majority_page(g, majority_page_per_report)).reset_index(drop=True)
 
     return df
 
@@ -205,8 +217,18 @@ def identify_duplicates_in_output(df: pd.DataFrame,
     ].copy()
     if not non_unique_rows.empty:
         non_unique_rows["duplicate_flag"] = True
+
+        # Majority page per report
+        majority_page_per_report = (
+            non_na_rows
+            .dropna(subset=[col_names[3]])  # only consider rows with extractions
+            .groupby(report_col)[col_names[3]]
+            .agg(lambda s: s.value_counts().idxmax())  # mode
+            .to_dict()
+        )
+
         prioritized_non_unique_rows = _apply_prioritization_rules_for_output(
-            non_unique_rows, col_names, preferred_unit)
+            non_unique_rows, col_names, preferred_unit, majority_page_per_report)
 
         # Mark selected rows
         prioritized_non_unique_rows["select_flag"] = True
@@ -275,7 +297,8 @@ def _filter_all_na_reports(df: pd.DataFrame, col_name: str,
 
 def _apply_prioritization_rules_for_output(df: pd.DataFrame,
                                            col_names: List[str],
-                                           preferred_unit: str) -> pd.DataFrame:
+                                           preferred_unit: str,
+                                           majority_page_per_report: dict) -> pd.DataFrame:
     """
     Apply prioritization rules to deduplicate entries:
     1. Keep first occurrence of identical entries (identical = same value and unit on same page).
@@ -304,15 +327,15 @@ def _apply_prioritization_rules_for_output(df: pd.DataFrame,
             return filtered
         return group
 
-    def _filter_by_majority_page(group: pd.DataFrame) -> pd.DataFrame:
+    def _filter_by_majority_page(group: pd.DataFrame, majority_page_per_report: dict) -> pd.DataFrame:
         """
         Keep rows with the most frequent page (`mode`).
         """
         before = len(group)
-        mode_page = group['page_number_used_by_llm'].mode()
-        if not mode_page.empty:
+        mode_page = majority_page_per_report.get(group[col_names[0]].iloc[0], None)
+        if not mode_page is None and before > 1:
             filtered = group[group['page_number_used_by_llm']
-                             == mode_page.iloc[0]].copy()
+                             == mode_page].copy()
             if len(filtered) < before:
                 filtered['dupl_reason'] = 3
             return filtered
@@ -324,7 +347,7 @@ def _apply_prioritization_rules_for_output(df: pd.DataFrame,
 
     # Rule 3: Keep entry from page with majority page
     prioritized_rows = preferred_unit_filtered.groupby(group_cols, group_keys=False).apply(
-        _filter_by_majority_page).reset_index(drop=True)
+        lambda g: _filter_by_majority_page(g, majority_page_per_report)).reset_index(drop=True)
 
     # Check if any group has more than one row left
     duplicates_check = prioritized_rows.groupby(group_cols).size()

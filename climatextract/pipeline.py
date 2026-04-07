@@ -463,7 +463,8 @@ def prepare_wide_formate_output_table_from(
         index=['report_id', 'year'],
         columns='extracted_scope_from_llm',
         values=pivot_cols,
-        aggfunc='first'  # or appropriate aggregation if multiples exist
+        aggfunc='first',  # or appropriate aggregation if multiples exist
+        dropna=False
     )
 
     # Flatten MultiIndex columns to single level with naming scheme

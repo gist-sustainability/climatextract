@@ -124,6 +124,7 @@ class Llm:
         self.supports_logprobs = True  # Default; overridden per-model if needed
         self.use_openai_client = False  # Default; Llama overrides to True
         self.temperature = 0.0         # Default; overridden per-model if needed
+        self.reasoning_effort = None   # Default; set per-model if needed (e.g. GPT-5.2)
         self.azure_endpoint = os.environ["AZURE_ENDPOINT"]
 
         self.api_key = os.getenv("API_KEY")
@@ -211,6 +212,7 @@ class Llm:
             self.azure_endpoint = os.environ["AZURE_AI_FOUNDRY_ENDPOINT"]
             self.supports_logprobs = False
             self.temperature = 1.0  # GPT 5.2 does not accept temperature=0.0
+            self.reasoning_effort = "none"
             self.token_counter = TokenCounter(
                 tokenizer=tiktoken.encoding_for_model("gpt-5-chat").encode
             )
@@ -306,8 +308,7 @@ class Llm:
         elif self.model_name == "gpt-5.2-chat-2025-12-11":
             return 1.75 * input_tokens / 1000000 + 14.00 * output_tokens / 1000000
         elif self.model_name == "Llama-4-Maverick-17B-128E-Instruct-FP8":
-            return 0.303 * input_tokens / 1000000 + 1.21 * output_tokens / 1000000 # according to this site it is a bit cheaper: https://azure.microsoft.com/en-us/pricing/details/phi-3/#pricing
-        
+            return 0.303 * input_tokens / 1000000 + 1.21 * output_tokens / 1000000
         
         else:
             return -1.0
@@ -342,6 +343,8 @@ class Llm:
             }
             if self.supports_logprobs:
                 api_kwargs["logprobs"] = self.return_logprobs
+            if self.reasoning_effort is not None:
+                api_kwargs["reasoning_effort"] = self.reasoning_effort
             response = await self.client.chat.completions.create(**api_kwargs)
 
             # Use the QueryPipeline without CallbackManager
