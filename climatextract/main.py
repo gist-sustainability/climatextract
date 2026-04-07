@@ -270,6 +270,9 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     else:
         raise ValueError("No PDF files specified in argument or config file.")
 
+    # Check for missing PDFs upfront and offer to download
+    data_lake_manager.download_pdfs_if_not_locally_available(pdf_files)
+
     # Store actual PDF files used in config_params for logging
     config_params.filename_list = pdf_files
 
@@ -502,6 +505,9 @@ def _extract_and_evaluate_with_metadata(
         pdf_files = _resolve_pdf_input(config_params.filename_list)
     else:
         raise ValueError("No PDF files specified in argument or config file.")
+
+    # Check for missing PDFs upfront and offer to download
+    data_lake_manager.download_pdfs_if_not_locally_available(pdf_files)
 
     # Determine gold standard: argument > config
     gs_path = gold_standard_path if gold_standard_path else config_params.gold_standard
