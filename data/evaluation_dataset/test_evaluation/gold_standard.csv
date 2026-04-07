@@ -1,0 +1,1385 @@
+report_name,company_name,ISIN,report_name_old,company_name_old,report_year,report_type,url,year,scope,page,value,unit,unit_normalized,metric_name,display_type,extracted_text_from_page,merge_id
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2013,1,,,,,,,,4758
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2014,1,,,,,,,,4759
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2015,1,34,135.0,t CO2-e,t CO2e,"GRI 305-1 Direct greenhouse gas emissions, t CO2-e (Scope 1)/GRI 305-1 Direct greenhouse gas emissions (Scope 1)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4760
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2016,1,34,170.0,t CO2-e,t CO2e,"GRI 305-1 Direct greenhouse gas emissions, t CO2-e (Scope 1)/GRI 305-1 Direct greenhouse gas emissions (Scope 1)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4761
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2017,1,34,214.0,t CO2-e,t CO2e,"GRI 305-1 Direct greenhouse gas emissions, t CO2-e (Scope 1)/GRI 305-1 Direct greenhouse gas emissions (Scope 1)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4762
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2018,1,34,179.0,t CO2-e,t CO2e,"GRI 305-1 Direct greenhouse gas emissions, t CO2-e (Scope 1)/GRI 305-1 Direct greenhouse gas emissions (Scope 1)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4763
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2019,1,34,177.0,t CO2-e,t CO2e,"GRI 305-1 Direct greenhouse gas emissions, t CO2-e (Scope 1)/GRI 305-1 Direct greenhouse gas emissions (Scope 1)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4764
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2020,1,34,147.0,t CO2-e,t CO2e,"GRI 305-1 Direct greenhouse gas emissions, t CO2-e (Scope 1)/GRI 305-1 Direct greenhouse gas emissions (Scope 1)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4765
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2021,1,34,105.0,t CO2-e,t CO2e,"GRI 305-1 Direct greenhouse gas emissions, t CO2-e (Scope 1)/GRI 305-1 Direct greenhouse gas emissions (Scope 1)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4766
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2022,1,34,20.0,t CO2-e,t CO2e,"GRI 305-1 Direct greenhouse gas emissions, t CO2-e (Scope 1)/GRI 305-1 Direct greenhouse gas emissions (Scope 1)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4767
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2013,2lb,,,,,,,,4768
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2014,2lb,,,,,,,,4769
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2015,2lb,34,41962.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (location-based)/Indirect greenhouse gas emissions (location-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4770
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2016,2lb,34,52583.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (location-based)/Indirect greenhouse gas emissions (location-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4771
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2017,2lb,34,43163.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (location-based)/Indirect greenhouse gas emissions (location-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4772
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2018,2lb,34,40152.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (location-based)/Indirect greenhouse gas emissions (location-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4773
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2019,2lb,34,37468.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (location-based)/Indirect greenhouse gas emissions (location-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4774
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2020,2lb,34,34456.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (location-based)/Indirect greenhouse gas emissions (location-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4775
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2021,2lb,34,45754.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (location-based)/Indirect greenhouse gas emissions (location-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4776
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2022,2lb,34,40393.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (location-based)/Indirect greenhouse gas emissions (location-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4777
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2013,2mb,,,,,,,,4778
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2014,2mb,,,,,,,,4779
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2015,2mb,34,37674.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (market-based)/Indirect greenhouse gas emissions (market-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4780
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2016,2mb,34,48560.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (market-based)/Indirect greenhouse gas emissions (market-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4781
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2017,2mb,34,39430.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (market-based)/Indirect greenhouse gas emissions (market-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4782
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2018,2mb,34,36728.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (market-based)/Indirect greenhouse gas emissions (market-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4783
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2019,2mb,34,34292.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (market-based)/Indirect greenhouse gas emissions (market-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4784
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2020,2mb,34,30915.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (market-based)/Indirect greenhouse gas emissions (market-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4785
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2021,2mb,34,43349.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (market-based)/Indirect greenhouse gas emissions (market-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4786
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2022,2mb,34,37920.0,t CO2-e,t CO2e,"Indirect greenhouse gas emissions, t CO2-e (market-based)/Indirect greenhouse gas emissions (market-based)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4787
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2013,3,,,,,,,,4788
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2014,3,,,,,,,,4789
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2015,3,34,1834.0,t CO2-e,t CO2e,"GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e (Scope 3)/GRI-305-3 Other indirect greenhouse gas emissions (Scope 3)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4790
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2016,3,34,948.0,t CO2-e,t CO2e,"GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e (Scope 3)/GRI-305-3 Other indirect greenhouse gas emissions (Scope 3)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4791
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2017,3,34,240.0,t CO2-e,t CO2e,"GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e (Scope 3)/GRI-305-3 Other indirect greenhouse gas emissions (Scope 3)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4792
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2018,3,34,49.0,t CO2-e,t CO2e,"GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e (Scope 3)/GRI-305-3 Other indirect greenhouse gas emissions (Scope 3)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4793
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2019,3,34,46.0,t CO2-e,t CO2e,"GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e (Scope 3)/GRI-305-3 Other indirect greenhouse gas emissions (Scope 3)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4794
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2020,3,34,37.0,t CO2-e,t CO2e,"GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e (Scope 3)/GRI-305-3 Other indirect greenhouse gas emissions (Scope 3)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4795
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2021,3,34,49.0,t CO2-e,t CO2e,"GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e (Scope 3)/GRI-305-3 Other indirect greenhouse gas emissions (Scope 3)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4796
+report.pdf,sato oyj,FI0009011688,sato holdings_2022_report.pdf,sato holdings,2022,Sustainability Report,https://assets.ctfassets.net/z7ety0aygnfq/4DobjTm1iej4GSwvBdHK7K/2641bdbb533222fe3425d7df9838dd34/SATOs_Sustainability_report_2022.pdf,2022,3,34,49.0,t CO2-e,t CO2e,"GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e (Scope 3)/GRI-305-3 Other indirect greenhouse gas emissions (Scope 3)",Table,"ENVIRONMENT
+ENERGY
+Energy consumption within the organization 2015 2016 2017 2018 2019 2020 2021 2022 Change,  
+2021–2022Change, %  
+2021–2022
+Total, MWh  238,263  283,484  264,874  263,465  256,624  236,480 272,351 242,107 -30,244 -11.1%
+Share of purchased energy:
+Electricity, MWh  23,689  24,531  23,624  24,285  24,243  27,033 27,025 27,791 766 2.8%
+District heat, MWh  214,056  258,299  240,427  238,493  231,701  208,884 244,910 214,236 -30,674 -12.5%
+Share of own production:
+Oil, MWh 518 654 823 687  680  563 416 80 -336 -80.8%
+Specific energy consumption 2015 2016 2017 2018 2019 2020 2021 2022Change,  
+2021–2022Change, %  
+2021–2022Change, %  
+2015–2022
+Consumption of heating energy, adjusted for weather, kWh/rm³/a 42.9 41.5 41.8 40.7 39. 8 37.8 38.1 36.1 -2.1 -5.4% -16.0%
+Consumption of electricity, kWh/m³/a 3.9 3.9 3.9 3.9 3.9 4.2 4.2 4.5 0.3 7.1% 15.7%
+Total, kWh/m3/a 46.8 45.4 45.7 44.6 43.7 42.0 42.3 40.6 -1.8 -4.1% -13.3%
+EMISSIONS
+Greenhouse gas (GHG) emissions 2015 2016 2017 2018 2019 2020 2021 2022Change, 
+2021–2022Change, % 
+2021–2022
+GRI 305-1 Direct greenhouse gas emissions, t CO2-e (scope 1) 135 170 214 179 177 147 105 20 -85 -81.0%
+GRI 305-2 Indirect greenhouse gas emissions*, t CO2-e (scope 2)
+Indirect greenhouse gas emissions, t CO2-e (market-based)  37,674  48,560  39 ,430  36,728 34,292 30,915 43,349 37,920 -5,429 -12.5%
+Indirect greenhouse gas emissions, t CO2-e (location-based)  41,962  52,583  43,163  40,152 37,468 34,456 45,754 40,393 -5,361 -11.7%
+GRI-305-3 Other indirect greenhouse gas emissions, t CO2-e** (scope 3)  1,834  948  240  49  46  37 49 49 0 0.0%
+Total emissions of greenhouse gases, t CO2-e  39 ,643  49 ,678  39 ,884  36,955 34,515 31,098 43,503 37,989 -5,514 -12.7%
+*  In line with the GHG Protocol standard, a location-based emission figure has been reported for electricity consumption. The market-based figure is used in combined emission figures. The location-based figure refers to figures calculated using country-specific emission coefficients and figures 
+calculated using electricity-supplier-specific, market-based emission coefficients. If the emission coefficients given for the calculation year were not available for the previous year’s calculation, this data was recalculated for this report using the emission coefficient data given for the year in 
+question. Due to a possible recalculation, the emissions data reported for the preceding year may deviate from the data reporting in the previous emissions report. Electricity does not produce any emissions because it is produced 100% by nuclear power.
+** Emissions from residents’ wasteThe following SATO envi-
+ronmental sustainability in-
+dicators have been assured 
+by an independent third 
+party. See Sustainability 
+concepts for more informa-
+tion about key figures and 
+definitions of concepts.
+SATO 2022
+| Our sustainability work
+|
+SATO’s Sustainability Report 2022 | 34Reporting principles",4797

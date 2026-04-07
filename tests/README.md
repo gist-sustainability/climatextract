@@ -2,16 +2,13 @@
 
 ### Prerequisites
 
-Ensure you have the `pytest` library installed. If not, run the following command 
+Ensure you have the `pytest` library installed. If not, run the following command
 
 `pip install pytest~=8.3.5`
 
-Before the tests execute successfully, you will need to download the embeddings and extract table information from the PDF files. Either configure `climatextract.toml` with `filename_list = ["./data/pdfs/sato holdings_2022_report.pdf"]` and `input_mode = "text+table"`, or use the public API:
+Test data (report PDF, pre-computed embeddings, and gold standard) is included in the repo — no manual setup needed. You will need Azure OpenAI API keys configured in `.env` for the LLM extraction step.
 
-```python
-from climatextract import extract
-extract(["./data/pdfs/sato holdings_2022_report.pdf"])
-```
+> **Note:** If test data files are missing for any reason, the pipeline may prompt for data lake input. In that case, run tests with `pytest -s` to allow interactive input.
 
 ### Running Tests
 

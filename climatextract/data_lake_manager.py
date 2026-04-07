@@ -314,30 +314,30 @@ class DataLakeManager:
         return True
 
     def download_pdfs_if_not_locally_available(self, pdf_input: str | List[str]) -> bool:
-        """Given a (list of) string(s), try downloading every PDF from data lake that is not locally available."""
+        """Check all input PDFs for local availability and offer to download missing ones.
 
-        def is_list_of_strings(variable):
-            # Check if it's a list
-            if isinstance(variable, list):
-                return all(isinstance(item, str) for item in variable)
-            return False
+        This is an upfront check before the pipeline runs. Files not downloaded here
+        may still be prompted for later if they are also missing from the embedding database.
 
+        Args:
+            pdf_input: A single PDF path or list of PDF paths.
+
+        Returns:
+            bool: True if all files are available or download succeeded, False if user declined.
+        """
         if isinstance(pdf_input, str):
             pdf_input = [pdf_input]
 
-        if not is_list_of_strings(pdf_input):
-            raise FileNotFoundError(f"pdf_input must be a string or list of strings, got: {type(pdf_input)}")
-        
-        files_to_download = []
-
-        for file_name in pdf_input:
-            if file_name.endswith('.pdf') and not Path(file_name).is_file():
-                 files_to_download.append(file_name)
-
-        if files_to_download:
-            print("Some PDFs are not locally available. Downloading them is necessary if they are not in the embedding database.\n")
+        files_to_download = [f for f in pdf_input if f.endswith('.pdf') and not Path(f).is_file()]
 
         if not files_to_download:
             return True
-        else:
-            return self.download_missing_pdfs(files_to_download)
+
+        total = len(pdf_input)
+        missing = len(files_to_download)
+        logging.getLogger(__name__).info(
+            "%d of %d PDF files are not available locally. "
+            "Files missing locally and not in the embedding database will not be processed.",
+            missing, total)
+
+        return self.download_missing_pdfs(files_to_download)
