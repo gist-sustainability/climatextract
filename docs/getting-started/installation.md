@@ -9,7 +9,7 @@ This guide walks you through installing climatextract.
 Before installing, ensure you have:
 
 - **Python 3.11+** – [Download Python](https://www.python.org/downloads/)
-- **Azure credentials** – Access to Azure OpenAI services (see step 3)
+- **Azure credentials** – Access to Azure OpenAI services, if using the default Azure adapter (see step 3). Not required if you're injecting your own provider handler — see [Custom Providers](../user-guide/custom-providers.md).
 
 ---
 
@@ -49,9 +49,11 @@ climatextract uses Docling for PDF processing, which requires **Poppler**:
 
 You will need to set up a Large Language Model in Azure. This package supports some models via Azure OpenAI and others via Azure's AI foundry.
 
-In addition, set up an embedding model that is accessible via ``AZURE_ENDPOINT`` and named ``text-embedding-ada-002``. Alternatively, you can use a local HuggingFace ``sentence-transformers/*`` model, which does not require Azure (see [Configuration](../user-guide/configuration.md)).
+In addition, set up an embedding model that is accessible via ``AZURE_ENDPOINT`` and named ``text-embedding-ada-002``.<!-- TODO(litellm-refactor): local HuggingFace sentence-transformers support was removed when config.py was retired. Restore this sentence once a HuggingFace EmbeddingModelHandler adapter lands.
+ Alternatively, you can use a local HuggingFace ``sentence-transformers/*`` model, which does not require Azure (see [Configuration](../user-guide/configuration.md)).
+-->
 
-This package is currently very much tailored towards our Azure configuration and may not suit yours. Please check out the LLM class in [config.py](https://github.com/gist-sustainability/climatextract/blob/separate-extract-evaluate/climatextract/config.py) to explore our supported models and hard-coded parameters.
+The default Azure adapter lives in [`climatextract/adapters/azure_openai.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_openai.py) — see that file for the full list of supported Azure OpenAI and Azure AI Foundry models, custom pricing entries, and per-model quirks (reasoning effort, logprobs support, concurrency caps). If the default adapter doesn't fit your setup, you can write your own handler for any provider — see [Custom Providers](../user-guide/custom-providers.md).
 
 Create a `.env` file in your working directory with the API endpoint(s) and the respective API key.
 

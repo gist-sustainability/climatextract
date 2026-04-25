@@ -46,29 +46,46 @@ llm_model = "gpt-4o-mini-2024-07-18"
 # Embedding model for semantic search
 emb_model = "text-embedding-ada-002"
 
-# Maximum concurrent API calls (adjust based on rate limits)
+# Maximum concurrent LLM API calls (adjust based on rate limits)
 max_parallel_llm_prompts_running = 4
+
+# Maximum concurrent embedding API calls (adjust based on rate limits)
+# Omit to use the model-specific default (see table below).
+max_parallel_embedding_calls = 5
 ```
 
 !!! note "Available LLM Models"
-    Supported models include: `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-35-turbo-16k`, `o3-mini-2025-01-31`, `gpt-4.1-2025-04-14`, `gpt-5-chat-2025-08-07`, `gpt-oss-120b`
+    Models supported by the default Azure adapter: `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-35-turbo-16k`, `o3-mini-2025-01-31`, `gpt-4.1-2025-04-14`, `gpt-5-chat-2025-08-07`, `gpt-5.2-chat-2025-12-11`, `gpt-oss-120b`, `Llama-4-Maverick-17B-128E-Instruct-FP8`. To route to a different provider, see [Custom Providers](custom-providers.md).
 
 !!! example "Available Embedding Models"
-    **Azure OpenAI:** `text-embedding-ada-002`, `text-embedding-3-large`
+    Models supported by the default Azure adapter: `text-embedding-ada-002`, `text-embedding-3-large`.
 
+<!-- TODO(litellm-refactor): local HuggingFace sentence-transformers support was removed when config.py was retired. Restore this bullet once a HuggingFace EmbeddingModelHandler adapter lands.
     **Local (HuggingFace):** Any `sentence-transformers/*` model (e.g., `sentence-transformers/all-MiniLM-L6-v2`). Runs locally without Azure. Install with: `pip install sentence-transformers torch`
+-->
 
-If `max_parallel_llm_prompts_running` is not set, the following model-specific defaults apply:
+If `max_parallel_llm_prompts_running` is not set, the default Azure adapter applies these model-specific LLM defaults:
 
 | Model | Default concurrency |
 |-------|-------------------|
 | `gpt-4o-mini-2024-07-18` | 25 |
 | `gpt-4o-2024-11-20` | 25 |
 | `gpt-oss-120b` | 25 |
+| `Llama-4-Maverick-17B-128E-Instruct-FP8` | 25 |
 | `gpt-35-turbo-16k` | 8 |
 | `gpt-5-chat-2025-08-07` | 8 |
+| `gpt-5.2-chat-2025-12-11` | 8 |
 | `gpt-4.1-2025-04-14` | 4 |
 | `o3-mini-2025-01-31` | 2 |
+
+If `max_parallel_embedding_calls` is not set, the default Azure adapter applies these model-specific embedding defaults:
+
+| Model | Default concurrency |
+|-------|-------------------|
+| `text-embedding-ada-002` | 5 |
+| `text-embedding-3-large` | 10 |
+
+These defaults were tuned empirically to stay below Azure rate limits while maximizing throughput. Bump them only if you know your deployment tier can handle more — above the ceiling, rate-limit retries will slow things down rather than speed them up.
 
 ---
 
@@ -173,7 +190,8 @@ filename_list = ["/data/pdfs/company_2023_report.pdf"]
 [models]
 llm_model = "gpt-4o-mini-2024-07-18"
 emb_model = "text-embedding-ada-002"
-max_parallel_llm_prompts_running = 4  # omit to use model-specific default
+max_parallel_llm_prompts_running = 4    # omit to use model-specific default
+max_parallel_embedding_calls = 5        # omit to use model-specific default
 
 [extraction]
 year_min = 2018

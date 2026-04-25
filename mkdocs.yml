@@ -53,6 +53,7 @@ nav:
   - User Guide:
     - Configuration: user-guide/configuration.md
     - Running Extraction: user-guide/running-extraction.md
+    - Custom Providers: user-guide/custom-providers.md
     - Understanding Output: user-guide/understanding-output.md
     - MLflow Setup: user-guide/mlflow-setup.md
     - Sharing Large Files: user-guide/datalake-configuration.md

@@ -47,6 +47,12 @@ emb_model = "text-embedding-ada-002"
 # Higher values = faster processing, but may hit rate limits.
 max_parallel_llm_prompts_running = 4
 
+# Maximum number of concurrent embedding API calls.
+# If not specified, uses model-specific defaults:
+#   - text-embedding-ada-002: 5
+#   - text-embedding-3-large: 10
+max_parallel_embedding_calls = 5
+
 # =============================================================================
 # EXTRACTION - Fine-tune extraction behavior
 # =============================================================================

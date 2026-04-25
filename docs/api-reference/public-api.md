@@ -26,6 +26,8 @@ result_path = extract(
 | `config_path` | `str` | `"climatextract.toml"` | Path to configuration file. |
 | `enable_mlflow` | `bool` | `False` | Whether to log results to MLflow. If `True`, uses MLflow settings from config. |
 | `verbose` | `bool` | `False` | Show detailed per-PDF output. |
+| `llm` | `LlmHandler \| None` | `None` | Custom LLM handler (keyword-only). If `None`, builds the default Azure adapter from the `[models]` section of the config. See [Custom Providers](../user-guide/custom-providers.md). |
+| `embedder` | `EmbeddingModelHandler \| None` | `None` | Custom embedding handler (keyword-only). If `None`, builds the default Azure adapter. See [Custom Providers](../user-guide/custom-providers.md). |
 
 ### Returns
 
@@ -65,6 +67,16 @@ result = extract(
 )
 ```
 
+**With a custom provider handler:**
+
+```python
+from climatextract import extract
+from climatextract.adapters.azure_openai import AzureOpenAILlmHandler
+
+llm = AzureOpenAILlmHandler(model="gpt-5.2-chat-2025-12-11", reasoning_effort="low")
+result = extract("./data/pdfs/", llm=llm)
+```
+
 ---
 
 ## `extract_and_evaluate`
@@ -91,6 +103,8 @@ result_path = extract_and_evaluate(
 | `config_path` | `str` | `"climatextract.toml"` | Path to configuration file. |
 | `enable_mlflow` | `bool` | `False` | Whether to log results and metrics to MLflow. |
 | `verbose` | `bool` | `False` | Show detailed per-PDF output. |
+| `llm` | `LlmHandler \| None` | `None` | Custom LLM handler (keyword-only). If `None`, builds the default Azure adapter from the `[models]` section of the config. See [Custom Providers](../user-guide/custom-providers.md). |
+| `embedder` | `EmbeddingModelHandler \| None` | `None` | Custom embedding handler (keyword-only). If `None`, builds the default Azure adapter. See [Custom Providers](../user-guide/custom-providers.md). |
 
 ### Returns
 

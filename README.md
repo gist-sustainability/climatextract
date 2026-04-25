@@ -44,9 +44,9 @@ sudo apt-get install poppler-utils
 
 **Windows:** Download from the [@oschwartz10612 poppler build](https://github.com/oschwartz10612/poppler-windows/releases/), extract the archive, and add the `bin/` folder to your system's PATH environment variable. See the [pdf2image documentation](https://pypi.org/project/pdf2image/) for details.
 
-### Azure OpenAI
+### LLM and embedding provider
 
-climatextract uses Azure-hosted large language models for extraction and embedding. You will need an LLM and an embedding model accessible via Azure OpenAI or Azure AI Foundry.
+climatextract ships with a reference adapter for Azure OpenAI and Azure AI Foundry, which is what the Installation guide walks through. To use a different provider (OpenAI direct, Anthropic, local models, etc.), you can inject a custom handler into `extract()` — see [Custom Providers](docs/user-guide/custom-providers.md).
 
 See the [Installation guide](docs/getting-started/installation.md) for how to configure your `.env` file with Azure credentials and authentication options.
 
@@ -89,6 +89,7 @@ The full documentation covers usage, configuration, architecture, and API refere
 | [Installation](docs/getting-started/installation.md) | Detailed setup instructions |
 | [Quickstart](docs/getting-started/quickstart.md) | First extraction walkthrough |
 | [Configuration](docs/user-guide/configuration.md) | All TOML configuration options |
+| [Custom Providers](docs/user-guide/custom-providers.md) | Plug in a non-Azure LLM or embedding backend |
 | [Architecture](docs/concepts/architecture.md) | Pipeline design and components |
 | [Prompts](docs/concepts/prompts.md) | How extraction prompts work |
 | [Evaluation](docs/concepts/evaluation.md) | Measuring extraction quality |

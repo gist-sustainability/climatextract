@@ -55,10 +55,16 @@ class SemanticSearchParams:
     # data/processed/embeddings/{emb_model}_from_2025_03_06.duckdb
     embeddings_repository: str = field(default=None)
 
+    # Maximum number of concurrent embedding API calls. If None, the
+    # adapter falls back to its per-model default (see
+    # climatextract.adapters.azure_openai._DEFAULT_MAX_CONCURRENT).
+    max_parallel_embedding_calls: int = field(default=None)
+
 
 @dataclass
 class LLMParams:
     """Parameters for the LLM."""
+    # TODO: no default llm model
     llm_model: str = field(default="gpt-4o-2024-11-20")
     prompt_type: str = field(default=None)
     prompt_role: str = field(default=None)

@@ -18,7 +18,7 @@ from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.ingestion import IngestionPipeline
 import duckdb
 
-from climatextract.config import EmbeddingModel
+from climatextract.llm_embedding_api_bridge import EmbeddingModel
 
 if TYPE_CHECKING:
     from climatextract.console import Console
@@ -782,9 +782,12 @@ if __name__ == "__main__":
 
     semantic_search_params = SemanticSearchParams()
 
+    from climatextract.adapters.azure_openai import AzureOpenAIEmbeddingHandler
+
     embeddings_repo = EmbeddingsRepository(
         database_name=semantic_search_params.path_to_embedding_repository)
-    embed_model = EmbeddingModel(model_name=semantic_search_params.emb_model)
+    embed_model = EmbeddingModel(
+        AzureOpenAIEmbeddingHandler(model=semantic_search_params.emb_model))
 
     search_query = SearchQuery(
         search_query=semantic_search_params.search_query, repository=embeddings_repo)

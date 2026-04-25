@@ -37,7 +37,7 @@ The pipeline starts by extracting text and tables from PDF pages:
 
 Text is converted to vector embeddings for semantic search:
 
-- Default model: `text-embedding-ada-002` (OpenAI)
+- Default model: `text-embedding-ada-002` (Azure-hosted, via the default adapter)
 - Embeddings stored in DuckDB for efficient retrieval
 - Query embeddings are cached to avoid redundant API calls
 
@@ -74,11 +74,25 @@ Raw LLM output is cleaned and structured:
 |-------|---------|
 | `ValueRetrieverPipeline` | Orchestrates the full extraction workflow |
 | `EmbeddingsRepository` | Manages DuckDB storage for embeddings |
+| `LlmHandler` / `EmbeddingModelHandler` | ABCs users subclass to plug in a provider |
+| `Llm` / `EmbeddingModel` | Package-side wrappers that add usage counting and concurrency control around a user's handler |
+| `AzureOpenAILlmHandler` / `AzureOpenAIEmbeddingHandler` | Reference Azure adapters, built on LiteLLM |
+| `UsageCounter` | Accumulates token counts and USD cost across calls |
 | `StructuredJsonPrompt` | Structures LLM prompts with Pydantic parsing |
 | `EvaluatorPrecisionRecallF1` | Computes evaluation metrics |
 | `Pdfdoc` | PDF document representation with page data |
-| `Llm` | LLM client with token counting and rate limiting |
 | `DataLakeManager` | Manages PDF downloads and file checks |
+
+---
+
+## Provider Abstraction
+
+LLM and embedding calls go through a two-layer pattern:
+
+- **Handler** (user-supplied): a subclass of `LlmHandler` or `EmbeddingModelHandler` that talks to a specific provider. The package ships Azure reference handlers; for other providers, users implement their own.
+- **Wrapper** (`Llm` / `EmbeddingModel`): package-side, provider-agnostic. Adds usage accounting and concurrency control around whatever the handler does.
+
+Pipeline code calls the wrapper, never the handler directly. This keeps the pipeline ignorant of provider details and lets users swap providers without touching package internals. See [Custom Providers](../user-guide/custom-providers.md) for how to write a handler.
 
 ---
 

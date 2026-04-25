@@ -98,6 +98,27 @@ When enabled, metrics and parameters are logged to your configured MLflow server
 
 ---
 
+## Using a Custom LLM or Embedding Provider
+
+`extract()` and `extract_and_evaluate()` accept two keyword-only arguments — `llm` and `embedder` — that let you override the default Azure adapter. Pass in any subclass of `LlmHandler` or `EmbeddingModelHandler`.
+
+Example — tweak the default Azure adapter's parameters:
+
+```python
+from climatextract import extract
+from climatextract.adapters.azure_openai import AzureOpenAILlmHandler
+
+llm = AzureOpenAILlmHandler(
+    model="gpt-5.2-chat-2025-12-11",
+    reasoning_effort="low",
+)
+result_path = extract("./data/pdfs/", llm=llm)
+```
+
+To route to a different provider entirely (OpenAI direct, Anthropic, a local model, etc.), you can implement your own handler. See [Custom Providers](custom-providers.md).
+
+---
+
 ## Processing Tips
 
 !!! tip "Large Batches"
