@@ -137,7 +137,7 @@ output/
     ├── results_long_format.csv                                # Main results in long format (with duplicates)
     ├── results_wide_format.csv                                # Results pivoted by year
     ├── invalid_llm_outputs.txt                                # Invalid LLM responses
-    └── logs.json                                              # Parameters, metrics, run info
+    └── config.json (or config_and_metrics.json)                                             # Parameters, metrics, run info
 ```
 
 See [Understanding Output](../user-guide/understanding-output.md) for column definitions.

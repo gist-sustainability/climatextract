@@ -85,8 +85,8 @@ def extract(
             config_params = result["config_params"]
             experiment_params = result["experiment_params"]
 
-            # Update logs.json with run_id and MLflow params
-            json_log_path = os.path.join(path_to_results, "logs.json")
+            # Update config.json with run_id and MLflow params
+            json_log_path = os.path.join(path_to_results, "config.json")
             with open(json_log_path, 'r', encoding='utf-8') as f:
                 json_logs = json.load(f)
             json_logs["run_info"]["run_id"] = run_id
@@ -176,8 +176,8 @@ def extract_and_evaluate(
             config_params = result["config_params"]
             experiment_params = result["experiment_params"]
 
-            # Update logs.json with run_id and MLflow params
-            json_log_path = os.path.join(path_to_results, "logs.json")
+            # Update config_and_metrics.json with run_id and MLflow params
+            json_log_path = os.path.join(path_to_results, "config_and_metrics.json")
             with open(json_log_path, 'r', encoding='utf-8') as f:
                 json_logs = json.load(f)
             json_logs["run_info"]["run_id"] = run_id
@@ -434,7 +434,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
                      console=console)
         has_results = True
 
-    # Save logs.json with all parameters and metrics (for both public and internal use)
+    # Save config.json with all parameters and metrics (for both public and internal use)
     json_logs = {
         "parameters": {
             **asdict(config_params),
@@ -446,7 +446,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         "metrics": llm_costs,
         "run_info": {}
     }
-    json_log_path = os.path.join(path_to_results, "logs.json")
+    json_log_path = os.path.join(path_to_results, "config.json")
     with open(json_log_path, 'w', encoding='utf-8') as f:
         json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
 
@@ -561,9 +561,9 @@ def _extract_and_evaluate_with_metadata(
             gold_standard_count=gold_standard_count
         )
 
-    # Update logs.json with evaluation metrics
+    # Update config_and_metrics.json with evaluation metrics
     if evaluation_metrics:
-        json_log_path = os.path.join(path, "logs.json")
+        json_log_path = os.path.join(path, "config_and_metrics.json")
         with open(json_log_path, 'r', encoding='utf-8') as f:
             json_logs = json.load(f)
         json_logs["metrics"].update(evaluation_metrics)

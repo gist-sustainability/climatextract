@@ -15,7 +15,7 @@ output/
     ├── results_long_format.csv                                # Main results (long format, with duplicates)
     ├── results_wide_format.csv                                # Results pivoted by year
     ├── invalid_llm_outputs.txt                                # Invalid LLM responses
-    ├── logs.json                                              # Parameters, metrics, run info
+    ├── config.json (or config_and_metrics.json)                                             # Parameters, metrics, run info
     ├── 04a_results_available_in_report.csv                    # (if evaluation enabled)
     ├── 04b_results_not_available_in_report.csv                # (if evaluation enabled)
     └── 05_results_aggregated_by_*.csv                         # (if evaluation enabled)
@@ -124,9 +124,10 @@ The deduplicated results are saved in `03_co2_emission_table2_w_query_responses_
 
 ## Logs
 
-### `logs.json`
+### `config.json` or `config_and_metrics.json`
 
-Stores the configuration, incured costs, evaluation metrics if available. A summary of what happend during this run.
+Stores the configuration, incured costs, and evaluation metrics if evaluation is configured. A summary of what happend during this run. 
+When evaluation is enabled, the file is called `config.json`, otherwise `config_and_metrics.json`. 
 
 If [MLflow](./mlflow-setup.md) has been activated, the same information will also be saved in Mlflow for comparison between experiments.
 
