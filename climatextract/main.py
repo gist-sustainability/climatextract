@@ -404,8 +404,6 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         logger.warning("No PDFs were processed. Exiting.")
         return None
 
-    raw_results, invalid_llm_outputs = _rearrange_results(results)
-
     # Create combined token counts from both LLM and embedding model
     llm_costs = llm.create_llm_costs_dict()
 
@@ -419,15 +417,10 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     if hasattr(embed_model, 'token_counter'):
         embed_model.token_counter.reset_counts()
 
-    # Save invalid outputs
-    with open(os.path.join(
-            path_to_results, "invalid_llm_outputs.txt"), 'w', encoding='utf-8') as f:
-        f.write(str(invalid_llm_outputs))
-
     # Save results
     has_results = False
-    if raw_results != [None]:
-        save_results(raw_results=raw_results,
+    if results != [None]:
+        save_results(raw_results=results,
                      path_to_results=path_to_results,
                      first_write=True,
                      results_type='final',
@@ -655,10 +648,3 @@ def _resolve_pdf_input(pdf_input: str | List[str]) -> List[str]:
     else:
         # pdf_input is List[str]
         return pdf_input
- 
-def _rearrange_results(results):
-    """Rearrange the results."""
-    raw_results, invalid_llm_outputs = zip(*results)
-    return list(raw_results), list(invalid_llm_outputs)
-
-

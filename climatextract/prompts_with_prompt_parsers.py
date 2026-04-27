@@ -39,14 +39,14 @@ class PromptProcessorInterface(ABC):
         pass
     
     @abstractmethod
-    def process_llm_output(self, llm_output) -> Tuple[pd.DataFrame, List]:
+    def process_llm_output(self, llm_output) -> pd.DataFrame:
         """Process LLM output and return structured data.
         
         Args:
             llm_output: Raw output from the LLM
             
         Returns:
-            Tuple of (processed_dataframe, invalid_outputs)
+            processed_dataframe
         """
         pass
     
@@ -198,10 +198,8 @@ class StructuredJsonPrompt(PromptProcessorInterface):
         return formatted_prompt
 
     @mlflow.trace(span_type=SpanType.CHAIN, attributes={"query": "parser"})
-    def process_llm_output(self, llm_output) -> Tuple[pd.DataFrame, List]:
+    def process_llm_output(self, llm_output) -> pd.DataFrame:
         """Parse JSON output and compute confidence if log-probs are available."""
-
-        invalid_kpi_entries: List = []
 
         # Split dict vs legacy string
         if isinstance(llm_output, dict):
@@ -214,7 +212,7 @@ class StructuredJsonPrompt(PromptProcessorInterface):
         try:
             content = raw_output_str.strip("```json").strip("```")
             content = json.loads(content)
-            valid_kpi_entries, invalid_kpi_entries = self._validate_llm_output_content(
+            valid_kpi_entries = self._validate_llm_output_content(
                 content)
             output_table = self._reformat_output_table(
                 valid_kpi_entries, raw_output_str, log_blocks)
@@ -225,13 +223,12 @@ class StructuredJsonPrompt(PromptProcessorInterface):
             emtpy_table = self._fill_no_extractions_table()
             output_table = self._reformat_output_table(emtpy_table, raw_output_str, log_blocks)
 
-        return output_table, invalid_kpi_entries
+        return output_table
 
     def _validate_llm_output_content(self, llm_output):
         """Process the output of the LLM to validate the KPI entries. """
 
         valid_entries = []
-        invalid_entries = []
 
         for entry in llm_output["KPI_Entries"]:
             try:
@@ -243,9 +240,9 @@ class StructuredJsonPrompt(PromptProcessorInterface):
                 entry_dict['unit_original'] = entry.get('unit')
                 valid_entries.append(entry_dict)
             except ValidationError as e:
-                invalid_entries.append({"entry": entry, "error": str(e)})
-
-        return valid_entries, invalid_entries
+                logging.getLogger(__name__).warning("Validation error for entry %s: %s", entry, e)
+        
+        return valid_entries
 
     def _reformat_output_table(self, output_list: List, llm_output: str, log_blocks=None) -> pd.DataFrame:
         """Change output table to desired format"""
@@ -367,7 +364,7 @@ class LlmSinglePromptQueryScope123(PromptProcessorInterface):
 
         return formatted_prompt
 
-    def process_llm_output(self, llm_output) -> Tuple[pd.DataFrame, List]:
+    def process_llm_output(self, llm_output) -> pd.DataFrame:
         """Extract year, scope, value, unit and compute probability if available."""
 
         # Accept both legacy string and new dict with logprobs
@@ -379,18 +376,17 @@ class LlmSinglePromptQueryScope123(PromptProcessorInterface):
             raw_str, log_blocks = str(llm_output), None
 
         output_list: List = []
-        invalid_output: List = []
 
-        output_list, invalid_output = self._find_match(
-            raw_str, output_list, invalid_output, information_found=True, log_blocks=log_blocks)
-        output_list, invalid_output = self._find_match(
-            raw_str, output_list, invalid_output, information_found=False, log_blocks=log_blocks)
+        output_list = self._find_match(
+            raw_str, output_list, information_found=True, log_blocks=log_blocks)
+        output_list = self._find_match(
+            raw_str, output_list, information_found=False, log_blocks=log_blocks)
 
         output_table = self._reformat_output_table(output_list, raw_str)
-        return output_table, invalid_output
+        return output_table
 
-    def _find_match(self, llm_output: str, output_list: List, invalid_output: List, 
-                    information_found: bool, log_blocks=None) -> Tuple[List, List]:
+    def _find_match(self, llm_output: str, output_list: List, 
+                    information_found: bool, log_blocks=None) -> List:
         """Use regex pattern matching to extract information for specific year
         and scope if available"""
 
@@ -407,7 +403,7 @@ class LlmSinglePromptQueryScope123(PromptProcessorInterface):
         matches = re.finditer(pattern, llm_output, re.MULTILINE)
 
         if matches is None:
-            invalid_output.append("Regex failed")
+            logging.getLogger(__name__).warning("Regex failed for pattern: %s", pattern)
 
         for _, match in enumerate(matches, start=1):
             if information_found:
@@ -435,9 +431,9 @@ class LlmSinglePromptQueryScope123(PromptProcessorInterface):
                 })
             output_list.append(entry)
 
-        return output_list, invalid_output
+        return output_list
 
-    def _reformat_output_table(self, output_list: List, llm_output: str) -> pd.DataFrame:
+    def _reformat_output_table(self, output_list: List, llm_output: str, log_blocks=None) -> pd.DataFrame:
         """Change output table to desired format"""
 
         if len(output_list) > 0:
@@ -521,7 +517,7 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
 
         return formatted_prompt
 
-    def process_llm_output(self, llm_output) -> Tuple[pd.DataFrame, List]:
+    def process_llm_output(self, llm_output) -> pd.DataFrame:
         """Extract data and compute probability when log-probs available."""
 
         if isinstance(llm_output, dict):
@@ -532,19 +528,18 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
             raw_str, log_blocks = str(llm_output), None
 
         output_list: List = []
-        invalid_output: List = []
 
-        output_list, invalid_output = self._find_match(
-            raw_str, output_list, invalid_output, information_found=True, log_blocks=log_blocks)
-        output_list, invalid_output = self._find_match(
-            raw_str, output_list, invalid_output, information_found=False)
+        output_list = self._find_match(
+            raw_str, output_list, information_found=True, log_blocks=log_blocks)
+        output_list = self._find_match(
+            raw_str, output_list, information_found=False)
 
         output_table = self._reformat_output_table(output_list, raw_str)
 
-        return output_table, invalid_output
+        return output_table
 
-    def _find_match(self, llm_output: str, output_list: List, invalid_output: List, 
-                    information_found: bool, log_blocks=None) -> Tuple[List, List]:
+    def _find_match(self, llm_output: str, output_list: List,
+                    information_found: bool, log_blocks=None) -> List:
         """Use regex pattern matching to extract information for specific year
         and scope if available"""
         str_llm_output = str(llm_output)
@@ -562,7 +557,7 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
         matches = re.finditer(pattern, str_llm_output, re.MULTILINE)
 
         if matches is None:
-            invalid_output.append("Regex failed")
+            logging.getLogger(__name__).warning("Regex failed for pattern: %s", pattern)
 
         for _, match in enumerate(matches, start=1):
             if information_found:
@@ -591,7 +586,7 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
                 })
             output_list.append(entry)
 
-        return output_list, invalid_output
+        return output_list
 
     def _reformat_output_table(self, output_list: List, llm_output: str) -> pd.DataFrame:
         """Change output table to desired format"""

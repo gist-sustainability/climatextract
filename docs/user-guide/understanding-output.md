@@ -14,7 +14,6 @@ output/
     ├── intermediate_results.csv                               # Intermediate extraction results
     ├── results_long_format.csv                                # Main results (long format, with duplicates)
     ├── results_wide_format.csv                                # Results pivoted by year
-    ├── invalid_llm_outputs.txt                                # Invalid LLM responses
     ├── config.json (or config_and_metrics.json)                                             # Parameters, metrics, run info
     ├── 04a_results_available_in_report.csv                    # (if evaluation enabled)
     ├── 04b_results_not_available_in_report.csv                # (if evaluation enabled)
