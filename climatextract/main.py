@@ -556,12 +556,14 @@ def _extract_and_evaluate_with_metadata(
 
     # Update config_and_metrics.json with evaluation metrics
     if evaluation_metrics:
-        json_log_path = os.path.join(path, "config_and_metrics.json")
+        json_log_path = os.path.join(path, "config.json")
         with open(json_log_path, 'r', encoding='utf-8') as f:
             json_logs = json.load(f)
         json_logs["metrics"].update(evaluation_metrics)
+        json_log_path = os.path.join(path, "config_and_metrics.json")
         with open(json_log_path, 'w', encoding='utf-8') as f:
             json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
+        os.remove(os.path.join(path, "config.json"))  # Remove old config.json without metrics
 
     # Add evaluation metrics to result
     result["evaluation_metrics"] = evaluation_metrics
