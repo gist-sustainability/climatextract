@@ -84,7 +84,7 @@ def test_quality(prompt_type, input_mode):
         Test the quality of results for different prompt types and input modes.
 
         This test verifies that:
-        1. The required artifact '04a_results_available_in_report.csv' is present.
+        1. The required artifact 'eval_results_vs_benchmark.csv' is present.
         2. The 'value_match' column contains the expected number of True and NA values.
         3. Any mismatches in 'value_match' are reported.
         4. Optionally, the number of True values in 'unit_match' and mismatches are reported.
@@ -94,7 +94,7 @@ def test_quality(prompt_type, input_mode):
         - input_mode: The input mode to use ('text' or 'text+table').
         """
     # Configuration
-    expected_artifact_name = "04a_results_available_in_report.csv"
+    expected_artifact_name = "eval_results_vs_benchmark.csv"
     expected_true_value_matches = 32
 
     # Mlflow setup

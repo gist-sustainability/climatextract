@@ -14,9 +14,8 @@ output/
     ├── results_long_format.csv                                # Main results (long format, with duplicates)
     ├── results_wide_format.csv                                # Results pivoted by year
     ├── config.json (or config_and_metrics.json)                                             # Parameters, metrics, run info
-    ├── 04a_results_available_in_report.csv                    # (if evaluation enabled)
-    ├── 04b_results_not_available_in_report.csv                # (if evaluation enabled)
-    └── 05_results_aggregated_by_*.csv                         # (if evaluation enabled)
+    ├── eval_results_vs_benchmark.csv                    # (if evaluation enabled)
+    └── eval_results_metrics_by_*.csv                         # (if evaluation enabled)
 ```
 
 ---
@@ -133,15 +132,11 @@ If [MLflow](./mlflow-setup.md) has been activated, the same information will als
 
 When evaluation is enabled, additional files are created directly in the run directory:
 
-### `04a_results_available_in_report.csv`
+### `eval_results_vs_benchmark.csv`
 
-Values where emissions information exists in the report — row-by-row comparison with gold standard.
+Row-by-row comparison with gold standard.
 
-### `04b_results_not_available_in_report.csv`
-
-Values where emissions information does not exist in the report.
-
-### `05_results_aggregated_by_*.csv`
+### `eval_results_metrics_by_*.csv`
 
 Aggregate evaluation metrics grouped by different dimensions (e.g., per document, per scope).
 
@@ -149,7 +144,6 @@ Aggregate evaluation metrics grouped by different dimensions (e.g., per document
 
 When using `precision_recall_f1` or `both` evaluation mode, additional files are created:
 
-- `error_analysis_per_doc.csv` — Error analysis aggregated per document
 - `error_analysis_per_row.csv` — Error analysis per individual row
 
 ---

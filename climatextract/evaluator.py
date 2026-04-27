@@ -290,23 +290,28 @@ class EvaluatorDefault(EvaluatorData):
         #     'automatic_extraction_tried'].value_counts()
 
     def _save_comparison_reports(self):
-        """Save detailed comparisons between human & automated annotations \
-            separating them in two groups: information is or is not in sustainability report."""
+        """Save detailed comparisons between human & automated annotations"""
         results_subset = self._subset_reports()
-        results_available_in_report = results_subset[results_subset["human_found_co2_emissions"]]
-        results_not_available_in_report = results_subset[
-            ~results_subset["human_found_co2_emissions"]]
 
-        results_available_in_report.to_csv(os.path.join(
-            self.path_to_results, "04a_results_available_in_report.csv"))
-        results_not_available_in_report.to_csv(os.path.join(
-            self.path_to_results, "04b_results_not_available_in_report.csv"))
+        results_subset = self._classify_errors(results_subset)
+
+        results_subset.to_csv(os.path.join(
+            self.path_to_results, "eval_results_vs_benchmark.csv"), index=False)
 
         self.small_results_subset = results_subset
 
     def _subset_reports(self) -> pd.DataFrame:
         """Keep reports only if we actually tried to extract information automatically."""
         return self.small_results[self.small_results["automatic_extraction_tried"]]
+    
+    def _classify_errors(self, results_subset: pd.DataFrame) -> pd.DataFrame:
+        """Compare the results and ground truth data sets."""
+        # For now only comparison on value
+        # Later: extend to unit and value AND unit
+        results_subset['error_value'] = results_subset.apply(
+            evaluate_helpers.classify_error, axis=1, on="value")
+
+        return results_subset
 
     def _aggregate_and_save_comparisons(self, aggregate_by: List[str]):
         """Aggregate comparison results by variables listed in aggregate_by and /
@@ -338,7 +343,7 @@ class EvaluatorDefault(EvaluatorData):
         file_suffix = "_and_".join(
             aggregate_by) if len(aggregate_by) > 1 else "".join(aggregate_by)
         grouped_df.to_csv(os.path.join(
-            self.path_to_results, f"05_results_aggregated_by_{file_suffix}.csv"))
+            self.path_to_results, f"eval_results_metrics_by_{file_suffix}.csv"))
 
         return grouped_df
 
@@ -395,10 +400,7 @@ class EvaluatorPrecisionRecallF1(EvaluatorData):
         merged_data = self._merge_data_for_comparison()
         results = self._classify_errors(merged_data)
         results_overall = self._compute_metrics_overall(results)
-        results_per_doc = self._compute_metrics_per_doc(results)
 
-        self._save_results(
-            results_per_doc, self.path_to_results, 'error_analysis_per_doc.csv')
         self._save_results(results, self.path_to_results,
                            'error_analysis_per_row.csv')
 
@@ -530,7 +532,7 @@ def evaluate(path_to_results: str, gold_standard: str, mode: str):
 
 if __name__ == "__main__":
     evaluate(
-        "output/290144e0b01b493390c2c466a87ad1f4",
-        "./data/evaluation_dataset/gist_2025.csv",
+        "output/dc3daaf464444fc4a29762f57316068b",
+        "./data/evaluation_dataset/gold_standard.csv",
         "both"
     )
