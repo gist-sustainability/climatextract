@@ -124,7 +124,7 @@ Configure evaluation against a gold standard:
 
 ```toml
 [evaluation]
-# Evaluation mode: "no_evaluation", "default", "precision_recall_f1", "both"
+# Evaluation mode: "no_evaluation", "with_evaluation"
 evaluation_mode = "no_evaluation"
 
 # Path to gold standard dataset
@@ -191,7 +191,7 @@ percentile_threshold = 95             # score cutoff percentile
 output_dir = "output"
 
 [evaluation]
-evaluation_mode = "no_evaluation"     # "no_evaluation", "default", "precision_recall_f1", "both"
+evaluation_mode = "no_evaluation"     # "no_evaluation", "with_evaluation"
 gold_standard = "data/evaluation_dataset/gold_standard.csv"
 
 [datalake]

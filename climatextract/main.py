@@ -542,8 +542,7 @@ def _extract_and_evaluate_with_metadata(
     # Run evaluation
     evaluation_metrics = evaluate(
         path_to_results=path,
-        gold_standard=gs_path,
-        mode=config_params.evaluation_mode
+        gold_standard=gs_path
     )
 
     # Print evaluation results

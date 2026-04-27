@@ -207,7 +207,7 @@ class Llm:
                 tokenizer=tiktoken.encoding_for_model("gpt-4o").encode
             )
 
-        elif self.model_name == "gpt-5.2-chat-2025-12-11":
+        elif self.model_name == "gpt-5.2-chat":
             self.api_version = "2024-12-01-preview"
             self.azure_endpoint = os.environ["AZURE_AI_FOUNDRY_ENDPOINT"]
             self.supports_logprobs = False

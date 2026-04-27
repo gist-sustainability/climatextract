@@ -33,44 +33,18 @@ gold_standard = "data/evaluation_dataset/gist_2025.csv"
 
 ## Evaluation Modes
 
-### Default Mode
-
-Standard evaluation with match classification:
+### With evaluation
 
 ```toml
 [evaluation]
-evaluation_mode = "default"
+evaluation_mode = "with_evaluation"
 ```
 
 Produces:
 
-- Comparison reports by document
-- Match type classification (found/not found)
-- Error analysis
-
-### Precision-Recall-F1 Mode
-
-Information retrieval metrics:
-
-```toml
-[evaluation]
-evaluation_mode = "precision_recall_f1"
-```
-
-Produces:
-
+- Row-by-row comparison with benchmark
+- Per-document metrics with error type
 - Overall precision, recall, F1
-- Per-document metrics
-- Error type breakdown
-
-### Both Modes
-
-Run both evaluations:
-
-```toml
-[evaluation]
-evaluation_mode = "both"
-```
 
 ---
 
