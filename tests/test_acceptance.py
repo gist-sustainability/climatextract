@@ -56,7 +56,7 @@ def test_functionality(prompt_type, input_mode):
     assert artifacts, f"No artifacts found for the run {run_id}"
 
     target_artifact = next((artifact for artifact in artifacts if artifact.path.endswith(
-        "03_co2_emission_table2_w_query_responses.csv")), None)
+        "raw_results.csv")), None)
     if target_artifact:
         local_path = mlflow.artifacts.download_artifacts(
             run_id=run_id, artifact_path=target_artifact.path)

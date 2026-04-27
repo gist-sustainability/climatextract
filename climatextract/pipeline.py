@@ -262,7 +262,7 @@ def save_results(raw_results, path_to_results: str, first_write: bool, results_t
         query_responses, co2_emission_table)
 
     if results_type == "intermediate_results":
-        output_file = os.path.join(path_to_results, "intermediate_results.csv")
+        output_file = os.path.join(path_to_results, "raw_results_temp.csv")
 
         # Append results iteratively to CSV
         co2_emission_table2_w_query_responses.to_csv(
@@ -283,15 +283,9 @@ def save_results(raw_results, path_to_results: str, first_write: bool, results_t
     # Save final original results
     co2_emission_table2_w_query_responses_marked.to_csv(
         os.path.join(path_to_results,
-                     "03_co2_emission_table2_w_query_responses.csv"), index=False)
+                     "raw_results.csv"), index=False)
 
-    # Also save filtered results
-    co2_emission_table2_w_query_responses_filtered = select_duplicates_in_output(
-        co2_emission_table2_w_query_responses_marked)
-    co2_emission_table2_w_query_responses_filtered.to_csv(
-        os.path.join(path_to_results,
-                     "03_co2_emission_table2_w_query_responses_filtered.csv"), index=False)
-
+  
     # save results in more compact format (long, including duplicates)
     long_format_df = prepare_long_format_output_table_from(
         co2_emission_table2_w_query_responses_marked)
@@ -299,6 +293,8 @@ def save_results(raw_results, path_to_results: str, first_write: bool, results_t
         os.path.join(path_to_results, "results_long_format.csv"), index=False)
 
     # save results in more compact format (wide, deduplicated)
+    co2_emission_table2_w_query_responses_filtered = select_duplicates_in_output(
+        co2_emission_table2_w_query_responses_marked)
     wide_format_df = prepare_wide_formate_output_table_from(
         co2_emission_table2_w_query_responses_filtered, dupl_columns, console)
     if wide_format_df is not None:

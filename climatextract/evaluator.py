@@ -7,7 +7,7 @@ import pandas as pd
 
 import climatextract.evaluate_helpers as evaluate_helpers
 from climatextract.helpers import get_unit_normalization_mapping, get_value_standardization
-from climatextract.resolve_duplicates import handle_duplicates_in_ground_truth
+from climatextract.resolve_duplicates import handle_duplicates_in_ground_truth, select_duplicates_in_output
 
 
 class EvaluatorData:
@@ -20,7 +20,7 @@ class EvaluatorData:
         self.path_to_results = path_to_results
 
         self.results = pd.read_csv(os.path.join(
-            self.path_to_results, "03_co2_emission_table2_w_query_responses_filtered.csv"),
+            self.path_to_results, "raw_results.csv"),
             dtype={
                 'extracted_scope_from_llm_orig': str,
                 'extracted_scope_from_llm': str,
@@ -29,6 +29,8 @@ class EvaluatorData:
         })
         self.results['page_numbers_tried_by_llm'] = self.results['page_numbers_tried_by_llm'].apply(
             ast.literal_eval)
+        # Filter out duplicates
+        self.results = select_duplicates_in_output(self.results)
 
         self.small_results = None
         self.small_results_subset = None

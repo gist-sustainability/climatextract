@@ -135,7 +135,7 @@ def read_json_to_str(input_json_path):
 def read_output_files(output_path):
     """Read output table file in specified folder."""
 
-    output_file_path = output_path + '03_co2_emission_table2_w_query_responses.csv'
+    output_file_path = output_path + 'raw_results.csv'
 
     # Read the output table
     output_table = pd.read_csv(output_file_path)

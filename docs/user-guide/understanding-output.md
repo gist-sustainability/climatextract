@@ -9,9 +9,8 @@ After running extraction, climatextract saves results to the `output/<run-id>/` 
 ```
 output/
 └── abc123-uuid/
-    ├── 03_co2_emission_table2_w_query_responses.csv           # Page-level details (with duplicates)
-    ├── 03_co2_emission_table2_w_query_responses_filtered.csv  # Deduplicated responses
-    ├── intermediate_results.csv                               # Intermediate extraction results
+    ├── raw_results.csv           # Page-level details (with duplicates)
+    ├── raw_results_temp.csv                               # Intermediate extraction results
     ├── results_long_format.csv                                # Main results (long format, with duplicates)
     ├── results_wide_format.csv                                # Results pivoted by year
     ├── config.json (or config_and_metrics.json)                                             # Parameters, metrics, run info
@@ -86,11 +85,11 @@ For a given indicator, the pipeline may extract multiple identical/conflicting v
 In cases when only a single value per report_id-year combination got extracted, no duplicate resolution is necessary: `dupl_reason = 0`
 
 !!! tip "Duplicate Investigation"
-    Use `03_co2_emission_table2_w_query_responses.csv` to investigate why duplicates occurred and which pages contained the data.
+    Use `results_wide_format.csv` to investigate why duplicates occurred and which pages contained the data.
 
 ---
 
-## Query Responses: `03_co2_emission_table2_w_query_responses.csv`
+## Query Responses: `raw_results.csv`
 
 Detailed page-level information about the extraction process. 
 
@@ -116,8 +115,6 @@ Key columns (column names are not final):
 | `unit_probability` | `unit_score` | LLM confidence for the extracted unit |
 | `duplicate_flag` | `dupl_flag` | Whether the row is a duplicate |
 | `select_flag` | `select_flag` | Whether the row was selected after deduplication |
-
-The deduplicated results are saved in `03_co2_emission_table2_w_query_responses_filtered.csv`.
 
 ---
 

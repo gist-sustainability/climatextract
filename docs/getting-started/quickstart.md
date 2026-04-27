@@ -131,12 +131,10 @@ After extraction, you'll find results in `output/<run-id>/`:
 ```
 output/
 └── abc123-uuid/
-    ├── 03_co2_emission_table2_w_query_responses.csv           # Page-level LLM responses (with duplicates)
-    ├── 03_co2_emission_table2_w_query_responses_filtered.csv  # Deduplicated responses
-    ├── intermediate_results.csv                               # Pre-normalization extraction results
+    ├── raw_results.csv                     # Page-level LLM responses (with duplicates)
+    ├── raw_results_temp.csv                               # Pre-normalization extraction results
     ├── results_long_format.csv                                # Main results in long format (with duplicates)
     ├── results_wide_format.csv                                # Results pivoted by year
-    ├── invalid_llm_outputs.txt                                # Invalid LLM responses
     └── config.json (or config_and_metrics.json)                                             # Parameters, metrics, run info
 ```
 
