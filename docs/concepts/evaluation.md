@@ -22,55 +22,22 @@ The evaluation uses human-annotated ground truth data:
 
 - **Format**: CSV with expected emissions values
 - **Columns**: `report_name`, `year`, `scope`, `value`, `unit`
-- **Default**: `data/evaluation_dataset/gist_2025.csv`
+- **Default**: `data/evaluation_dataset/gold_standard.csv`
 
 ```toml
 [evaluation]
-gold_standard = "data/evaluation_dataset/gist_2025.csv"
+gold_standard = "data/evaluation_dataset/gold_standard.csv"
 ```
 
 ---
 
-## Evaluation Modes
+## Evaluation Output
 
-### Default Mode
+Calling `extract_and_evaluate()` produces:
 
-Standard evaluation with match classification:
-
-```toml
-[evaluation]
-evaluation_mode = "default"
-```
-
-Produces:
-
-- Comparison reports by document
-- Match type classification (found/not found)
-- Error analysis
-
-### Precision-Recall-F1 Mode
-
-Information retrieval metrics:
-
-```toml
-[evaluation]
-evaluation_mode = "precision_recall_f1"
-```
-
-Produces:
-
+- Row-by-row comparison with benchmark
+- Per-document metrics with error type
 - Overall precision, recall, F1
-- Per-document metrics
-- Error type breakdown
-
-### Both Modes
-
-Run both evaluations:
-
-```toml
-[evaluation]
-evaluation_mode = "both"
-```
 
 ---
 
@@ -134,7 +101,7 @@ from climatextract import extract_and_evaluate
 
 result_path = extract_and_evaluate(
     pdf_input="./data/pdfs/sample/",
-    gold_standard_path="./data/evaluation_dataset/gist_2025.csv"
+    gold_standard_path="./data/evaluation_dataset/gold_standard.csv"
 )
 ```
 
@@ -146,11 +113,9 @@ Evaluation creates additional files in the output directory:
 
 | File | Contents |
 |------|----------|
-| `04a_results_available_in_report.csv` | Values where info exists in report |
-| `04b_results_not_available_in_report.csv` | Values where info doesn't exist |
-| `05_results_aggregated_by_*.csv` | Metrics aggregated by different dimensions |
-| `error_analysis_per_doc.csv` | Per-document error analysis (precision_recall_f1 mode) |
-| `error_analysis_per_row.csv` | Per-row error analysis (precision_recall_f1 mode) |
+| `eval_results_vs_benchmark.csv` | Results matched row-wise with benchmark data |
+| `eval_results_metrics_by_ReportName.csv` | Metrics aggregated per report |
+| `config_and_metrics.json` | Configuration plus extraction and evaluation metrics |
 
 ---
 

@@ -1,13 +1,13 @@
 """Module to evaluate our pipeline"""
 
 import os
-from typing import Dict, List, Optional
+from typing import Dict, List
 import ast
 import pandas as pd
 
 import climatextract.evaluate_helpers as evaluate_helpers
 from climatextract.helpers import get_unit_normalization_mapping, get_value_standardization
-from climatextract.resolve_duplicates import handle_duplicates_in_ground_truth
+from climatextract.resolve_duplicates import handle_duplicates_in_ground_truth, select_duplicates_in_output
 
 
 class EvaluatorData:
@@ -20,7 +20,7 @@ class EvaluatorData:
         self.path_to_results = path_to_results
 
         self.results = pd.read_csv(os.path.join(
-            self.path_to_results, "03_co2_emission_table2_w_query_responses_filtered.csv"),
+            self.path_to_results, "raw_results.csv"),
             dtype={
                 'extracted_scope_from_llm_orig': str,
                 'extracted_scope_from_llm': str,
@@ -29,6 +29,8 @@ class EvaluatorData:
         })
         self.results['page_numbers_tried_by_llm'] = self.results['page_numbers_tried_by_llm'].apply(
             ast.literal_eval)
+        # Filter out duplicates
+        self.results = select_duplicates_in_output(self.results)
 
         self.small_results = None
         self.small_results_subset = None
@@ -102,10 +104,10 @@ class EvaluatorData:
 
     def _merge_data_for_comparison(self) -> pd.DataFrame:
         """
-            1. Copy "automatic_extraction_tried",  "page_numbers_tried_by_llm" 
+            1. Copy "automatic_extraction_tried",  "page_numbers_tried_by_llm"
                 into ground_truth dataset: grtruth_extended
             2. Remove all years/scopes from LLM output dataset if they are missing: tinyresults
-            3. Left-Merge tinyresults into grtruth_extended, 
+            3. Left-Merge tinyresults into grtruth_extended,
                 to only keep scope-year-combinations from grid
                 =(we keep >= 1 row for each scope-year-combination from ground truth) & \
                 & (we keep 0-\\infty rows/extracted values from each page)
@@ -161,10 +163,6 @@ class EvaluatorData:
 
         return merged_results
 
-
-class EvaluatorDefault(EvaluatorData):
-    """Class to perform evaluation of RAG pipeline using default evaluation metrics"""
-
     def run(self):
         """Main evaluation routine that calls all intermediate steps."""
         self.small_results = self._merge_data_for_comparison()
@@ -173,7 +171,9 @@ class EvaluatorDefault(EvaluatorData):
         self._save_comparison_reports()
         results_per_doc = self._aggregate_and_save_comparisons(
             aggregate_by=['ReportName'])
-        metrics = self._prepare_results_for_mlflow(results_per_doc)
+        custom_metrics = self._prepare_results_for_mlflow(results_per_doc)
+        ie_metrics = self._compute_ie_metrics(on="value")
+        metrics = custom_metrics | ie_metrics
 
         return metrics
 
@@ -288,23 +288,28 @@ class EvaluatorDefault(EvaluatorData):
         #     'automatic_extraction_tried'].value_counts()
 
     def _save_comparison_reports(self):
-        """Save detailed comparisons between human & automated annotations \
-            separating them in two groups: information is or is not in sustainability report."""
+        """Save detailed comparisons between human & automated annotations"""
         results_subset = self._subset_reports()
-        results_available_in_report = results_subset[results_subset["human_found_co2_emissions"]]
-        results_not_available_in_report = results_subset[
-            ~results_subset["human_found_co2_emissions"]]
 
-        results_available_in_report.to_csv(os.path.join(
-            self.path_to_results, "04a_results_available_in_report.csv"))
-        results_not_available_in_report.to_csv(os.path.join(
-            self.path_to_results, "04b_results_not_available_in_report.csv"))
+        results_subset = self._classify_errors(results_subset)
+
+        results_subset.to_csv(os.path.join(
+            self.path_to_results, "eval_results_vs_benchmark.csv"), index=False)
 
         self.small_results_subset = results_subset
 
     def _subset_reports(self) -> pd.DataFrame:
         """Keep reports only if we actually tried to extract information automatically."""
-        return self.small_results[self.small_results["automatic_extraction_tried"]]
+        return self.small_results[self.small_results["automatic_extraction_tried"]].copy()
+
+    def _classify_errors(self, results_subset: pd.DataFrame) -> pd.DataFrame:
+        """Compare the results and ground truth data sets."""
+        # For now only comparison on value
+        # Later: extend to unit and value AND unit
+        results_subset.loc[:, 'error_value'] = results_subset.apply(
+            evaluate_helpers.classify_error, axis=1, on="value")
+
+        return results_subset
 
     def _aggregate_and_save_comparisons(self, aggregate_by: List[str]):
         """Aggregate comparison results by variables listed in aggregate_by and /
@@ -336,7 +341,7 @@ class EvaluatorDefault(EvaluatorData):
         file_suffix = "_and_".join(
             aggregate_by) if len(aggregate_by) > 1 else "".join(aggregate_by)
         grouped_df.to_csv(os.path.join(
-            self.path_to_results, f"05_results_aggregated_by_{file_suffix}.csv"))
+            self.path_to_results, f"eval_results_metrics_by_{file_suffix}.csv"))
 
         return grouped_df
 
@@ -384,42 +389,14 @@ class EvaluatorDefault(EvaluatorData):
                 "where automatic extraction was tried")
         return
 
-
-class EvaluatorPrecisionRecallF1(EvaluatorData):
-    """Class to perform evaluation of RAG pipeline using precision, recall, and F1 score."""
-
-    def run(self):
-        """Evaluate the precision, recall, and F1 score of the extracted data."""
-        merged_data = self._merge_data_for_comparison()
-        results = self._classify_errors(merged_data)
-        results_overall = self._compute_metrics_overall(results)
-        results_per_doc = self._compute_metrics_per_doc(results)
-
-        self._save_results(
-            results_per_doc, self.path_to_results, 'error_analysis_per_doc.csv')
-        self._save_results(results, self.path_to_results,
-                           'error_analysis_per_row.csv')
-
-        return results_overall
-
-    def _classify_errors(self, merged_data):
-        """Compare the results and ground truth data sets."""
-        # For now only comparison on value
-        # Later: extend to unit and value AND unit
-        eval_data = merged_data[merged_data['automatic_extraction_tried']].copy()
-        eval_data['error_value'] = eval_data.apply(
-            evaluate_helpers.classify_error, axis=1, on="value")
-
-        return eval_data
-
-    def _compute_metrics_overall(self, merged_data, on="value"):
-        """Compute overall metrics."""
+    def _compute_ie_metrics(self, on="value") -> Dict[str, int]:
+        """Compute ie metrics: precision, recall, f1."""
         all_errors = [f'true_negative_{on}', f'false_positive_{on}',
                       f'true_positive_{on}', f'false_negative_{on}']
-        values_overall = merged_data['error_value'].value_counts().reindex(
+        values_overall = self.small_results_subset['error_value'].value_counts().reindex(
             all_errors, fill_value=0)
 
-        self._sanity_check_overall(values_overall)
+        self._sanity_check_ie_metrics(values_overall)
 
         values_overall['precision_value'] = evaluate_helpers.compute_precision(
             values_overall, on)
@@ -432,7 +409,7 @@ class EvaluatorPrecisionRecallF1(EvaluatorData):
 
         return values_dict
 
-    def _sanity_check_overall(self, error_types):
+    def _sanity_check_ie_metrics(self, error_types):
         total_errors = error_types.sum()
         n_reports = self.results['report_name_short'].nunique()
         # year-range in ground truth: 2013-2022
@@ -447,52 +424,13 @@ class EvaluatorPrecisionRecallF1(EvaluatorData):
                 "in the ground truth data")
         return
 
-    def _compute_metrics_per_doc(self, merged_data, on="value"):
-        """Compute metrics per document."""
 
-        all_errors = [f'true_negative_{on}', f'false_positive_{on}',
-                      f'true_positive_{on}', f'false_negative_{on}']
-        values_per_doc = (
-            merged_data
-            .groupby('report_name')['error_value']
-            .value_counts()
-            .unstack(fill_value=0)
-            # Ensure all error types are present
-            .reindex(columns=all_errors, fill_value=0)
-        )
-
-        # TODO: implement
-        # self._sanity_check_per_doc(values_per_doc, merged_data)
-
-        values_per_doc['precision_value'] = values_per_doc.apply(
-            evaluate_helpers.compute_precision, axis=1, on=on)
-        values_per_doc['recall_value'] = values_per_doc.apply(
-            evaluate_helpers.compute_recall, axis=1, on=on)
-        values_per_doc['f1_value'] = values_per_doc.apply(
-            evaluate_helpers.compute_f1, axis=1, on=on)
-
-        return values_per_doc
-
-    def _save_results(self,
-                      results,
-                      path_to_results: Optional[str],
-                      file_name: str):
-        """Save the results to a file."""
-
-        if path_to_results is None:
-            path_to_results = self.path_to_results
-
-        output_path = os.path.join(self.path_to_results, file_name)
-        results.to_csv(output_path)
-
-
-def evaluate(path_to_results: str, gold_standard: str, mode: str):
+def evaluate(path_to_results: str, gold_standard: str):
     """Sets up path to ground truth and runs evaluation routine.
-    
+
     Args:
         path_to_results: Path to the extraction results directory.
         gold_standard: Path to the gold standard CSV file.
-        mode: Evaluation mode ('default', 'precision_recall_f1', or 'both').
     """
     # Verify gold standard file exists
     if not os.path.exists(gold_standard):
@@ -500,35 +438,20 @@ def evaluate(path_to_results: str, gold_standard: str, mode: str):
             f"Gold standard file not found at '{gold_standard}'. "
             "Please provide a valid path to the gold standard CSV file."
         )
-    
+
     path_to_ground_truth = gold_standard
 
     evaluation_metrics = None
 
-    default_evaluator = EvaluatorDefault(
+    evaluator = EvaluatorData(
         path_to_results=path_to_results, path_to_ground_truth=path_to_ground_truth)
-    default_evaluation_metrics = default_evaluator.run()
-
-    precision_evaluator = EvaluatorPrecisionRecallF1(
-        path_to_results=path_to_results,
-        path_to_ground_truth=path_to_ground_truth)
-    precision_evaluation_metrics = precision_evaluator.run()
-
-    if mode == 'default':
-        return default_evaluation_metrics
-
-    elif mode == 'precision_recall_f1':
-        return precision_evaluation_metrics
-
-    # Combine default and precision evaluation metrics
-    evaluation_metrics = default_evaluation_metrics | precision_evaluation_metrics
+    evaluation_metrics = evaluator.run()
 
     return evaluation_metrics
 
 
 if __name__ == "__main__":
     evaluate(
-        "output/290144e0b01b493390c2c466a87ad1f4",
-        "./data/evaluation_dataset/gist_2025.csv",
-        "both"
+        "output/dc3daaf464444fc4a29762f57316068b",
+        "./data/evaluation_dataset/gold_standard.csv"
     )

@@ -9,16 +9,14 @@ After running extraction, climatextract saves results to the `output/<run-id>/` 
 ```
 output/
 └── abc123-uuid/
-    ├── 03_co2_emission_table2_w_query_responses.csv           # Page-level details (with duplicates)
-    ├── 03_co2_emission_table2_w_query_responses_filtered.csv  # Deduplicated responses
-    ├── intermediate_results.csv                               # Intermediate extraction results
-    ├── results_long_format.csv                                # Main results (long format, with duplicates)
-    ├── results_wide_format.csv                                # Results pivoted by year
-    ├── invalid_llm_outputs.txt                                # Invalid LLM responses
-    ├── logs.json                                              # Parameters, metrics, run info
-    ├── 04a_results_available_in_report.csv                    # (if evaluation enabled)
-    ├── 04b_results_not_available_in_report.csv                # (if evaluation enabled)
-    └── 05_results_aggregated_by_*.csv                         # (if evaluation enabled)
+    ├── raw_results.csv                       # Page-level details (with duplicates)
+    ├── raw_results_temp.csv                  # Intermediate extraction results
+    ├── results_long_format.csv               # Main results (long format, with duplicates)
+    ├── results_wide_format.csv               # Results pivoted by year
+    ├── config.json                           # Parameters, metrics, run info (extract only)
+    ├── config_and_metrics.json               # Same plus evaluation metrics (extract_and_evaluate only)
+    ├── eval_results_vs_benchmark.csv         # (extract_and_evaluate only)
+    └── eval_results_metrics_by_ReportName.csv # (extract_and_evaluate only)
 ```
 
 ---
@@ -87,11 +85,11 @@ For a given indicator, the pipeline may extract multiple identical/conflicting v
 In cases when only a single value per report_id-year combination got extracted, no duplicate resolution is necessary: `dupl_reason = 0`
 
 !!! tip "Duplicate Investigation"
-    Use `03_co2_emission_table2_w_query_responses.csv` to investigate why duplicates occurred and which pages contained the data.
+    Use `results_wide_format.csv` to investigate why duplicates occurred and which pages contained the data.
 
 ---
 
-## Query Responses: `03_co2_emission_table2_w_query_responses.csv`
+## Query Responses: `raw_results.csv`
 
 Detailed page-level information about the extraction process. 
 
@@ -118,15 +116,14 @@ Key columns (column names are not final):
 | `duplicate_flag` | `dupl_flag` | Whether the row is a duplicate |
 | `select_flag` | `select_flag` | Whether the row was selected after deduplication |
 
-The deduplicated results are saved in `03_co2_emission_table2_w_query_responses_filtered.csv`.
-
 ---
 
 ## Logs
 
-### `logs.json`
+### `config.json` or `config_and_metrics.json`
 
-Stores the configuration, incured costs, evaluation metrics if available. A summary of what happend during this run.
+Stores the configuration, incured costs, and evaluation metrics if evaluation is configured. A summary of what happend during this run. 
+When evaluation is enabled, the file is called `config_and_metrics.json`, otherwise `config.json`.
 
 If [MLflow](./mlflow-setup.md) has been activated, the same information will also be saved in Mlflow for comparison between experiments.
 
@@ -136,24 +133,13 @@ If [MLflow](./mlflow-setup.md) has been activated, the same information will als
 
 When evaluation is enabled, additional files are created directly in the run directory:
 
-### `04a_results_available_in_report.csv`
+### `eval_results_vs_benchmark.csv`
 
-Values where emissions information exists in the report — row-by-row comparison with gold standard.
+Row-by-row comparison with gold standard.
 
-### `04b_results_not_available_in_report.csv`
+### `eval_results_metrics_by_ReportName.csv`
 
-Values where emissions information does not exist in the report.
-
-### `05_results_aggregated_by_*.csv`
-
-Aggregate evaluation metrics grouped by different dimensions (e.g., per document, per scope).
-
-### Precision-Recall-F1 Mode
-
-When using `precision_recall_f1` or `both` evaluation mode, additional files are created:
-
-- `error_analysis_per_doc.csv` — Error analysis aggregated per document
-- `error_analysis_per_row.csv` — Error analysis per individual row
+Aggregate evaluation metrics grouped per report.
 
 ---
 

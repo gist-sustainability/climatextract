@@ -34,8 +34,6 @@ class MlflowParams:
 @dataclass
 class ConfigParams:
     """Parameters for the configuration."""
-    evaluation_mode: str = 'default'  # 'default' or 'precision_recall_f1' or 'both'
-
     gold_standard: str = field(default=None)
     filename_list: list[str] = field(default=None)
 
