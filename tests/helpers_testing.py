@@ -16,6 +16,11 @@ def create_test_config(prompt_type, input_mode):
 [input]
 filename_list = ["./data/pdfs/test_report/report.pdf"]
 
+[models]
+# Pinned so the quality test's expected match counts stay reproducible
+# regardless of changes to the adapter's default model.
+llm_model = "gpt-4o"
+
 [extraction]
 input_mode = "{input_mode}"
 prompt_type = "{prompt_type}"

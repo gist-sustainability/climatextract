@@ -100,18 +100,15 @@ When enabled, metrics and parameters are logged to your configured MLflow server
 
 ## Using a Custom LLM or Embedding Provider
 
-`extract()` and `extract_and_evaluate()` accept two keyword-only arguments — `llm` and `embedder` — that let you override the default Azure adapter. Pass in any subclass of `LlmHandler` or `EmbeddingModelHandler`.
+`extract()` and `extract_and_evaluate()` accept two keyword-only arguments — `llm` and `embedder` — that let you override the default Azure AI Foundry adapter. Pass in any subclass of `LlmHandler` or `EmbeddingModelHandler`.
 
-Example — tweak the default Azure adapter's parameters:
+Example — pass an explicit Foundry handler (equivalent to the default):
 
 ```python
 from climatextract import extract
-from climatextract.adapters.azure_openai import AzureOpenAILlmHandler
+from climatextract.adapters.azure_ai_foundry import AzureAIFoundryLlmHandler
 
-llm = AzureOpenAILlmHandler(
-    model="gpt-5.2-chat-2025-12-11",
-    reasoning_effort="low",
-)
+llm = AzureAIFoundryLlmHandler()
 result_path = extract("./data/pdfs/", llm=llm)
 ```
 

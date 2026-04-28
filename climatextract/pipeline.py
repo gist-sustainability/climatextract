@@ -132,11 +132,11 @@ class ValueRetrieverPipeline():
                         self.console.record_encrypted_pdf(os.path.basename(filename))
                     else:
                         self.console.record_failed_pdf(os.path.basename(filename))
-                return [], [], was_cached, 0
+                return [], was_cached, 0
 
             # Finish processing if only embedding is required
             if self.embed_only:
-                return [], [], was_cached, 0
+                return [], was_cached, 0
 
             relevant_pages = doc.retrieve_relevant_pages(
                 search_query=self.search_query,
@@ -229,7 +229,7 @@ class ValueRetrieverPipeline():
         except ValueError as e:
             logging.getLogger(__name__).warning("Error in %s: %s", filename, e)
 
-            return None, None
+            return None
 
 
 class FileConfig:

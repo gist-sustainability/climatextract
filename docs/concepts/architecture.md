@@ -76,7 +76,8 @@ Raw LLM output is cleaned and structured:
 | `EmbeddingsRepository` | Manages DuckDB storage for embeddings |
 | `LlmHandler` / `EmbeddingModelHandler` | ABCs users subclass to plug in a provider |
 | `Llm` / `EmbeddingModel` | Package-side wrappers that add usage counting and concurrency control around a user's handler |
-| `AzureOpenAILlmHandler` / `AzureOpenAIEmbeddingHandler` | Reference Azure adapters, built on LiteLLM |
+| `AzureAIFoundryLlmHandler` / `AzureAIFoundryEmbeddingHandler` | Default Azure AI Foundry adapters, built on LiteLLM |
+| `AzureOpenAILlmHandler` / `AzureOpenAIEmbeddingHandler` | Azure OpenAI Service adapters (legacy deployments), built on LiteLLM |
 | `UsageCounter` | Accumulates token counts and USD cost across calls |
 | `StructuredJsonPrompt` | Structures LLM prompts with Pydantic parsing |
 | `EvaluatorData` | Computes evaluation metrics against a gold standard |

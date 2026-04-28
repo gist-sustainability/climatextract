@@ -8,8 +8,28 @@
 # =============================================================================
 [input]
 # Can be a list of specific files:
-# filename_list = ["data/pdfs/sato holdings_2022_report.pdf", "data/pdfs/Allianz_2022_report.pdf", "data/pdfs/aixtron_2020_report.pdf"]
-filename_list = ["data/pdfs/sato oyj_2022_report.pdf", "data/pdfs/stantec inc_2019_report.pdf"]
+filename_list = [
+    "data/pdfs/sample_160/aareal bank ag_2018_report.pdf",
+    "data/pdfs/sample_160/acuity brands inc_2022_report.pdf",
+    "data/pdfs/sample_160/addtech_2022_report.pdf",
+    "data/pdfs/sample_160/aixtron_2020_report.pdf",
+    "data/pdfs/sample_160/allfunds group_2021_report.pdf",
+    "data/pdfs/sample_160/Allianz_2022_report.pdf",
+    "data/pdfs/sample_160/alumina ltd_2022_report.pdf",
+    "data/pdfs/sample_160/amano corp_2022_report.pdf",
+    "data/pdfs/sample_160/americold realty inc_2022_report.pdf",
+    "data/pdfs/sample_160/apollo commercial real estate fina_2019_report.pdf",
+    "data/pdfs/sample_160/apollo medical holdings_2022_report.pdf",
+    "data/pdfs/sample_160/arbonia ag_2018_report.pdf",
+    "data/pdfs/sample_160/arteria networks corp_2019_report.pdf",
+    "data/pdfs/sample_160/asos plc_2017_report.pdf",
+    "data/pdfs/sample_160/asos plc_2019_report.pdf",
+    "data/pdfs/sample_160/aurelius_2018_report.pdf",
+    "data/pdfs/sample_160/autoneum holding_2019_report.pdf",
+    "data/pdfs/sample_160/balanced commercial property trust_2020_report.pdf",
+    "data/pdfs/sample_160/banco bpm_2019_report.pdf",
+    "data/pdfs/sample_160/beach energy ltd_2020_report.pdf",
+]
 # Or a directory path (processes all PDFs in it):
 #    filename_list = "./data/pdfs/sample_160"
 
@@ -17,18 +37,17 @@ filename_list = ["data/pdfs/sato oyj_2022_report.pdf", "data/pdfs/stantec inc_20
 # MODELS - LLM and embedding model selection
 # =============================================================================
 [models]
-# Supported LLM models:
-# - gpt-4o-mini-2024-07-18 OR
-# - gpt-oss-120b OR
-# - o3-mini-2025-01-31 OR
-# - gpt-4o-mini-2024-07-18 OR
-# - gpt-35-turbo-16k OR
-# - gpt-4o-2024-11-20 OR
-# - gpt-5-chat-2025-08-07
-# - gpt-4.1-2025-04-14
+# Supported LLM deployment names on Azure AI Foundry:
+# - gpt-4.1
+# - gpt-4o
+# - gpt-4o-mini
+# - gpt-5-nano
+# - gpt-5-chat
+# - gpt-5.2-chat
+# - gpt-oss-120b
 # - Llama-4-Maverick-17B-128E-Instruct-FP8
-# - gpt-5.2-chat-2025-12-11
-llm_model = "gpt-5.2-chat"
+# - o3-mini
+llm_model = "gpt-5-chat"
 
 # Supported embedding models:
 #   - text-embedding-ada-002 (default)
@@ -38,20 +57,35 @@ emb_model = "text-embedding-ada-002"
 
 # Maximum number of concurrent LLM API calls.
 # Adjust based on your Azure/OpenAI rate limits and pricing tier.
-# If not specified, uses model-specific defaults:
+# Suggested values per model:
 #   - gpt-4o, gpt-4o-mini, gpt-oss-120b: 25
-#   - gpt-35-turbo-16k, gpt-5-chat, gpt-5.2-chat: 8
+#   - gpt-5-chat, gpt-5.2-chat: 8
 #   - gpt-4.1: 4
-#   - Llama-4-Maverick: 25
+#   - Llama-4-Maverick-17B-128E-Instruct-FP8: 25
 #   - o3-mini: 2
 # Higher values = faster processing, but may hit rate limits.
-max_parallel_llm_prompts_running = 4
+max_parallel_llm_prompts_running = 20
 
 # Maximum number of concurrent embedding API calls.
-# If not specified, uses model-specific defaults:
-#   - text-embedding-ada-002: 5
-#   - text-embedding-3-large: 10
-max_parallel_embedding_calls = 5
+# Suggested values per model:
+#   - text-embedding-ada-002: 30
+#   - text-embedding-3-large: 50
+max_parallel_embedding_calls = 30
+
+# LLM sampling temperature. Default if omitted: 0.0.
+# For reasoning models that reject 0.0 (e.g. gpt-5.2), LiteLLM silently
+# drops this param and Azure applies its own default.
+temperature = 0.0
+
+# Whether to request per-token log-probabilities from the LLM (used for
+# value-level confidence scoring). Default if omitted: true.
+# For models that reject the param, it's silently dropped.
+return_logprobs = true
+
+# Reasoning effort for reasoning models (o1/o3/gpt-5 family). Default
+# if omitted: None (Azure applies its own default, typically "minimal"
+# or "medium").
+reasoning_effort = "none"
 
 # =============================================================================
 # EXTRACTION - Fine-tune extraction behavior

@@ -97,7 +97,16 @@ class ThreadSafeTokenProvider:
 # ---------------------------------------------------------------------------
 
 class EmbeddingModelHandler(ABC):
-    """Interface a user-written embedding adapter must satisfy."""
+    """Interface a user-written embedding adapter must satisfy.
+
+    Defaults live in ``climatextract.params.SemanticSearchParams`` and are
+    overridable via TOML.
+    """
+
+    # Provider-specific default model. Subclasses override with their
+    # own appropriate default; falls through if TOML's ``emb_model``
+    # isn't set.
+    MODEL: str = "text-embedding-ada-002"
 
     @abstractmethod
     def get_embedding_and_cost(self, texts: list[str]) -> Tuple[EmbeddingResponse, float]: ...
@@ -108,8 +117,12 @@ class EmbeddingModelHandler(ABC):
     @abstractmethod
     def get_model_dict(self) -> dict: ...
 
-    @abstractmethod
-    def get_max_concurrent_calls(self) -> int: ...
+    def get_max_concurrent_calls(self) -> int:
+        """Read ``max_parallel_embedding_calls`` from the runtime config
+        (TOML override of the dataclass default)."""
+        from climatextract import _runtime_config
+        cfg = _runtime_config.get_current()
+        return cfg.semantic_search_params.max_parallel_embedding_calls
 
 
 def _extract_vectors(response: EmbeddingResponse) -> list[list[float]]:
@@ -205,7 +218,15 @@ class LlmHandler(ABC):
     Handlers accept OpenAI-style ``messages`` and return LiteLLM's
     ``ModelResponse`` (which mirrors the OpenAI response shape), plus the
     USD cost of the call.
+
+    Defaults live in ``climatextract.params.LLMParams`` and are
+    overridable via TOML.
     """
+
+    # Provider-specific default model. Subclasses override with their
+    # own appropriate default; falls through if TOML's ``llm_model``
+    # isn't set.
+    MODEL: str = "gpt-4o-mini"
 
     @abstractmethod
     def get_completion_and_cost(
@@ -220,8 +241,21 @@ class LlmHandler(ABC):
     @abstractmethod
     def get_model_dict(self) -> dict: ...
 
-    @abstractmethod
-    def get_max_concurrent_calls(self) -> int: ...
+    def _should_skip_temperature_and_logprobs(self) -> bool:
+        """Hook: return ``True`` to omit ``temperature`` and ``logprobs``
+        from the request. Default ``False`` — most providers accept
+        both. Adapters override when their provider has models that
+        reject these (e.g. Azure's reasoning models / chat-variant
+        reasoning siblings, where LiteLLM's ``drop_params`` doesn't
+        catch the rejection upstream)."""
+        return False
+
+    def get_max_concurrent_calls(self) -> int:
+        """Read ``max_parallel_llm_prompts_running`` from the runtime
+        config (TOML override of the dataclass default)."""
+        from climatextract import _runtime_config
+        cfg = _runtime_config.get_current()
+        return cfg.llm_params.max_parallel_llm_prompts_running
 
 
 class Llm:
@@ -268,7 +302,7 @@ class Llm:
         self.usage_counter.reset_counts()
 
     def create_llm_costs_dict(self) -> dict:
-        """Return a dict of usage/cost metrics for logs.json / MLflow."""
+        """Return a dict of usage/cost metrics for config.json / MLflow."""
         usage = self.usage_counter.get_usage_dict()
         return {
             "embedding_tokens": usage["embedding_tokens"],

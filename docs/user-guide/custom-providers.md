@@ -1,6 +1,6 @@
 # Custom Providers
 
-climatextract ships with a reference Azure adapter. To use a different LLM or embedding provider — OpenAI direct, Anthropic, a local model, anything else — implement a handler and pass it to `extract()`.
+climatextract ships with reference Azure AI Foundry and Azure OpenAI Service adapters. To use a different LLM or embedding provider — OpenAI direct, Anthropic, a local model, anything else — implement a handler and pass it to `extract()`.
 
 ---
 
@@ -8,11 +8,11 @@ climatextract ships with a reference Azure adapter. To use a different LLM or em
 
 Reach for a custom handler when:
 
-- You want to use a provider the default Azure adapter doesn't cover.
-- You want to use Azure but need behavior the default adapter doesn't expose.
+- You want to use a provider the bundled Azure adapters don't cover.
+- You want to use Azure but need behavior the bundled adapters don't expose.
 - You're running models locally and don't want to go through a cloud provider at all.
 
-If you just want to tweak parameters on an Azure model (temperature, reasoning effort, concurrency), you can instantiate `AzureOpenAILlmHandler` directly without subclassing — see [Running Extraction](running-extraction.md#using-a-custom-llm-or-embedding-provider).
+If you just want to tweak parameters on an Azure model (temperature, reasoning effort, concurrency), you can instantiate `AzureAIFoundryLlmHandler` or `AzureOpenAILlmHandler` directly without subclassing — see [Running Extraction](running-extraction.md#using-a-custom-llm-or-embedding-provider).
 
 ---
 
@@ -97,4 +97,5 @@ result_path = extract("./data/pdfs/", llm=OpenAILlmHandler(model="gpt-4o-mini"))
 - **Don't manage concurrency inside your handler.** The `Llm` / `EmbeddingModel` wrapper already applies a semaphore sized by `get_max_concurrent_calls()`.
 - **Don't count tokens or cost inside your handler beyond returning them.** The wrapper records them via `UsageCounter` and surfaces them in `logs.json` and MLflow.
 - **Cost is optional.** Return `0.0` if your provider doesn't give you a price back. The pipeline will still run.
-- **Reference implementation.** For a more complete example — routing, custom pricing, Azure AD token handling, per-model parameter quirks — see [`climatextract/adapters/azure_openai.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_openai.py).
+- **Reference implementations.** For more complete examples — routing, Azure AD token handling, per-model parameter quirks — see [`climatextract/adapters/azure_ai_foundry.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_ai_foundry.py) and [`climatextract/adapters/azure_openai.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_openai.py).
+- **Subclass instead of write from scratch.** If you only need to tweak one or two things (e.g., an extra request param), subclassing `AzureAIFoundryLlmHandler` or `AzureOpenAILlmHandler` and overriding `__init__` is usually enough.

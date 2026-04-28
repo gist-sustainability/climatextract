@@ -26,6 +26,7 @@ from climatextract.llm_embedding_api_bridge import (
     Llm,
     LlmHandler,
 )
+from climatextract import _runtime_config
 from climatextract.params import ConfigParams, ExperimentParams, MlflowParams
 from climatextract.evaluator import evaluate
 import climatextract.semantic_search as semantic_search
@@ -58,8 +59,7 @@ def extract(
                    or a list of file paths. If None, uses filename_list from config.
         llm: An ``LlmHandler`` (e.g. ``AzureOpenAILlmHandler``) that knows how
                    to call the user's chosen LLM provider. If None, a default
-                   Azure OpenAI handler is constructed from the ``[models]``
-                   section of the config file.
+                   Azure AI Foundry handler is used.
         embedder: An ``EmbeddingModelHandler`` for embedding calls. Same
                    default behavior as ``llm``.
         config_path: Path to config file. Defaults to "climatextract.toml".
@@ -267,6 +267,8 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
 
     # Load config (defaults + config file overrides)
     config_params, experiment_params, output_dir, _, datalake_config = _load_config(config_path)
+    # Publish for adapters that need to read TOML at handler-construction time.
+    _runtime_config.set_current(experiment_params)
 
     # Handle data lake operations with dedicated manager
     storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
@@ -330,7 +332,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
                 f"_from_2025_12_23.duckdb")
         )
 
-    # Build handlers: caller-supplied > default Azure OpenAI from config.
+    # Build handlers: caller-supplied > default Foundry handler.
     if embedder is None:
         embedder = _default_embedding_handler(experiment_params)
     if llm is None:
@@ -673,28 +675,26 @@ def _resolve_pdf_input(pdf_input: str | List[str]) -> List[str]:
 
 
 def _default_llm_handler(experiment_params: ExperimentParams) -> LlmHandler:
-    """Construct the default Azure OpenAI LLM handler from config.
+    """Construct the default LLM handler. GIST's models live on Azure
+    AI Foundry, so the default points there. External users on Azure
+    OpenAI Service can pass ``llm=AzureOpenAILlmHandler()`` explicitly.
 
-    Imported lazily so users on other providers don't pay the import cost
-    of the Azure adapter (which imports litellm).
+    Imported lazily so users on other providers don't pay the import
+    cost of the adapter (which imports litellm).
     """
-    from climatextract.adapters.azure_openai import AzureOpenAILlmHandler
+    from climatextract.adapters.azure_ai_foundry import AzureAIFoundryLlmHandler
 
-    return AzureOpenAILlmHandler(
-        model=experiment_params.llm_params.llm_model,
-        return_logprobs=experiment_params.llm_params.return_logprobs,
-        max_concurrent_calls=experiment_params.llm_params.max_parallel_llm_prompts_running,
-    )
+    return AzureAIFoundryLlmHandler()
 
 
 def _default_embedding_handler(experiment_params: ExperimentParams) -> EmbeddingModelHandler:
-    """Construct the default Azure OpenAI embedding handler from config."""
-    from climatextract.adapters.azure_openai import AzureOpenAIEmbeddingHandler
+    """Construct the default embedding handler. GIST's embeddings live
+    on Azure AI Foundry (alongside the LLMs). Model and concurrency
+    are resolved by the handler from the runtime config (TOML) and
+    class-level defaults."""
+    from climatextract.adapters.azure_ai_foundry import AzureAIFoundryEmbeddingHandler
 
-    return AzureOpenAIEmbeddingHandler(
-        model=experiment_params.semantic_search_params.emb_model,
-        max_concurrent_calls=experiment_params.semantic_search_params.max_parallel_embedding_calls,
-    )
+    return AzureAIFoundryEmbeddingHandler()
 
 
 def _enable_llm_autolog() -> None:

@@ -9,7 +9,7 @@ This guide walks you through installing climatextract.
 Before installing, ensure you have:
 
 - **Python 3.11+** – [Download Python](https://www.python.org/downloads/)
-- **Azure credentials** – Access to Azure OpenAI services, if using the default Azure adapter (see step 3). Not required if you're injecting your own provider handler — see [Custom Providers](../user-guide/custom-providers.md).
+- **Azure credentials** – Access to Azure AI Foundry, if using the default adapter (see step 3). Not required if you're injecting your own provider handler — see [Custom Providers](../user-guide/custom-providers.md).
 
 ---
 
@@ -53,13 +53,13 @@ In addition, set up an embedding model that is accessible via ``AZURE_ENDPOINT``
  Alternatively, you can use a local HuggingFace ``sentence-transformers/*`` model, which does not require Azure (see [Configuration](../user-guide/configuration.md)).
 -->
 
-The default Azure adapter lives in [`climatextract/adapters/azure_openai.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_openai.py) — see that file for the full list of supported Azure OpenAI and Azure AI Foundry models, custom pricing entries, and per-model quirks (reasoning effort, logprobs support, concurrency caps). If the default adapter doesn't fit your setup, you can write your own handler for any provider — see [Custom Providers](../user-guide/custom-providers.md).
+The default handler is Azure AI Foundry — see [`climatextract/adapters/azure_ai_foundry.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_ai_foundry.py). The package also ships an Azure OpenAI Service handler at [`climatextract/adapters/azure_openai.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_openai.py) for legacy deployments. If neither fits your setup, you can write your own handler for any provider — see [Custom Providers](../user-guide/custom-providers.md).
 
-Create a `.env` file in your working directory with the API endpoint(s) and the respective API key.
+Create a `.env` file in your working directory with the endpoint(s) for the handler you're using and the respective API key. `AZURE_AI_FOUNDRY_ENDPOINT` is required for the default Foundry handler; `AZURE_ENDPOINT` is required only if you opt into the Azure OpenAI Service handler.
 
 ```bash
-AZURE_ENDPOINT=https://your-endpoint.openai.azure.com/
-AZURE_AI_FOUNDRY_ENDPOINT=https://your-other-endpoint.openai.azure.com/
+AZURE_AI_FOUNDRY_ENDPOINT=https://your-foundry-endpoint.openai.azure.com/
+AZURE_ENDPOINT=https://your-openai-endpoint.openai.azure.com/  # only if using the Azure OpenAI Service handler
 API_KEY=your-api-key # you can also use personalized authentication workflows, see Step 4
 API_VERSION=2024-12-01-preview
 ```
