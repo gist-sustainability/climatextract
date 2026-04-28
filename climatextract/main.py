@@ -132,8 +132,6 @@ def extract_and_evaluate(
     """
     Extract CO2 emissions data and evaluate against gold standard.
 
-    Public API - always evaluates, regardless of evaluation_mode in config.
-
     Args:
         pdf_input: A directory path (processes all PDFs), a single file path,
                    or a list of file paths. If None, uses filename_list from config.
@@ -473,7 +471,7 @@ def _extract_and_evaluate_with_metadata(
     """
     console = get_console()
 
-    # Load config (for filenames and eval mode)
+    # Load config (for filenames and gold standard path)
     config_params, experiment_params, output_dir, _, datalake_config = _load_config(config_path)
 
     # If input is an empty directory, try populating it from the data lake
@@ -505,27 +503,25 @@ def _extract_and_evaluate_with_metadata(
     # Determine gold standard: argument > config
     gs_path = gold_standard_path if gold_standard_path else config_params.gold_standard
 
-    # If evaluating, filter PDFs to those present in gold standard (report_name column)
-    gold_standard_count = 0
-    if config_params.evaluation_mode != "no_evaluation":
-        import csv
-        gs_report_names = set()
-        with open(gs_path, newline="", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            col = "report_name" if "report_name" in reader.fieldnames else None
-            if not col:
-                raise ValueError(
-                    f"Gold standard at '{gs_path}' missing required 'report_name' column"
-                )
-            for row in reader:
-                gs_report_names.add(row[col])
-        gold_standard_count = len(gs_report_names)
-        filtered = [p for p in pdf_files if Path(p).name in gs_report_names]
-        if not filtered:
+    # Filter PDFs to those present in gold standard (report_name column)
+    import csv
+    gs_report_names = set()
+    with open(gs_path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        col = "report_name" if "report_name" in reader.fieldnames else None
+        if not col:
             raise ValueError(
-                "No input PDFs match report_name entries in the gold standard."
+                f"Gold standard at '{gs_path}' missing required 'report_name' column"
             )
-        pdf_files = filtered
+        for row in reader:
+            gs_report_names.add(row[col])
+    gold_standard_count = len(gs_report_names)
+    filtered = [p for p in pdf_files if Path(p).name in gs_report_names]
+    if not filtered:
+        raise ValueError(
+            "No input PDFs match report_name entries in the gold standard."
+        )
+    pdf_files = filtered
 
     # Now run extraction with the filtered list, passing through to reuse logic
     result = _extract_with_metadata(pdf_files, path_to_results, config_path)

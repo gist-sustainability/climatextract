@@ -76,7 +76,7 @@ from climatextract import extract_and_evaluate
 
 result_path = extract_and_evaluate(
     pdf_input="./data/pdfs/sample_reports/",
-    gold_standard_path="./data/evaluation_dataset/gist_2025.csv",
+    gold_standard_path="./data/evaluation_dataset/gold_standard.csv",
     config_path="climatextract.toml",
     enable_mlflow=False
 )
@@ -105,7 +105,7 @@ result_path = extract_and_evaluate(
 ```python
 result = extract_and_evaluate(
     pdf_input="./data/pdfs/test_set/",
-    gold_standard_path="./data/evaluation_dataset/gist_2025.csv"
+    gold_standard_path="./data/evaluation_dataset/gold_standard.csv"
 )
 ```
 

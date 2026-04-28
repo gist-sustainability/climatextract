@@ -104,10 +104,10 @@ class EvaluatorData:
 
     def _merge_data_for_comparison(self) -> pd.DataFrame:
         """
-            1. Copy "automatic_extraction_tried",  "page_numbers_tried_by_llm" 
+            1. Copy "automatic_extraction_tried",  "page_numbers_tried_by_llm"
                 into ground_truth dataset: grtruth_extended
             2. Remove all years/scopes from LLM output dataset if they are missing: tinyresults
-            3. Left-Merge tinyresults into grtruth_extended, 
+            3. Left-Merge tinyresults into grtruth_extended,
                 to only keep scope-year-combinations from grid
                 =(we keep >= 1 row for each scope-year-combination from ground truth) & \
                 & (we keep 0-\\infty rows/extracted values from each page)
@@ -162,7 +162,7 @@ class EvaluatorData:
                                             "extracted_year_from_llm"])
 
         return merged_results
-    
+
     def run(self):
         """Main evaluation routine that calls all intermediate steps."""
         self.small_results = self._merge_data_for_comparison()
@@ -174,7 +174,7 @@ class EvaluatorData:
         custom_metrics = self._prepare_results_for_mlflow(results_per_doc)
         ie_metrics = self._compute_ie_metrics(on="value")
         metrics = custom_metrics | ie_metrics
-    
+
         return metrics
 
     def _compare_data(self):
@@ -300,8 +300,8 @@ class EvaluatorData:
 
     def _subset_reports(self) -> pd.DataFrame:
         """Keep reports only if we actually tried to extract information automatically."""
-        return self.small_results[self.small_results["automatic_extraction_tried"]]
-    
+        return self.small_results[self.small_results["automatic_extraction_tried"]].copy()
+
     def _classify_errors(self, results_subset: pd.DataFrame) -> pd.DataFrame:
         """Compare the results and ground truth data sets."""
         # For now only comparison on value
@@ -388,7 +388,7 @@ class EvaluatorData:
                 "Total number of errors does not match number of reports "
                 "where automatic extraction was tried")
         return
-    
+
     def _compute_ie_metrics(self, on="value") -> Dict[str, int]:
         """Compute ie metrics: precision, recall, f1."""
         all_errors = [f'true_negative_{on}', f'false_positive_{on}',
@@ -427,7 +427,7 @@ class EvaluatorData:
 
 def evaluate(path_to_results: str, gold_standard: str):
     """Sets up path to ground truth and runs evaluation routine.
-    
+
     Args:
         path_to_results: Path to the extraction results directory.
         gold_standard: Path to the gold standard CSV file.
@@ -438,7 +438,7 @@ def evaluate(path_to_results: str, gold_standard: str):
             f"Gold standard file not found at '{gold_standard}'. "
             "Please provide a valid path to the gold standard CSV file."
         )
-    
+
     path_to_ground_truth = gold_standard
 
     evaluation_metrics = None

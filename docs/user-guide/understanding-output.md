@@ -9,13 +9,14 @@ After running extraction, climatextract saves results to the `output/<run-id>/` 
 ```
 output/
 └── abc123-uuid/
-    ├── raw_results.csv           # Page-level details (with duplicates)
-    ├── raw_results_temp.csv                               # Intermediate extraction results
-    ├── results_long_format.csv                                # Main results (long format, with duplicates)
-    ├── results_wide_format.csv                                # Results pivoted by year
-    ├── config.json (or config_and_metrics.json)                                             # Parameters, metrics, run info
-    ├── eval_results_vs_benchmark.csv                    # (if evaluation enabled)
-    └── eval_results_metrics_by_*.csv                         # (if evaluation enabled)
+    ├── raw_results.csv                       # Page-level details (with duplicates)
+    ├── raw_results_temp.csv                  # Intermediate extraction results
+    ├── results_long_format.csv               # Main results (long format, with duplicates)
+    ├── results_wide_format.csv               # Results pivoted by year
+    ├── config.json                           # Parameters, metrics, run info (extract only)
+    ├── config_and_metrics.json               # Same plus evaluation metrics (extract_and_evaluate only)
+    ├── eval_results_vs_benchmark.csv         # (extract_and_evaluate only)
+    └── eval_results_metrics_by_ReportName.csv # (extract_and_evaluate only)
 ```
 
 ---
@@ -122,7 +123,7 @@ Key columns (column names are not final):
 ### `config.json` or `config_and_metrics.json`
 
 Stores the configuration, incured costs, and evaluation metrics if evaluation is configured. A summary of what happend during this run. 
-When evaluation is enabled, the file is called `config.json`, otherwise `config_and_metrics.json`. 
+When evaluation is enabled, the file is called `config_and_metrics.json`, otherwise `config.json`.
 
 If [MLflow](./mlflow-setup.md) has been activated, the same information will also be saved in Mlflow for comparison between experiments.
 
@@ -136,15 +137,9 @@ When evaluation is enabled, additional files are created directly in the run dir
 
 Row-by-row comparison with gold standard.
 
-### `eval_results_metrics_by_*.csv`
+### `eval_results_metrics_by_ReportName.csv`
 
-Aggregate evaluation metrics grouped by different dimensions (e.g., per document, per scope).
-
-### Precision-Recall-F1 Mode
-
-When using `precision_recall_f1` or `both` evaluation mode, additional files are created:
-
-- `error_analysis_per_row.csv` — Error analysis per individual row
+Aggregate evaluation metrics grouped per report.
 
 ---
 

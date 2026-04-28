@@ -34,7 +34,6 @@ class MlflowParams:
 @dataclass
 class ConfigParams:
     """Parameters for the configuration."""
-    evaluation_mode: str = 'with_evaluation'
     gold_standard: str = field(default=None)
     filename_list: list[str] = field(default=None)
 

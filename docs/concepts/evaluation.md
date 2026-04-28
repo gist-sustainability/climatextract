@@ -22,25 +22,18 @@ The evaluation uses human-annotated ground truth data:
 
 - **Format**: CSV with expected emissions values
 - **Columns**: `report_name`, `year`, `scope`, `value`, `unit`
-- **Default**: `data/evaluation_dataset/gist_2025.csv`
+- **Default**: `data/evaluation_dataset/gold_standard.csv`
 
 ```toml
 [evaluation]
-gold_standard = "data/evaluation_dataset/gist_2025.csv"
+gold_standard = "data/evaluation_dataset/gold_standard.csv"
 ```
 
 ---
 
-## Evaluation Modes
+## Evaluation Output
 
-### With evaluation
-
-```toml
-[evaluation]
-evaluation_mode = "with_evaluation"
-```
-
-Produces:
+Calling `extract_and_evaluate()` produces:
 
 - Row-by-row comparison with benchmark
 - Per-document metrics with error type
@@ -108,7 +101,7 @@ from climatextract import extract_and_evaluate
 
 result_path = extract_and_evaluate(
     pdf_input="./data/pdfs/sample/",
-    gold_standard_path="./data/evaluation_dataset/gist_2025.csv"
+    gold_standard_path="./data/evaluation_dataset/gold_standard.csv"
 )
 ```
 
@@ -120,9 +113,9 @@ Evaluation creates additional files in the output directory:
 
 | File | Contents |
 |------|----------|
-| `eval_results_vs_benchmark.csv`| Results matched rowwise with benchmark data |
-| `eval_results_metrics_by_*.csv` | Metrics aggregated by different dimensions |
-| `error_analysis_per_row.csv` | Per-row error analysis (precision_recall_f1 mode) |
+| `eval_results_vs_benchmark.csv` | Results matched row-wise with benchmark data |
+| `eval_results_metrics_by_ReportName.csv` | Metrics aggregated per report |
+| `config_and_metrics.json` | Configuration plus extraction and evaluation metrics |
 
 ---
 

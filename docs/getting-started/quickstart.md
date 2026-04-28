@@ -131,11 +131,12 @@ After extraction, you'll find results in `output/<run-id>/`:
 ```
 output/
 └── abc123-uuid/
-    ├── raw_results.csv                     # Page-level LLM responses (with duplicates)
-    ├── raw_results_temp.csv                               # Pre-normalization extraction results
-    ├── results_long_format.csv                                # Main results in long format (with duplicates)
-    ├── results_wide_format.csv                                # Results pivoted by year
-    └── config.json (or config_and_metrics.json)                                             # Parameters, metrics, run info
+    ├── raw_results.csv             # Page-level LLM responses (with duplicates)
+    ├── raw_results_temp.csv        # Pre-normalization extraction results
+    ├── results_long_format.csv     # Main results in long format (with duplicates)
+    ├── results_wide_format.csv     # Results pivoted by year
+    └── config.json                 # Parameters, metrics, run info
+                                    # (config_and_metrics.json when using extract_and_evaluate)
 ```
 
 See [Understanding Output](../user-guide/understanding-output.md) for column definitions.

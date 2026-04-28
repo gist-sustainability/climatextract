@@ -75,7 +75,7 @@ Raw LLM output is cleaned and structured:
 | `ValueRetrieverPipeline` | Orchestrates the full extraction workflow |
 | `EmbeddingsRepository` | Manages DuckDB storage for embeddings |
 | `StructuredJsonPrompt` | Structures LLM prompts with Pydantic parsing |
-| `EvaluatorPrecisionRecallF1` | Computes evaluation metrics |
+| `EvaluatorData` | Computes evaluation metrics against a gold standard |
 | `Pdfdoc` | PDF document representation with page data |
 | `Llm` | LLM client with token counting and rate limiting |
 | `DataLakeManager` | Manages PDF downloads and file checks |
