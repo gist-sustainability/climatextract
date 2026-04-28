@@ -56,7 +56,7 @@ def test_functionality(prompt_type, input_mode):
     assert artifacts, f"No artifacts found for the run {run_id}"
 
     target_artifact = next((artifact for artifact in artifacts if artifact.path.endswith(
-        "03_co2_emission_table2_w_query_responses.csv")), None)
+        "raw_results.csv")), None)
     if target_artifact:
         local_path = mlflow.artifacts.download_artifacts(
             run_id=run_id, artifact_path=target_artifact.path)
@@ -84,7 +84,7 @@ def test_quality(prompt_type, input_mode):
         Test the quality of results for different prompt types and input modes.
 
         This test verifies that:
-        1. The required artifact '04a_results_available_in_report.csv' is present.
+        1. The required artifact 'eval_results_vs_benchmark.csv' is present.
         2. The 'value_match' column contains the expected number of True and NA values.
         3. Any mismatches in 'value_match' are reported.
         4. Optionally, the number of True values in 'unit_match' and mismatches are reported.
@@ -94,7 +94,7 @@ def test_quality(prompt_type, input_mode):
         - input_mode: The input mode to use ('text' or 'text+table').
         """
     # Configuration
-    expected_artifact_name = "04a_results_available_in_report.csv"
+    expected_artifact_name = "eval_results_vs_benchmark.csv"
     expected_true_value_matches = 32
 
     # Mlflow setup

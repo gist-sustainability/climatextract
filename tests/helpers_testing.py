@@ -22,7 +22,6 @@ prompt_type = "{prompt_type}"
 embeddings_repository = "data/processed/embeddings/test_embeddings/test_embeddings.duckdb"
 
 [evaluation]
-evaluation_mode = "both"
 gold_standard = "./data/evaluation_dataset/test_evaluation/gold_standard.csv"
 
 [mlflow]

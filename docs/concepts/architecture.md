@@ -79,7 +79,7 @@ Raw LLM output is cleaned and structured:
 | `AzureOpenAILlmHandler` / `AzureOpenAIEmbeddingHandler` | Reference Azure adapters, built on LiteLLM |
 | `UsageCounter` | Accumulates token counts and USD cost across calls |
 | `StructuredJsonPrompt` | Structures LLM prompts with Pydantic parsing |
-| `EvaluatorPrecisionRecallF1` | Computes evaluation metrics |
+| `EvaluatorData` | Computes evaluation metrics against a gold standard |
 | `Pdfdoc` | PDF document representation with page data |
 | `DataLakeManager` | Manages PDF downloads and file checks |
 

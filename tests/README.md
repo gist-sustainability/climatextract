@@ -81,7 +81,7 @@ This test verifies the main functionality with different prompt types and input 
 
 This test checks the quality of results for different prompt types and input modes. It verifies that:
 
-1. The required artifact '04a_results_available_in_report.csv' is present.
+1. The required artifact 'eval_results_vs_benchmark.csv' is present.
 2. The 'value_match' column contains the expected number of True and NA values.
 3. Any mismatches in 'value_match' are reported.
 4. Optionally, the number of True values in 'unit_match' and mismatches are reported.

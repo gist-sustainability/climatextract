@@ -63,7 +63,6 @@ class ValueRetrieverPipeline():
                 (pathname, page)-combination further information: (content, score, LLM response)
                 - co2_emissions, a pandas dataFrame that contains extracted values and units 
                 for each(pathname, page, year, scope)-combination.
-            - a list of invalid outputs
         """
         final_results = []  # This will collect final outcomes
 
@@ -75,14 +74,14 @@ class ValueRetrieverPipeline():
         for future in asyncio.as_completed(tasks):
 
             result = await future
-            intermediate_results, invalid_outputs, was_cached, num_tables = result
+            intermediate_results, was_cached, num_tables = result
 
             if self.embed_only:
                 # Skip processing but ensure coroutine was awaited
                 continue
 
             # Skip saving if both results are empty
-            if not intermediate_results and not invalid_outputs:
+            if not intermediate_results:
                 logging.getLogger(__name__).warning(
                     "Skipped empty results for a PDF that could not be processed.")
                 if self.console:
@@ -90,7 +89,7 @@ class ValueRetrieverPipeline():
                 continue
 
             # save results
-            final_results.append((intermediate_results, invalid_outputs))
+            final_results.append(intermediate_results)
             save_results([intermediate_results], path_to_results, first_write,
                          results_type="intermediate_results")
             first_write = False
@@ -157,10 +156,10 @@ class ValueRetrieverPipeline():
 
             raw_results = await self.get_llm_response_from_document_foreach_page(
                 doc_relevant_pages=relevant_raw_page_contents)
-            table_results, invalid_output = self.transform_llm_output_and_create_tables(
+            table_results = self.transform_llm_output_and_create_tables(
                 doc_relevant_pages=relevant_pages, output=raw_results, filename=filename)
 
-            return table_results, invalid_output, was_cached, num_tables
+            return table_results, was_cached, num_tables
 
     async def extract_text_from_pages(self, relevant_pages):
         """Extract text from relevant pages."""
@@ -191,7 +190,7 @@ class ValueRetrieverPipeline():
 
         for page, page_extracted_emissions in zip(doc_relevant_pages, output):
 
-            emission_table, invalid_outputs = self.llm_single_prompt.process_llm_output(
+            emission_table = self.llm_single_prompt.process_llm_output(
                 page_extracted_emissions)
             emission_table['page_label'] = page.page_label
 
@@ -217,7 +216,7 @@ class ValueRetrieverPipeline():
                                           for page in doc_relevant_pages],
                 'page_text': [(page.page_content) for page in doc_relevant_pages],
                 'llm_response': [
-                    self.llm_single_prompt.process_llm_output(page_extracted_emissions)[0][
+                    self.llm_single_prompt.process_llm_output(page_extracted_emissions)[
                         "raw_llm_response"]
                     for page_extracted_emissions in output]
             })
@@ -225,7 +224,7 @@ class ValueRetrieverPipeline():
             result = {'doc_overview': resp_summary,
                       'co2_emissions': co2_emissions}
 
-            return result, invalid_outputs
+            return result
 
         except ValueError as e:
             logging.getLogger(__name__).warning("Error in %s: %s", filename, e)
@@ -263,7 +262,7 @@ def save_results(raw_results, path_to_results: str, first_write: bool, results_t
         query_responses, co2_emission_table)
 
     if results_type == "intermediate_results":
-        output_file = os.path.join(path_to_results, "intermediate_results.csv")
+        output_file = os.path.join(path_to_results, "raw_results_temp.csv")
 
         # Append results iteratively to CSV
         co2_emission_table2_w_query_responses.to_csv(
@@ -284,15 +283,9 @@ def save_results(raw_results, path_to_results: str, first_write: bool, results_t
     # Save final original results
     co2_emission_table2_w_query_responses_marked.to_csv(
         os.path.join(path_to_results,
-                     "03_co2_emission_table2_w_query_responses.csv"), index=False)
+                     "raw_results.csv"), index=False)
 
-    # Also save filtered results
-    co2_emission_table2_w_query_responses_filtered = select_duplicates_in_output(
-        co2_emission_table2_w_query_responses_marked)
-    co2_emission_table2_w_query_responses_filtered.to_csv(
-        os.path.join(path_to_results,
-                     "03_co2_emission_table2_w_query_responses_filtered.csv"), index=False)
-
+  
     # save results in more compact format (long, including duplicates)
     long_format_df = prepare_long_format_output_table_from(
         co2_emission_table2_w_query_responses_marked)
@@ -300,6 +293,8 @@ def save_results(raw_results, path_to_results: str, first_write: bool, results_t
         os.path.join(path_to_results, "results_long_format.csv"), index=False)
 
     # save results in more compact format (wide, deduplicated)
+    co2_emission_table2_w_query_responses_filtered = select_duplicates_in_output(
+        co2_emission_table2_w_query_responses_marked)
     wide_format_df = prepare_wide_formate_output_table_from(
         co2_emission_table2_w_query_responses_filtered, dupl_columns, console)
     if wide_format_df is not None:

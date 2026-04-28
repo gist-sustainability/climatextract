@@ -28,7 +28,7 @@ filename_list = ["data/pdfs/sato oyj_2022_report.pdf", "data/pdfs/stantec inc_20
 # - gpt-4.1-2025-04-14
 # - Llama-4-Maverick-17B-128E-Instruct-FP8
 # - gpt-5.2-chat-2025-12-11
-llm_model = "gpt-5.2-chat-2025-12-11"
+llm_model = "gpt-5.2-chat"
 
 # Supported embedding models:
 #   - text-embedding-ada-002 (default)
@@ -100,16 +100,8 @@ output_dir = "output"
 # EVALUATION - Compare results against a gold standard dataset
 # =============================================================================
 [evaluation]
-# Evaluation mode:
-# - "default": Standard evaluation metrics
-# - "precision_recall_f1": Precision, recall, and F1 scores
-# - "both": Run both evaluation modes
-#
-# Note: Public API users should call extract() or extract_and_evaluate() directly.
-evaluation_mode = "both"
-
 # Path to gold standard CSV file for evaluation
-gold_standard = "data/evaluation_dataset/gist_2025.csv"
+gold_standard = "data/evaluation_dataset/gold_standard.csv"
 
 # =============================================================================
 # DATALAKE - Azure Blob Storage for shared files (optional)

@@ -100,8 +100,8 @@ def extract(
             config_params = result["config_params"]
             experiment_params = result["experiment_params"]
 
-            # Update logs.json with run_id and MLflow params
-            json_log_path = os.path.join(path_to_results, "logs.json")
+            # Update config.json with run_id and MLflow params
+            json_log_path = os.path.join(path_to_results, "config.json")
             with open(json_log_path, 'r', encoding='utf-8') as f:
                 json_logs = json.load(f)
             json_logs["run_info"]["run_id"] = run_id
@@ -151,8 +151,6 @@ def extract_and_evaluate(
     """
     Extract CO2 emissions data and evaluate against gold standard.
 
-    Public API - always evaluates, regardless of evaluation_mode in config.
-
     Args:
         pdf_input: A directory path (processes all PDFs), a single file path,
                    or a list of file paths. If None, uses filename_list from config.
@@ -196,8 +194,8 @@ def extract_and_evaluate(
             config_params = result["config_params"]
             experiment_params = result["experiment_params"]
 
-            # Update logs.json with run_id and MLflow params
-            json_log_path = os.path.join(path_to_results, "logs.json")
+            # Update config_and_metrics.json with run_id and MLflow params
+            json_log_path = os.path.join(path_to_results, "config_and_metrics.json")
             with open(json_log_path, 'r', encoding='utf-8') as f:
                 json_logs = json.load(f)
             json_logs["run_info"]["run_id"] = run_id
@@ -429,8 +427,6 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         logger.warning("No PDFs were processed. Exiting.")
         return None
 
-    raw_results, invalid_llm_outputs = _rearrange_results(results)
-
     # Combine usage from LLM + embedding model.
     llm_costs = llm.create_llm_costs_dict()
     embed_usage = embed_model.get_usage_counter().get_usage_dict()
@@ -441,22 +437,17 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     llm.reset_usage_counter()
     embed_model.reset_usage_counter()
 
-    # Save invalid outputs
-    with open(os.path.join(
-            path_to_results, "invalid_llm_outputs.txt"), 'w', encoding='utf-8') as f:
-        f.write(str(invalid_llm_outputs))
-
     # Save results
     has_results = False
-    if raw_results != [None]:
-        save_results(raw_results=raw_results,
+    if results != [None]:
+        save_results(raw_results=results,
                      path_to_results=path_to_results,
                      first_write=True,
                      results_type='final',
                      console=console)
         has_results = True
 
-    # Save logs.json with all parameters and metrics (for both public and internal use)
+    # Save config.json with all parameters and metrics (for both public and internal use)
     json_logs = {
         "parameters": {
             **asdict(config_params),
@@ -468,7 +459,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         "metrics": llm_costs,
         "run_info": {}
     }
-    json_log_path = os.path.join(path_to_results, "logs.json")
+    json_log_path = os.path.join(path_to_results, "config.json")
     with open(json_log_path, 'w', encoding='utf-8') as f:
         json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
 
@@ -504,7 +495,7 @@ def _extract_and_evaluate_with_metadata(
     """
     console = get_console()
 
-    # Load config (for filenames and eval mode)
+    # Load config (for filenames and gold standard path)
     config_params, experiment_params, output_dir, _, datalake_config = _load_config(config_path)
 
     # If input is an empty directory, try populating it from the data lake
@@ -536,27 +527,25 @@ def _extract_and_evaluate_with_metadata(
     # Determine gold standard: argument > config
     gs_path = gold_standard_path if gold_standard_path else config_params.gold_standard
 
-    # If evaluating, filter PDFs to those present in gold standard (report_name column)
-    gold_standard_count = 0
-    if config_params.evaluation_mode != "no_evaluation":
-        import csv
-        gs_report_names = set()
-        with open(gs_path, newline="", encoding="utf-8") as f:
-            reader = csv.DictReader(f)
-            col = "report_name" if "report_name" in reader.fieldnames else None
-            if not col:
-                raise ValueError(
-                    f"Gold standard at '{gs_path}' missing required 'report_name' column"
-                )
-            for row in reader:
-                gs_report_names.add(row[col])
-        gold_standard_count = len(gs_report_names)
-        filtered = [p for p in pdf_files if Path(p).name in gs_report_names]
-        if not filtered:
+    # Filter PDFs to those present in gold standard (report_name column)
+    import csv
+    gs_report_names = set()
+    with open(gs_path, newline="", encoding="utf-8") as f:
+        reader = csv.DictReader(f)
+        col = "report_name" if "report_name" in reader.fieldnames else None
+        if not col:
             raise ValueError(
-                "No input PDFs match report_name entries in the gold standard."
+                f"Gold standard at '{gs_path}' missing required 'report_name' column"
             )
-        pdf_files = filtered
+        for row in reader:
+            gs_report_names.add(row[col])
+    gold_standard_count = len(gs_report_names)
+    filtered = [p for p in pdf_files if Path(p).name in gs_report_names]
+    if not filtered:
+        raise ValueError(
+            "No input PDFs match report_name entries in the gold standard."
+        )
+    pdf_files = filtered
 
     # Now run extraction with the filtered list, passing through to reuse logic
     result = _extract_with_metadata(
@@ -574,8 +563,7 @@ def _extract_and_evaluate_with_metadata(
     # Run evaluation
     evaluation_metrics = evaluate(
         path_to_results=path,
-        gold_standard=gs_path,
-        mode=config_params.evaluation_mode
+        gold_standard=gs_path
     )
 
     # Print evaluation results
@@ -586,14 +574,16 @@ def _extract_and_evaluate_with_metadata(
             gold_standard_count=gold_standard_count
         )
 
-    # Update logs.json with evaluation metrics
+    # Update config_and_metrics.json with evaluation metrics
     if evaluation_metrics:
-        json_log_path = os.path.join(path, "logs.json")
+        json_log_path = os.path.join(path, "config.json")
         with open(json_log_path, 'r', encoding='utf-8') as f:
             json_logs = json.load(f)
         json_logs["metrics"].update(evaluation_metrics)
+        json_log_path = os.path.join(path, "config_and_metrics.json")
         with open(json_log_path, 'w', encoding='utf-8') as f:
             json.dump(json_logs, f, indent=2, ensure_ascii=False, default=str)
+        os.remove(os.path.join(path, "config.json"))  # Remove old config.json without metrics
 
     # Add evaluation metrics to result
     result["evaluation_metrics"] = evaluation_metrics
@@ -680,11 +670,6 @@ def _resolve_pdf_input(pdf_input: str | List[str]) -> List[str]:
     else:
         # pdf_input is List[str]
         return pdf_input
- 
-def _rearrange_results(results):
-    """Rearrange the results."""
-    raw_results, invalid_llm_outputs = zip(*results)
-    return list(raw_results), list(invalid_llm_outputs)
 
 
 def _default_llm_handler(experiment_params: ExperimentParams) -> LlmHandler:
@@ -725,5 +710,3 @@ def _enable_llm_autolog() -> None:
                 return
             except Exception as e:  # pragma: no cover
                 logger.debug("mlflow.%s.autolog failed: %s", flavor, e)
-
-
