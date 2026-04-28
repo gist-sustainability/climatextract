@@ -20,8 +20,8 @@ result_path = extract("./data/pdfs/company_2023_report.pdf")
 from climatextract import extract
 
 files = [
-    "./data/pdfs/apple_2021.pdf",
-    "./data/pdfs/allianz_2022.pdf",
+    "./data/pdfs/report1.pdf",
+    "./data/pdfs/report2.pdf",
 ]
 result_path = extract(files)
 ```

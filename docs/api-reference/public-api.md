@@ -40,7 +40,7 @@ result_path = extract(
 **Single PDF:**
 
 ```python
-result = extract("./data/pdfs/apple_2023.pdf")
+result = extract("./data/pdfs/report.pdf")
 ```
 
 **Directory of PDFs:**
@@ -53,8 +53,8 @@ result = extract("./data/pdfs/sample_reports/")
 
 ```python
 result = extract([
-    "./data/pdfs/apple_2023.pdf",
-    "./data/pdfs/microsoft_2023.pdf"
+    "./data/pdfs/report1.pdf",
+    "./data/pdfs/report2.pdf"
 ])
 ```
 
