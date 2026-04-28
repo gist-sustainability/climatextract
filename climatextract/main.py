@@ -20,7 +20,13 @@ nest_asyncio.apply()
 
 from climatextract.pipeline import FileConfig, ValueRetrieverPipeline, save_results
 from climatextract.experiment_setup import Experiment
-import climatextract.config as config
+from climatextract.llm_embedding_api_bridge import (
+    EmbeddingModel,
+    EmbeddingModelHandler,
+    Llm,
+    LlmHandler,
+)
+from climatextract import _runtime_config
 from climatextract.params import ConfigParams, ExperimentParams, MlflowParams
 from climatextract.evaluator import evaluate
 import climatextract.semantic_search as semantic_search
@@ -38,7 +44,10 @@ def extract(
     pdf_input: str | List[str] | None = None,
     config_path: str = "climatextract.toml",
     enable_mlflow: bool = False,
-    verbose: bool = False
+    verbose: bool = False,
+    *,
+    llm: LlmHandler | None = None,
+    embedder: EmbeddingModelHandler | None = None,
 ) -> Optional[str]:
     """
     Extract CO2 emissions data from PDF reports.
@@ -48,6 +57,11 @@ def extract(
     Args:
         pdf_input: A directory path (processes all PDFs), a single file path,
                    or a list of file paths. If None, uses filename_list from config.
+        llm: An ``LlmHandler`` (e.g. ``AzureOpenAILlmHandler``) that knows how
+                   to call the user's chosen LLM provider. If None, a default
+                   Azure AI Foundry handler is used.
+        embedder: An ``EmbeddingModelHandler`` for embedding calls. Same
+                   default behavior as ``llm``.
         config_path: Path to config file. Defaults to "climatextract.toml".
         enable_mlflow: Whether to log results to MLflow. If True, uses MLflow settings
                        from .env (tracking_uri) and config file (experiment_name). Enables
@@ -70,14 +84,15 @@ def extract(
 
         experiment = Experiment(mlflow_params=mlflow_params, tracking_uri=mlflow_config["tracking_uri"])
         experiment.setup_experiment()
-        mlflow.openai.autolog()  # Capture all OpenAI API calls
+        _enable_llm_autolog()  # Capture all LLM API calls
 
         with mlflow.start_run(run_name=mlflow_params.mlflow_run_name) as run:
             run_id = run.info.run_id
             path_to_results = FileConfig.get_path_to_results(run_id=run_id, output_dir=output_dir)
 
             # Run extraction inside MLflow context
-            result = _extract_with_metadata(pdf_input, path_to_results, config_path)
+            result = _extract_with_metadata(
+                pdf_input, path_to_results, config_path, llm=llm, embedder=embedder)
             if result is None:
                 return None
 
@@ -112,7 +127,8 @@ def extract(
         return path_to_results
     else:
         # No MLflow - simple extraction
-        result = _extract_with_metadata(pdf_input, config_path=config_path)
+        result = _extract_with_metadata(
+            pdf_input, config_path=config_path, llm=llm, embedder=embedder)
         if result is None:
             return None
 
@@ -127,7 +143,10 @@ def extract_and_evaluate(
     gold_standard_path: str | None = None,
     config_path: str = "climatextract.toml",
     enable_mlflow: bool = False,
-    verbose: bool = False
+    verbose: bool = False,
+    *,
+    llm: LlmHandler | None = None,
+    embedder: EmbeddingModelHandler | None = None,
 ) -> Optional[str]:
     """
     Extract CO2 emissions data and evaluate against gold standard.
@@ -158,7 +177,7 @@ def extract_and_evaluate(
 
         experiment = Experiment(mlflow_params=mlflow_params, tracking_uri=mlflow_config["tracking_uri"])
         experiment.setup_experiment()
-        mlflow.openai.autolog()  # Capture all OpenAI API calls
+        _enable_llm_autolog()  # Capture all LLM API calls
 
         with mlflow.start_run(run_name=mlflow_params.mlflow_run_name) as run:
             run_id = run.info.run_id
@@ -166,7 +185,8 @@ def extract_and_evaluate(
 
             # Run extraction+evaluation inside MLflow context
             result = _extract_and_evaluate_with_metadata(
-                pdf_input, gold_standard_path, path_to_results, config_path)
+                pdf_input, gold_standard_path, path_to_results, config_path,
+                llm=llm, embedder=embedder)
             if result is None:
                 return None
 
@@ -206,7 +226,9 @@ def extract_and_evaluate(
         return path_to_results
     else:
         # No MLflow - simple extraction + evaluation
-        result = _extract_and_evaluate_with_metadata(pdf_input, gold_standard_path, config_path=config_path)
+        result = _extract_and_evaluate_with_metadata(
+            pdf_input, gold_standard_path, config_path=config_path,
+            llm=llm, embedder=embedder)
         if result is None:
             return None
 
@@ -218,7 +240,10 @@ def extract_and_evaluate(
 
 def _extract_with_metadata(pdf_input: str | List[str] | None = None,
                            path_to_results: str | None = None,
-                           config_path: str = "climatextract.toml") -> Optional[Dict[str, Any]]:
+                           config_path: str = "climatextract.toml",
+                           llm: LlmHandler | None = None,
+                           embedder: EmbeddingModelHandler | None = None,
+                           ) -> Optional[Dict[str, Any]]:
     """
     Internal extraction function that returns full metadata for main().
 
@@ -242,6 +267,8 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
 
     # Load config (defaults + config file overrides)
     config_params, experiment_params, output_dir, _, datalake_config = _load_config(config_path)
+    # Publish for adapters that need to read TOML at handler-construction time.
+    _runtime_config.set_current(experiment_params)
 
     # Handle data lake operations with dedicated manager
     storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
@@ -305,14 +332,14 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
                 f"_from_2025_12_23.duckdb")
         )
 
-    embed_model = config.EmbeddingModel(
-        model_name=experiment_params.semantic_search_params.emb_model)
-    llm = config.Llm(
-        model_name=experiment_params.llm_params.llm_model,
-        return_logprobs=experiment_params.llm_params.return_logprobs,
-        max_parallel_llm_prompts_running=experiment_params.llm_params.max_parallel_llm_prompts_running,
-        print_query_duration=False
-    )
+    # Build handlers: caller-supplied > default Foundry handler.
+    if embedder is None:
+        embedder = _default_embedding_handler(experiment_params)
+    if llm is None:
+        llm = _default_llm_handler(experiment_params)
+
+    embed_model = EmbeddingModel(embedder)
+    llm = Llm(llm, print_query_duration=False)
 
     search_query = semantic_search.SearchQuery(
         search_query=experiment_params.semantic_search_params.search_query,
@@ -402,18 +429,15 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         logger.warning("No PDFs were processed. Exiting.")
         return None
 
-    # Create combined token counts from both LLM and embedding model
+    # Combine usage from LLM + embedding model.
     llm_costs = llm.create_llm_costs_dict()
+    embed_usage = embed_model.get_usage_counter().get_usage_dict()
+    llm_costs["embedding_tokens"] += embed_usage["embedding_tokens"]
+    llm_costs["total_llm_costs_in_euro"] += embed_usage["total_cost_in_dollar"]
 
-    # Add embedding tokens from embedding model to the LLM costs
-    if hasattr(embed_model, 'token_counter') and hasattr(
-            embed_model.token_counter, 'total_embedding_token_count'):
-        llm_costs["embedding_tokens"] += embed_model.token_counter.total_embedding_token_count
-
-    # Reset token counters
-    llm.token_counter.reset_counts()
-    if hasattr(embed_model, 'token_counter'):
-        embed_model.token_counter.reset_counts()
+    # Reset counters so repeated calls in the same process don't accumulate.
+    llm.reset_usage_counter()
+    embed_model.reset_usage_counter()
 
     # Save results
     has_results = False
@@ -456,6 +480,8 @@ def _extract_and_evaluate_with_metadata(
     gold_standard_path: str | None = None,
     path_to_results: str | None = None,
     config_path: str = "climatextract.toml",
+    llm: LlmHandler | None = None,
+    embedder: EmbeddingModelHandler | None = None,
 ) -> Optional[Dict[str, Any]]:
     """
     Internal: extraction + evaluation, returns full metadata.
@@ -524,7 +550,8 @@ def _extract_and_evaluate_with_metadata(
     pdf_files = filtered
 
     # Now run extraction with the filtered list, passing through to reuse logic
-    result = _extract_with_metadata(pdf_files, path_to_results, config_path)
+    result = _extract_with_metadata(
+        pdf_files, path_to_results, config_path, llm=llm, embedder=embedder)
     if result is None:
         return None
 
@@ -645,3 +672,41 @@ def _resolve_pdf_input(pdf_input: str | List[str]) -> List[str]:
     else:
         # pdf_input is List[str]
         return pdf_input
+
+
+def _default_llm_handler(experiment_params: ExperimentParams) -> LlmHandler:
+    """Construct the default LLM handler. GIST's models live on Azure
+    AI Foundry, so the default points there. External users on Azure
+    OpenAI Service can pass ``llm=AzureOpenAILlmHandler()`` explicitly.
+
+    Imported lazily so users on other providers don't pay the import
+    cost of the adapter (which imports litellm).
+    """
+    from climatextract.adapters.azure_ai_foundry import AzureAIFoundryLlmHandler
+
+    return AzureAIFoundryLlmHandler()
+
+
+def _default_embedding_handler(experiment_params: ExperimentParams) -> EmbeddingModelHandler:
+    """Construct the default embedding handler. GIST's embeddings live
+    on Azure AI Foundry (alongside the LLMs). Model and concurrency
+    are resolved by the handler from the runtime config (TOML) and
+    class-level defaults."""
+    from climatextract.adapters.azure_ai_foundry import AzureAIFoundryEmbeddingHandler
+
+    return AzureAIFoundryEmbeddingHandler()
+
+
+def _enable_llm_autolog() -> None:
+    """Turn on MLflow autolog for LLM calls. Prefers the LiteLLM
+    integration; falls back to the OpenAI integration if LiteLLM's isn't
+    available in the installed MLflow version. Swallows errors so a
+    missing integration doesn't break extraction."""
+    for flavor in ("litellm", "openai"):
+        fn = getattr(mlflow, flavor, None)
+        if fn is not None and hasattr(fn, "autolog"):
+            try:
+                fn.autolog()
+                return
+            except Exception as e:  # pragma: no cover
+                logger.debug("mlflow.%s.autolog failed: %s", flavor, e)

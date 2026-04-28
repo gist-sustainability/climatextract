@@ -20,8 +20,8 @@ result_path = extract("./data/pdfs/company_2023_report.pdf")
 from climatextract import extract
 
 files = [
-    "./data/pdfs/apple_2021.pdf",
-    "./data/pdfs/allianz_2022.pdf",
+    "./data/pdfs/report1.pdf",
+    "./data/pdfs/report2.pdf",
 ]
 result_path = extract(files)
 ```
@@ -95,6 +95,24 @@ result_path = extract(
 ```
 
 When enabled, metrics and parameters are logged to your configured MLflow server. See [MLflow Setup](mlflow-setup.md) for configuration details.
+
+---
+
+## Using a Custom LLM or Embedding Provider
+
+`extract()` and `extract_and_evaluate()` accept two keyword-only arguments — `llm` and `embedder` — that let you override the default Azure AI Foundry adapter. Pass in any subclass of `LlmHandler` or `EmbeddingModelHandler`.
+
+Example — pass an explicit Foundry handler (equivalent to the default):
+
+```python
+from climatextract import extract
+from climatextract.adapters.azure_ai_foundry import AzureAIFoundryLlmHandler
+
+llm = AzureAIFoundryLlmHandler()
+result_path = extract("./data/pdfs/", llm=llm)
+```
+
+To route to a different provider entirely (OpenAI direct, Anthropic, a local model, etc.), you can implement your own handler. See [Custom Providers](custom-providers.md).
 
 ---
 

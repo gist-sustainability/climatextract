@@ -9,7 +9,7 @@ This guide walks you through installing climatextract.
 Before installing, ensure you have:
 
 - **Python 3.11+** – [Download Python](https://www.python.org/downloads/)
-- **Azure credentials** – Access to Azure OpenAI services (see step 3)
+- **Azure credentials** – Access to Azure AI Foundry, if using the default adapter (see step 3). Not required if you're injecting your own provider handler — see [Custom Providers](../user-guide/custom-providers.md).
 
 ---
 
@@ -49,15 +49,17 @@ climatextract uses Docling for PDF processing, which requires **Poppler**:
 
 You will need to set up a Large Language Model in Azure. This package supports some models via Azure OpenAI and others via Azure's AI foundry.
 
-In addition, set up an embedding model that is accessible via ``AZURE_ENDPOINT`` and named ``text-embedding-ada-002``. Alternatively, you can use a local HuggingFace ``sentence-transformers/*`` model, which does not require Azure (see [Configuration](../user-guide/configuration.md)).
+In addition, set up an embedding model that is accessible via ``AZURE_ENDPOINT`` and named ``text-embedding-ada-002``.<!-- TODO(litellm-refactor): local HuggingFace sentence-transformers support was removed when config.py was retired. Restore this sentence once a HuggingFace EmbeddingModelHandler adapter lands.
+ Alternatively, you can use a local HuggingFace ``sentence-transformers/*`` model, which does not require Azure (see [Configuration](../user-guide/configuration.md)).
+-->
 
-This package is currently very much tailored towards our Azure configuration and may not suit yours. Please check out the LLM class in [config.py](https://github.com/gist-sustainability/climatextract/blob/separate-extract-evaluate/climatextract/config.py) to explore our supported models and hard-coded parameters.
+The default handler is Azure AI Foundry — see [`climatextract/adapters/azure_ai_foundry.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_ai_foundry.py). The package also ships an Azure OpenAI Service handler at [`climatextract/adapters/azure_openai.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_openai.py) for legacy deployments. If neither fits your setup, you can write your own handler for any provider — see [Custom Providers](../user-guide/custom-providers.md).
 
-Create a `.env` file in your working directory with the API endpoint(s) and the respective API key.
+Create a `.env` file in your working directory with the endpoint(s) for the handler you're using and the respective API key. `AZURE_AI_FOUNDRY_ENDPOINT` is required for the default Foundry handler; `AZURE_ENDPOINT` is required only if you opt into the Azure OpenAI Service handler.
 
 ```bash
-AZURE_ENDPOINT=https://your-endpoint.openai.azure.com/
-AZURE_AI_FOUNDRY_ENDPOINT=https://your-other-endpoint.openai.azure.com/
+AZURE_AI_FOUNDRY_ENDPOINT=https://your-foundry-endpoint.openai.azure.com/
+AZURE_ENDPOINT=https://your-openai-endpoint.openai.azure.com/  # only if using the Azure OpenAI Service handler
 API_KEY=your-api-key # you can also use personalized authentication workflows, see Step 4
 API_VERSION=2024-12-01-preview
 ```

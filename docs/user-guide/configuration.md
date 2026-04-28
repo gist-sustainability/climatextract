@@ -41,34 +41,42 @@ Select which models to use for embedding and extraction:
 ```toml
 [models]
 # LLM model for extraction
-llm_model = "gpt-4o-mini-2024-07-18"
+llm_model = "gpt-5-nano"
 
 # Embedding model for semantic search
 emb_model = "text-embedding-ada-002"
 
-# Maximum concurrent API calls (adjust based on rate limits)
+# Maximum concurrent LLM API calls (adjust based on rate limits)
 max_parallel_llm_prompts_running = 4
+
+# Maximum concurrent embedding API calls (adjust based on rate limits)
+max_parallel_embedding_calls = 30
 ```
 
 !!! note "Available LLM Models"
-    Supported models include: `gpt-4o-mini-2024-07-18`, `gpt-4o-2024-11-20`, `gpt-35-turbo-16k`, `o3-mini-2025-01-31`, `gpt-4.1-2025-04-14`, `gpt-5-chat-2025-08-07`, `gpt-oss-120b`
+    Models supported by the default Azure AI Foundry adapter: `gpt-5-nano` (default), `gpt-5-chat`, `gpt-5.2-chat`, `gpt-4.1`, `gpt-4o`, `gpt-4o-mini`, `gpt-oss-120b`, `Llama-4-Maverick-17B-128E-Instruct-FP8`, `o3-mini`. To route to a different provider, see [Custom Providers](custom-providers.md).
 
 !!! example "Available Embedding Models"
-    **Azure OpenAI:** `text-embedding-ada-002`, `text-embedding-3-large`
+    Models supported by the default Azure AI Foundry adapter: `text-embedding-ada-002`, `text-embedding-3-large`.
 
-    **Local (HuggingFace):** Any `sentence-transformers/*` model (e.g., `sentence-transformers/all-MiniLM-L6-v2`). Runs locally without Azure. Install with: `pip install sentence-transformers torch`
+Suggested values for `max_parallel_llm_prompts_running` per model:
 
-If `max_parallel_llm_prompts_running` is not set, the following model-specific defaults apply:
-
-| Model | Default concurrency |
+| Model | Suggested concurrency |
 |-------|-------------------|
-| `gpt-4o-mini-2024-07-18` | 25 |
-| `gpt-4o-2024-11-20` | 25 |
-| `gpt-oss-120b` | 25 |
-| `gpt-35-turbo-16k` | 8 |
-| `gpt-5-chat-2025-08-07` | 8 |
-| `gpt-4.1-2025-04-14` | 4 |
-| `o3-mini-2025-01-31` | 2 |
+| `gpt-4o`, `gpt-4o-mini`, `gpt-oss-120b` | 25 |
+| `Llama-4-Maverick-17B-128E-Instruct-FP8` | 25 |
+| `gpt-5-chat`, `gpt-5.2-chat` | 8 |
+| `gpt-4.1` | 4 |
+| `o3-mini` | 2 |
+
+Suggested values for `max_parallel_embedding_calls` per model:
+
+| Model | Suggested concurrency |
+|-------|-------------------|
+| `text-embedding-ada-002` | 30 |
+| `text-embedding-3-large` | 50 |
+
+These are starting points — your actual ceiling depends on your Azure deployment tier and regional quota. Above the ceiling, rate-limit retries will slow things down rather than speed them up.
 
 ---
 
@@ -170,9 +178,10 @@ Here's a complete configuration file showing all available options:
 filename_list = ["/data/pdfs/company_2023_report.pdf"]
 
 [models]
-llm_model = "gpt-4o-mini-2024-07-18"
+llm_model = "gpt-5-nano"
 emb_model = "text-embedding-ada-002"
-max_parallel_llm_prompts_running = 4  # omit to use model-specific default
+max_parallel_llm_prompts_running = 4
+max_parallel_embedding_calls = 30
 
 [extraction]
 year_min = 2018

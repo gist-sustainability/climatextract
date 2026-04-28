@@ -44,8 +44,8 @@ Or provide a specific list:
 from climatextract import extract
 
 files = [
-    "./data/pdfs/apple_2021.pdf",
-    "./data/pdfs/microsoft_2022.pdf",
+    "./data/pdfs/report1.pdf",
+    "./data/pdfs/report2.pdf",
 ]
 result_path = extract(files)
 ```

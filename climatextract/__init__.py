@@ -51,6 +51,9 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 warnings.filterwarnings("ignore", module="urllib3")
 warnings.filterwarnings("ignore", message=".*Creating a trace within the default experiment.*")
 warnings.filterwarnings("ignore", message=".*mlflow.tracing.*")
+# llama-index's ``Field(validate_default=True)`` usage is flagged by
+# pydantic 2.12+. Harmless, will self-resolve when llama-index updates.
+warnings.filterwarnings("ignore", message=".*validate_default.*")
 
 # Now import pandas and set option
 import pandas as pd

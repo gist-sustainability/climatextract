@@ -41,7 +41,9 @@ class ConfigParams:
 @dataclass
 class SemanticSearchParams:
     """Parameters for the semantic search."""
-    emb_model: str = field(default="text-embedding-ada-002")
+    # No default — embedding handler falls back to its class ``MODEL``
+    # attribute (provider-specific) when this isn't set.
+    emb_model: str = field(default=None)
     search_query: str = field(default="""What are the total CO2 emissions in different years?
                             Include Scope 1, Scope 2, and Scope 3 emissions if available.""")
     similarity_top_k: int = field(default=7)
@@ -53,11 +55,16 @@ class SemanticSearchParams:
     # data/processed/embeddings/{emb_model}_from_2025_03_06.duckdb
     embeddings_repository: str = field(default=None)
 
+    # Maximum number of concurrent embedding API calls.
+    max_parallel_embedding_calls: int = field(default=5)
+
 
 @dataclass
 class LLMParams:
-    """Parameters for the LLM."""
-    llm_model: str = field(default="gpt-4o-2024-11-20")
+    """Parameters for the LLM. TOML overrides these defaults."""
+    # No default — LLM handler falls back to its class ``MODEL``
+    # attribute (provider-specific) when this isn't set.
+    llm_model: str = field(default=None)
     prompt_type: str = field(default=None)
     prompt_role: str = field(default=None)
     prompt_KPI_definitions: str = field(default=None)
@@ -65,13 +72,20 @@ class LLMParams:
     year_min: int = field(default=None)
     year_max: int = field(default=None)
 
-    # If True, the pipeline will request per-token log-probabilities from the LLM
-    # and compute a value-level confidence score. Defaults to True to enable
-    # value probabilities by default
+    # If True, the pipeline requests per-token log-probabilities from
+    # the LLM and computes a value-level confidence score.
     return_logprobs: bool = field(default=True)
 
-    # Maximum number of concurrent LLM API calls. If None, uses model-specific defaults:
-    max_parallel_llm_prompts_running: int = field(default=None)
+    # Sampling temperature.
+    temperature: float = field(default=0.0)
+
+    # Reasoning effort for reasoning models (o1/o3/gpt-5 family).
+    # ``"none"`` suppresses reasoning. LiteLLM's ``drop_params`` removes
+    # this param when calling models that don't support it.
+    reasoning_effort: str = field(default="none")
+
+    # Maximum number of concurrent LLM API calls.
+    max_parallel_llm_prompts_running: int = field(default=4)
 
 
 @dataclass
