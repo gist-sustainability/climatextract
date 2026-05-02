@@ -94,6 +94,7 @@ class AzureAIFoundryLlmHandler(LlmHandler):
                 self.model_dict["logprobs"] = True
         if params.reasoning_effort:
             self.model_dict["reasoning_effort"] = params.reasoning_effort
+        self.max_concurrent_calls = params.max_parallel_llm_prompts_running or 1
 
     def _should_skip_temperature_and_logprobs(self) -> bool:
         # Azure's gpt-5.2-chat (and other reasoning-flagged models)
@@ -106,6 +107,9 @@ class AzureAIFoundryLlmHandler(LlmHandler):
 
     def get_model_dict(self) -> dict:
         return self.model_dict
+    
+    def get_max_concurrent_calls(self) -> int:
+        return self.max_concurrent_calls
 
     def get_completion_and_cost(
         self, messages: list[dict]
@@ -129,26 +133,36 @@ class AzureAIFoundryEmbeddingHandler(EmbeddingModelHandler):
     if your embedding model is deployed on Foundry; otherwise pair the
     Foundry LLM handler with ``AzureOpenAIEmbeddingHandler``."""
 
+    MODEL: str = "text-embedding-ada-002"
+
     def __init__(self):
         from climatextract import _runtime_config
         params = _runtime_config.get_current().semantic_search_params
         self.model_name = params.emb_model or self.MODEL
         ensure_litellm_metadata_registered(self.model_name, our_prefix="azure")
         self.model_dict = _common_model_dict(self.model_name)
+        self.max_concurrent_calls = params.max_parallel_embedding_calls or 1
 
     def get_model_dict(self) -> dict:
         return self.model_dict
+    
+    def get_max_concurrent_calls(self) -> int:
+        return self.max_concurrent_calls
 
     def get_embedding_and_cost(
         self, texts: list[str]
     ) -> Tuple[EmbeddingResponse, float]:
-        texts = ["empty parsed page" if t == "" else t for t in texts]
         response = litellm.embedding(input=texts, **self.model_dict)
         return response, safe_cost(response)
 
     async def aget_embedding_and_cost(
         self, texts: list[str]
     ) -> Tuple[EmbeddingResponse, float]:
-        texts = ["empty parsed page" if t == "" else t for t in texts]
         response = await litellm.aembedding(input=texts, **self.model_dict)
         return response, safe_cost(response)
+
+
+if __name__ == "__main__":
+
+    AzureAIFoundryEmbeddingHandler().test_connection()
+    AzureAIFoundryLlmHandler().test_connection()        

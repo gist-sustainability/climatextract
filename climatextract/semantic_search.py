@@ -674,6 +674,9 @@ class Pdfdoc:
                 else:
                     processed_texts.append(original_text)
 
+            # workaround in case no text got extracted from a page
+            processed_texts = ["empty parsed page" if t == "" else t for t in processed_texts]
+
             embeddings = await embed_model.aget_embeddings(processed_texts)
 
             # Save results

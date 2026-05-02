@@ -103,11 +103,6 @@ class EmbeddingModelHandler(ABC):
     overridable via TOML.
     """
 
-    # Provider-specific default model. Subclasses override with their
-    # own appropriate default; falls through if TOML's ``emb_model``
-    # isn't set.
-    MODEL: str = "text-embedding-ada-002"
-
     @abstractmethod
     def get_embedding_and_cost(self, texts: list[str]) -> Tuple[EmbeddingResponse, float]: ...
 
@@ -117,26 +112,21 @@ class EmbeddingModelHandler(ABC):
     @abstractmethod
     def get_model_dict(self) -> dict: ...
 
-    def get_max_concurrent_calls(self) -> int:
-        """Read ``max_parallel_embedding_calls`` from the runtime config
-        (TOML override of the dataclass default)."""
-        from climatextract import _runtime_config
-        cfg = _runtime_config.get_current()
-        return cfg.semantic_search_params.max_parallel_embedding_calls
+    @abstractmethod
+    def get_max_concurrent_calls(self) -> int: ...
 
-
-def _extract_vectors(response: EmbeddingResponse) -> list[list[float]]:
-    """Return ``list[list[float]]`` regardless of whether items in
-    ``response.data`` are dicts or objects (LiteLLM uses dict-like objects
-    that support both forms)."""
-    vectors = []
-    for item in response.data:
-        if isinstance(item, dict):
-            vectors.append(item["embedding"])
-        else:
-            vectors.append(item.embedding)
-    return vectors
-
+    def test_connection(self):
+        """"Check that your embeddingsetup and connection works."""
+       
+        print(f"The embedding model dict is: {self.get_model_dict()}")
+        print(f"It is configured to run at most {self.get_max_concurrent_calls()} concurrent calls in parallel to avoid RateLimitErrors.")
+        response, costs = self.get_embedding_and_cost(["test string", "another test string"])
+        if response is None:
+            print("No response received. Check your connection and model configuration.")
+            return
+        print(f"Your embedding model returns a vector of length {len(response.data[0]['embedding'])} for each input text.")
+        print(f"LiteLLM fetches the community-maintained model cost map at import time from https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json ")
+        print(f"Incured costs from this call: ${float(costs):.10f} (according to LiteLLM's cost map.)")
 
 class EmbeddingModel:
     """Package-side embedding wrapper.
@@ -167,14 +157,26 @@ class EmbeddingModel:
         """Sync embedding call. Returns ``list[list[float]]``."""
         response, cost = self.embedding_handler.get_embedding_and_cost(texts)
         self._record_usage(response, cost)
-        return _extract_vectors(response)
+        return self._extract_vectors(response)
 
     async def aget_embeddings(self, texts: list[str]) -> list[list[float]]:
         """Async embedding call with concurrency control."""
         async with self.embedding_semaphore:
             response, cost = await self.embedding_handler.aget_embedding_and_cost(texts)
         self._record_usage(response, cost)
-        return _extract_vectors(response)
+        return self._extract_vectors(response)
+    
+    def _extract_vectors(self, response: EmbeddingResponse) -> list[list[float]]:
+        """Return ``list[list[float]]`` regardless of whether items in
+        ``response.data`` are dicts or objects (LiteLLM uses dict-like objects
+        that support both forms)."""
+        vectors = []
+        for item in response.data:
+            if isinstance(item, dict):
+                vectors.append(item["embedding"])
+            else:
+                vectors.append(item.embedding)
+        return vectors
 
     def _record_usage(self, response: EmbeddingResponse, cost: float) -> None:
         try:
@@ -223,11 +225,6 @@ class LlmHandler(ABC):
     overridable via TOML.
     """
 
-    # Provider-specific default model. Subclasses override with their
-    # own appropriate default; falls through if TOML's ``llm_model``
-    # isn't set.
-    MODEL: str = "gpt-4o-mini"
-
     @abstractmethod
     def get_completion_and_cost(
         self, messages: list[dict]
@@ -241,6 +238,9 @@ class LlmHandler(ABC):
     @abstractmethod
     def get_model_dict(self) -> dict: ...
 
+    @abstractmethod
+    def get_max_concurrent_calls(self) -> int: ...
+
     def _should_skip_temperature_and_logprobs(self) -> bool:
         """Hook: return ``True`` to omit ``temperature`` and ``logprobs``
         from the request. Default ``False`` — most providers accept
@@ -249,13 +249,18 @@ class LlmHandler(ABC):
         reasoning siblings, where LiteLLM's ``drop_params`` doesn't
         catch the rejection upstream)."""
         return False
-
-    def get_max_concurrent_calls(self) -> int:
-        """Read ``max_parallel_llm_prompts_running`` from the runtime
-        config (TOML override of the dataclass default)."""
-        from climatextract import _runtime_config
-        cfg = _runtime_config.get_current()
-        return cfg.llm_params.max_parallel_llm_prompts_running
+    
+    def test_connection(self):
+        """"Check that your LLM setup and connection works."""
+        
+        print(f"The LLM model dict is: {self.get_model_dict()}")
+        print(f"It is configured to run at most {self.get_max_concurrent_calls()} concurrent calls in parallel to avoid RateLimitErrors.")
+        response, costs = self.get_completion_and_cost([{"role": "user", "content": "What year did the Apollo 11 mission land on the moon?"}]) 
+        if response is None:
+            print("No response received. Check your connection and model configuration.")
+            return
+        print(f"LiteLLM fetches the community-maintained model cost map at import time from https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json ")
+        print(f"Incured costs from this call: ${float(costs):.10f} (according to LiteLLM's cost map.)")
 
 
 class Llm:
@@ -309,8 +314,36 @@ class Llm:
             "llm_prompt_tokens": usage["llm_prompt_tokens"],
             "llm_completion_tokens": usage["llm_completion_tokens"],
             "total_llm_token_count": usage["total_llm_token_count"],
-            "total_llm_costs_in_euro": usage["total_cost_in_dollar"],
+            "total_llm_costs_in_dollar": usage["total_cost_in_dollar"],
         }
+
+    def run_llm(self, formatted_prompt: str) -> Tuple[dict, Optional[BaseException]]:
+        """Singe API call to the LLM.
+        
+        Returns ``(response_dict, error)`` where ``response_dict`` has
+        ``content``, ``logprobs``, ``duration``, ``cost``. On error,
+        ``response_dict`` has empty ``content`` and ``logprobs=None``."""
+        
+        messages = [{"role": "user", "content": formatted_prompt}]
+
+        start = time.perf_counter()
+        try:
+            response, cost = self.llm_handler.get_completion_and_cost(messages)
+        except Exception as e:  # broad by design — handlers raise provider-specific errors
+            logger.warning("LLM call failed: %s", e)
+            return {"content": "", "logprobs": None, "duration": 0.0, "cost": 0.0}, e
+        duration = time.perf_counter() - start
+        
+        content, logprobs = self._extract_content_and_logprobs(response)
+        self._record_usage(response, cost)
+
+        return {
+            "content": content,
+            "logprobs": logprobs,
+            "duration": duration,
+            "cost": float(cost or 0.0),
+        }, None
+
 
     async def bound_run_llm(self, formatted_prompt: str) -> Tuple[dict, Optional[BaseException]]:
         """Run the LLM under the concurrency semaphore.

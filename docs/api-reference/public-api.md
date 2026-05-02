@@ -71,10 +71,15 @@ result = extract(
 
 ```python
 from climatextract import extract
-from climatextract.adapters.azure_ai_foundry import AzureAIFoundryLlmHandler
+from climatextract.adapters.azure_ai_foundry import (
+    AzureAIFoundryEmbeddingHandler,
+    AzureAIFoundryLlmHandler,
+)
 
 llm = AzureAIFoundryLlmHandler()
-result = extract("./data/pdfs/", llm=llm)
+embedder = AzureAIFoundryEmbeddingHandler()
+
+result_path = extract("./data/pdfs/", llm=llm, embedder=embedder) 
 ```
 
 ---

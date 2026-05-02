@@ -45,21 +45,42 @@ climatextract uses Docling for PDF processing, which requires **Poppler**:
 
 ---
 
-## Step 3: Configure Access to Large Language Models via Azure
+## Step 3: Configure Access to Large Language Models
 
-You will need to set up a Large Language Model in Azure. This package supports some models via Azure OpenAI and others via Azure's AI foundry.
+You will need to set up acess to a Large Language Model and to an embedding model. You can either use our adapters that we have built for Microsoft Azure, or write your own adapter. Since our adapters are based on liteLLM, building your own should be straightforward — see [Custom Model Providers](../user-guide/custom-providers.md).
 
-In addition, set up an embedding model that is accessible via ``AZURE_ENDPOINT`` and named ``text-embedding-ada-002``.<!-- TODO(litellm-refactor): local HuggingFace sentence-transformers support was removed when config.py was retired. Restore this sentence once a HuggingFace EmbeddingModelHandler adapter lands.
- Alternatively, you can use a local HuggingFace ``sentence-transformers/*`` model, which does not require Azure (see [Configuration](../user-guide/configuration.md)).
--->
+By default, the package will connect to Microsoft Azure's AI foundry.
 
-The default handler is Azure AI Foundry — see [`climatextract/adapters/azure_ai_foundry.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_ai_foundry.py). The package also ships an Azure OpenAI Service handler at [`climatextract/adapters/azure_openai.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_openai.py) for legacy deployments. If neither fits your setup, you can write your own handler for any provider — see [Custom Providers](../user-guide/custom-providers.md).
+### Using Azure's AI foundry
 
-Create a `.env` file in your working directory with the endpoint(s) for the handler you're using and the respective API key. `AZURE_AI_FOUNDRY_ENDPOINT` is required for the default Foundry handler; `AZURE_ENDPOINT` is required only if you opt into the Azure OpenAI Service handler.
+We commonly use Azure's AI foundry. Create an `.env` file in your working directory with the correct endpoint and the respective API key.
 
 ```bash
 AZURE_AI_FOUNDRY_ENDPOINT=https://your-foundry-endpoint.openai.azure.com/
-AZURE_ENDPOINT=https://your-openai-endpoint.openai.azure.com/  # only if using the Azure OpenAI Service handler
+API_KEY=your-api-key # you can also use personalized authentication workflows, see Step 4
+```
+
+In the [configuration file](../user-guide/configuration.md) you specify which models you want to use, e.g.:
+
+```bash
+llm_model = "gpt-5-chat"
+emb_model = "text-embedding-ada-002"
+max_parallel_llm_prompts_running = 20
+max_parallel_embedding_calls = 30
+```
+
+Make sure that models with these names have been deployed in your AI foundry instance.
+
+Rate limit errors may occur depending on the quota you have assigned to each deployed model. Use the ``max_parallel_...``-parameters to limit the maximum number of API requests that will be sent in parallel, so that it matches with the model quota you have available.
+
+The adapter for Azure's AI foundry is available at [`climatextract/adapters/azure_ai_foundry.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_ai_foundry.py), useful for adaptions and debugging. A slightly different adapter / API endpoint may be needed if you wish to deploy models that are not from OpenAI.
+
+### Using Azure OpenAI
+
+For older models and legacy deployments, the package also ships an Azure OpenAI Service adapter at [`climatextract/adapters/azure_openai.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_openai.py). The `.env` file when using this service should be as follows:
+
+```bash
+AZURE_ENDPOINT=https://your-openai-endpoint.openai.azure.com/
 API_KEY=your-api-key # you can also use personalized authentication workflows, see Step 4
 API_VERSION=2024-12-01-preview
 ```
@@ -95,4 +116,6 @@ python -c "from climatextract import extract; print('Installation successful!')"
 
 ## Next Steps
 
-Ready to extract some data? Head to the [Quickstart](quickstart.md) guide.
+Ready to extract some data? Head to the [Quickstart](quickstart.md) guide. 
+
+You may also want to set up [experiment tracking with MLflow](../user-guide/mlflow-setup.md) or start [sharing large (PDF) files](../user-guide/datalake-configuration.md) with team members via Azure Blob Storage.

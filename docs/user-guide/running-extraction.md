@@ -106,10 +106,15 @@ Example — pass an explicit Foundry handler (equivalent to the default):
 
 ```python
 from climatextract import extract
-from climatextract.adapters.azure_ai_foundry import AzureAIFoundryLlmHandler
+from climatextract.adapters.azure_ai_foundry import (
+    AzureAIFoundryEmbeddingHandler,
+    AzureAIFoundryLlmHandler,
+)
 
 llm = AzureAIFoundryLlmHandler()
-result_path = extract("./data/pdfs/", llm=llm)
+embedder = AzureAIFoundryEmbeddingHandler()
+
+result_path = extract("./data/pdfs/", llm=llm, embedder=embedder) 
 ```
 
 To route to a different provider entirely (OpenAI direct, Anthropic, a local model, etc.), you can implement your own handler. See [Custom Providers](custom-providers.md).

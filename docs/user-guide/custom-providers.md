@@ -1,6 +1,8 @@
-# Custom Providers
+# Custom Model Providers
 
 climatextract ships with reference Azure AI Foundry and Azure OpenAI Service adapters. To use a different LLM or embedding provider — OpenAI direct, Anthropic, a local model, anything else — implement a handler and pass it to `extract()`.
+
+We purposefully built our software using [liteLLM's Python SDK](https://docs.litellm.ai/docs/learn/sdk_quickstart) to make switching between different model providers as easy as possible.
 
 ---
 
@@ -18,9 +20,9 @@ If you just want to tweak parameters on an Azure model (temperature, reasoning e
 
 ## The interfaces
 
-Two abstract base classes in `climatextract.llm_embedding_api_bridge` define the contract.
+If you need access to models outside Azure, you will need to implement two subclasses. The abstract base classes in [`climatextract.llm_embedding_api_bridge`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/llm_embedding_api_bridge.py) define the contract.
 
-### `LlmHandler`
+### `LlmHandler(ABC)`
 
 Subclasses must implement:
 
@@ -29,11 +31,11 @@ Subclasses must implement:
 | `get_completion_and_cost(messages)` | Sync call. Takes OpenAI-style `messages` list, returns `(response, cost_in_usd)`. |
 | `aget_completion_and_cost(messages)` | Async version of the above. |
 | `get_model_dict()` | Returns a dict describing the model (must include a `"model"` key — used for logging and `repr`). |
-| `get_max_concurrent_calls()` | Returns the max number of in-flight calls the wrapper's semaphore should allow. |
+| `get_max_concurrent_calls()` | Returns the max number of parallel calls the wrapper's semaphore should allow (used with the async method mentioned before). |
 
 The returned `response` should be shaped like an OpenAI chat completion — specifically, `response.choices[0].message.content` (for the output text), `response.choices[0].logprobs` (optional), and `response.usage.prompt_tokens` / `response.usage.completion_tokens`. LiteLLM's `ModelResponse` already matches this shape, as do OpenAI SDK responses.
 
-### `EmbeddingModelHandler`
+### `EmbeddingModelHandler(ABC)`
 
 Subclasses must implement:
 
@@ -42,7 +44,7 @@ Subclasses must implement:
 | `get_embedding_and_cost(texts)` | Sync call. Takes `list[str]`, returns `(response, cost_in_usd)`. |
 | `aget_embedding_and_cost(texts)` | Async version. |
 | `get_model_dict()` | Dict with a `"model"` key. |
-| `get_max_concurrent_calls()` | Max in-flight embedding calls. |
+| `get_max_concurrent_calls()` | Max parallel embedding calls (used with the async method mentioned before). |
 
 The returned `response` should expose `response.data` as a sequence of items with an `embedding` field (either attribute- or dict-style — both are handled), and `response.usage.prompt_tokens`.
 
@@ -89,6 +91,12 @@ from climatextract import extract
 
 result_path = extract("./data/pdfs/", llm=OpenAILlmHandler(model="gpt-4o-mini"))
 ```
+
+## Our implementation: Using liteLLM with Azure AI Foundry
+
+As another example, you should explore our adapters for the Azure AI Foundry, [`climatextract/adapters/azure_ai_foundry.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_ai_foundry.py). `class AzureAIFoundryLlmHandler` implements the `LlmHandler`, and `AzureAIFoundryEmbeddingHandler` implements the `EmbeddingModelHandler`.
+
+Note that we load model configuration parameters from the configuration file [`climatextract.toml`](configuration.md)
 
 ---
 

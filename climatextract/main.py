@@ -433,7 +433,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     llm_costs = llm.create_llm_costs_dict()
     embed_usage = embed_model.get_usage_counter().get_usage_dict()
     llm_costs["embedding_tokens"] += embed_usage["embedding_tokens"]
-    llm_costs["total_llm_costs_in_euro"] += embed_usage["total_cost_in_dollar"]
+    llm_costs["total_llm_costs_in_dollar"] += embed_usage["total_cost_in_dollar"]
 
     # Reset counters so repeated calls in the same process don't accumulate.
     llm.reset_usage_counter()

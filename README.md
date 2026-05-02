@@ -28,33 +28,7 @@ source co2_info_extraction/bin/activate
 pip install -e .
 ```
 
-### System dependencies
-
-The Python package `pdf2image` is a wrapper around `poppler`, so you will need to install it as a system dependency.
-
-**macOS:**
-```bash
-brew install poppler
-```
-
-**Ubuntu/Debian:**
-```bash
-sudo apt-get install poppler-utils
-```
-
-**Windows:** Download from the [@oschwartz10612 poppler build](https://github.com/oschwartz10612/poppler-windows/releases/), extract the archive, and add the `bin/` folder to your system's PATH environment variable. See the [pdf2image documentation](https://pypi.org/project/pdf2image/) for details.
-
-### LLM and embedding provider
-
-climatextract ships with a reference adapter for Azure OpenAI and Azure AI Foundry, which is what the Installation guide walks through. To use a different provider (OpenAI direct, Anthropic, local models, etc.), you can inject a custom handler into `extract()` — see [Custom Providers](docs/user-guide/custom-providers.md).
-
-See the [Installation guide](docs/getting-started/installation.md) for how to configure your `.env` file with Azure credentials and authentication options.
-
-### MLflow experiment tracking (optional)
-
-climatextract uses MLflow for experiment tracking. By default, experiments are tracked locally in a `./mlruns` directory.
-
-To set up remote tracking via Azure Databricks, see the [MLflow setup guide](docs/user-guide/mlflow-setup.md).
+See the [Installation guide](docs/getting-started/installation.md) for additional steps and alternative deployment options you have.
 
 ## Usage
 
