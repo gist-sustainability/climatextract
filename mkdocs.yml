@@ -1,6 +1,9 @@
 site_name: climatextract
-site_url: https://github.com/gist-sustainability/climatextract
+site_url: https://gist-sustainability.github.io/climatextract/
 site_description: A RAG-based pipeline for extracting CO₂ emissions data from corporate sustainability reports
+repo_url: https://github.com/gist-sustainability/climatextract
+repo_name: gist-sustainability/climatextract
+edit_uri: edit/main/docs/
 
 theme:
   name: material
