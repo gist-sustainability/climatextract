@@ -32,3 +32,9 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8.3.5"]
 docs = ["zensical", "mkdocs-material", "mkdocstrings[python]", "mkdocs-click"]
+
+[tool.setuptools.packages.find]
+include = ["climatextract*"]
+
+[tool.setuptools.package-data]
+climatextract = ["data/*.csv"]
