@@ -217,6 +217,7 @@ class EvaluatorData:
             'value_match',
             # do units match?
             'extracted_unit_from_llm', 'unit_man', 'unit_match',
+            'extraction_context',
             # do normalized units match?
             'normalized_unit_from_dictionary', 'unit_man_normalized', 'unit_normalized_match',
             # do values and units (normalized) match?
