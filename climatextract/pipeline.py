@@ -355,6 +355,12 @@ def merge_and_prepare_single_output_table_from(query_responses: pd.DataFrame,
     co2_emission_table2_w_query_responses["report_name_short"] = [
         os.path.basename(file) for file in co2_emission_table2_w_query_responses.report_name]
 
+    co2_emission_table2_w_query_responses["extraction_context"] = [
+        helpers.extract_value_context(value, page_text)
+        for value, page_text in zip(
+            co2_emission_table2_w_query_responses["extracted_value_from_llm"],
+            co2_emission_table2_w_query_responses["page_texts_to_llm"])]
+
     page_numbers_tried = co2_emission_table2_w_query_responses.groupby(
         'report_name')['page_number_to_llm'].unique().apply(list).reset_index()
     page_numbers_tried = page_numbers_tried.rename(
@@ -401,7 +407,8 @@ def prepare_long_format_output_table_from(
     # Final output columns in requested order
     target_cols = [
         'report_id', 'year', 'indicator', 'value_std', 'value_raw', 'value_score',
-        'unit_std', 'unit_raw', 'unit_score', 'unit_cat', 'dupl_flag', 'select_flag', 'page'
+        'unit_std', 'unit_raw', 'unit_score', 'unit_cat', 'extraction_context',
+        'dupl_flag', 'select_flag', 'page'
     ]
     long_format_df = df[target_cols]
     return long_format_df
@@ -453,7 +460,8 @@ def prepare_wide_formate_output_table_from(
 
     # Pivot table: one row per report_id and year, columns per scope type
     pivot_cols = ['value_std', 'value_raw', 'value_score',
-                  'unit_raw', 'unit_score', 'unit_cat', 'page', 'dupl_reason']
+                  'unit_raw', 'unit_score', 'unit_cat', 'page', 'dupl_reason',
+                  'extraction_context']
     df_pivot = df.pivot_table(
         index=['report_id', 'year'],
         columns='extracted_scope_from_llm',
@@ -479,7 +487,8 @@ def prepare_wide_formate_output_table_from(
     def _reorder_columns(df_local):
         base_cols = ['report_id', 'year']
         suffixes = ['value_std', 'value_raw', 'value_score', 'unit_std',
-                    'unit_raw', 'unit_score', 'unit_cat', 'dupl_reason', 'page']
+                    'unit_raw', 'unit_score', 'unit_cat', 'extraction_context',
+                    'dupl_reason', 'page']
         ordered_cols = base_cols + \
             [f'scope_{scope}_{suffix}' for suffix in suffixes for scope in scopes]
         existing_cols = [

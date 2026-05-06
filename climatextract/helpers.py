@@ -43,6 +43,65 @@ def remove_decimal_commas_in_numbers(raw_number: str) -> str:
     return res
 
 
+def extract_value_context(value, page_text, window: int = 100) -> str:
+    """Return up to ``window`` characters of page text on each side of ``value``.
+
+    Tries a direct substring match first. If that fails, reconstructs the
+    likely thousands-separator form (US/UK convention) and retries — this
+    covers the common case where ``page_text`` shows ``23,301`` while
+    ``value`` has been comma-stripped to ``23301`` upstream. Trailing ``.0``
+    on the search key is also tolerated, since pandas float coercion
+    introduces it for integer values. Returns an empty string when no match
+    is found; whitespace in the returned slice is collapsed to single spaces.
+    """
+    if value is None or page_text is None:
+        return ""
+    try:
+        if pd.isna(value):
+            return ""
+    except (TypeError, ValueError):
+        pass
+
+    text = str(page_text)
+    raw = str(value).strip()
+    if not raw or not text:
+        return ""
+
+    # Pandas float coercion writes integers as ``28714.0`` even when the page
+    # said ``28714``. Drop a trailing ``.0`` from the search key so it doesn't
+    # poison downstream candidate construction.
+    key = raw[:-2] if raw.endswith(".0") else raw
+
+    span = None
+    idx = text.find(key)
+    if idx != -1:
+        span = (idx, idx + len(key))
+
+    if span is None:
+        if "." in key:
+            int_part, frac_part = key.split(".", 1)
+            head = re.sub(r"\D", "", int_part)
+            tail = re.sub(r"\D", "", frac_part)
+        else:
+            head, tail = re.sub(r"\D", "", key), ""
+        if len(head) > 3:
+            grouped = head[: len(head) % 3 or 3]
+            rest = head[len(grouped):]
+            grouped += "".join("," + rest[i:i + 3] for i in range(0, len(rest), 3))
+            us_candidate = grouped + (("." + tail) if tail else "")
+            idx = text.find(us_candidate)
+            if idx != -1:
+                span = (idx, idx + len(us_candidate))
+
+    if span is None:
+        return ""
+
+    start = max(0, span[0] - window)
+    end = min(len(text), span[1] + window)
+    snippet = text[start:end]
+    return re.sub(r"\s+", " ", snippet).strip()
+
+
 def expand_grid(data_dict):
     """
     Create a dataframe from all combinations of provided lists or arrays.
