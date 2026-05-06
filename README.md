@@ -1,5 +1,7 @@
 # climatextract
 
+📖 **Documentation:** [gist-sustainability.github.io/climatextract](https://gist-sustainability.github.io/climatextract/)
+
 climatextract is a retrieval-augmented generation (RAG) pipeline that surfaces CO₂ emissions data from corporate sustainability reports. It embeds PDF pages, ranks relevant context, and prompts a large language model to extract Scope 1-3 emissions into structured tables for downstream analysis.
 
 ## Background
@@ -28,7 +30,7 @@ source co2_info_extraction/bin/activate
 pip install -e .
 ```
 
-See the [Installation guide](docs/getting-started/installation.md) for additional steps and alternative deployment options you have.
+See the [Installation guide](https://gist-sustainability.github.io/climatextract/getting-started/installation/) for additional steps and alternative deployment options you have.
 
 ## Usage
 
@@ -40,11 +42,11 @@ from climatextract import extract
 result_path = extract("./data/pdfs/company_2023_report.pdf")
 ```
 
-Results are saved as CSV files in `output/<run-id>/`. See the [Quickstart](docs/getting-started/quickstart.md) for more examples.
+Results are saved as CSV files in `output/<run-id>/`. See the [Quickstart](https://gist-sustainability.github.io/climatextract/getting-started/quickstart/) for more examples.
 
 ### Configuration
 
-Extraction behavior is controlled via a `climatextract.toml` file in your working directory. It lets you configure the LLM model, embedding model, prompt type, year range, semantic search parameters, and more. See the [Configuration guide](docs/user-guide/configuration.md) for all available options.
+Extraction behavior is controlled via a `climatextract.toml` file in your working directory. It lets you configure the LLM model, embedding model, prompt type, year range, semantic search parameters, and more. See the [Configuration guide](https://gist-sustainability.github.io/climatextract/user-guide/configuration/) for all available options.
 
 ### Running tests
 
@@ -56,18 +58,18 @@ See `tests/README.md` for details on the acceptance test suite.
 
 ## Documentation
 
-The full documentation covers usage, configuration, architecture, and API reference:
+The full documentation is hosted at [gist-sustainability.github.io/climatextract](https://gist-sustainability.github.io/climatextract/) and covers usage, configuration, architecture, and API reference:
 
 | Section | Description |
 |---------|-------------|
-| [Installation](docs/getting-started/installation.md) | Detailed setup instructions |
-| [Quickstart](docs/getting-started/quickstart.md) | First extraction walkthrough |
-| [Configuration](docs/user-guide/configuration.md) | All TOML configuration options |
-| [Custom Providers](docs/user-guide/custom-providers.md) | Plug in a non-Azure LLM or embedding backend |
-| [Architecture](docs/concepts/architecture.md) | Pipeline design and components |
-| [Prompts](docs/concepts/prompts.md) | How extraction prompts work |
-| [Evaluation](docs/concepts/evaluation.md) | Measuring extraction quality |
-| [API Reference](docs/api-reference/public-api.md) | Public API functions |
+| [Installation](https://gist-sustainability.github.io/climatextract/getting-started/installation/) | Detailed setup instructions |
+| [Quickstart](https://gist-sustainability.github.io/climatextract/getting-started/quickstart/) | First extraction walkthrough |
+| [Configuration](https://gist-sustainability.github.io/climatextract/user-guide/configuration/) | All TOML configuration options |
+| [Custom Providers](https://gist-sustainability.github.io/climatextract/user-guide/custom-providers/) | Plug in a non-Azure LLM or embedding backend |
+| [Architecture](https://gist-sustainability.github.io/climatextract/concepts/architecture/) | Pipeline design and components |
+| [Prompts](https://gist-sustainability.github.io/climatextract/concepts/prompts/) | How extraction prompts work |
+| [Evaluation](https://gist-sustainability.github.io/climatextract/concepts/evaluation/) | Measuring extraction quality |
+| [API Reference](https://gist-sustainability.github.io/climatextract/api-reference/public-api/) | Public API functions |
 
 To build and serve the docs locally:
 
