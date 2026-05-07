@@ -91,6 +91,12 @@ API_VERSION=2024-12-01-preview
 
 Instead of using an API_KEY (problem: different endpoints require different API_KEYs), you can also log in to Azure with your personal account.
 
+Install the `azure_authentication` package:
+
+```bash
+pip install "azure_authentication@git+https://github.com/soda-lmu/azure-auth-helper-python.git"
+```
+
 Add to your `.env` file:
 
 ```bash
@@ -98,6 +104,13 @@ AZURE_USERNAME=your-username
 AZURE_PASSWORD=your-password
 
 # API_KEY=not-needed-anymore
+```
+
+To facilitate login processes, you can use the following. Be aware of the risk if you store secret information on your hard drive.
+```bash
+AZURE_SODA_WEBLOGIN=advanced
+AZURE_SODA_CREDENTIAL_PATH=my_secret_azure_credential.json
+AZURE_SODA_ALLOW_UNENCRYPTED_STORAGE=True 
 ```
 
 This functionality is based on the [azure_authentication](https://github.com/soda-lmu/azure-auth-helper-python) package. Please refer to its [documentation](https://github.com/soda-lmu/azure-auth-helper-python) for alternative authentication workflows.

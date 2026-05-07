@@ -16,6 +16,9 @@ import numpy as np
 from llama_index.readers.file import PDFReader
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.ingestion import IngestionPipeline
+# we might want to try to use reader integrations directly, so only importing the following?
+# https://github.com/run-llama/llama_index/tree/main/llama-index-integrations/readers/llama-index-readers-file
+
 import duckdb
 
 from climatextract.llm_embedding_api_bridge import EmbeddingModel

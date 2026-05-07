@@ -41,6 +41,7 @@ The primary output file with one row per extracted value. No row included if the
 | `unit_raw` | Original extracted unit from LLM
 | `unit_score` |  LLM confidence score, based on logprobs
 | `unit_cat` | Categorized unit (e.g., `kg CO2e`, `Mt CO2e`, `Other`, `Unknown`). The [unit conversion table](https://github.com/gist-sustainability/climatextract/blob/main/data/normalization_units/unit_normalization_dict.csv) converts `unit_raw` to `unit_cat`, so that standardized values (in `t CO2e`) can be calculated.
+| `extraction_context` | Surrounding text snippet (~200 chars long) from `page` with `value_raw` at its center. First occurence of `value_raw` on the page is returned, not necessarily the one used by the LLM. Empty if `value_raw` is not found/is formatted in unusual ways.
 
 
 **Example:**
@@ -68,7 +69,7 @@ The same data pivoted for easier comparison across scopes: Wide format, with a s
 | `scope_2mb_value_std` | Scope 2 (market-based) standardized emissions value |
 | `scope_3_value_std` | Scope 3 standardized emissions value |
 
-Each scope also has additional detail columns following the pattern `scope_{type}_{field}`, where `type` is `1`, `2lb`, `2mb`, or `3`, and `{field}` is one of: `value_raw`, `value_score`, `unit_std`, `unit_raw`, `unit_score`, `unit_cat`, `dupl_reason`, `page`.
+Each scope also has additional detail columns following the pattern `scope_{type}_{field}`, where `type` is `1`, `2lb`, `2mb`, or `3`, and `{field}` is one of: `value_raw`, `value_score`, `unit_std`, `unit_raw`, `unit_score`, `unit_cat`, `extraction_context`, `dupl_reason`, `page`.
 
 `dupl_reason` (e.g., `scope_1_dupl_reason`) contains the priorization rule used during duplicate resolution. It is related to `dupl_flag` and `select_flag` in the long format. The wide format contains only the selected/resolved values from the long format, with `dupl_reason` explaining how each duplicate was resolved.
 
@@ -103,6 +104,7 @@ Key columns (column names are not final):
 | `page_number_used_by_llm` | `page` | Page number analyzed |
 | `page_retrieval_scores` | | Semantic similarity scores for page retrieval |
 | `page_texts_to_llm` | | Text from page given to LLM |
+| `extraction_context` | `extraction_context` | Substring from `page_texts_to_llm` containing `extracted_value_from_llm` at its center (see above) | 
 | `raw_llm_response` | | Raw LLM answer output |
 | `extracted_scope_from_llm` | $\hat{=}$ `indicator` | Scope extracted by the LLM |
 | `extracted_year_from_llm` | `year` | Year extracted by the LLM |
