@@ -1307,17 +1307,25 @@
 <hr />
 <h2 id="step-4-optional-configure-personalized-authentication-to-azure">Step 4 (optional): Configure personalized authentication to Azure</h2>
 <p>Instead of using an API_KEY (problem: different endpoints require different API_KEYs), you can also log in to Azure with your personal account.</p>
-<p>Add to your <code>.env</code> file:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nv">AZURE_USERNAME</span><span class="o">=</span>your-username
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nv">AZURE_PASSWORD</span><span class="o">=</span>your-password
-</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># API_KEY=not-needed-anymore</span>
+<p>Install the <code>azure_authentication</code> package:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;azure_authentication@git+https://github.com/soda-lmu/azure-auth-helper-python.git&quot;</span>
 </span></code></pre></div>
+<p>Add to your <code>.env</code> file:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nv">AZURE_USERNAME</span><span class="o">=</span>your-username
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nv">AZURE_PASSWORD</span><span class="o">=</span>your-password
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># API_KEY=not-needed-anymore</span>
+</span></code></pre></div>
+<p>To facilitate login processes, you can use the following. Be aware of the risk if you store secret information on your hard drive.
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">AZURE_SODA_WEBLOGIN</span><span class="o">=</span>advanced
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nv">AZURE_SODA_CREDENTIAL_PATH</span><span class="o">=</span>my_secret_azure_credential.json
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nv">AZURE_SODA_ALLOW_UNENCRYPTED_STORAGE</span><span class="o">=</span>True<span class="w"> </span>
+</span></code></pre></div></p>
 <p>This functionality is based on the <a href="https://github.com/soda-lmu/azure-auth-helper-python">azure_authentication</a> package. Please refer to its <a href="https://github.com/soda-lmu/azure-auth-helper-python">documentation</a> for alternative authentication workflows.</p>
 <hr />
 <h2 id="verify-installation">Verify Installation</h2>
 <p>Test that everything is working:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from climatextract import extract; print(&#39;Installation successful!&#39;)&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from climatextract import extract; print(&#39;Installation successful!&#39;)&quot;</span>
 </span></code></pre></div>
 <hr />
 <h2 id="next-steps">Next Steps</h2>

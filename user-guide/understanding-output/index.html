@@ -1398,6 +1398,10 @@
 <td><code>unit_cat</code></td>
 <td>Categorized unit (e.g., <code>kg CO2e</code>, <code>Mt CO2e</code>, <code>Other</code>, <code>Unknown</code>). The <a href="https://github.com/gist-sustainability/climatextract/blob/main/data/normalization_units/unit_normalization_dict.csv">unit conversion table</a> converts <code>unit_raw</code> to <code>unit_cat</code>, so that standardized values (in <code>t CO2e</code>) can be calculated.</td>
 </tr>
+<tr>
+<td><code>extraction_context</code></td>
+<td>Surrounding text snippet (~200 chars long) from <code>page</code> with <code>value_raw</code> at its center. First occurence of <code>value_raw</code> on the page is returned, not necessarily the one used by the LLM. Empty if <code>value_raw</code> is not found/is formatted in unusual ways.</td>
+</tr>
 </tbody>
 </table>
 <p><strong>Example:</strong></p>
@@ -1504,7 +1508,7 @@
 </tr>
 </tbody>
 </table>
-<p>Each scope also has additional detail columns following the pattern <code>scope_{type}_{field}</code>, where <code>type</code> is <code>1</code>, <code>2lb</code>, <code>2mb</code>, or <code>3</code>, and <code>{field}</code> is one of: <code>value_raw</code>, <code>value_score</code>, <code>unit_std</code>, <code>unit_raw</code>, <code>unit_score</code>, <code>unit_cat</code>, <code>dupl_reason</code>, <code>page</code>.</p>
+<p>Each scope also has additional detail columns following the pattern <code>scope_{type}_{field}</code>, where <code>type</code> is <code>1</code>, <code>2lb</code>, <code>2mb</code>, or <code>3</code>, and <code>{field}</code> is one of: <code>value_raw</code>, <code>value_score</code>, <code>unit_std</code>, <code>unit_raw</code>, <code>unit_score</code>, <code>unit_cat</code>, <code>extraction_context</code>, <code>dupl_reason</code>, <code>page</code>.</p>
 <p><code>dupl_reason</code> (e.g., <code>scope_1_dupl_reason</code>) contains the priorization rule used during duplicate resolution. It is related to <code>dupl_flag</code> and <code>select_flag</code> in the long format. The wide format contains only the selected/resolved values from the long format, with <code>dupl_reason</code> explaining how each duplicate was resolved.</p>
 <hr />
 <h4 id="handling-duplicates">Handling Duplicates</h4>
@@ -1552,6 +1556,11 @@
 <td><code>page_texts_to_llm</code></td>
 <td></td>
 <td>Text from page given to LLM</td>
+</tr>
+<tr>
+<td><code>extraction_context</code></td>
+<td><code>extraction_context</code></td>
+<td>Substring from <code>page_texts_to_llm</code> containing <code>extracted_value_from_llm</code> at its center (see above)</td>
 </tr>
 <tr>
 <td><code>raw_llm_response</code></td>
