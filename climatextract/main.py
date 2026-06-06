@@ -48,9 +48,17 @@ def extract(
     *,
     llm: LlmHandler | None = None,
     embedder: EmbeddingModelHandler | None = None,
+    indicator: str | None = None,
+    indicator_description: str | None = None,
 ) -> Optional[str]:
     """
-    Extract CO2 emissions data from PDF reports.
+    Extract sustainability indicator data from PDF reports.
+
+    By default extracts CO2 emissions (Scope 1-3). When ``indicator`` is given,
+    runs the additive generic path instead: the LLM bootstraps an extraction
+    spec for that indicator (e.g. "water consumption", "energy consumption"),
+    which drives both the retrieval query and the extraction prompt. The CO2
+    path is unchanged when ``indicator`` is None.
 
     Public API - returns just the path to results.
 
@@ -62,6 +70,11 @@ def extract(
                    Azure AI Foundry handler is used.
         embedder: An ``EmbeddingModelHandler`` for embedding calls. Same
                    default behavior as ``llm``.
+        indicator: Optional indicator name to extract instead of CO2 emissions,
+                   e.g. "water consumption". Activates the generic extraction
+                   path. Defaults to None (CO2 emissions).
+        indicator_description: Optional one-line clarification of the indicator's
+                   intended meaning, used to disambiguate the bootstrapped spec.
         config_path: Path to config file. Defaults to "climatextract.toml".
         enable_mlflow: Whether to log results to MLflow. If True, uses MLflow settings
                        from .env (tracking_uri) and config file (experiment_name). Enables
@@ -92,7 +105,8 @@ def extract(
 
             # Run extraction inside MLflow context
             result = _extract_with_metadata(
-                pdf_input, path_to_results, config_path, llm=llm, embedder=embedder)
+                pdf_input, path_to_results, config_path, llm=llm, embedder=embedder,
+                indicator=indicator, indicator_description=indicator_description)
             if result is None:
                 return None
 
@@ -128,7 +142,8 @@ def extract(
     else:
         # No MLflow - simple extraction
         result = _extract_with_metadata(
-            pdf_input, config_path=config_path, llm=llm, embedder=embedder)
+            pdf_input, config_path=config_path, llm=llm, embedder=embedder,
+            indicator=indicator, indicator_description=indicator_description)
         if result is None:
             return None
 
@@ -243,6 +258,8 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
                            config_path: str = "climatextract.toml",
                            llm: LlmHandler | None = None,
                            embedder: EmbeddingModelHandler | None = None,
+                           indicator: str | None = None,
+                           indicator_description: str | None = None,
                            ) -> Optional[Dict[str, Any]]:
     """
     Internal extraction function that returns full metadata for main().
@@ -341,6 +358,19 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     embed_model = EmbeddingModel(embedder)
     llm = Llm(llm, print_query_duration=False)
 
+    # Generic indicator path (additive): bootstrap an extraction spec and
+    # override the retrieval query with it. The CO2 path is untouched when
+    # ``indicator`` is None.
+    indicator_spec = None
+    if indicator:
+        from climatextract.indicators.spec_bootstrap import (
+            bootstrap_spec, format_spec_for_console)
+        indicator_spec = bootstrap_spec(
+            indicator, indicator_description, llm, cache_dir=path_to_results)
+        experiment_params.semantic_search_params.search_query = indicator_spec.search_query
+        console._console.print(format_spec_for_console(indicator_spec))
+        console._console.print()
+
     search_query = semantic_search.SearchQuery(
         search_query=experiment_params.semantic_search_params.search_query,
         repository=embeddings_repo)
@@ -391,7 +421,11 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
             "Failed to embed the search query and save it to the database.")
 
     # Build prompt handler
-    if experiment_params.llm_params.prompt_type == 'structured_json':
+    if indicator_spec is not None:
+        from climatextract.indicators.generic_prompt import GenericStructuredJsonPrompt
+        llm_single_prompt = GenericStructuredJsonPrompt(
+            spec=indicator_spec, prompt_params=experiment_params.llm_params)
+    elif experiment_params.llm_params.prompt_type == 'structured_json':
         llm_single_prompt = prompts_with_prompt_parsers.StructuredJsonPrompt(
             prompt_params=experiment_params.llm_params)
     else:
@@ -405,7 +439,8 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         search_query=search_query,
         llm=llm,
         llm_single_prompt=llm_single_prompt,
-        console=console
+        console=console,
+        generic_indicator=indicator_spec is not None
     )
 
     # Start embedding progress (if any PDFs need embedding)
@@ -446,7 +481,10 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
                      path_to_results=path_to_results,
                      first_write=True,
                      results_type='final',
-                     console=console)
+                     console=console,
+                     generic_indicator=indicator_spec is not None,
+                     indicator_name=(indicator_spec.canonical_name
+                                     if indicator_spec is not None else None))
         has_results = True
 
     # Save config.json with all parameters and metrics (for both public and internal use)

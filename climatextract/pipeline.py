@@ -27,7 +27,8 @@ class ValueRetrieverPipeline():
         Uses text and tables from documents to retrieve emissions."""
 
     def __init__(self, experiment_params, embed_model, embeddings_repository,
-                 search_query, llm, llm_single_prompt, console: Optional["Console"] = None):
+                 search_query, llm, llm_single_prompt, console: Optional["Console"] = None,
+                 generic_indicator: bool = False):
 
         self.embed_model = embed_model
         self.search_query = search_query
@@ -37,6 +38,8 @@ class ValueRetrieverPipeline():
         self.llm = llm
         self.llm_single_prompt = llm_single_prompt  # prompter class instance
         self.prompt_type = experiment_params.llm_params.prompt_type
+        # Generic (non-CO2) indicator runs skip CO2-specific unit normalization.
+        self.generic_indicator = generic_indicator
 
         self.input_mode = experiment_params.pipeline_params.input_mode
         self.embed_only = experiment_params.pipeline_params.embed_only
@@ -202,11 +205,17 @@ class ValueRetrieverPipeline():
 
             co2_emissions['report_name'] = filename
 
-            # Normalize units and add standardized value column
-            co2_emissions = helpers.get_unit_normalization_mapping(
-                co2_emissions, "unit", pipeline_output_flag=True)
-            co2_emissions = helpers.get_value_standardization(
-                co2_emissions, "value", "unit_normalized")
+            if self.generic_indicator:
+                # Generic indicators have no CO2e unit table; keep raw units and
+                # skip value standardization rather than mis-mapping (e.g. m3, GJ).
+                co2_emissions["unit_normalized"] = co2_emissions["unit"]
+                co2_emissions["standardized_value"] = pd.NA
+            else:
+                # Normalize units and add standardized value column
+                co2_emissions = helpers.get_unit_normalization_mapping(
+                    co2_emissions, "unit", pipeline_output_flag=True)
+                co2_emissions = helpers.get_value_standardization(
+                    co2_emissions, "value", "unit_normalized")
 
             resp_summary = pd.DataFrame({
                 'report_name': [filename for _ in doc_relevant_pages],
@@ -252,8 +261,15 @@ class FileConfig:
 
 
 def save_results(raw_results, path_to_results: str, first_write: bool, results_type: str,
-                 console: Optional["Console"] = None):
-    """Save the results in a nice format."""
+                 console: Optional["Console"] = None,
+                 generic_indicator: bool = False, indicator_name: Optional[str] = None):
+    """Save the results in a nice format.
+
+    For generic (non-CO2) indicator runs, CO2-specific duplicate resolution and
+    wide-format pivoting are skipped (they key on the 't CO2e' unit and a fixed
+    scope taxonomy); a raw table and an indicator-agnostic long format are
+    written instead, keeping all candidate values.
+    """
 
     query_responses = concat_prepare_document_wide_information_from(
         raw_results)
@@ -268,6 +284,15 @@ def save_results(raw_results, path_to_results: str, first_write: bool, results_t
         co2_emission_table2_w_query_responses.to_csv(
             output_file, mode='a', header=first_write, index=False)
         return
+
+    if generic_indicator:
+        co2_emission_table2_w_query_responses.to_csv(
+            os.path.join(path_to_results, "raw_results.csv"), index=False)
+        long_format_df = prepare_generic_long_format_from(
+            co2_emission_table2_w_query_responses, indicator_name)
+        long_format_df.to_csv(
+            os.path.join(path_to_results, "results_long_format.csv"), index=False)
+        return co2_emission_table2_w_query_responses
 
     # Handle duplicates in final output
     dupl_columns = [
@@ -412,6 +437,41 @@ def prepare_long_format_output_table_from(
     ]
     long_format_df = df[target_cols]
     return long_format_df
+
+
+def prepare_generic_long_format_from(
+        merged_table: pd.DataFrame, indicator_name: Optional[str] = None) -> pd.DataFrame:
+    """Long-format output for a generic indicator run.
+
+    Indicator-agnostic: emits one row per extracted value with a free-string
+    ``category`` (carried through ``extracted_scope_from_llm``) and the raw
+    value/unit (no CO2e standardization). Does not depend on the duplicate-
+    resolution columns the CO2 long format uses.
+    """
+    df = merged_table.copy()
+    df = df[df['extracted_value_from_llm'].notnull() & (
+        df['extracted_value_from_llm'] != "Nothing extracted. No Regex match")]
+
+    renames = {
+        'report_name_short': 'report_id',
+        'extracted_year_from_llm': 'year',
+        'extracted_scope_from_llm': 'category',
+        'extracted_value_from_llm': 'value_raw',
+        'value_probability': 'value_score',
+        'extracted_unit_from_llm': 'unit_raw',
+        'unit_probability': 'unit_score',
+        'extraction_context': 'extraction_context',
+        'page_number_used_by_llm': 'page',
+    }
+    df = df.rename(columns=renames)
+    df['indicator'] = indicator_name
+
+    target_cols = [
+        'report_id', 'year', 'indicator', 'category', 'value_raw', 'value_score',
+        'unit_raw', 'unit_score', 'extraction_context', 'page'
+    ]
+    existing = [c for c in target_cols if c in df.columns]
+    return df[existing]
 
 
 def prepare_wide_formate_output_table_from(
