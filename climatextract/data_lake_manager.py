@@ -115,9 +115,18 @@ class DataLakeManager:
                         os.makedirs(dir_path, exist_ok=True)
                     with open(embeddings_db_path, "wb") as f:
                         blob_client.download_blob().readinto(f)
-                except Exception:
-                    logging.getLogger(__name__).warning("Embedding database download failed")
-                    return False
+                except Exception as e:
+                    logging.getLogger(__name__).warning(
+                        "Embedding database download failed (%s). "
+                        "A new database will be created locally at %s",
+                        e, embeddings_db_path)
+                    # Remove the partial download so an empty/corrupt file is
+                    # not later mistaken for a valid database.
+                    try:
+                        if os.path.exists(embeddings_db_path):
+                            os.remove(embeddings_db_path)
+                    except OSError:
+                        pass
 
         return True
     
@@ -223,8 +232,8 @@ class DataLakeManager:
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
                 with open(filepath, "wb") as f:
                     blob_client.download_blob().readinto(f)
-        except Exception:
-            logging.getLogger(__name__).warning("PDF download failed")
+        except Exception as e:
+            logging.getLogger(__name__).warning("PDF download failed: %s", e)
             return False
 
         return True
@@ -307,8 +316,8 @@ class DataLakeManager:
                 local_path = os.path.join(local_dir, os.path.basename(blob.name))
                 with open(local_path, "wb") as f:
                     blob_client.download_blob().readinto(f)
-        except Exception:
-            logging.getLogger(__name__).warning("Failed to download PDFs from data lake")
+        except Exception as e:
+            logging.getLogger(__name__).warning("Failed to download PDFs from data lake: %s", e)
             return False
 
         return True
