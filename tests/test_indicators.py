@@ -120,6 +120,14 @@ def test_bootstrap_spec_strips_markdown_fences(tmp_path):
     assert spec.canonical_name == "Water consumption"
 
 
+def test_bootstrap_spec_tolerates_doubled_braces(tmp_path):
+    # Models occasionally echo the {{ }} brace-escaping from the prompt's
+    # format instructions (observed live: '{{"entries": []}}').
+    doubled = "{{" + json.dumps(_SPEC_JSON)[1:-1] + "}}"
+    spec = spec_bootstrap.bootstrap_spec("water", None, _FakeLlm(doubled), cache_dir=str(tmp_path))
+    assert spec.canonical_name == "Water consumption"
+
+
 def test_bootstrap_spec_tolerates_surrounding_prose(tmp_path):
     noisy = "Here is the spec you asked for:\n" + json.dumps(_SPEC_JSON) + "\nHope that helps!"
     spec = spec_bootstrap.bootstrap_spec("water", None, _FakeLlm(noisy), cache_dir=str(tmp_path))
@@ -178,6 +186,19 @@ def test_generic_process_output_keeps_unforeseen_category():
                 "extracted_year_from_llm", "extracted_value_from_llm",
                 "value_probability", "unit_probability", "raw_llm_response"]:
         assert col in df.columns
+
+
+def test_generic_process_output_parses_doubled_braces():
+    # The exact failure shape observed live on DS Smith p54: '{{...}}'.
+    # Must parse (values kept) instead of falling back to the empty grid.
+    gp = GenericStructuredJsonPrompt(_make_spec(), _PromptParams())
+    inner = json.dumps({"entries": [
+        {"year": 2021, "category": "withdrawal", "value": 55.7, "unit": "millions m3"},
+    ]})
+    llm_out = {"content": "{{" + inner[1:-1] + "}}", "logprobs": None}
+    df = gp.process_llm_output(llm_out)
+    assert 55.7 in df["extracted_value_from_llm"].tolist()
+    assert "withdrawal" in df["extracted_scope_from_llm"].tolist()
 
 
 def test_generic_process_output_falls_back_on_garbage():
