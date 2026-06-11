@@ -94,7 +94,7 @@ class EmbeddingsRepository:
     def create_database(self, embed_dim: int) -> None:
         """Create database schema (tables, indexes) if needed."""
 
-        database_path = "./data/processed/embeddings"
+        database_path = os.path.dirname(self.database_name) or "./data/processed/embeddings"
         if not os.path.exists(database_path):
             os.makedirs(database_path)
 

@@ -3,6 +3,8 @@ name = "climatextract"
 version = "0.3.1"
 description = "Extract CO2 emissions data from PDF sustainability reports using LLMs"
 readme = "README.md"
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
 authors = [{name = "ClimateXtract Team"}]
 keywords = ["co2", "emissions", "sustainability", "pdf", "extraction", "llm", "nlp"]
 requires-python = ">=3.11"

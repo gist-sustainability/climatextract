@@ -122,8 +122,9 @@ gold_standard = "data/evaluation_dataset/gold_standard.csv"
 [datalake]
 # Blob paths for PDF files and embedding databases.
 # Format: "container_name" or "container_name/subfolder/path"
-# Default values match the flat container structure: files sit at the root of each container.
-blob_path_pdfs = "pdfs"
+# Defaults match the data lake layout: PDFs live under the sample_160/ folder
+# of the pdfs container; embedding databases sit at the root of the embeddings container.
+blob_path_pdfs = "pdfs/sample_160"
 blob_path_embeddings = "embeddings"
 
 # =============================================================================
