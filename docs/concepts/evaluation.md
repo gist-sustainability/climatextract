@@ -1,6 +1,8 @@
 # Evaluation
 
-climatextract includes a comprehensive evaluation framework to measure extraction quality against gold standard datasets. This page explains the evaluation metrics and process.
+climatextract includes a comprehensive evaluation framework to measure extraction quality against gold standard datasets. This feature is only tested with our own gold-standard dataset ([Paper](https://doi.org/10.1038/s41597-025-05664-8), [Data](https://zenodo.org/records/18696096)), not with other datasets.
+
+This page explains the evaluation metrics and process.
 
 ---
 
