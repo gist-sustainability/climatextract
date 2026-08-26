@@ -441,6 +441,12 @@ class LlmSinglePromptQueryScope123(PromptProcessorInterface):
         else:
             output_table = self._fill_no_extractions_table()
 
+        # Only matched values carry probabilities; ensure the columns exist so
+        # downstream renaming to value_score/unit_score always has something.
+        for col in ("value_probability", "unit_probability"):
+            if col not in output_table.columns:
+                output_table[col] = pd.NA
+
         output_table["extracted_year_from_llm"] = pd.to_numeric(
             output_table.year, errors='coerce')
         output_table["extracted_value_from_llm"] = pd.to_numeric(
@@ -594,6 +600,12 @@ class LlmSinglePromptQueryScope12lb2mb3(PromptProcessorInterface):
             output_table = pd.concat(output_list, ignore_index=True)
         else:
             output_table = self._fill_no_extractions_table()
+
+        # Only matched values carry probabilities; ensure the columns exist so
+        # downstream renaming to value_score/unit_score always has something.
+        for col in ("value_probability", "unit_probability"):
+            if col not in output_table.columns:
+                output_table[col] = pd.NA
 
         def convert_values(x):
             if x == "1":
