@@ -8,7 +8,7 @@
 # =============================================================================
 [input]
 # Can be a list of specific files:
-filename_list = ["data/pdfs/report1.pdf", "data/pdfs/report2.pdf"]
+filename_list = ["data/pdfs/test_report/report.pdf"]
 # Or a directory path (processes all PDFs in it):
 #    filename_list = "./data/pdfs/sample_160"
 
