@@ -16,7 +16,7 @@ filename_list = ["data/pdfs/test_report/report.pdf"]
 # MODELS - LLM and embedding model selection
 # =============================================================================
 [models]
-# Supported LLM deployment names on Azure AI Foundry:
+# Supported LLM deployment names on Azure AI Foundry (llm = AzureAIFoundryLlmHandler()):
 # - gpt-4.1
 # - gpt-4o
 # - gpt-4o-mini
@@ -27,6 +27,9 @@ filename_list = ["data/pdfs/test_report/report.pdf"]
 # - Llama-4-Maverick-17B-128E-Instruct-FP8
 # - o3-mini
 llm_model = "gpt-5-chat"
+
+# Many more models are available on OpenRouter.com (llm = OpenRouterLlmHandler(), requires OPENROUTER_API_KEY)
+# llm_model = "z-ai/glm-5.2:floor"
 
 # Supported embedding models:
 #   - text-embedding-ada-002 (default)
