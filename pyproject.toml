@@ -1,6 +1,6 @@
 [project]
 name = "climatextract"
-version = "0.3.2"
+version = "0.3.3"
 description = "Extract CO2 emissions data from PDF sustainability reports using LLMs"
 readme = "README.md"
 license = "MIT"
