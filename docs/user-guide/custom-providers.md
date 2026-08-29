@@ -92,11 +92,48 @@ from climatextract import extract
 result_path = extract("./data/pdfs/", llm=OpenAILlmHandler(model="gpt-4o-mini"))
 ```
 
-## Our implementation: Using liteLLM with Azure AI Foundry
+## Our implementations
+
+### Using liteLLM with Azure AI Foundry
 
 As another example, you should explore our adapters for the Azure AI Foundry, [`climatextract/adapters/azure_ai_foundry.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_ai_foundry.py). `class AzureAIFoundryLlmHandler` implements the `LlmHandler`, and `AzureAIFoundryEmbeddingHandler` implements the `EmbeddingModelHandler`.
 
 Note that we load model configuration parameters from the configuration file [`climatextract.toml`](configuration.md)
+
+### Using liteLLM with OpenRouter.ai
+
+If you like to use models from openrouter.ai, create an API key on their platform and put it in your `.env`:
+```
+OPENROUTER_API_KEY=sk-or-...
+```
+
+Then import [`climatextract/adapters/openrouter.py`](https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/openrouter.py)
+
+```python
+from climatextract.adapters.openrouter import OpenRouterLlmHandler
+from climatextract import extract
+
+llm = OpenRouterLlmHandler(extra_body={
+            "provider": {'quantizations': ['fp8'], "only": ["StreamLake", "NovitaAI", "BaiduQianfan"], "sort": "price"}})
+
+result_path = extract("./data/pdfs/", llm=llm)
+```
+
+The `extra_body`-parameter is from liteLLM and its contents are passed directly to OpenRouter. Here you select which provider will serve your model (only models with fp8-quantization from certain model providers, who need to serve the model you like to run, cheapest first). See the [Openrouter documentation](https://openrouter.ai/docs/guides/routing/provider-selection) for provider selection.
+
+Model configuration parameters are again set at the configuration file [`climatextract.toml`](configuration.md), e.g.
+
+```toml
+[models]
+# the postfix `:floor` prefers low-price model providers
+llm_model = "z-ai/glm-5.2:floor"
+reasoning_effort = "high"
+temperature = 0.0
+return_logprobs = true
+
+# If the value is too high, you will see RateLimitErrors (code 429) from the upstream model provider
+max_parallel_llm_prompts_running = 20
+```
 
 ---
 

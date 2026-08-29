@@ -38,6 +38,10 @@ from climatextract.llm_embedding_api_bridge import (
     LlmHandler,
 )
 
+# Silently drop params a given model doesn't accept (e.g. ``temperature=0``
+# on gpt-5.2, or ``logprobs`` on reasoning models). Recommended by
+# LiteLLM for cross-provider code.
+litellm.drop_params = True
 
 def _api_base() -> str:
     """OpenRouter endpoint, overridable to reach a proxied instance."""
@@ -68,11 +72,26 @@ def _common_model_dict(model_name: str) -> dict:
 # ---------------------------------------------------------------------------
 
 class OpenRouterLlmHandler(LlmHandler):
-    """LiteLLM-backed LLM adapter for models served via OpenRouter."""
+    """LiteLLM-backed LLM adapter for models served via OpenRouter.
+
+    Extra keyword arguments are merged into the model dict and passed
+    straight to ``litellm.completion`` / ``acompletion``. They are
+    applied last, so they also override what TOML configured::
+
+        OpenRouterLlmHandler(max_tokens=2000, seed=42)
+
+    OpenRouter-specific routing options that LiteLLM has no named
+    parameter for travel in ``extra_body``::
+
+        OpenRouterLlmHandler(extra_body={
+            "provider": {"only": ["deepinfra"], "sort": "price"}})
+
+    See https://openrouter.ai/docs/guides/routing/provider-selection.
+    """
 
     MODEL: str = "openai/gpt-4o-mini"
 
-    def __init__(self):
+    def __init__(self, **extra_params):
         from climatextract import _runtime_config
         params = _runtime_config.get_current().llm_params
 
@@ -83,6 +102,8 @@ class OpenRouterLlmHandler(LlmHandler):
             self.model_dict["logprobs"] = True
         if params.reasoning_effort:
             self.model_dict["reasoning_effort"] = params.reasoning_effort
+        # Caller-supplied params win over the TOML-derived defaults.
+        self.model_dict.update(extra_params)
         self.max_concurrent_calls = params.max_parallel_llm_prompts_running or 1
 
     def get_model_dict(self) -> dict:
