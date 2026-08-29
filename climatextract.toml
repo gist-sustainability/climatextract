@@ -26,10 +26,12 @@ filename_list = ["data/pdfs/test_report/report.pdf"]
 # - gpt-oss-120b
 # - Llama-4-Maverick-17B-128E-Instruct-FP8
 # - o3-mini
-llm_model = "gpt-5-chat"
+# - DeepSeek-V4-Flash-0731
+# - DeepSeek-V4-Pro
+llm_model = "gpt-5-nano"
 
 # Many more models are available on OpenRouter.com (llm = OpenRouterLlmHandler(), requires OPENROUTER_API_KEY)
-# llm_model = "z-ai/glm-5.2:floor"
+# llm_model = "deepseek/deepseek-v4-flash-0731:floor"
 
 # Supported embedding models:
 #   - text-embedding-ada-002 (default)
@@ -46,7 +48,7 @@ emb_model = "text-embedding-ada-002"
 #   - Llama-4-Maverick-17B-128E-Instruct-FP8: 25
 #   - o3-mini: 2
 # Higher values = faster processing, but may hit rate limits.
-max_parallel_llm_prompts_running = 20
+max_parallel_llm_prompts_running = 100
 
 # Maximum number of concurrent embedding API calls.
 # Suggested values per model:
@@ -86,7 +88,7 @@ input_mode = "text"
 embed_only = false
 
 # Prompt type: "default" or "structured_json"
-prompt_type = "default"
+prompt_type = "structured_json"
 
 # Context window for semantic search
 context_window = 0
@@ -117,6 +119,8 @@ output_dir = "output"
 # =============================================================================
 [evaluation]
 # Path to gold standard CSV file for evaluation
+# The gold standard for the single report ["data/pdfs/test_report/report.pdf"]
+# is available at "data/evaluation_dataset/test_evaluation/gold_standard.csv".
 gold_standard = "data/evaluation_dataset/gold_standard.csv"
 
 # =============================================================================
