@@ -609,13 +609,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#our-implementation-using-litellm-with-azure-ai-foundry" class="md-nav__link">
+  <a href="#our-implementations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Our implementation: Using liteLLM with Azure AI Foundry
+        Our implementations
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Our implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-litellm-with-azure-ai-foundry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using liteLLM with Azure AI Foundry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-litellm-with-openrouterai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using liteLLM with OpenRouter.ai
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1163,13 +1191,41 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#our-implementation-using-litellm-with-azure-ai-foundry" class="md-nav__link">
+  <a href="#our-implementations" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Our implementation: Using liteLLM with Azure AI Foundry
+        Our implementations
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Our implementations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#using-litellm-with-azure-ai-foundry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using liteLLM with Azure AI Foundry
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#using-litellm-with-openrouterai" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using liteLLM with OpenRouter.ai
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1288,14 +1344,14 @@
 </span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
 </span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
 </span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">OpenAILlmHandler</span><span class="p">(</span><span class="n">LlmHandler</span><span class="p">):</span>
-</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">,</span> <span class="n">max_concurrent_calls</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">):</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"gpt-4o-mini"</span><span class="p">,</span> <span class="n">max_concurrent_calls</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8</span><span class="p">):</span>
 </span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
 </span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_max</span> <span class="o">=</span> <span class="n">max_concurrent_calls</span>
-</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">])</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_aclient</span> <span class="o">=</span> <span class="n">AsyncOpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;OPENAI_API_KEY&quot;</span><span class="p">])</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="o">=</span> <span class="n">OpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"OPENAI_API_KEY"</span><span class="p">])</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_aclient</span> <span class="o">=</span> <span class="n">AsyncOpenAI</span><span class="p">(</span><span class="n">api_key</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">"OPENAI_API_KEY"</span><span class="p">])</span>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_model_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;model&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">}</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>        <span class="k">return</span> <span class="p">{</span><span class="s2">"model"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">}</span>
 </span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_max_concurrent_calls</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_max</span>
@@ -1311,11 +1367,37 @@
 <p>Pass it to <code>extract()</code>:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">climatextract</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">result_path</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="s2">&quot;./data/pdfs/&quot;</span><span class="p">,</span> <span class="n">llm</span><span class="o">=</span><span class="n">OpenAILlmHandler</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">&quot;gpt-4o-mini&quot;</span><span class="p">))</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">result_path</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="s2">"./data/pdfs/"</span><span class="p">,</span> <span class="n">llm</span><span class="o">=</span><span class="n">OpenAILlmHandler</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="s2">"gpt-4o-mini"</span><span class="p">))</span>
 </span></code></pre></div>
-<h2 id="our-implementation-using-litellm-with-azure-ai-foundry">Our implementation: Using liteLLM with Azure AI Foundry</h2>
+<h2 id="our-implementations">Our implementations</h2>
+<h3 id="using-litellm-with-azure-ai-foundry">Using liteLLM with Azure AI Foundry</h3>
 <p>As another example, you should explore our adapters for the Azure AI Foundry, <a href="https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_ai_foundry.py"><code>climatextract/adapters/azure_ai_foundry.py</code></a>. <code>class AzureAIFoundryLlmHandler</code> implements the <code>LlmHandler</code>, and <code>AzureAIFoundryEmbeddingHandler</code> implements the <code>EmbeddingModelHandler</code>.</p>
 <p>Note that we load model configuration parameters from the configuration file <a href="../configuration/"><code>climatextract.toml</code></a></p>
+<h3 id="using-litellm-with-openrouterai">Using liteLLM with OpenRouter.ai</h3>
+<p>If you like to use models from openrouter.ai, create an API key on their platform and put it in your <code>.env</code>:
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>OPENROUTER_API_KEY=sk-or-...
+</span></code></pre></div></p>
+<p>Then import <a href="https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/openrouter.py"><code>climatextract/adapters/openrouter.py</code></a></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">climatextract.adapters.openrouter</span><span class="w"> </span><span class="kn">import</span> <span class="n">OpenRouterLlmHandler</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">climatextract</span><span class="w"> </span><span class="kn">import</span> <span class="n">extract</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="n">llm</span> <span class="o">=</span> <span class="n">OpenRouterLlmHandler</span><span class="p">(</span><span class="n">extra_body</span><span class="o">=</span><span class="p">{</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>            <span class="s2">"provider"</span><span class="p">:</span> <span class="p">{</span><span class="s1">'quantizations'</span><span class="p">:</span> <span class="p">[</span><span class="s1">'fp8'</span><span class="p">],</span> <span class="s2">"only"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"StreamLake"</span><span class="p">,</span> <span class="s2">"NovitaAI"</span><span class="p">,</span> <span class="s2">"BaiduQianfan"</span><span class="p">],</span> <span class="s2">"sort"</span><span class="p">:</span> <span class="s2">"price"</span><span class="p">}})</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="n">result_path</span> <span class="o">=</span> <span class="n">extract</span><span class="p">(</span><span class="s2">"./data/pdfs/"</span><span class="p">,</span> <span class="n">llm</span><span class="o">=</span><span class="n">llm</span><span class="p">)</span>
+</span></code></pre></div>
+<p>The <code>extra_body</code>-parameter is from liteLLM and its contents are passed directly to OpenRouter. Here you select which provider will serve your model (only models with fp8-quantization from certain model providers, who need to serve the model you like to run, cheapest first). See the <a href="https://openrouter.ai/docs/guides/routing/provider-selection">Openrouter documentation</a> for provider selection.</p>
+<p>Model configuration parameters are again set at the configuration file <a href="../configuration/"><code>climatextract.toml</code></a>, e.g.</p>
+<div class="language-toml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">[models]</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># the postfix `:floor` prefers low-price model providers</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">llm_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"z-ai/glm-5.2:floor"</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">reasoning_effort</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"high"</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="n">temperature</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0.0</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="n">return_logprobs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">true</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="c1"># If the value is too high, you will see RateLimitErrors (code 429) from the upstream model provider</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="n">max_parallel_llm_prompts_running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">20</span>
+</span></code></pre></div>
 <hr />
 <h2 id="notes">Notes</h2>
 <ul>

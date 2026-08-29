@@ -1087,8 +1087,8 @@
 <p>With Azure Databricks, all results can be stored and shared online.</p>
 <h2 id="setup">Setup</h2>
 <p>Add the following to your <code>.env</code> file:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Tracking URI: &quot;databricks&quot;, &quot;./mlruns&quot;, &quot;sqlite:///mlflow.db&quot;, or server URL</span>
-</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Use &quot;databricks&quot; if you are using Databricks on Azure.</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Tracking URI: "databricks", "./mlruns", "sqlite:///mlflow.db", or server URL</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Use "databricks" if you are using Databricks on Azure.</span>
 </span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nv">MLFLOW_TRACKING_URI</span><span class="o">=</span>sqlite:///mlflow.db
 </span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 </span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># If using databricks on Azure, add the following:</span>
@@ -1107,7 +1107,7 @@
 <p>In your <code>climatextract.toml</code> configuration file you can specify the experiment name:</p>
 <div class="language-toml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">[mlflow]</span>
 </span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Experiment name</span>
-</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">experiment_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;/Shared/Experiments/my_experiment&quot;</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">experiment_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"/Shared/Experiments/my_experiment"</span>
 </span></code></pre></div>
 <hr />
 <h2 id="next-steps">Next Steps</h2>

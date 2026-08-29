@@ -1290,8 +1290,8 @@
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nv">API_KEY</span><span class="o">=</span>your-api-key<span class="w"> </span><span class="c1"># you can also use personalized authentication workflows, see Step 4</span>
 </span></code></pre></div>
 <p>In the <a href="../../user-guide/configuration/">configuration file</a> you specify which models you want to use, e.g.:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nv">llm_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;gpt-5-chat&quot;</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">emb_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;text-embedding-ada-002&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nv">llm_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gpt-5-chat"</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">emb_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"text-embedding-ada-002"</span>
 </span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nv">max_parallel_llm_prompts_running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span>
 </span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nv">max_parallel_embedding_calls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span>
 </span></code></pre></div>
@@ -1308,7 +1308,7 @@
 <h2 id="step-4-optional-configure-personalized-authentication-to-azure">Step 4 (optional): Configure personalized authentication to Azure</h2>
 <p>Instead of using an API_KEY (problem: different endpoints require different API_KEYs), you can also log in to Azure with your personal account.</p>
 <p>Install the <code>azure_authentication</code> package:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">&quot;azure_authentication@git+https://github.com/soda-lmu/azure-auth-helper-python.git&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"azure_authentication@git+https://github.com/soda-lmu/azure-auth-helper-python.git"</span>
 </span></code></pre></div>
 <p>Add to your <code>.env</code> file:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nv">AZURE_USERNAME</span><span class="o">=</span>your-username
@@ -1325,7 +1325,7 @@
 <hr />
 <h2 id="verify-installation">Verify Installation</h2>
 <p>Test that everything is working:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;from climatextract import extract; print(&#39;Installation successful!&#39;)&quot;</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"from climatextract import extract; print('Installation successful!')"</span>
 </span></code></pre></div>
 <hr />
 <h2 id="next-steps">Next Steps</h2>
