@@ -1220,13 +1220,17 @@
 <h2 id="prerequisites">Prerequisites</h2>
 <ul>
 <li>An <strong>Azure Blob Storage</strong> account</li>
-<li><strong>Azure credentials</strong> configured (same authentication used for LLM access — see <a href="../../getting-started/installation/">Installation</a>)</li>
+<li>Either <strong>Azure credentials</strong> configured (same authentication used for LLM access — see <a href="../../getting-started/installation/">Installation</a>) or a <strong>SAS token</strong> handed to you by whoever administers the storage account</li>
 </ul>
 <hr />
 <h2 id="setup">Setup</h2>
 <p>Add your storage account URL to the <code>.env</code> file:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nv">AZURE_STORAGE_ACCOUNT_URL</span><span class="o">=</span>https://&lt;your-storage-account&gt;.blob.core.windows.net/
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># optional</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nv">AZURE_STORAGE_SAS_TOKEN</span><span class="o">=</span>&lt;your-Shared-Access-Signatore-token&gt;
 </span></code></pre></div>
+<p>The <code>AZURE_STORAGE_SAS_TOKEN</code> for authentication is optional. It is only needed if you have no Entra ID access and were given the token instead. It is a private key, so keep it secret. It expires after x days/months.</p>
 <p>That's it. climatextract will automatically offer to download missing files from the data lake when you run an extraction.</p>
 <hr />
 <h2 id="blob-storage-structure">Blob Storage Structure</h2>

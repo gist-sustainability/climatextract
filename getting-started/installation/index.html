@@ -441,6 +441,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#using-openrouter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using OpenRouter
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1190,6 +1201,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#using-openrouter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Using OpenRouter
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -1255,7 +1277,7 @@
 <p>Before installing, ensure you have:</p>
 <ul>
 <li><strong>Python 3.11+</strong> – <a href="https://www.python.org/downloads/">Download Python</a></li>
-<li><strong>Azure credentials</strong> – Access to Azure AI Foundry, if using the default adapter (see step 3). Not required if you're injecting your own provider handler — see <a href="../../user-guide/custom-providers/">Custom Providers</a>.</li>
+<li><strong>Azure credentials</strong> – Access to Azure AI Foundry, if using the default adapter (see step 3). Not required if you have models accessable via OpenRouter or if you're injecting your own provider handler — see <a href="../../user-guide/custom-providers/">Custom Providers</a>.</li>
 </ul>
 <hr />
 <h2 id="step-1-install-the-package">Step 1: Install the Package</h2>
@@ -1304,28 +1326,39 @@
 </span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nv">API_KEY</span><span class="o">=</span>your-api-key<span class="w"> </span><span class="c1"># you can also use personalized authentication workflows, see Step 4</span>
 </span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nv">API_VERSION</span><span class="o">=</span><span class="m">2024</span>-12-01-preview
 </span></code></pre></div>
+<h3 id="using-openrouter">Using OpenRouter</h3>
+<p>openrouter.ai provides access to a wide variety of LLMs and embedding models. You will need an OpenRouter account with a small budget. Add its API_KEY to your <code>.env</code> file:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nv">OPENROUTER_API_KEY</span><span class="o">=</span>your-api-key
+</span></code></pre></div>
+<p>You will also need to import</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">climatextract.adapters.openrouter</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">OpenRouterEmbeddingHandler</span><span class="p">,</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">OpenRouterLlmHandler</span><span class="p">,</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>and adapt the <a href="../../user-guide/configuration/">model configuration</a> in the toml file. The OpenRouter setup is described in more detail in <a href="../../user-guide/custom-providers/">Custom Model Providers</a>.</p>
 <hr />
 <h2 id="step-4-optional-configure-personalized-authentication-to-azure">Step 4 (optional): Configure personalized authentication to Azure</h2>
 <p>Instead of using an API_KEY (problem: different endpoints require different API_KEYs), you can also log in to Azure with your personal account.</p>
 <p>Install the <code>azure_authentication</code> package:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"azure_authentication@git+https://github.com/soda-lmu/azure-auth-helper-python.git"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"azure_authentication@git+https://github.com/soda-lmu/azure-auth-helper-python.git"</span>
 </span></code></pre></div>
 <p>Add to your <code>.env</code> file:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nv">AZURE_USERNAME</span><span class="o">=</span>your-username
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nv">AZURE_PASSWORD</span><span class="o">=</span>your-password
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># API_KEY=not-needed-anymore</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nv">AZURE_USERNAME</span><span class="o">=</span>your-username
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nv">AZURE_PASSWORD</span><span class="o">=</span>your-password
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># API_KEY=not-needed-anymore</span>
 </span></code></pre></div>
 <p>To facilitate login processes, you can use the following. Be aware of the risk if you store secret information on your hard drive.
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nv">AZURE_SODA_WEBLOGIN</span><span class="o">=</span>advanced
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nv">AZURE_SODA_CREDENTIAL_PATH</span><span class="o">=</span>my_secret_azure_credential.json
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="nv">AZURE_SODA_ALLOW_UNENCRYPTED_STORAGE</span><span class="o">=</span>True<span class="w"> </span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nv">AZURE_SODA_WEBLOGIN</span><span class="o">=</span>advanced
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nv">AZURE_SODA_CREDENTIAL_PATH</span><span class="o">=</span>my_secret_azure_credential.json
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nv">AZURE_SODA_ALLOW_UNENCRYPTED_STORAGE</span><span class="o">=</span>True<span class="w"> </span>
 </span></code></pre></div></p>
 <p>This functionality is based on the <a href="https://github.com/soda-lmu/azure-auth-helper-python">azure_authentication</a> package. Please refer to its <a href="https://github.com/soda-lmu/azure-auth-helper-python">documentation</a> for alternative authentication workflows.</p>
 <hr />
 <h2 id="verify-installation">Verify Installation</h2>
 <p>Test that everything is working:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"from climatextract import extract; print('Installation successful!')"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"from climatextract import extract; print('Installation successful!')"</span>
 </span></code></pre></div>
 <hr />
 <h2 id="next-steps">Next Steps</h2>
