@@ -2,8 +2,10 @@
 
 import logging
 import os
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, List, Optional
+from urllib.parse import urlparse
 
 # Optional Azure imports for data lake downloads
 try:
@@ -16,7 +18,6 @@ try:
     credential = customized_azure_login.CredentialFactory().select_credential()
 except Exception:
     credential = None
-    logging.getLogger(__name__).warning("Azure authentication failed — data lake not available")
 
 
 class DataLakeManager:
@@ -29,20 +30,49 @@ class DataLakeManager:
     4. download_missing_pdfs()
     """
     
-    def __init__(self, storage_account_url: Optional[str],
-                 blob_path_pdfs: str = "pdfs",
-                 blob_path_embeddings: str = "embeddings"):
+    def __init__(self, blob_path_pdfs: str = "pdfs",
+                 blob_path_embeddings: str = "embeddings",
+                 storage_account_url: Optional[str] = None,
+                 storage_credential: Optional[Any] = None):
         """Initialize the DataLakeManager.
-        
+
         Args:
-            storage_account_url: Azure storage account URL for data lake access.
+
             blob_path_pdfs: Blob container/path for PDF files.
             blob_path_embeddings: Blob container/path for embedding databases.
+            storage_account_url: Azure storage account URL for data lake access.
+                Falls back to the AZURE_STORAGE_ACCOUNT_URL environment variable.
+            storage_credential: Shared Access Signature (SAS) token or Azure credential object. Falls
+                back to the AZURE_STORAGE_SAS_TOKEN environment variable, then to
+                the Entra ID credential.
         """
-        self.storage_account_url = storage_account_url
+        self.storage_account_url = (storage_account_url
+                                    or os.environ.get("AZURE_STORAGE_ACCOUNT_URL"))
+        self.storage_credential = (storage_credential
+                                   or os.environ.get("AZURE_STORAGE_SAS_TOKEN")
+                                   or credential)
         self.blob_path_pdfs = blob_path_pdfs
         self.blob_path_embeddings = blob_path_embeddings
         self._blob_service = None
+
+    def _get_blob_service(self):
+        """Get or create the blob service client."""
+        if self._blob_service is None:
+            if not self.storage_account_url:
+                logging.getLogger(__name__).debug("No storage account URL configured")
+                return None
+            if BlobServiceClient is None:
+                logging.getLogger(__name__).debug("Azure storage library 'azure-storage-blob' not installed.")
+                return None
+            if self.storage_credential is None:
+                logging.getLogger(__name__).debug("Cannot authenticate against storage account: Neither a SAS token nor Azure credential available")
+                return None
+
+            self._blob_service = BlobServiceClient(
+                account_url=self.storage_account_url,
+                credential=self.storage_credential
+            )
+        return self._blob_service
         
     def execute_complete_workflow(self, 
                                 filename_list: List[str],
@@ -251,21 +281,6 @@ class DataLakeManager:
         container = parts[0]
         prefix = (parts[1].rstrip("/") + "/") if len(parts) > 1 else ""
         return container, prefix
-
-    def _get_blob_service(self):
-        """Get or create the blob service client."""
-        if self._blob_service is None:
-            if not self.storage_account_url:
-                logging.getLogger(__name__).debug("No storage account URL configured")
-                return None
-            if BlobServiceClient is None or credential is None:
-                logging.getLogger(__name__).debug("Azure storage libraries or credentials not available")
-                return None
-            self._blob_service = BlobServiceClient(
-                account_url=self.storage_account_url,
-                credential=credential
-            )
-        return self._blob_service
     
     def download_directory_from_blob(self, local_dir: str) -> bool:
         """Download all PDFs from a matching blob prefix into a local directory.
@@ -350,3 +365,102 @@ class DataLakeManager:
             missing, total)
 
         return self.download_missing_pdfs(files_to_download)
+
+
+class DataLakeAdministrator:
+    """Administrative operations on the data lake storage account,
+        which require a storage account key. Not needed for normal users.
+    """
+
+    def __init__(self, storage_account_url: Optional[str] = None,
+                 account_key: Optional[str] = None):
+        """Initialize the DataLakeAdministrator.
+
+        Args:
+            storage_account_url: Azure storage account URL for data lake access.
+                Falls back to the AZURE_STORAGE_ACCOUNT_URL environment variable.
+            account_key: Storage account key. Falls back to the
+                AZURE_STORAGE_ACCOUNT_KEY environment variable. Only an 
+                administrator with the account key can generate SAS tokens.
+        """
+        self.storage_account_url = (storage_account_url
+                                    or os.environ.get("AZURE_STORAGE_ACCOUNT_URL"))
+        self.account_key = account_key or os.environ.get("AZURE_STORAGE_ACCOUNT_KEY")
+
+    def generate_account_sas_for_blob_readonly(self, expiry_days: int = 270) -> str:
+        """Generate a read-only Shared Access Signature (SAS) token for the blob service.
+
+        Hand the token to users who should read the data lake without an Entra ID
+        login; they set it as AZURE_STORAGE_SAS_TOKEN. It covers every container of
+        the storage account, permits no writes or deletes, and can only be revoked by
+        rotating the account key.
+
+        Args:
+            expiry_days: How long the token stays valid.
+
+        Returns:
+            str: The SAS token as a query string, without a leading '?'.
+
+        Raises:
+            ValueError: If the storage account URL or the account key is missing.
+        """
+        from azure.storage.blob import (
+            AccountSasPermissions,
+            ResourceTypes,
+            generate_account_sas,
+        )
+
+        if not self.storage_account_url:
+            raise ValueError("No storage account URL configured")
+
+        if not self.account_key:
+            raise ValueError(
+                "No account key available — pass account_key or set AZURE_STORAGE_ACCOUNT_KEY")
+
+        now = datetime.now(timezone.utc)
+        return generate_account_sas(
+            account_name=self._account_name_from_url(self.storage_account_url),
+            account_key=self.account_key,
+            # service: list containers; container: list blobs; object: read them
+            resource_types=ResourceTypes(service=True, container=True, object=True),
+            permission=AccountSasPermissions(read=True, list=True),
+            start=now - timedelta(minutes=15),
+            expiry=now + timedelta(days=expiry_days),
+            protocol="https"
+        )
+
+    @staticmethod
+    def _account_name_from_url(storage_account_url: str) -> str:
+        """Extract the storage account name from its endpoint URL.
+
+        Examples:
+            "https://myaccount.blob.core.windows.net" -> "myaccount"
+            "http://127.0.0.1:10000/devstoreaccount1" -> "devstoreaccount1"
+        """
+        parsed = urlparse(storage_account_url)
+        host = parsed.hostname or ""
+
+        # Every Azure storage endpoint — public, sovereign clouds, private endpoints,
+        # blob and dfs — names the account first and carries ".core." in the host.
+        if ".core." in host:
+            return host.split(".")[0]
+
+        # Storage emulators (Azurite) address the account by path rather than hostname
+        path_parts = [p for p in parsed.path.split("/") if p]
+        if parsed.scheme and path_parts:
+            return path_parts[0]
+
+        raise ValueError(f"Cannot determine account name from URL: {storage_account_url}")
+
+if __name__ == "__main__":
+    from dotenv import load_dotenv
+    load_dotenv()
+
+    admin = DataLakeAdministrator()
+    try:
+        if True:
+            sas_token = admin.generate_account_sas_for_blob_readonly(expiry_days=270)
+            print(f"Generated SAS token: {sas_token}")
+            print(f"Set in your environment: AZURE_STORAGE_SAS_TOKEN={sas_token}")
+    except ValueError as e:
+        logging.getLogger(__name__).error("Failed to generate SAS token: %s", e)
