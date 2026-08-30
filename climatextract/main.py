@@ -271,9 +271,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     _runtime_config.set_current(experiment_params)
 
     # Handle data lake operations with dedicated manager
-    storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
     data_lake_manager = DataLakeManager(
-        storage_account_url,
         blob_path_pdfs=datalake_config["blob_path_pdfs"],
         blob_path_embeddings=datalake_config["blob_path_embeddings"],
     )
@@ -501,9 +499,7 @@ def _extract_and_evaluate_with_metadata(
     config_params, experiment_params, output_dir, _, datalake_config = _load_config(config_path)
 
     # If input is an empty directory, try populating it from the data lake
-    storage_account_url = os.environ.get("AZURE_STORAGE_ACCOUNT_URL")
     data_lake_manager = DataLakeManager(
-        storage_account_url,
         blob_path_pdfs=datalake_config["blob_path_pdfs"],
         blob_path_embeddings=datalake_config["blob_path_embeddings"],
     )

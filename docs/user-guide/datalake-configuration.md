@@ -7,7 +7,7 @@ Use Azure Blob Storage to share PDF files and embedding databases across your te
 ## Prerequisites
 
 - An **Azure Blob Storage** account
-- **Azure credentials** configured (same authentication used for LLM access — see [Installation](../getting-started/installation.md))
+- Either **Azure credentials** configured (same authentication used for LLM access — see [Installation](../getting-started/installation.md)) or a **SAS token** handed to you by whoever administers the storage account
 
 ---
 
@@ -17,7 +17,12 @@ Add your storage account URL to the `.env` file:
 
 ```bash
 AZURE_STORAGE_ACCOUNT_URL=https://<your-storage-account>.blob.core.windows.net/
+
+# optional
+AZURE_STORAGE_SAS_TOKEN=<your-Shared-Access-Signatore-token>
 ```
+
+The `AZURE_STORAGE_SAS_TOKEN` for authentication is optional. It is only needed if you have no Entra ID access and were given the token instead. It is a private key, so keep it secret. It expires after x days/months.
 
 That's it. climatextract will automatically offer to download missing files from the data lake when you run an extraction.
 

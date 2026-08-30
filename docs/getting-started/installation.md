@@ -9,7 +9,7 @@ This guide walks you through installing climatextract.
 Before installing, ensure you have:
 
 - **Python 3.11+** – [Download Python](https://www.python.org/downloads/)
-- **Azure credentials** – Access to Azure AI Foundry, if using the default adapter (see step 3). Not required if you're injecting your own provider handler — see [Custom Providers](../user-guide/custom-providers.md).
+- **Azure credentials** – Access to Azure AI Foundry, if using the default adapter (see step 3). Not required if you have models accessable via OpenRouter or if you're injecting your own provider handler — see [Custom Providers](../user-guide/custom-providers.md).
 
 ---
 
@@ -84,6 +84,25 @@ AZURE_ENDPOINT=https://your-openai-endpoint.openai.azure.com/
 API_KEY=your-api-key # you can also use personalized authentication workflows, see Step 4
 API_VERSION=2024-12-01-preview
 ```
+
+### Using OpenRouter
+
+openrouter.ai provides access to a wide variety of LLMs and embedding models. You will need an OpenRouter account with a small budget. Add its API_KEY to your `.env` file:
+
+```bash
+OPENROUTER_API_KEY=your-api-key
+```
+
+You will also need to import
+
+```python
+from climatextract.adapters.openrouter import (
+    OpenRouterEmbeddingHandler,
+    OpenRouterLlmHandler,
+)
+```
+
+and adapt the [model configuration](../user-guide/configuration.md) in the toml file. The OpenRouter setup is described in more detail in [Custom Model Providers](../user-guide/custom-providers.md).
 
 ---
 
