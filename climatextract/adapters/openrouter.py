@@ -10,6 +10,9 @@ Check the following links to understand routing and budgeting with OpenRouter:
 - https://openrouter.ai/docs/guides/routing/provider-selection
 - https://openrouter.ai/docs/guides/routing/model-variants/floor
 
+Some caveats about OpenRouter:
+- https://mmoustafa.com/blog/so-you-want-to-use-openrouter/
+
 Model names use OpenRouter's ``<vendor>/<model>`` ids, e.g.
 ``openai/gpt-4o-mini``, ``anthropic/claude-sonnet-4`` or
 ``qwen/qwen3-embedding-8b`` — see https://openrouter.ai/models
@@ -85,6 +88,9 @@ class OpenRouterLlmHandler(LlmHandler):
 
         OpenRouterLlmHandler(extra_body={
             "provider": {"only": ["deepinfra"], "sort": "price"}})
+
+    Given the results from https://mmoustafa.com/blog/so-you-want-to-use-openrouter/,
+    it is probably worthwhile to fix a reliable, high-quality provider and the desired quantization.
 
     See https://openrouter.ai/docs/guides/routing/provider-selection.
     """
