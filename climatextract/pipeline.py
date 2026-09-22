@@ -1,6 +1,8 @@
 """Sets up value retriever pipeline and gets emissions."""
 import logging
 import os
+from importlib.util import find_spec
+from shutil import which
 from typing import List, Optional, TYPE_CHECKING
 import asyncio
 import pandas as pd
@@ -11,7 +13,6 @@ from mlflow.entities import SpanType
 
 import climatextract.semantic_search as semantic_search
 import climatextract.helpers as helpers
-from climatextract.page_text_and_table_extractor import PageTextAndTableExtractor
 from climatextract.resolve_duplicates import handle_duplicates_in_output, select_duplicates_in_output
 
 if TYPE_CHECKING:
@@ -19,6 +20,32 @@ if TYPE_CHECKING:
 
 load_dotenv()  # load environment variables from .env file
 os.chdir(helpers.get_project_directory(path_to_file="src"))
+
+
+def ensure_table_dependencies(input_mode: str, embed_only: bool = False) -> None:
+    """Check table packages and Poppler programs without importing or installing them."""
+    if input_mode != "text+table" or embed_only:
+        return
+
+    required_modules = ("docling", "pdf2image", "transformers", "timm", "torch", "torchvision")
+    missing = [name for name in required_modules if find_spec(name) is None]
+    if missing:
+        raise ImportError(
+            "input_mode='text+table' requires optional table dependencies. "
+            f"Missing packages: {', '.join(missing)}. "
+            'Install them with: python -m pip install "climatextract[tables]". '
+            "Then run the extraction again."
+        )
+
+    required_programs = ("pdfinfo", "pdftoppm")
+    missing_programs = [name for name in required_programs if which(name) is None]
+    if missing_programs:
+        raise RuntimeError(
+            "Table extraction requires Poppler, but these programs could not be found: "
+            f"{', '.join(missing_programs)}. "
+            "See our installation guide: "
+            "https://gist-sustainability.github.io/climatextract/getting-started/installation/"
+        )
 
 
 class ValueRetrieverPipeline():
@@ -44,7 +71,12 @@ class ValueRetrieverPipeline():
         max_concurrent_pdfs = 20
         self.pipeline_semaphore = asyncio.Semaphore(max_concurrent_pdfs)
 
-        self.page_extractor = PageTextAndTableExtractor()
+        self.page_extractor = None
+        ensure_table_dependencies(self.input_mode, self.embed_only)
+        if self.input_mode == "text+table" and not self.embed_only:
+            from climatextract.page_text_and_table_extractor import PageTextAndTableExtractor
+
+            self.page_extractor = PageTextAndTableExtractor()
         self.console = console
 
     @mlflow.trace(span_type=SpanType.CHAIN, attributes={"pipeline": "ValueRetrieverPipeline"})

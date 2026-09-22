@@ -19,13 +19,33 @@ Before installing, ensure you have:
 pip install climatextract
 ```
 
-This installs climatextract and all required dependencies.
+This installs climatextract and the dependencies for the default `input_mode = "text"`.
+Docling, Transformers, and the other table-processing packages are optional.
+
+If you want to use `input_mode = "text+table"`, install the table extra:
+
+```bash
+python -m pip install "climatextract[tables]"
+```
+
+From a source checkout, use `python -m pip install -e ".[tables]"` instead.
+Installing the extra makes table processing available; enable it separately
+with `input_mode = "text+table"` in the `[extraction]` configuration section.
+
+If table mode is requested without the required packages, climatextract stops
+early with an installation command. It does not install packages automatically
+or silently switch to text mode. Text-only and embedding-only runs do not
+require the table packages.
 
 ---
 
-## Step 2: Install System Dependencies
+## Step 2: Install System Dependencies (Table Mode Only)
 
-climatextract uses Docling for PDF processing, which requires **Poppler**:
+Skip this step for text-only extraction. Table mode uses PDF2Image to render
+PDF pages for table detection, which requires **Poppler**:
+
+Before table extraction starts, climatextract checks for Poppler's `pdfinfo` and
+`pdftoppm` programs. If either is missing, it stops and links to this guide.
 
 === "macOS"
 

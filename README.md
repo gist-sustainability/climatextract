@@ -21,7 +21,7 @@ This repository is organized as follows:
 
 It is recommended to run the code in a virtual environment using at least Python 3.11.
 
-First, check out the code, then create a virtual environment and install all dependencies:
+First, check out the code, then create a virtual environment and install the text-extraction dependencies:
 
 ```bash
 cd climatextract
@@ -29,6 +29,18 @@ python -m venv co2_info_extraction
 source co2_info_extraction/bin/activate
 pip install -e .
 ```
+
+For the optional `input_mode = "text+table"` mode, install the table dependencies too:
+
+```bash
+pip install -e ".[tables]"
+```
+
+For a package installation instead of a source checkout, use
+`python -m pip install "climatextract[tables]"`. Text mode does not require the
+table packages or Poppler. Table mode also requires Poppler, as described in
+the installation guide. Missing table dependencies produce an installation
+message before processing starts; they are never installed automatically.
 
 See the [Installation guide](https://gist-sustainability.github.io/climatextract/getting-started/installation/) for additional steps and alternative deployment options you have.
 
