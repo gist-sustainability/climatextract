@@ -285,7 +285,8 @@ class DataLakeManager:
     def download_directory_from_blob(self, local_dir: str) -> bool:
         """Download all PDFs from a matching blob prefix into a local directory.
 
-        Uses the directory name as a blob prefix to select which files to download.
+        Appends the local directory name to the configured blob prefix unless
+        the prefix's final directory name exactly matches it.
         E.g. local_dir="data/pdfs/sample_160" looks for blobs under "sample_160/" in
         the configured blob_path_pdfs container.
 
@@ -302,7 +303,12 @@ class DataLakeManager:
 
         container, base_prefix = self._split_blob_path(self.blob_path_pdfs)
         dir_name = os.path.basename(os.path.normpath(local_dir))
-        prefix = base_prefix + dir_name + "/"
+        remote_dir_name = base_prefix.rstrip("/").split("/")[-1]
+        prefix = (
+            base_prefix
+            if remote_dir_name == dir_name
+            else base_prefix + dir_name + "/"
+        )
 
         try:
             container_client = blob_service.get_container_client(container)
