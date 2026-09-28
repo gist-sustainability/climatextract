@@ -100,7 +100,7 @@ embed_only = false
 prompt_type = "default"
 
 # Semantic search settings
-percentile_threshold = 95 # Score cutoff percentile. Keep 5% most similar pages and discard 95%
+percentile_threshold = 95 # Score cutoff percentile. Keep 5% most similar pages and discard 95%. 0 disables it
 similarity_top_k = 7      # Maximum pages to retrieve, overrides percentile_threshold for long documents
 similarity_min_k = 4      # Minimum pages to retrieve, overrides percentile_threshold for short documents
 
@@ -192,7 +192,7 @@ prompt_type = "default"               # "default" or "structured_json"
 context_window = 0                    # context window for semantic search
 similarity_top_k = 7                  # max pages to retrieve
 similarity_min_k = 4                  # min pages to retrieve
-percentile_threshold = 95             # score cutoff percentile
+percentile_threshold = 95             # score cutoff percentile (0 disables it)
 # embeddings_repository = "./data/processed/embeddings/custom_embeddings.duckdb"
 
 [output]
