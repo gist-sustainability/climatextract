@@ -95,7 +95,7 @@ context_window = 0
 # Semantic search thresholds
 # similarity_top_k: cap after filtering (default 7)
 # similarity_min_k: floor to keep at least this many (default 4)
-# percentile_threshold: percentile cutoff for vector scores (default 95)
+# percentile_threshold: percentile cutoff for vector scores, 0-100 (default 95; 0 disables it)
 similarity_top_k = 7
 similarity_min_k = 4
 percentile_threshold = 95

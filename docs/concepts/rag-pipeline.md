@@ -57,7 +57,7 @@ Control retrieval behavior in `climatextract.toml`:
 
 ```toml
 [extraction]
-percentile_threshold = 95 # Score cutoff percentile. Keep 5% most similar pages and discard 95%
+percentile_threshold = 95 # Score cutoff percentile. Keep 5% most similar pages and discard 95%. 0 disables it
 similarity_top_k = 7      # Maximum pages to retrieve, overrides percentile_threshold for long documents
 similarity_min_k = 4      # Minimum pages to retrieve, overrides percentile_threshold for short documents
 
