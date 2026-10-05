@@ -1,7 +1,6 @@
 """
 Module to identify and resolve duplicates in the extracted data and the ground truth.
 """
-import logging
 from typing import List
 
 import pandas as pd
@@ -240,6 +239,11 @@ def identify_duplicates_in_output(df: pd.DataFrame,
         )
         marked_non_unique_rows["select_flag"] = marked_non_unique_rows["select_flag"].fillna(
             False).infer_objects(copy=False)
+        # Raw rows sharing the same col_names all match the one selected row
+        # in the merge above; only the first copy stays selected.
+        marked_non_unique_rows.loc[
+            marked_non_unique_rows.duplicated(subset=col_names, keep="first"),
+            "select_flag"] = False
         # Fill dupl_reason for non-selected rows with 0
         marked_non_unique_rows["dupl_reason"] = marked_non_unique_rows["dupl_reason"].fillna(
             0).infer_objects(copy=False)
@@ -267,7 +271,12 @@ def identify_duplicates_in_output(df: pd.DataFrame,
                                          "page_numbers_tried_by_llm"], axis=1)
     col_for_merge = [col for col in df.columns if col not in ["text_response_from_llm",
                                                               "page_numbers_tried_by_llm"]]
-    df = df.merge(df_merge, how="left", on=col_for_merge, indicator=True)
+    # Rows identical on col_for_merge would otherwise be joined many-to-many
+    # (n copies x n copies); number the copies so they pair up one-to-one.
+    df["_copy_idx"] = df.groupby(col_for_merge, dropna=False).cumcount()
+    df_merge["_copy_idx"] = df_merge.groupby(col_for_merge, dropna=False).cumcount()
+    df = df.merge(df_merge, how="left", on=[*col_for_merge, "_copy_idx"],
+                  indicator=True).drop(columns="_copy_idx")
 
     return df
 
@@ -341,19 +350,31 @@ def _apply_prioritization_rules_for_output(df: pd.DataFrame,
             return filtered
         return group
 
+    def _filter_by_keep_first(group: pd.DataFrame) -> pd.DataFrame:
+        """
+        Final fallback: rules 1-3 can leave a genuine tie (same page, same
+        unit, different value) with no principled way to prefer one value
+        over the other. Deterministically keep the first row so every
+        group resolves to exactly one entry and downstream wide-format /
+        evaluation code always has a single prediction per group.
+        """
+        if len(group) > 1:
+            filtered = group.iloc[[0]].copy()
+            filtered['dupl_reason'] = 4
+            return filtered
+        return group
+
     # Rule 2: Keep enty with preferred unit
     preferred_unit_filtered = df_filtered.groupby(group_cols, group_keys=False).apply(
         lambda g: _filter_by_preferred_unit(g, preferred_unit)).reset_index(drop=True)
 
     # Rule 3: Keep entry from page with majority page
-    prioritized_rows = preferred_unit_filtered.groupby(group_cols, group_keys=False).apply(
+    majority_page_filtered = preferred_unit_filtered.groupby(group_cols, group_keys=False).apply(
         lambda g: _filter_by_majority_page(g, majority_page_per_report)).reset_index(drop=True)
 
-    # Check if any group has more than one row left
-    duplicates_check = prioritized_rows.groupby(group_cols).size()
-    if any(duplicates_check > 1):
-        logging.getLogger(__name__).warning(
-            "Some groups still have multiple rows after prioritization.")
+    # Rule 4: Break any remaining tie by keeping the first row
+    prioritized_rows = majority_page_filtered.groupby(group_cols, group_keys=False).apply(
+        _filter_by_keep_first).reset_index(drop=True)
 
     return prioritized_rows
 
