@@ -112,6 +112,19 @@ context_window = 0
 # embeddings_repository = "./data/processed/embeddings/custom_embeddings.duckdb"
 ```
 
+The default `input_mode = "text"` works with the base installation. For
+`input_mode = "text+table"`, first install the optional table packages:
+
+```bash
+python -m pip install "climatextract[tables]"
+```
+
+Table mode also requires Poppler; see the [installation guide](../getting-started/installation.md).
+The extra makes table processing available but does not change `input_mode`.
+If its packages are missing, table mode stops early with installation instructions.
+Nothing is installed automatically. With `embed_only = true`, the table packages
+are not required because extraction is skipped.
+
 ---
 
 ## Output Configuration
