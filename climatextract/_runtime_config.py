@@ -33,7 +33,8 @@ def get_current() -> Optional[ExperimentParams]:
         try:
             # Lazy import — _runtime_config can't depend on main.py at module load.
             from climatextract.main import _load_config
-            _, params, *_ = _load_config()
+            # Handlers only need model settings; we check for installed dependencies in extract()
+            _, params, *_ = _load_config(check_dependencies=False)
             _current = params
         except Exception:
             pass  # No TOML / unreadable — handlers fall back to class defaults.
