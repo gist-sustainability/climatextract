@@ -80,11 +80,6 @@ def extract(
         # Load config to get MLflow settings
         config_params, experiment_params, output_dir, mlflow_config, _ = _load_config(config_path)
 
-        ensure_table_dependencies(
-            experiment_params.pipeline_params.input_mode,
-            experiment_params.pipeline_params.embed_only,
-        )
-
         # Set up MLflow with proper run name
         mlflow_params = MlflowParams(mlflow_experiment_path=mlflow_config["experiment_name"])
         mlflow_params.construct_mlflow_run_name([config_params, experiment_params])
@@ -177,11 +172,6 @@ def extract_and_evaluate(
     if enable_mlflow:
         # Load config to get MLflow settings
         config_params, experiment_params, output_dir, mlflow_config, _ = _load_config(config_path)
-
-        ensure_table_dependencies(
-            experiment_params.pipeline_params.input_mode,
-            experiment_params.pipeline_params.embed_only,
-        )
 
         # Set up MLflow with proper run name
         mlflow_params = MlflowParams(mlflow_experiment_path=mlflow_config["experiment_name"])
@@ -279,10 +269,6 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
 
     # Load config (defaults + config file overrides)
     config_params, experiment_params, output_dir, _, datalake_config = _load_config(config_path)
-    ensure_table_dependencies(
-        experiment_params.pipeline_params.input_mode,
-        experiment_params.pipeline_params.embed_only,
-    )
     # Publish for adapters that need to read TOML at handler-construction time.
     _runtime_config.set_current(experiment_params)
 
@@ -514,11 +500,6 @@ def _extract_and_evaluate_with_metadata(
     # Load config (for filenames and gold standard path)
     config_params, experiment_params, output_dir, _, datalake_config = _load_config(config_path)
 
-    ensure_table_dependencies(
-        experiment_params.pipeline_params.input_mode,
-        experiment_params.pipeline_params.embed_only,
-    )
-
     # If input is an empty directory, try populating it from the data lake
     data_lake_manager = DataLakeManager(
         blob_path_pdfs=datalake_config["blob_path_pdfs"],
@@ -609,8 +590,11 @@ def _extract_and_evaluate_with_metadata(
     return result
 
 
-def _load_config(config_path: str = "climatextract.toml"):
+def _load_config(config_path: str = "climatextract.toml", check_dependencies: bool = True):
     """Load config from TOML file, with defaults from dataclasses.
+
+    Unless ``check_dependencies`` is False, also checks that the table
+    dependencies are installed when ``input_mode = "text+table"``.
 
     Returns:
         Tuple of (config_params, experiment_params, output_dir, mlflow_config)
@@ -666,6 +650,10 @@ def _load_config(config_path: str = "climatextract.toml"):
         for key in datalake_config:
             if key in file_config["datalake"]:
                 datalake_config[key] = file_config["datalake"][key]
+
+    if check_dependencies:
+        ensure_table_dependencies(experiment_params.pipeline_params.input_mode,
+                                  experiment_params.pipeline_params.embed_only)
 
     return config_params, experiment_params, output_dir, mlflow_config, datalake_config
 

@@ -27,7 +27,7 @@ def ensure_table_dependencies(input_mode: str, embed_only: bool = False) -> None
     if input_mode != "text+table" or embed_only:
         return
 
-    required_modules = ("docling", "pdf2image", "transformers", "timm", "torch", "torchvision")
+    required_modules = ("docling", "pdf2image", "transformers", "timm")
     missing = [name for name in required_modules if find_spec(name) is None]
     if missing:
         raise ImportError(
@@ -72,7 +72,6 @@ class ValueRetrieverPipeline():
         self.pipeline_semaphore = asyncio.Semaphore(max_concurrent_pdfs)
 
         self.page_extractor = None
-        ensure_table_dependencies(self.input_mode, self.embed_only)
         if self.input_mode == "text+table" and not self.embed_only:
             from climatextract.page_text_and_table_extractor import PageTextAndTableExtractor
 
