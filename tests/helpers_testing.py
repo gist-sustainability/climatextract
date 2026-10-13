@@ -1,6 +1,10 @@
 import json
 import os
 
+import pytest
+
+from climatextract.pipeline import ensure_table_dependencies
+
 
 def create_test_config(prompt_type, input_mode):
     """
@@ -45,6 +49,14 @@ def cleanup_test_config(config_path):
     """Remove test config file after test."""
     if os.path.exists(config_path):
         os.remove(config_path)
+
+
+def skip_if_table_dependencies_missing(input_mode):
+    """Skip text+table tests when the optional table dependencies are not installed."""
+    try:
+        ensure_table_dependencies(input_mode)
+    except (ImportError, RuntimeError) as e:
+        pytest.skip(str(e))
 
 
 def save_run_id(run_id, prompt_type, input_mode):
