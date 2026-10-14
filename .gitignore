@@ -36,3 +36,6 @@ data/evaluation_dataset/*
 data/docs/
 problematic_pdfs_log.txt
 *.egg-info/
+
+# Claude Code personal settings
+.claude/settings.local.json

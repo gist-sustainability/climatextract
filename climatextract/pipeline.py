@@ -11,7 +11,6 @@ from mlflow.entities import SpanType
 
 import climatextract.semantic_search as semantic_search
 import climatextract.helpers as helpers
-from climatextract.page_text_and_table_extractor import PageTextAndTableExtractor
 from climatextract.resolve_duplicates import handle_duplicates_in_output, select_duplicates_in_output
 
 if TYPE_CHECKING:
@@ -44,7 +43,11 @@ class ValueRetrieverPipeline():
         max_concurrent_pdfs = 20
         self.pipeline_semaphore = asyncio.Semaphore(max_concurrent_pdfs)
 
-        self.page_extractor = PageTextAndTableExtractor()
+        self.page_extractor = None
+        if self.input_mode == "text+table" and not self.embed_only:
+            from climatextract.page_text_and_table_extractor import PageTextAndTableExtractor
+
+            self.page_extractor = PageTextAndTableExtractor()
         self.console = console
 
     @mlflow.trace(span_type=SpanType.CHAIN, attributes={"pipeline": "ValueRetrieverPipeline"})

@@ -5,7 +5,10 @@ import mlflow
 from mlflow.tracking import MlflowClient
 import pandas as pd
 
-from tests.helpers_testing import save_run_id, get_run_id, create_test_config, cleanup_test_config
+from tests.helpers_testing import (
+    save_run_id, get_run_id, create_test_config, cleanup_test_config,
+    skip_if_table_dependencies_missing,
+)
 from climatextract import extract_and_evaluate
 
 
@@ -29,6 +32,8 @@ def test_functionality(prompt_type, input_mode):
     - prompt_type: The type of prompt to use ('default' or 'structured_json').
     - input_mode: The input mode to use ('text' or 'text+table').
     """
+    skip_if_table_dependencies_missing(input_mode)
+
     # Configuration
     config_path = create_test_config(prompt_type, input_mode)
 
@@ -93,6 +98,8 @@ def test_quality(prompt_type, input_mode):
         - prompt_type: The type of prompt to use ('default' or 'structured_json').
         - input_mode: The input mode to use ('text' or 'text+table').
         """
+    skip_if_table_dependencies_missing(input_mode)
+
     # Configuration
     expected_artifact_name = "eval_results_vs_benchmark.csv"
     expected_true_value_matches = 32

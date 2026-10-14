@@ -112,6 +112,8 @@ context_window = 0
 # embeddings_repository = "./data/processed/embeddings/custom_embeddings.duckdb"
 ```
 
+`input_mode = "text+table"` needs the table dependencies and Poppler, see the [installation guide](../getting-started/installation.md).
+
 ---
 
 ## Output Configuration

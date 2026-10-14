@@ -21,13 +21,19 @@ This repository is organized as follows:
 
 It is recommended to run the code in a virtual environment using at least Python 3.11.
 
-First, check out the code, then create a virtual environment and install all dependencies:
+First, check out the code, then create a virtual environment and install the dependencies:
 
 ```bash
 cd climatextract
 python -m venv co2_info_extraction
 source co2_info_extraction/bin/activate
 pip install -e .
+```
+
+If you need to use `input_mode = "text+table"` (discouraged), also install the table dependencies (and Poppler, see the installation guide):
+
+```bash
+pip install -e ".[tables]"
 ```
 
 See the [Installation guide](https://gist-sustainability.github.io/climatextract/getting-started/installation/) for additional steps and alternative deployment options you have.
