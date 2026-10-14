@@ -1,8 +1,6 @@
 """Sets up value retriever pipeline and gets emissions."""
 import logging
 import os
-from importlib.util import find_spec
-from shutil import which
 from typing import List, Optional, TYPE_CHECKING
 import asyncio
 import pandas as pd
@@ -20,32 +18,6 @@ if TYPE_CHECKING:
 
 load_dotenv()  # load environment variables from .env file
 os.chdir(helpers.get_project_directory(path_to_file="src"))
-
-
-def ensure_table_dependencies(input_mode: str, embed_only: bool = False) -> None:
-    """Check table packages and Poppler programs without importing or installing them."""
-    if input_mode != "text+table" or embed_only:
-        return
-
-    required_modules = ("docling", "pdf2image", "transformers", "timm")
-    missing = [name for name in required_modules if find_spec(name) is None]
-    if missing:
-        raise ImportError(
-            "input_mode='text+table' requires optional table dependencies. "
-            f"Missing packages: {', '.join(missing)}. "
-            'Install them with: python -m pip install "climatextract[tables]". '
-            "Then run the extraction again."
-        )
-
-    required_programs = ("pdfinfo", "pdftoppm")
-    missing_programs = [name for name in required_programs if which(name) is None]
-    if missing_programs:
-        raise RuntimeError(
-            "Table extraction requires Poppler, but these programs could not be found: "
-            f"{', '.join(missing_programs)}. "
-            "See our installation guide: "
-            "https://gist-sustainability.github.io/climatextract/getting-started/installation/"
-        )
 
 
 class ValueRetrieverPipeline():

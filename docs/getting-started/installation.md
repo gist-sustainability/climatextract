@@ -19,18 +19,19 @@ Before installing, ensure you have:
 pip install climatextract
 ```
 
-This installs climatextract with everything needed for the default `input_mode = "text"`.
-To use `input_mode = "text+table"`, also install the table dependencies:
+This installs climatextract with everything needed for the default `input_mode = "text"` (recommended).
+
+---
+
+## Step 2: Install Additional Dependencies (Optional, Table Mode Only)
+
+If you need to use `input_mode = "text+table"`, also install the table dependencies:
 
 ```bash
 pip install "climatextract[tables]"
 ```
 
----
-
-## Step 2: Install System Dependencies (Table Mode Only)
-
-Table mode renders PDF pages with pdf2image, which needs **Poppler**. Skip this step if you only use text mode.
+Table mode renders PDF pages with pdf2image, which needs **Poppler**.
 
 === "macOS"
 
