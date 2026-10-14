@@ -41,7 +41,7 @@ When processing a report, the pipeline:
 
 1. Embeds a search query optimized for emissions data
 2. Computes cosine similarity against page embeddings
-3. Applies filtering to select the most relevant pages
+3. Selects the most similar pages (7 by default)
 
 ```mermaid
 flowchart LR
@@ -53,13 +53,17 @@ flowchart LR
 
 ### Search Configuration
 
-Control retrieval behavior in `climatextract.toml`:
+By default, the 7 most similar pages of each report are sent to the LLM. `percentile_threshold` and `similarity_min_k` are optional. Control retrieval behavior in `climatextract.toml`:
 
 ```toml
 [extraction]
-percentile_threshold = 95 # Score cutoff percentile. Keep 5% most similar pages and discard 95%
-similarity_top_k = 7      # Maximum pages to retrieve, overrides percentile_threshold for long documents
-similarity_min_k = 4      # Minimum pages to retrieve, overrides percentile_threshold for short documents
+# Semantic search
+# Pages sent to the LLM per report
+similarity_top_k = 7
+# Optional: only keep the most similar pages, e.g. 95 keeps the top 5%
+# percentile_threshold = 95
+# Optional: with percentile_threshold set, send at least this many pages
+# similarity_min_k = 4
 
 # Context window for semantic search (default: 0, meaning that no adjacent pages are used)
 context_window = 0

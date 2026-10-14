@@ -99,10 +99,13 @@ embed_only = false
 # Prompt type: "default" or "structured_json"
 prompt_type = "default"
 
-# Semantic search settings
-percentile_threshold = 95 # Score cutoff percentile. Keep 5% most similar pages and discard 95%
-similarity_top_k = 7      # Maximum pages to retrieve, overrides percentile_threshold for long documents
-similarity_min_k = 4      # Minimum pages to retrieve, overrides percentile_threshold for short documents
+# Semantic search
+# Pages sent to the LLM per report
+similarity_top_k = 7
+# Optional: only keep the most similar pages, e.g. 95 keeps the top 5%
+# percentile_threshold = 95
+# Optional: with percentile_threshold set, send at least this many pages
+# similarity_min_k = 4
 
 # Context window for semantic search (default: 0, meaning that no adjacent pages are used)
 context_window = 0
@@ -192,9 +195,9 @@ input_mode = "text"                   # "text" (default) or "text+table"
 embed_only = false                    # only embed, skip extraction
 prompt_type = "default"               # "default" or "structured_json"
 context_window = 0                    # context window for semantic search
-similarity_top_k = 7                  # max pages to retrieve
-similarity_min_k = 4                  # min pages to retrieve
-percentile_threshold = 95             # score cutoff percentile
+similarity_top_k = 7                  # pages sent to the LLM per report
+# percentile_threshold = 95           # optional: keep only the top 5% of a report's pages
+# similarity_min_k = 4                # optional: min pages when percentile_threshold is set
 # embeddings_repository = "./data/processed/embeddings/custom_embeddings.duckdb"
 
 [output]

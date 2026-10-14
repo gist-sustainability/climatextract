@@ -24,11 +24,12 @@ filename_list = ["data/pdfs/test_report/report.pdf"]
 # - gpt-5-chat
 # - gpt-5.2-chat
 # - gpt-oss-120b
+# - gpt-6-luna
 # - Llama-4-Maverick-17B-128E-Instruct-FP8
 # - o3-mini
 # - DeepSeek-V4-Flash-0731
 # - DeepSeek-V4-Pro
-llm_model = "gpt-5-nano"
+llm_model = "gpt-6-luna"
 
 # Many more models are available on OpenRouter.com (llm = OpenRouterLlmHandler(), requires OPENROUTER_API_KEY)
 # llm_model = "deepseek/deepseek-v4-flash-0731:floor"
@@ -47,6 +48,7 @@ emb_model = "text-embedding-ada-002"
 #   - gpt-4.1: 4
 #   - Llama-4-Maverick-17B-128E-Instruct-FP8: 25
 #   - o3-mini: 2
+#   - gpt-5-nano: 100
 # Higher values = faster processing, but may hit rate limits.
 max_parallel_llm_prompts_running = 100
 
@@ -92,13 +94,13 @@ prompt_type = "structured_json"
 
 # Context window for semantic search
 context_window = 0
-# Semantic search thresholds
-# similarity_top_k: cap after filtering (default 7)
-# similarity_min_k: floor to keep at least this many (default 4)
-# percentile_threshold: percentile cutoff for vector scores (default 95)
+# Semantic search
+# Pages sent to the LLM per report
 similarity_top_k = 7
-similarity_min_k = 4
-percentile_threshold = 95
+# Optional: only keep the most similar pages, e.g. 95 keeps the top 5%
+# percentile_threshold = 95
+# Optional: with percentile_threshold set, send at least this many pages
+# similarity_min_k = 4
 
 # Custom embeddings repository path (optional)
 # If specified, uses this path instead of the default
