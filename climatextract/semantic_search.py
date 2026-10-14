@@ -488,39 +488,6 @@ class SearchQuery:
         return len(self.get_query_embedding())
 
 
-def _select_pages_by_similarity(base_df: pd.DataFrame,
-                                similarity_top_k: Optional[int],
-                                similarity_min_k: Optional[int],
-                                percentile_threshold: Optional[float]) -> pd.DataFrame:
-    """Select the most relevant pages from all scored pages of one PDF.
-
-    1. Keep pages scoring at or above the ``percentile_threshold``-th percentile
-       of this PDF's similarity scores. 0 or None disables this filter.
-    2. Cap the result at ``similarity_top_k`` pages (7 if unset).
-    3. If fewer than ``similarity_min_k`` pages remain, fall back to the
-       ``similarity_min_k`` most similar pages overall.
-    """
-    if percentile_threshold is not None and not 0 <= percentile_threshold <= 100:
-        raise ValueError(
-            "percentile_threshold must be between 0 and 100 (0 or None disables it), "
-            f"got {percentile_threshold}.")
-
-    ranked = base_df.sort_values("similarity", ascending=False)
-    max_pages = similarity_top_k if similarity_top_k else 7
-    min_pages = min(similarity_min_k, max_pages) if similarity_min_k else 0
-
-    if percentile_threshold:
-        cutoff = np.percentile(ranked["similarity"], percentile_threshold)
-        filtered = ranked[ranked["similarity"] >= cutoff]
-    else:
-        filtered = ranked
-
-    selected = filtered.head(max_pages)
-    if min_pages and len(selected) < min_pages:
-        selected = ranked.head(min_pages)
-    return selected
-
-
 class Pdfdoc:
     """Class that holds a single pdf file. 
     Raw text and embeddings from each page are actually stored in a database.
@@ -591,7 +558,7 @@ class Pdfdoc:
             if base_df.empty:
                 res_df = base_df
             else:
-                res_df = _select_pages_by_similarity(
+                res_df = self._select_pages_by_similarity(
                     base_df,
                     similarity_top_k=similarity_top_k,
                     similarity_min_k=similarity_min_k,
@@ -749,6 +716,39 @@ class Pdfdoc:
             documents=pages_from_pdf)
 
         return pages_nodes
+
+    @staticmethod
+    def _select_pages_by_similarity(base_df: pd.DataFrame,
+                                    similarity_top_k: Optional[int],
+                                    similarity_min_k: Optional[int],
+                                    percentile_threshold: Optional[float]) -> pd.DataFrame:
+        """Select the most relevant pages from all scored pages of one PDF.
+
+        1. Keep pages scoring at or above the ``percentile_threshold``-th percentile
+           of this PDF's similarity scores. 0 or None disables this filter.
+        2. Cap the result at ``similarity_top_k`` pages (7 if unset).
+        3. If fewer than ``similarity_min_k`` pages remain, fall back to the
+           ``similarity_min_k`` most similar pages overall.
+        """
+        if percentile_threshold is not None and not 0 <= percentile_threshold <= 100:
+            raise ValueError(
+                "percentile_threshold must be between 0 and 100 (0 or None disables it), "
+                f"got {percentile_threshold}.")
+
+        ranked = base_df.sort_values("similarity", ascending=False)
+        max_pages = similarity_top_k if similarity_top_k else 7
+        min_pages = min(similarity_min_k, max_pages) if similarity_min_k else 0
+
+        if percentile_threshold:
+            cutoff = np.percentile(ranked["similarity"], percentile_threshold)
+            filtered = ranked[ranked["similarity"] >= cutoff]
+        else:
+            filtered = ranked
+
+        selected = filtered.head(max_pages)
+        if min_pages and len(selected) < min_pages:
+            selected = ranked.head(min_pages)
+        return selected
 
     def _find_adjacent_pages(self, selected_pages: pd.DataFrame, context_window: int) -> str:
         """

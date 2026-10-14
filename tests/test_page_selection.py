@@ -1,6 +1,6 @@
 """Unit tests for percentile / top_k / min_k page selection in semantic search.
 
-``_select_pages_by_similarity`` picks which pages of a PDF are sent to the LLM:
+``Pdfdoc._select_pages_by_similarity`` picks which pages of a PDF are sent to the LLM:
 1. Percentile filter: keep pages scoring at or above the Nth percentile of this
    PDF's scores (0 or None turns the filter off).
 2. Cap: keep at most ``similarity_top_k`` pages.
@@ -13,7 +13,7 @@ expected result is simply the first few page labels.
 import pandas as pd
 import pytest
 
-from climatextract.semantic_search import _select_pages_by_similarity
+from climatextract.semantic_search import Pdfdoc
 
 
 def scored_pages(n_pages: int) -> pd.DataFrame:
@@ -26,7 +26,7 @@ def scored_pages(n_pages: int) -> pd.DataFrame:
 
 def selected_labels(df: pd.DataFrame, **kwargs) -> list:
     """Run page selection and return the selected page labels in order."""
-    return _select_pages_by_similarity(df, **kwargs)["page_label"].tolist()
+    return Pdfdoc._select_pages_by_similarity(df, **kwargs)["page_label"].tolist()
 
 
 def test_default_threshold_on_short_report_falls_back_to_floor():
@@ -108,5 +108,6 @@ def test_selection_ignores_input_order():
 def test_out_of_range_percentile_raises(percentile_threshold):
     """Percentiles outside 0-100 raise a ValueError that names the valid range."""
     with pytest.raises(ValueError, match="between 0 and 100"):
-        _select_pages_by_similarity(scored_pages(10), similarity_top_k=7,
-                                    similarity_min_k=4, percentile_threshold=percentile_threshold)
+        Pdfdoc._select_pages_by_similarity(scored_pages(10), similarity_top_k=7,
+                                           similarity_min_k=4,
+                                           percentile_threshold=percentile_threshold)
