@@ -397,10 +397,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-install-system-dependencies" class="md-nav__link">
+  <a href="#step-2-install-additional-dependencies-optional-table-mode-only" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: Install System Dependencies
+        Step 2: Install Additional Dependencies (Optional, Table Mode Only)
       
     </span>
   </a>
@@ -1157,10 +1157,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-2-install-system-dependencies" class="md-nav__link">
+  <a href="#step-2-install-additional-dependencies-optional-table-mode-only" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 2: Install System Dependencies
+        Step 2: Install Additional Dependencies (Optional, Table Mode Only)
       
     </span>
   </a>
@@ -1283,18 +1283,21 @@
 <h2 id="step-1-install-the-package">Step 1: Install the Package</h2>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pip<span class="w"> </span>install<span class="w"> </span>climatextract
 </span></code></pre></div>
-<p>This installs climatextract and all required dependencies.</p>
+<p>This installs climatextract with everything needed for the default <code>input_mode = "text"</code> (recommended).</p>
 <hr />
-<h2 id="step-2-install-system-dependencies">Step 2: Install System Dependencies</h2>
-<p>climatextract uses Docling for PDF processing, which requires <strong>Poppler</strong>:</p>
+<h2 id="step-2-install-additional-dependencies-optional-table-mode-only">Step 2: Install Additional Dependencies (Optional, Table Mode Only)</h2>
+<p>If you need to use <code>input_mode = "text+table"</code>, also install the table dependencies:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"climatextract[tables]"</span>
+</span></code></pre></div>
+<p>Table mode renders PDF pages with pdf2image, which needs <strong>Poppler</strong>.</p>
 <div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">macOS</label><label for="__tabbed_1_2">Ubuntu/Debian</label><label for="__tabbed_1_3">Windows</label></div>
 <div class="tabbed-content">
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>brew<span class="w"> </span>install<span class="w"> </span>poppler
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>brew<span class="w"> </span>install<span class="w"> </span>poppler
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>poppler-utils
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>sudo<span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>poppler-utils
 </span></code></pre></div>
 </div>
 <div class="tabbed-block">
@@ -1308,57 +1311,57 @@
 <p>By default, the package will connect to Microsoft Azure's AI foundry.</p>
 <h3 id="using-azures-ai-foundry">Using Azure's AI foundry</h3>
 <p>We commonly use Azure's AI foundry. Create an <code>.env</code> file in your working directory with the correct endpoint and the respective API key.</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nv">AZURE_AI_FOUNDRY_ENDPOINT</span><span class="o">=</span>https://your-foundry-endpoint.openai.azure.com/
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nv">API_KEY</span><span class="o">=</span>your-api-key<span class="w"> </span><span class="c1"># you can also use personalized authentication workflows, see Step 4</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nv">AZURE_AI_FOUNDRY_ENDPOINT</span><span class="o">=</span>https://your-foundry-endpoint.openai.azure.com/
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">API_KEY</span><span class="o">=</span>your-api-key<span class="w"> </span><span class="c1"># you can also use personalized authentication workflows, see Step 4</span>
 </span></code></pre></div>
 <p>In the <a href="../../user-guide/configuration/">configuration file</a> you specify which models you want to use, e.g.:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nv">llm_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gpt-5-chat"</span>
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nv">emb_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"text-embedding-ada-002"</span>
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nv">max_parallel_llm_prompts_running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span>
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nv">max_parallel_embedding_calls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">llm_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"gpt-5-chat"</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nv">emb_model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"text-embedding-ada-002"</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nv">max_parallel_llm_prompts_running</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">20</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nv">max_parallel_embedding_calls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">30</span>
 </span></code></pre></div>
 <p>Make sure that models with these names have been deployed in your AI foundry instance.</p>
 <p>Rate limit errors may occur depending on the quota you have assigned to each deployed model. Use the <code>max_parallel_...</code>-parameters to limit the maximum number of API requests that will be sent in parallel, so that it matches with the model quota you have available.</p>
 <p>The adapter for Azure's AI foundry is available at <a href="https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_ai_foundry.py"><code>climatextract/adapters/azure_ai_foundry.py</code></a>, useful for adaptions and debugging. A slightly different adapter / API endpoint may be needed if you wish to deploy models that are not from OpenAI.</p>
 <h3 id="using-azure-openai">Using Azure OpenAI</h3>
 <p>For older models and legacy deployments, the package also ships an Azure OpenAI Service adapter at <a href="https://github.com/gist-sustainability/climatextract/blob/main/climatextract/adapters/azure_openai.py"><code>climatextract/adapters/azure_openai.py</code></a>. The <code>.env</code> file when using this service should be as follows:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nv">AZURE_ENDPOINT</span><span class="o">=</span>https://your-openai-endpoint.openai.azure.com/
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nv">API_KEY</span><span class="o">=</span>your-api-key<span class="w"> </span><span class="c1"># you can also use personalized authentication workflows, see Step 4</span>
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nv">API_VERSION</span><span class="o">=</span><span class="m">2024</span>-12-01-preview
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nv">AZURE_ENDPOINT</span><span class="o">=</span>https://your-openai-endpoint.openai.azure.com/
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nv">API_KEY</span><span class="o">=</span>your-api-key<span class="w"> </span><span class="c1"># you can also use personalized authentication workflows, see Step 4</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nv">API_VERSION</span><span class="o">=</span><span class="m">2024</span>-12-01-preview
 </span></code></pre></div>
 <h3 id="using-openrouter">Using OpenRouter</h3>
 <p>openrouter.ai provides access to a wide variety of LLMs and embedding models. You will need an OpenRouter account with a small budget. Add its API_KEY to your <code>.env</code> file:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nv">OPENROUTER_API_KEY</span><span class="o">=</span>your-api-key
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nv">OPENROUTER_API_KEY</span><span class="o">=</span>your-api-key
 </span></code></pre></div>
 <p>You will also need to import</p>
-<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">climatextract.adapters.openrouter</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">OpenRouterEmbeddingHandler</span><span class="p">,</span>
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>    <span class="n">OpenRouterLlmHandler</span><span class="p">,</span>
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="p">)</span>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">climatextract.adapters.openrouter</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">OpenRouterEmbeddingHandler</span><span class="p">,</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>    <span class="n">OpenRouterLlmHandler</span><span class="p">,</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="p">)</span>
 </span></code></pre></div>
 <p>and adapt the <a href="../../user-guide/configuration/">model configuration</a> in the toml file. The OpenRouter setup is described in more detail in <a href="../../user-guide/custom-providers/">Custom Model Providers</a>.</p>
 <hr />
 <h2 id="step-4-optional-configure-personalized-authentication-to-azure">Step 4 (optional): Configure personalized authentication to Azure</h2>
 <p>Instead of using an API_KEY (problem: different endpoints require different API_KEYs), you can also log in to Azure with your personal account.</p>
 <p>Install the <code>azure_authentication</code> package:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"azure_authentication@git+https://github.com/soda-lmu/azure-auth-helper-python.git"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"azure_authentication@git+https://github.com/soda-lmu/azure-auth-helper-python.git"</span>
 </span></code></pre></div>
 <p>Add to your <code>.env</code> file:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nv">AZURE_USERNAME</span><span class="o">=</span>your-username
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nv">AZURE_PASSWORD</span><span class="o">=</span>your-password
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># API_KEY=not-needed-anymore</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nv">AZURE_USERNAME</span><span class="o">=</span>your-username
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nv">AZURE_PASSWORD</span><span class="o">=</span>your-password
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># API_KEY=not-needed-anymore</span>
 </span></code></pre></div>
 <p>To facilitate login processes, you can use the following. Be aware of the risk if you store secret information on your hard drive.
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nv">AZURE_SODA_WEBLOGIN</span><span class="o">=</span>advanced
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nv">AZURE_SODA_CREDENTIAL_PATH</span><span class="o">=</span>my_secret_azure_credential.json
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="nv">AZURE_SODA_ALLOW_UNENCRYPTED_STORAGE</span><span class="o">=</span>True<span class="w"> </span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nv">AZURE_SODA_WEBLOGIN</span><span class="o">=</span>advanced
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nv">AZURE_SODA_CREDENTIAL_PATH</span><span class="o">=</span>my_secret_azure_credential.json
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nv">AZURE_SODA_ALLOW_UNENCRYPTED_STORAGE</span><span class="o">=</span>True<span class="w"> </span>
 </span></code></pre></div></p>
 <p>This functionality is based on the <a href="https://github.com/soda-lmu/azure-auth-helper-python">azure_authentication</a> package. Please refer to its <a href="https://github.com/soda-lmu/azure-auth-helper-python">documentation</a> for alternative authentication workflows.</p>
 <hr />
 <h2 id="verify-installation">Verify Installation</h2>
 <p>Test that everything is working:</p>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"from climatextract import extract; print('Installation successful!')"</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"from climatextract import extract; print('Installation successful!')"</span>
 </span></code></pre></div>
 <hr />
 <h2 id="next-steps">Next Steps</h2>
