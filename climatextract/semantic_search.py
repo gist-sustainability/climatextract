@@ -562,7 +562,7 @@ class Pdfdoc:
                     base_df,
                     similarity_top_k=similarity_top_k,
                     similarity_min_k=similarity_min_k,
-                    percentile_threshold=getattr(params, "percentile_threshold", 95))
+                    percentile_threshold=getattr(params, "percentile_threshold", None))
         elif search_method == "full_text_search":
             res_df = self._repository.pdf_full_text_search(
                 short_file_name=self.short_filename,
@@ -732,8 +732,7 @@ class Pdfdoc:
         """
         if percentile_threshold is not None and not 0 <= percentile_threshold <= 100:
             raise ValueError(
-                "percentile_threshold must be between 0 and 100 (0 or None disables it), "
-                f"got {percentile_threshold}.")
+                f"percentile_threshold must be between 0 and 100, got {percentile_threshold}.")
 
         ranked = base_df.sort_values("similarity", ascending=False)
         max_pages = similarity_top_k if similarity_top_k else 7

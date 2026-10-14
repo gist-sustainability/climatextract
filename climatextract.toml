@@ -92,13 +92,13 @@ prompt_type = "structured_json"
 
 # Context window for semantic search
 context_window = 0
-# Semantic search thresholds
-# similarity_top_k: cap after filtering (default 7)
-# similarity_min_k: floor to keep at least this many (default 4)
-# percentile_threshold: percentile cutoff for vector scores, 0-100 (default 95; 0 disables it)
+# Semantic search
+# Pages sent to the LLM per report
 similarity_top_k = 7
-similarity_min_k = 4
-percentile_threshold = 95
+# Optional: only keep the most similar pages, e.g. 95 keeps the top 5%
+# percentile_threshold = 95
+# Optional: with percentile_threshold set, send at least this many pages
+# similarity_min_k = 4
 
 # Custom embeddings repository path (optional)
 # If specified, uses this path instead of the default

@@ -47,8 +47,8 @@ class SemanticSearchParams:
     search_query: str = field(default="""What are the total CO2 emissions in different years?
                             Include Scope 1, Scope 2, and Scope 3 emissions if available.""")
     similarity_top_k: int = field(default=7)
-    similarity_min_k: int = field(default=4)
-    percentile_threshold: int = field(default=95)
+    similarity_min_k: int = field(default=None)
+    percentile_threshold: int = field(default=None)
     context_window: int = field(default=0)
     search_method: str = field(default="vector_search")
     # Path to custom embeddings repository. If None, uses default path:
