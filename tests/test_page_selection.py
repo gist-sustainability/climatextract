@@ -44,8 +44,7 @@ def test_percentile_on_short_report_falls_back_to_floor():
 def test_zero_or_none_disables_percentile_filter(percentile_threshold):
     """Regression test: 0 or None turns the percentile filter off.
 
-    All 10 pages pass, so the top_k cap returns pages 1-7. Previously 0 and None
-    silently became 95, which returned only pages 1-4.
+    All 10 pages pass, so the top_k cap returns pages 1-7.
     """
     labels = selected_labels(scored_pages(10), similarity_top_k=7,
                              similarity_min_k=4, percentile_threshold=percentile_threshold)
