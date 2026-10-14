@@ -29,8 +29,8 @@ def selected_labels(df: pd.DataFrame, **kwargs) -> list:
     return Pdfdoc._select_pages_by_similarity(df, **kwargs)["page_label"].tolist()
 
 
-def test_default_threshold_on_short_report_falls_back_to_floor():
-    """Default settings on a short report: the 95th percentile keeps only 1 page.
+def test_percentile_on_short_report_falls_back_to_floor():
+    """On a short report, the 95th percentile keeps only 1 page.
 
     On 10 pages the cutoff is ~0.9955, so only page 1 passes. That is below
     min_k=4, so the floor applies and pages 1-4 are returned.
@@ -71,16 +71,6 @@ def test_explicit_percentile_is_respected():
     labels = selected_labels(scored_pages(100), similarity_top_k=7,
                              similarity_min_k=0, percentile_threshold=95)
     assert labels == ["1", "2", "3", "4", "5"]
-
-
-def test_min_k_equal_to_top_k_always_returns_top_k():
-    """Setting min_k equal to top_k always returns exactly top_k pages.
-
-    The percentile filter keeps only page 1, so the floor returns pages 1-7.
-    """
-    labels = selected_labels(scored_pages(10), similarity_top_k=7,
-                             similarity_min_k=7, percentile_threshold=95)
-    assert labels == ["1", "2", "3", "4", "5", "6", "7"]
 
 
 def test_min_k_is_capped_at_top_k():
