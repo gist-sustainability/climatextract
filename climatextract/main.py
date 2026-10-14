@@ -1,6 +1,7 @@
 """Main module for ClimXtract - CO2 emissions extraction from PDF reports."""
 import asyncio
 from dataclasses import asdict
+from importlib.util import find_spec
 import json
 import logging
 import os
@@ -10,6 +11,7 @@ except ImportError:
     import tomli as tomllib
 import uuid
 from pathlib import Path
+from shutil import which
 from typing import Dict, List, Optional, Any
 
 import mlflow
@@ -18,9 +20,7 @@ import nest_asyncio
 # Apply nest_asyncio to allow asyncio.run() in environments with running event loops (e.g., Jupyter)
 nest_asyncio.apply()
 
-from climatextract.pipeline import (
-    FileConfig, ValueRetrieverPipeline, ensure_table_dependencies, save_results,
-)
+from climatextract.pipeline import FileConfig, ValueRetrieverPipeline, save_results
 from climatextract.experiment_setup import Experiment
 from climatextract.llm_embedding_api_bridge import (
     EmbeddingModel,
@@ -652,10 +652,36 @@ def _load_config(config_path: str = "climatextract.toml", check_dependencies: bo
                 datalake_config[key] = file_config["datalake"][key]
 
     if check_dependencies:
-        ensure_table_dependencies(experiment_params.pipeline_params.input_mode,
+        _ensure_table_dependencies(experiment_params.pipeline_params.input_mode,
                                   experiment_params.pipeline_params.embed_only)
 
     return config_params, experiment_params, output_dir, mlflow_config, datalake_config
+
+
+def _ensure_table_dependencies(input_mode: str, embed_only: bool = False) -> None:
+    """Check table packages and Poppler programs without importing or installing them."""
+    if input_mode != "text+table" or embed_only:
+        return
+
+    required_modules = ("docling", "pdf2image", "transformers", "timm")
+    missing = [name for name in required_modules if find_spec(name) is None]
+    if missing:
+        raise ImportError(
+            "input_mode='text+table' requires optional table dependencies. "
+            f"Missing packages: {', '.join(missing)}. "
+            'Install them with: python -m pip install "climatextract[tables]". '
+            "Then run the extraction again."
+        )
+
+    required_programs = ("pdfinfo", "pdftoppm")
+    missing_programs = [name for name in required_programs if which(name) is None]
+    if missing_programs:
+        raise RuntimeError(
+            "Table extraction requires Poppler, but these programs could not be found: "
+            f"{', '.join(missing_programs)}. "
+            "See our installation guide: "
+            "https://gist-sustainability.github.io/climatextract/getting-started/installation/"
+        )
 
 
 def _resolve_pdf_input(pdf_input: str | List[str]) -> List[str]:

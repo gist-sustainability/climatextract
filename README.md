@@ -30,7 +30,7 @@ source co2_info_extraction/bin/activate
 pip install -e .
 ```
 
-To use `input_mode = "text+table"`, also install the table dependencies (and Poppler, see the installation guide):
+If you need to use `input_mode = "text+table"` (discouraged), also install the table dependencies (and Poppler, see the installation guide):
 
 ```bash
 pip install -e ".[tables]"
