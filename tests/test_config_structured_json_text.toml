@@ -1,0 +1,20 @@
+# Test configuration for structured_json_text
+
+[input]
+filename_list = ["./data/pdfs/test_report/report.pdf"]
+
+[models]
+# Pinned so the quality test's expected match counts stay reproducible
+# regardless of changes to the adapter's default model.
+llm_model = "gpt-4o"
+
+[extraction]
+input_mode = "text"
+prompt_type = "structured_json"
+embeddings_repository = "data/processed/embeddings/test_embeddings/test_embeddings.duckdb"
+
+[evaluation]
+gold_standard = "./data/evaluation_dataset/test_evaluation/gold_standard.csv"
+
+[mlflow]
+experiment_name = "/Shared/Experiments_prompt_engineering/acceptance_testing"
