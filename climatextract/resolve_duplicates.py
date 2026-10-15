@@ -4,6 +4,7 @@ Module to identify and resolve duplicates in the extracted data and the ground t
 import re
 from typing import List
 
+import numpy as np
 import pandas as pd
 
 
@@ -208,6 +209,10 @@ def identify_duplicates_in_output(df: pd.DataFrame,
     """
     report_col, scope_col, year_col, _, value_col, _ = col_names
 
+    # Assign a row_id, so selected rows and flags are matched by id 
+    # instead of by content (which would match every identical copy of a row).
+    df = df.assign(_row_id=np.arange(len(df)))
+
     # Step 1: Mark all-NA reports
     df["all_na"] = df.groupby(report_col)[value_col].transform(
         lambda x: x.isna().all())
@@ -259,17 +264,12 @@ def identify_duplicates_in_output(df: pd.DataFrame,
         prioritized_non_unique_rows["select_flag"] = True
         marked_non_unique_rows = non_unique_rows.merge(
             prioritized_non_unique_rows[[
-                *col_names, "select_flag", "dupl_reason"]],
-            on=col_names,
+                "_row_id", "select_flag", "dupl_reason"]],
+            on="_row_id",
             how="left"
         )
         marked_non_unique_rows["select_flag"] = marked_non_unique_rows["select_flag"].fillna(
             False).infer_objects(copy=False)
-        # Raw rows sharing the same col_names all match the one selected row
-        # in the merge above; only the first copy stays selected.
-        marked_non_unique_rows.loc[
-            marked_non_unique_rows.duplicated(subset=col_names, keep="first"),
-            "select_flag"] = False
         # Fill dupl_reason for non-selected rows with 0
         marked_non_unique_rows["dupl_reason"] = marked_non_unique_rows["dupl_reason"].fillna(
             0).infer_objects(copy=False)
@@ -291,18 +291,11 @@ def identify_duplicates_in_output(df: pd.DataFrame,
     df_filtered = pd.concat([combined_rows, all_na_reports])
     df_filtered["duplicate_flag"] = df_filtered["duplicate_flag"].fillna(False).infer_objects(copy=False)
 
-    # Mark filtered rows in original dataframe
-    # Drop unnecessary columns before merging
-    df_merge = df_filtered.drop(columns=["text_response_from_llm",
-                                         "page_numbers_tried_by_llm"], axis=1)
-    col_for_merge = [col for col in df.columns if col not in ["text_response_from_llm",
-                                                              "page_numbers_tried_by_llm"]]
-    # Rows identical on col_for_merge would otherwise be joined many-to-many
-    # (n copies x n copies); number the copies so they pair up one-to-one.
-    df["_copy_idx"] = df.groupby(col_for_merge, dropna=False).cumcount()
-    df_merge["_copy_idx"] = df_merge.groupby(col_for_merge, dropna=False).cumcount()
-    df = df.merge(df_merge, how="left", on=[*col_for_merge, "_copy_idx"],
-                  indicator=True).drop(columns="_copy_idx")
+    # Copy the flags of the filtered rows back to the original dataframe
+    new_cols = [col for col in df_filtered.columns if col not in df.columns]
+    df = df.merge(df_filtered[["_row_id", *new_cols]], how="left", on="_row_id",
+                  indicator=True, validate="one_to_one")
+    df = df.drop(columns="_row_id")
 
     return df
 
