@@ -1,9 +1,28 @@
 """
 Module to identify and resolve duplicates in the extracted data and the ground truth.
 """
+import re
 from typing import List
 
 import pandas as pd
+
+
+def _page_sort_key(page) -> tuple:
+    """Sort key ordering pages numerically ('9' < '10'), tolerating labels
+    such as '*66' or 'Env33'. Pages without digits sort last."""
+    match = re.search(r"\d+", str(page))
+    return (0, int(match.group()), str(page)) if match else (1, 0, str(page))
+
+
+def _majority_page(pages: pd.Series, scores: pd.Series = None):
+    """Most frequent page. Ties are broken by the highest retrieval score if
+    `scores` (aligned with `pages`) is given, otherwise by the lowest page
+    number, so the result does not depend on row order."""
+    counts = pages.value_counts()
+    tied = counts[counts == counts.max()].index
+    if scores is not None:
+        return scores.groupby(pages).mean()[tied].idxmax()
+    return min(tied, key=_page_sort_key)
 
 
 def handle_duplicates_in_ground_truth(
@@ -67,7 +86,7 @@ def identify_duplicates_in_ground_truth(
         df
         .dropna(subset=[page_col]) # only consider rows with extractions
         .groupby(report_name_col)[page_col]
-        .agg(lambda s: s.value_counts().idxmax()) # mode
+        .agg(_majority_page)
         .to_dict()
     )
     df_duplicates = _apply_prioritization_rules_for_ground_truth(
@@ -225,13 +244,13 @@ def identify_duplicates_in_output(df: pd.DataFrame,
         non_unique_rows["duplicate_flag"] = True
 
         # Majority page per report
-        majority_page_per_report = (
-            non_na_rows
+        # (ties: highest retrieval score)
+        majority_page_per_report = {
+            report: _majority_page(g[col_names[3]], g["page_retrieval_scores"])
+            for report, g in non_na_rows
             .dropna(subset=[col_names[3]])  # only consider rows with extractions
-            .groupby(report_col)[col_names[3]]
-            .agg(lambda s: s.value_counts().idxmax())  # mode
-            .to_dict()
-        )
+            .groupby(report_col)
+        }
 
         prioritized_non_unique_rows = _apply_prioritization_rules_for_output(
             non_unique_rows, col_names, preferred_unit, majority_page_per_report)

@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(.venv/bin/python -c \"import litellm\")",
+      "Bash(co2_info_extraction/bin/python -c \"import litellm\")",
+      "Bash(co2_info_extraction/bin/pip show *)",
+      "Bash(.venv/bin/python -c \"import climatextract; from climatextract.pipeline import FileConfig, ValueRetrieverPipeline, save_results; print\\('ok'\\)\")",
+      "Bash(xargs -I{} sh -c 'echo ==={}===; cat {}')",
+      "Bash(python3 -c ' *)",
+      "Bash(.venv/bin/python3)",
+      "Bash(awk '{print length, $0}')",
+      "Bash(.venv/bin/python3 \"/private/tmp/claude-501/-Users-annasteinberg-Documents-UNI-PhD-gist-climatextract/5095d85b-e00a-475e-910b-b29fa7ead496/scratchpad/test_gpt_oss_reasoning.py\")",
+      "Bash(.venv/bin/python3 -c ' *)",
+      "Read(//Users/annasteinberg/Documents/UNI/PhD/**)",
+      "Read(//Users/annasteinberg/Documents/UNI/PhD/gist/**)",
+      "Bash(find \"/Users/annasteinberg/Documents/UNI/PhD/gist/GIST_Unexpected_Results_paper\" -iname \"*.tex\" 2>/dev/null)",
+      "Read(//Users/annasteinberg/Documents/UNI/PhD/gist/GIST_Unexpected_Results_paper/**)",
+      "Bash(cd \"/Users/annasteinberg/Documents/UNI/PhD/gist/GIST_Unexpected_Results_paper\" && grep -rn \"model-experiments\\\\|85.8\\\\|27.1\\\\|25.3\\\\|gpt-oss\" latex/*.tex 2>/dev/null)",
+      "Bash(cd \"/Users/annasteinberg/Documents/UNI/PhD/gist/GIST_Unexpected_Results_paper\" && grep -rn \"label{sec:model-experiments}\\\\|formatting\" latex/*.tex 2>/dev/null)",
+      "Bash(find \"/Users/annasteinberg/Documents/UNI/PhD/gist/error_analysis\" \"/Users/annasteinberg/Documents/UNI/PhD/gist/error-patterns\" -maxdepth 3 2>/dev/null | head -60)",
+      "Read(//Users/annasteinberg/Documents/UNI/PhD/gist/error_analysis/**)"
+    ]
+  }
+}
