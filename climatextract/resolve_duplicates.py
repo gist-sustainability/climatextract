@@ -88,6 +88,8 @@ def _apply_prioritization_rules_for_ground_truth(df: pd.DataFrame,
     1. Keep first occurrence of identical entries (identical = same value and unit on same page).
     2. Keep entry with preferred unit.
     3. Keep the entry from the page with the most matches (majority page).
+       Skipped if the majority page is not among the group's pages; the first
+       row is kept instead so the scope-year is not dropped from the gold.
 
     Parameters:
         df (pd.DataFrame): Duplicate rows to resolve.
@@ -112,7 +114,12 @@ def _apply_prioritization_rules_for_ground_truth(df: pd.DataFrame,
             # if there are multiple modes, take the first one
             mode_page = majority_page_per_report.get(group[report_name_col].iloc[0], None)
             if mode_page is not None:
-                return group[group[page_col] == mode_page]
+                on_majority_page = group[group[page_col] == mode_page]
+                if not on_majority_page.empty:
+                    return on_majority_page
+                # Majority page not in this group: filtering would drop the
+                # scope-year entirely, so keep the first row instead.
+                return group.iloc[[0]]
         return group
 
     # Step 1: Drop identical entries
@@ -312,7 +319,8 @@ def _apply_prioritization_rules_for_output(df: pd.DataFrame,
     Apply prioritization rules to deduplicate entries:
     1. Keep first occurrence of identical entries (identical = same value and unit on same page).
     2. Keep entry with preferred unit.
-    3. Keep the entry of the page from the majority page
+    3. Keep the entry of the page from the majority page (skipped if the
+       majority page is not in the group; rule 4 then picks one)
     """
     group_cols, unit_col = col_names[:3], col_names[-1]
     df = df.copy()
@@ -345,6 +353,10 @@ def _apply_prioritization_rules_for_output(df: pd.DataFrame,
         if not mode_page is None and before > 1:
             filtered = group[group['page_number_used_by_llm']
                              == mode_page].copy()
+            # Majority page not in this group: skip rule 3 (it would drop the
+            # scope-year entirely) and let rule 4 pick one row.
+            if filtered.empty:
+                return group
             if len(filtered) < before:
                 filtered['dupl_reason'] = 3
             return filtered
