@@ -33,7 +33,7 @@ Subclasses must implement:
 | `get_model_dict()` | Returns a dict describing the model (must include a `"model"` key — used for logging and `repr`). |
 | `get_max_concurrent_calls()` | Returns the max number of parallel calls the wrapper's semaphore should allow (used with the async method mentioned before). |
 
-The returned `response` should be shaped like an OpenAI chat completion — specifically, `response.choices[0].message.content` (for the output text), `response.choices[0].logprobs` (optional), and `response.usage.prompt_tokens` / `response.usage.completion_tokens`. LiteLLM's `ModelResponse` already matches this shape, as do OpenAI SDK responses.
+The returned `response` should be shaped like an OpenAI chat completion — specifically, `response.choices[0].message.content` (for the output text), `response.choices[0].logprobs` (optional), and `response.usage.prompt_tokens` / `response.usage.completion_tokens` / `response.usage.completion_tokens_details.reasoning_tokens`. The optional reasoning tokens must be a subset of completion_tokens (as in the OpenAI API and in LiteLLM responses) and are recorded as zero if the response doesn’t include them. LiteLLM's `ModelResponse` already matches this shape, as do OpenAI SDK responses.
 
 ### `EmbeddingModelHandler(ABC)`
 
