@@ -61,6 +61,6 @@ pd.set_option('future.no_silent_downcasting', True)
 
 from climatextract.main import extract, extract_and_evaluate
 
-__version__ = "0.3.3"
+__version__ = "0.3.4"
 __all__ = ["extract", "extract_and_evaluate"]
 

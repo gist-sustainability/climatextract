@@ -1,10 +1,29 @@
 """
 Module to identify and resolve duplicates in the extracted data and the ground truth.
 """
-import logging
+import re
 from typing import List
 
+import numpy as np
 import pandas as pd
+
+
+def _page_sort_key(page) -> tuple:
+    """Sort key ordering pages numerically ('9' < '10'), tolerating labels
+    such as '*66' or 'Env33'. Pages without digits sort last."""
+    match = re.search(r"\d+", str(page))
+    return (0, int(match.group()), str(page)) if match else (1, 0, str(page))
+
+
+def _majority_page(pages: pd.Series, scores: pd.Series = None):
+    """Most frequent page. Ties are broken by the highest retrieval score if
+    `scores` (aligned with `pages`) is given, otherwise by the lowest page
+    number, so the result does not depend on row order."""
+    counts = pages.value_counts()
+    tied = counts[counts == counts.max()].index
+    if scores is not None:
+        return scores.groupby(pages).mean()[tied].idxmax()
+    return min(tied, key=_page_sort_key)
 
 
 def handle_duplicates_in_ground_truth(
@@ -68,7 +87,7 @@ def identify_duplicates_in_ground_truth(
         df
         .dropna(subset=[page_col]) # only consider rows with extractions
         .groupby(report_name_col)[page_col]
-        .agg(lambda s: s.value_counts().idxmax()) # mode
+        .agg(_majority_page)
         .to_dict()
     )
     df_duplicates = _apply_prioritization_rules_for_ground_truth(
@@ -89,6 +108,8 @@ def _apply_prioritization_rules_for_ground_truth(df: pd.DataFrame,
     1. Keep first occurrence of identical entries (identical = same value and unit on same page).
     2. Keep entry with preferred unit.
     3. Keep the entry from the page with the most matches (majority page).
+       Skipped if the majority page is not among the group's pages; the first
+       row is kept instead so the scope-year is not dropped from the gold.
 
     Parameters:
         df (pd.DataFrame): Duplicate rows to resolve.
@@ -113,7 +134,12 @@ def _apply_prioritization_rules_for_ground_truth(df: pd.DataFrame,
             # if there are multiple modes, take the first one
             mode_page = majority_page_per_report.get(group[report_name_col].iloc[0], None)
             if mode_page is not None:
-                return group[group[page_col] == mode_page]
+                on_majority_page = group[group[page_col] == mode_page]
+                if not on_majority_page.empty:
+                    return on_majority_page
+                # Majority page not in this group: filtering would drop the
+                # scope-year entirely, so keep the first row instead.
+                return group.iloc[[0]]
         return group
 
     # Step 1: Drop identical entries
@@ -183,6 +209,10 @@ def identify_duplicates_in_output(df: pd.DataFrame,
     """
     report_col, scope_col, year_col, _, value_col, _ = col_names
 
+    # Assign a row_id, so selected rows and flags are matched by id 
+    # instead of by content (which would match every identical copy of a row).
+    df = df.assign(_row_id=np.arange(len(df)))
+
     # Step 1: Mark all-NA reports
     df["all_na"] = df.groupby(report_col)[value_col].transform(
         lambda x: x.isna().all())
@@ -219,13 +249,13 @@ def identify_duplicates_in_output(df: pd.DataFrame,
         non_unique_rows["duplicate_flag"] = True
 
         # Majority page per report
-        majority_page_per_report = (
-            non_na_rows
+        # (ties: highest retrieval score)
+        majority_page_per_report = {
+            report: _majority_page(g[col_names[3]], g["page_retrieval_scores"])
+            for report, g in non_na_rows
             .dropna(subset=[col_names[3]])  # only consider rows with extractions
-            .groupby(report_col)[col_names[3]]
-            .agg(lambda s: s.value_counts().idxmax())  # mode
-            .to_dict()
-        )
+            .groupby(report_col)
+        }
 
         prioritized_non_unique_rows = _apply_prioritization_rules_for_output(
             non_unique_rows, col_names, preferred_unit, majority_page_per_report)
@@ -234,8 +264,8 @@ def identify_duplicates_in_output(df: pd.DataFrame,
         prioritized_non_unique_rows["select_flag"] = True
         marked_non_unique_rows = non_unique_rows.merge(
             prioritized_non_unique_rows[[
-                *col_names, "select_flag", "dupl_reason"]],
-            on=col_names,
+                "_row_id", "select_flag", "dupl_reason"]],
+            on="_row_id",
             how="left"
         )
         marked_non_unique_rows["select_flag"] = marked_non_unique_rows["select_flag"].fillna(
@@ -261,13 +291,11 @@ def identify_duplicates_in_output(df: pd.DataFrame,
     df_filtered = pd.concat([combined_rows, all_na_reports])
     df_filtered["duplicate_flag"] = df_filtered["duplicate_flag"].fillna(False).infer_objects(copy=False)
 
-    # Mark filtered rows in original dataframe
-    # Drop unnecessary columns before merging
-    df_merge = df_filtered.drop(columns=["text_response_from_llm",
-                                         "page_numbers_tried_by_llm"], axis=1)
-    col_for_merge = [col for col in df.columns if col not in ["text_response_from_llm",
-                                                              "page_numbers_tried_by_llm"]]
-    df = df.merge(df_merge, how="left", on=col_for_merge, indicator=True)
+    # Copy the flags of the filtered rows back to the original dataframe
+    new_cols = [col for col in df_filtered.columns if col not in df.columns]
+    df = df.merge(df_filtered[["_row_id", *new_cols]], how="left", on="_row_id",
+                  indicator=True, validate="one_to_one")
+    df = df.drop(columns="_row_id")
 
     return df
 
@@ -303,7 +331,8 @@ def _apply_prioritization_rules_for_output(df: pd.DataFrame,
     Apply prioritization rules to deduplicate entries:
     1. Keep first occurrence of identical entries (identical = same value and unit on same page).
     2. Keep entry with preferred unit.
-    3. Keep the entry of the page from the majority page
+    3. Keep the entry of the page from the majority page (skipped if the
+       majority page is not in the group; rule 4 then picks one)
     """
     group_cols, unit_col = col_names[:3], col_names[-1]
     df = df.copy()
@@ -336,8 +365,26 @@ def _apply_prioritization_rules_for_output(df: pd.DataFrame,
         if not mode_page is None and before > 1:
             filtered = group[group['page_number_used_by_llm']
                              == mode_page].copy()
+            # Majority page not in this group: skip rule 3 (it would drop the
+            # scope-year entirely) and let rule 4 pick one row.
+            if filtered.empty:
+                return group
             if len(filtered) < before:
                 filtered['dupl_reason'] = 3
+            return filtered
+        return group
+
+    def _filter_by_keep_first(group: pd.DataFrame) -> pd.DataFrame:
+        """
+        Final fallback: rules 1-3 can leave a genuine tie (same page, same
+        unit, different value) with no principled way to prefer one value
+        over the other. Deterministically keep the first row so every
+        group resolves to exactly one entry and downstream wide-format /
+        evaluation code always has a single prediction per group.
+        """
+        if len(group) > 1:
+            filtered = group.iloc[[0]].copy()
+            filtered['dupl_reason'] = 4
             return filtered
         return group
 
@@ -346,14 +393,12 @@ def _apply_prioritization_rules_for_output(df: pd.DataFrame,
         lambda g: _filter_by_preferred_unit(g, preferred_unit)).reset_index(drop=True)
 
     # Rule 3: Keep entry from page with majority page
-    prioritized_rows = preferred_unit_filtered.groupby(group_cols, group_keys=False).apply(
+    majority_page_filtered = preferred_unit_filtered.groupby(group_cols, group_keys=False).apply(
         lambda g: _filter_by_majority_page(g, majority_page_per_report)).reset_index(drop=True)
 
-    # Check if any group has more than one row left
-    duplicates_check = prioritized_rows.groupby(group_cols).size()
-    if any(duplicates_check > 1):
-        logging.getLogger(__name__).warning(
-            "Some groups still have multiple rows after prioritization.")
+    # Rule 4: Break any remaining tie by keeping the first row
+    prioritized_rows = majority_page_filtered.groupby(group_cols, group_keys=False).apply(
+        _filter_by_keep_first).reset_index(drop=True)
 
     return prioritized_rows
 
