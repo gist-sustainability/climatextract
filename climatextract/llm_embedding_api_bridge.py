@@ -132,7 +132,7 @@ class EmbeddingModelHandler(ABC):
             return
         print(f"Your embedding model returns a vector of length {len(response.data[0]['embedding'])} for each input text.")
         print(f"LiteLLM fetches the community-maintained model cost map at import time from https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json ")
-        print(f"Incured costs from this call: ${float(costs):.10f} (according to LiteLLM's cost map.)")
+        print(f"Incured costs from this call: ${float(costs):.10f} (according to LiteLLM's cost map.)\n")
 
 class EmbeddingModel:
     """Package-side embedding wrapper.
@@ -266,7 +266,7 @@ class LlmHandler(ABC):
             print("No response received. Check your connection and model configuration.")
             return
         print(f"LiteLLM fetches the community-maintained model cost map at import time from https://github.com/BerriAI/litellm/blob/main/model_prices_and_context_window.json ")
-        print(f"Incured costs from this call: ${float(costs):.10f} (according to LiteLLM's cost map.)")
+        print(f"Incured costs from this call: ${float(costs):.10f} (according to LiteLLM's cost map.)\n")
 
 
 class Llm:
