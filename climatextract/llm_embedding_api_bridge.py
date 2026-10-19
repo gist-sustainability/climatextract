@@ -38,6 +38,7 @@ class UsageCounter:
     def reset_counts(self):
         self.prompt_llm_token_count = 0
         self.completion_llm_token_count = 0
+        self.reasoning_llm_token_count = 0
         self.total_llm_token_count = 0
         self.total_embedding_token_count = 0
         self.total_cost = 0.0
@@ -47,6 +48,7 @@ class UsageCounter:
             "embedding_tokens": self.total_embedding_token_count,
             "llm_prompt_tokens": self.prompt_llm_token_count,
             "llm_completion_tokens": self.completion_llm_token_count,
+            "llm_reasoning_tokens": self.reasoning_llm_token_count,
             "total_llm_token_count": self.total_llm_token_count,
             "total_cost_in_dollar": self.total_cost,
         }
@@ -58,6 +60,10 @@ class UsageCounter:
     def add_completion_tokens(self, count: int):
         self.completion_llm_token_count += count
         self.total_llm_token_count += count
+
+    def add_reasoning_tokens(self, count: int):
+        """Reasoning tokens are already part of completion tokens, so the total is unchanged."""
+        self.reasoning_llm_token_count += count
 
     def add_embedding_tokens(self, count: int):
         self.total_embedding_token_count += count
@@ -313,6 +319,7 @@ class Llm:
             "embedding_tokens": usage["embedding_tokens"],
             "llm_prompt_tokens": usage["llm_prompt_tokens"],
             "llm_completion_tokens": usage["llm_completion_tokens"],
+            "llm_reasoning_tokens": usage["llm_reasoning_tokens"],
             "total_llm_token_count": usage["total_llm_token_count"],
             "total_llm_costs_in_dollar": usage["total_cost_in_dollar"],
         }
@@ -401,6 +408,8 @@ class Llm:
             usage = response.usage
             self.usage_counter.add_prompt_tokens(int(getattr(usage, "prompt_tokens", 0)))
             self.usage_counter.add_completion_tokens(int(getattr(usage, "completion_tokens", 0)))
+            details = getattr(usage, "completion_tokens_details", None)
+            self.usage_counter.add_reasoning_tokens(int(getattr(details, "reasoning_tokens", None) or 0))
         except AttributeError:
             pass
         self.usage_counter.add_cost(cost)
