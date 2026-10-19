@@ -8,10 +8,9 @@
 # =============================================================================
 [input]
 # Can be a list of specific files:
-# filename_list = ["data/pdfs/test_report/report.pdf"]
-#filename_list = ["data/pdfs/sample_160/aixtron_2020_report.pdf", "data/pdfs/sample_160/uniper_2019_report.pdf"]
+filename_list = ["data/pdfs/test_report/report.pdf"]
 # Or a directory path (processes all PDFs in it):
-filename_list = "./data/pdfs/sample_160"
+#    filename_list = "./data/pdfs/sample_160"
 
 # =============================================================================
 # MODELS - LLM and embedding model selection
@@ -29,7 +28,7 @@ filename_list = "./data/pdfs/sample_160"
 # - o3-mini
 # - DeepSeek-V4-Flash-0731
 # - DeepSeek-V4-Pro
-llm_model = "gpt-6-luna"
+llm_model = "gpt-5-nano"
 
 # Many more models are available on OpenRouter.com (llm = OpenRouterLlmHandler(), requires OPENROUTER_API_KEY)
 # llm_model = "deepseek/deepseek-v4-flash-0731:floor"
