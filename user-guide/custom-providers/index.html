@@ -1303,7 +1303,7 @@
 </tr>
 </tbody>
 </table>
-<p>The returned <code>response</code> should be shaped like an OpenAI chat completion — specifically, <code>response.choices[0].message.content</code> (for the output text), <code>response.choices[0].logprobs</code> (optional), and <code>response.usage.prompt_tokens</code> / <code>response.usage.completion_tokens</code>. LiteLLM's <code>ModelResponse</code> already matches this shape, as do OpenAI SDK responses.</p>
+<p>The returned <code>response</code> should be shaped like an OpenAI chat completion — specifically, <code>response.choices[0].message.content</code> (for the output text), <code>response.choices[0].logprobs</code> (optional), and <code>response.usage.prompt_tokens</code> / <code>response.usage.completion_tokens</code> / <code>response.usage.completion_tokens_details.reasoning_tokens</code>. The optional reasoning tokens must be a subset of completion_tokens (as in the OpenAI API and in LiteLLM responses) and are recorded as zero if the response doesn’t include them. LiteLLM's <code>ModelResponse</code> already matches this shape, as do OpenAI SDK responses.</p>
 <h3 id="embeddingmodelhandlerabc"><code>EmbeddingModelHandler(ABC)</code></h3>
 <p>Subclasses must implement:</p>
 <table>
