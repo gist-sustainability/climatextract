@@ -22,6 +22,9 @@ from typing import Any, Optional, Tuple
 from litellm import EmbeddingResponse, ModelResponse
 
 logger = logging.getLogger(__name__)
+for _logger_name in ("LiteLLM", "litellm", "litellm.utils", "litellm.main",
+                     "litellm.cost_calculator", "litellm.proxy"):
+    logging.getLogger(_logger_name).setLevel(logging.ERROR)
 
 
 class UsageCounter:

@@ -1,7 +1,7 @@
 """LiteLLM Gateway adapter for models served through a self-hosted LiteLLM proxy (OpenAI-compatible API).
 
 On a self-hosted platform, create keys as follows. Insert your own <hostname>, <management-or-full-access-key> and the <unique-key-name> of the new key:
-curl -s -X POST https://<hostname>/key/generate -H "Authorization: Bearer <management-or-full-access-key>" -H "Content-Type: application/json" -d '{"key_alias": "<unique-key-name", "max_budget": 1, "duration": "7mo", "models": ["text-embedding-ada-002", "gpt-6-luna", "gpt-6-sol", "DeepSeek-V4-Flash-0731", "gpt-oss-120b"], "allowed_routes": ["/chat/completions", "/embeddings", "/v1/models", "/key/info"]}' | jq -r | jq '{key_alias, key}'
+curl -s -X POST https://<hostname>/key/generate -H "Authorization: Bearer <management-or-full-access-key>" -H "Content-Type: application/json" -d '{"key_alias": "<unique-key-name", "max_budget": 1, "duration": "7mo", "models": ["text-embedding-ada-002", "gpt-6-luna", "gpt-6-sol", "DeepSeek-V4-Flash-0731", "gpt-oss-120b"], "allowed_routes": ["/chat/completions", "/embeddings", "/v1/models", "/key/info"]}' | jq '{key_alias, key}'
 
 Available model names are set by the gateway. It uses a community-maintained cost map.
 

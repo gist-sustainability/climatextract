@@ -125,10 +125,10 @@ def custom_switch(row: pd.Series) -> str:
         return 'l_6 correct result - No CO2 emissions found'
     elif (row[('value_man', 'count')] == 0) & (row[('extracted_value_from_llm', 'count')] > 0):
         # paper: LLM extracts information from wrong page
-        return 'l_2_1 LLM error - LLM extracts >= 1 wrong values, truth - no ground truth available'
+        return 'l_2_1 LLM error - LLM extracts greater than or equal to 1 wrong values. truth - no ground truth available'
     elif (row[('extracted_value_from_llm', 'count')] > 0) & (not row[('page_match', 'any_match')]):
         # paper: LLM extracts information from wrong page
-        return 'l_2_2 LLM error - LLM extracts >= 1 wrong values, truth - ground truth on different page'
+        return 'l_2_2 LLM error - LLM extracts greater than or equal to 1 wrong values. truth - ground truth on different page'
     elif not row[('value_match', 'any_match')]:
         return 'l_3 LLM error - LLM fails to find ANY non-NA correct values'
     elif not row[('value_match', 'complete_match')]:
