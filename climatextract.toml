@@ -19,16 +19,13 @@ filename_list = ["data/pdfs/test_report/report.pdf"]
 # Supported LLM deployment names on Azure AI Foundry (llm = AzureAIFoundryLlmHandler()):
 # - gpt-4.1
 # - gpt-4o
-# - gpt-4o-mini
 # - gpt-5-nano
 # - gpt-5-chat
 # - gpt-5.2-chat
 # - gpt-oss-120b
 # - gpt-6-luna
 # - Llama-4-Maverick-17B-128E-Instruct-FP8
-# - o3-mini
 # - DeepSeek-V4-Flash-0731
-# - DeepSeek-V4-Pro
 llm_model = "gpt-6-luna"
 
 # Many more models are available on OpenRouter.com (llm = OpenRouterLlmHandler(), requires OPENROUTER_API_KEY)
@@ -41,14 +38,12 @@ llm_model = "gpt-6-luna"
 emb_model = "text-embedding-ada-002"
 
 # Maximum number of concurrent LLM API calls.
-# Adjust based on your Azure/OpenAI rate limits and pricing tier.
+# Adjust based on your Azure/OpenAI rate limits and pricing tier and selected reasoning effort.
 # Suggested values per model:
 #   - gpt-4o, gpt-4o-mini, gpt-oss-120b: 25
 #   - gpt-5-chat, gpt-5.2-chat: 8
-#   - gpt-4.1: 4
-#   - Llama-4-Maverick-17B-128E-Instruct-FP8: 25
-#   - o3-mini: 2
 #   - gpt-5-nano: 100
+#   - DeepSeek-V4-Flash-0731: 20-40
 # Higher values = faster processing, but may hit rate limits.
 max_parallel_llm_prompts_running = 100
 
