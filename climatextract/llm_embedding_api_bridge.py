@@ -412,6 +412,7 @@ class Llm:
             self.usage_counter.add_prompt_tokens(int(getattr(usage, "prompt_tokens", 0)))
             self.usage_counter.add_completion_tokens(int(getattr(usage, "completion_tokens", 0)))
             details = getattr(usage, "completion_tokens_details", None)
+            # Azure does not return reasoning token counts forDeepSeek or GPT-OSS - one would need to calculate them.
             self.usage_counter.add_reasoning_tokens(int(getattr(details, "reasoning_tokens", None) or 0))
         except AttributeError:
             pass

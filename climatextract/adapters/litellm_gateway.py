@@ -26,7 +26,7 @@ from climatextract.llm_embedding_api_bridge import (
 # on gpt-5.2, or ``logprobs`` on reasoning models). Recommended by
 # LiteLLM for cross-provider code.
 litellm.drop_params = True
-
+_gateway_awake = False
 
 def _api_base() -> str:
     base = os.getenv("LITELLM_GATEWAY_API_BASE")
@@ -37,6 +37,32 @@ def _api_base() -> str:
 
 def _api_key() -> Optional[str]:
     return os.getenv("LITELLM_GATEWAY_API_KEY") or os.getenv("API_KEY")
+
+
+def _wake_gateway() -> None:
+    """Wake a gateway that scales to zero before the run sends its first
+    batch of parallel requests.
+
+    Raises:
+        RuntimeError: if the gateway is unreachable, times out, or rejects the
+            key (e.g. 422 for a key over budget), so the run stops before it
+            starts sending requests that would all fail.
+    """
+    global _gateway_awake
+    if _gateway_awake:
+        return
+    try:
+        with httpx.Client(timeout=180.0) as client:
+            r = client.get(f"{_api_base()}/v1/models",
+                           headers={"Authorization": f"Bearer {_api_key()}"})
+            r.raise_for_status()
+    except httpx.HTTPStatusError as e:
+        raise RuntimeError(
+            f"LiteLLM gateway rejected the request ({e.response.status_code}): "
+            f"{e.response.text[:300]}") from e
+    except httpx.HTTPError as e:
+        raise RuntimeError(f"Could not reach the LiteLLM gateway: {e}") from e
+    _gateway_awake = True
 
 
 def _common_model_dict(model_name: str) -> dict:
@@ -92,6 +118,7 @@ class LiteLLMGatewayLlmHandler(LlmHandler):
             self.model_dict["reasoning_effort"] = params.reasoning_effort
         self.model_dict.update(extra_params)
         self.max_concurrent_calls = params.max_parallel_llm_prompts_running or 1
+        _wake_gateway()
 
     def get_model_dict(self) -> dict:
         return self.model_dict
@@ -127,6 +154,7 @@ class LiteLLMGatewayEmbeddingHandler(EmbeddingModelHandler):
         self.model_name = params.emb_model or self.MODEL
         self.model_dict = _common_model_dict(self.model_name)
         self.max_concurrent_calls = params.max_parallel_embedding_calls or 1
+        _wake_gateway()
 
     def get_model_dict(self) -> dict:
         return self.model_dict
