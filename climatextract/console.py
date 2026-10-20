@@ -1,6 +1,7 @@
 """Rich-based console output module for ClimXtract CLI."""
 
 import logging
+import os
 import warnings
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
@@ -320,10 +321,69 @@ def init_console(verbose: bool = False) -> Console:
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
     root_logger.handlers.clear()
-    root_logger.addHandler(RichHandler(
+    rich_handler = RichHandler(
         console=_console._console,
         show_path=False,
         show_time=False,
-    ))
+    )
+    # start_http_error_log() lowers the openai log level for the log file;
+    # keep its messages out of the terminal unless they are errors.
+    rich_handler.addFilter(
+        lambda record: record.levelno >= logging.ERROR or not record.name.startswith("openai"))
+    root_logger.addHandler(rich_handler)
 
     return _console
+
+
+# ---------------------------------------------------------------------------
+# HTTP error log: retries (with their status code) and connection errors per run
+# ---------------------------------------------------------------------------
+
+HTTP_ERROR_LOG_NAME = "http_errors.log"
+# OpenAI SDK messages (it does the retries for LiteLLM's OpenAI-compatible
+# providers, with the status code or exception as the reason). Its other
+# DEBUG messages are left out: "Request options" holds the full prompt.
+_OPENAI_MESSAGES = ("Retrying request to", "Retrying due to status code",
+                    "Encountered a timeout exception", "Encountered Exception")
+
+
+def _is_http_error_record(record: logging.LogRecord) -> bool:
+    """Keep only the records that show a failed or retried request."""
+    if record.name.startswith("openai"):
+        # Check the template, not getMessage(): formatting every DEBUG
+        # record would render the full request of every call.
+        return isinstance(record.msg, str) and record.msg.startswith(_OPENAI_MESSAGES)
+    # Our own warnings, e.g. "LLM call failed", "Error while processing LLM output"
+    return record.name.startswith("climatextract") and record.levelno >= logging.WARNING
+
+
+class _OneLineExceptionFormatter(logging.Formatter):
+    """Exceptions as one line (type and message, plus its cause) instead of a traceback."""
+
+    def formatException(self, exc_info) -> str:
+        exc = exc_info[1]
+        parts = []
+        while exc is not None and len(parts) < 3:
+            parts.append(f"{type(exc).__name__}: {exc}")
+            exc = exc.__cause__ or exc.__context__
+        return "    " + " <- ".join(parts)
+
+
+def start_http_error_log(directory: str) -> logging.Handler:
+    """Write retries and connection errors of this run to
+    ``<directory>/http_errors.log``. The terminal output is unchanged.
+    Call ``stop_http_error_log`` with the returned handler when the run ends."""
+    handler = logging.FileHandler(os.path.join(directory, HTTP_ERROR_LOG_NAME), encoding="utf-8", delay=True)
+    handler.setLevel(logging.DEBUG)
+    handler.addFilter(_is_http_error_record)
+    handler.setFormatter(_OneLineExceptionFormatter("%(asctime)s %(levelname)-7s %(name)s: %(message)s"))
+    logging.getLogger("openai").setLevel(logging.DEBUG)
+    logging.getLogger().addHandler(handler)
+    return handler
+
+
+def stop_http_error_log(handler: logging.Handler) -> None:
+    """Detach the run's HTTP error log and restore the quiet openai log level."""
+    logging.getLogger().removeHandler(handler)
+    handler.close()
+    logging.getLogger("openai").setLevel(logging.ERROR)

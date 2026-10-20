@@ -34,7 +34,7 @@ from climatextract.evaluator import evaluate
 import climatextract.semantic_search as semantic_search
 import climatextract.prompts_with_prompt_parsers as prompts_with_prompt_parsers
 from climatextract.data_lake_manager import DataLakeManager
-from climatextract.console import init_console, get_console
+from climatextract.console import init_console, get_console, start_http_error_log, stop_http_error_log
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -413,7 +413,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
 
     # Start extraction progress
     console.start_extraction_progress(len(pdf_files))
-
+    http_error_log = start_http_error_log(path_to_results)
     try:
         results = asyncio.run(
             retriever_pipeline.retrieve_values_for_doc_list(
@@ -422,6 +422,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
             )
         )
     finally:
+        stop_http_error_log(http_error_log)
         console.stop_embedding_progress()
         console.stop_extraction_progress()
 
