@@ -326,64 +326,51 @@ def init_console(verbose: bool = False) -> Console:
         show_path=False,
         show_time=False,
     )
-    # start_http_error_log() lowers the openai log level for the log file;
+    # start_http_error_log() lowers the httpx log level for the log file;
     # keep its messages out of the terminal unless they are errors.
     rich_handler.addFilter(
-        lambda record: record.levelno >= logging.ERROR or not record.name.startswith("openai"))
+        lambda record: record.levelno >= logging.ERROR or not record.name.startswith("httpx"))
     root_logger.addHandler(rich_handler)
 
     return _console
 
 
 # ---------------------------------------------------------------------------
-# HTTP error log: retries (with their status code) and connection errors per run
+# HTTP error log: every 4xx/5xx response and failed calls per run
 # ---------------------------------------------------------------------------
 
-HTTP_ERROR_LOG_NAME = "http_errors.log"
-# OpenAI SDK messages (it does the retries for LiteLLM's OpenAI-compatible
-# providers, with the status code or exception as the reason). Its other
-# DEBUG messages are left out: "Request options" holds the full prompt.
-_OPENAI_MESSAGES = ("Retrying request to", "Retrying due to status code",
-                    "Encountered a timeout exception", "Encountered Exception")
-
-
 def _is_http_error_record(record: logging.LogRecord) -> bool:
-    """Keep only the records that show a failed or retried request."""
-    if record.name.startswith("openai"):
-        # Check the template, not getMessage(): formatting every DEBUG
-        # record would render the full request of every call.
-        return isinstance(record.msg, str) and record.msg.startswith(_OPENAI_MESSAGES)
-    # Our own warnings, e.g. "LLM call failed", "Error while processing LLM output"
+    """Keep httpx's line per 4xx/5xx response and our own warnings.
+
+    httpx logs one INFO line per response ("HTTP Request: POST <url>
+    \"HTTP/1.1 503 Service Unavailable\"").
+
+    Requests without a response (timeouts, connection resets) have no such line;
+    climatextract logs a warning only when the call has failed after all retries."""
+    if record.name.startswith("httpx"):
+        # args are (method, url, http_version, status_code, reason_phrase);
+        # keep the record if httpx ever changes that.
+        try:
+            return record.args[3] >= 400
+        except (TypeError, IndexError, KeyError):
+            return True
     return record.name.startswith("climatextract") and record.levelno >= logging.WARNING
 
 
-class _OneLineExceptionFormatter(logging.Formatter):
-    """Exceptions as one line (type and message, plus its cause) instead of a traceback."""
-
-    def formatException(self, exc_info) -> str:
-        exc = exc_info[1]
-        parts = []
-        while exc is not None and len(parts) < 3:
-            parts.append(f"{type(exc).__name__}: {exc}")
-            exc = exc.__cause__ or exc.__context__
-        return "    " + " <- ".join(parts)
-
-
 def start_http_error_log(directory: str) -> logging.Handler:
-    """Write retries and connection errors of this run to
+    """Write the 4xx/5xx responses and failed calls of this run to
     ``<directory>/http_errors.log``. The terminal output is unchanged.
     Call ``stop_http_error_log`` with the returned handler when the run ends."""
-    handler = logging.FileHandler(os.path.join(directory, HTTP_ERROR_LOG_NAME), encoding="utf-8", delay=True)
-    handler.setLevel(logging.DEBUG)
+    handler = logging.FileHandler(os.path.join(directory, "http_errors.log"), encoding="utf-8", delay=True)
     handler.addFilter(_is_http_error_record)
-    handler.setFormatter(_OneLineExceptionFormatter("%(asctime)s %(levelname)-7s %(name)s: %(message)s"))
-    logging.getLogger("openai").setLevel(logging.DEBUG)
+    handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)-7s %(name)s: %(message)s"))
+    logging.getLogger("httpx").setLevel(logging.INFO)
     logging.getLogger().addHandler(handler)
     return handler
 
 
 def stop_http_error_log(handler: logging.Handler) -> None:
-    """Detach the run's HTTP error log and restore the quiet openai log level."""
+    """Detach the run's HTTP error log and restore the quiet httpx log level."""
     logging.getLogger().removeHandler(handler)
     handler.close()
-    logging.getLogger("openai").setLevel(logging.ERROR)
+    logging.getLogger("httpx").setLevel(logging.ERROR)
