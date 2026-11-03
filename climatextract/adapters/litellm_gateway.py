@@ -70,7 +70,8 @@ def _common_model_dict(model_name: str) -> dict:
     api_key = _api_key()
     if api_key:
         d["api_key"] = api_key
-    d["num_retries"] = 8
+    # Passed to the openai SDK only; litellm's own retry loop stays off (num_retries would enable it).
+    d["max_retries"] = 8
     # Drop params serverside
     d["extra_body"] = {"drop_params": True}
     return d

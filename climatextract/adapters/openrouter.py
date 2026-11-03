@@ -66,6 +66,7 @@ def _common_model_dict(model_name: str) -> dict:
         d["api_key"] = api_key
     # else: LiteLLM looks up OPENROUTER_API_KEY / OR_API_KEY itself and
     # raises a clear AuthenticationError if none is set.
+    # OpenRouter doesn't go through the openai SDK; num_retries runs litellm's own retry loop.
     d["num_retries"] = 8
     return d
 
