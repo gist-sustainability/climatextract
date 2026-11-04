@@ -1,5 +1,6 @@
 """Rich-based console output module for ClimXtract CLI."""
 
+import contextvars
 import logging
 import os
 import warnings
@@ -339,6 +340,10 @@ def init_console(verbose: bool = False) -> Console:
 # HTTP error log: every 4xx/5xx response and failed calls per run
 # ---------------------------------------------------------------------------
 
+# PDF processed in the current asyncio task, set by the pipeline
+contextvars_filename = contextvars.ContextVar("context_filename", default="-")
+
+
 def _is_http_error_record(record: logging.LogRecord) -> bool:
     """Keep httpx's line per 4xx/5xx response and our own warnings.
 
@@ -347,6 +352,7 @@ def _is_http_error_record(record: logging.LogRecord) -> bool:
 
     Requests without a response (timeouts, connection resets) have no such line;
     climatextract logs a warning only when the call has failed after all retries."""
+    record.filename = os.path.basename(contextvars_filename.get())
     if record.name.startswith("httpx"):
         # args are (method, url, http_version, status_code, reason_phrase);
         # keep the record if httpx ever changes that.
@@ -363,7 +369,7 @@ def start_http_error_log(directory: str) -> logging.Handler:
     Call ``stop_http_error_log`` with the returned handler when the run ends."""
     handler = logging.FileHandler(os.path.join(directory, "http_errors.log"), encoding="utf-8", delay=True)
     handler.addFilter(_is_http_error_record)
-    handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)-7s %(name)s: %(message)s"))
+    handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)-7s [%(filename)s] %(name)s: %(message)s"))
     logging.getLogger("httpx").setLevel(logging.INFO)
     logging.getLogger().addHandler(handler)
     return handler

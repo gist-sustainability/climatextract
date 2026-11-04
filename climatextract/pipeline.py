@@ -12,6 +12,7 @@ from mlflow.entities import SpanType
 import climatextract.semantic_search as semantic_search
 import climatextract.helpers as helpers
 from climatextract.resolve_duplicates import handle_duplicates_in_output, select_duplicates_in_output
+from climatextract.console import contextvars_filename
 
 if TYPE_CHECKING:
     from climatextract.console import Console
@@ -119,6 +120,7 @@ class ValueRetrieverPipeline():
             Depending on input_mode, it also extracts tables from relevant pages and
             passes them to LLM.
         """
+        contextvars_filename.set(filename)
         doc = semantic_search.Pdfdoc(filename=filename,
                                      repository=self.embeddings_repository)
 
