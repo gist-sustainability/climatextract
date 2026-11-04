@@ -1,6 +1,8 @@
 """Rich-based console output module for ClimXtract CLI."""
 
+import contextvars
 import logging
+import os
 import warnings
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass
@@ -320,10 +322,61 @@ def init_console(verbose: bool = False) -> Console:
     root_logger = logging.getLogger()
     root_logger.setLevel(logging.INFO)
     root_logger.handlers.clear()
-    root_logger.addHandler(RichHandler(
+    rich_handler = RichHandler(
         console=_console._console,
         show_path=False,
         show_time=False,
-    ))
+    )
+    # start_http_error_log() lowers the httpx log level for the log file;
+    # keep its messages out of the terminal unless they are errors.
+    rich_handler.addFilter(
+        lambda record: record.levelno >= logging.ERROR or not record.name.startswith("httpx"))
+    root_logger.addHandler(rich_handler)
 
     return _console
+
+
+# ---------------------------------------------------------------------------
+# HTTP error log: every 4xx/5xx response and failed calls per run
+# ---------------------------------------------------------------------------
+
+# PDF processed in the current asyncio task, set by the pipeline
+contextvars_filename = contextvars.ContextVar("context_filename", default="-")
+
+
+def _is_http_error_record(record: logging.LogRecord) -> bool:
+    """Keep httpx's line per 4xx/5xx response and our own warnings.
+
+    httpx logs one INFO line per response ("HTTP Request: POST <url>
+    \"HTTP/1.1 503 Service Unavailable\"").
+
+    Requests without a response (timeouts, connection resets) have no such line;
+    climatextract logs a warning only when the call has failed after all retries."""
+    record.filename = os.path.basename(contextvars_filename.get())
+    if record.name.startswith("httpx"):
+        # args are (method, url, http_version, status_code, reason_phrase);
+        # keep the record if httpx ever changes that.
+        try:
+            return record.args[3] >= 400
+        except (TypeError, IndexError, KeyError):
+            return True
+    return record.name.startswith("climatextract") and record.levelno >= logging.WARNING
+
+
+def start_http_error_log(directory: str) -> logging.Handler:
+    """Write the 4xx/5xx responses and failed calls of this run to
+    ``<directory>/http_errors.log``. The terminal output is unchanged.
+    Call ``stop_http_error_log`` with the returned handler when the run ends."""
+    handler = logging.FileHandler(os.path.join(directory, "http_errors.log"), encoding="utf-8", delay=True)
+    handler.addFilter(_is_http_error_record)
+    handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)-7s [%(filename)s] %(name)s: %(message)s"))
+    logging.getLogger("httpx").setLevel(logging.INFO)
+    logging.getLogger().addHandler(handler)
+    return handler
+
+
+def stop_http_error_log(handler: logging.Handler) -> None:
+    """Detach the run's HTTP error log and restore the quiet httpx log level."""
+    logging.getLogger().removeHandler(handler)
+    handler.close()
+    logging.getLogger("httpx").setLevel(logging.ERROR)

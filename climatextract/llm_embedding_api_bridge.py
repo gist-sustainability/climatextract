@@ -27,6 +27,12 @@ for _logger_name in ("LiteLLM", "litellm", "litellm.utils", "litellm.main",
     logging.getLogger(_logger_name).setLevel(logging.ERROR)
 
 
+def _log_llm_call_failed(e: BaseException, duration: float) -> None:
+    """Warn about a call that failed after all retries."""
+    logger.warning("LLM call failed after %.1f s (%s, litellm status_code %s): %s",
+                   duration, type(e).__name__, getattr(e, "status_code", None), e)
+
+
 class UsageCounter:
     """Accumulates token counts and USD cost across calls.
 
@@ -340,7 +346,7 @@ class Llm:
         try:
             response, cost = self.llm_handler.get_completion_and_cost(messages)
         except Exception as e:  # broad by design — handlers raise provider-specific errors
-            logger.warning("LLM call failed: %s", e)
+            _log_llm_call_failed(e, time.perf_counter() - start)
             return {"content": "", "logprobs": None, "duration": 0.0, "cost": 0.0}, e
         duration = time.perf_counter() - start
         
@@ -371,7 +377,7 @@ class Llm:
         try:
             response, cost = await self.llm_handler.aget_completion_and_cost(messages)
         except Exception as e:  # broad by design — handlers raise provider-specific errors
-            logger.warning("LLM call failed: %s", e)
+            _log_llm_call_failed(e, time.perf_counter() - start)
             return {"content": "", "logprobs": None, "duration": 0.0, "cost": 0.0}, e
 
         duration = time.perf_counter() - start
