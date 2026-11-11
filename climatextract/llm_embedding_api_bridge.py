@@ -17,11 +17,44 @@ import logging
 import threading
 import time
 from abc import ABC, abstractmethod
-from typing import Any, Optional, Tuple
+from typing import Any, Iterator, Optional, Tuple
 
 from litellm import EmbeddingResponse, ModelResponse
+import tiktoken
 
 logger = logging.getLogger(__name__)
+_MAX_EMBEDDING_BATCH_TOKENS = 250_000
+_MAX_EMBEDDING_BATCH_INPUTS = 2_048
+
+
+def _iter_embedding_batches(texts: list[str]) -> Iterator[list[str]]:
+    """Split embedding inputs into requests below provider token and item limits."""
+    encoding = tiktoken.get_encoding("cl100k_base")
+    batch: list[str] = []
+    batch_tokens = 0
+
+    for text in texts:
+        token_count = len(encoding.encode(text))
+        if token_count > _MAX_EMBEDDING_BATCH_TOKENS:
+            raise ValueError(
+                f"Embedding input contains {token_count} tokens; "
+                f"the maximum supported batch size is "
+                f"{_MAX_EMBEDDING_BATCH_TOKENS} tokens per request."
+            )
+
+        if batch and (
+            batch_tokens + token_count > _MAX_EMBEDDING_BATCH_TOKENS
+            or len(batch) >= _MAX_EMBEDDING_BATCH_INPUTS
+        ):
+            yield batch
+            batch = []
+            batch_tokens = 0
+
+        batch.append(text)
+        batch_tokens += token_count
+
+    if batch:
+        yield batch
 for _logger_name in ("LiteLLM", "litellm", "litellm.utils", "litellm.main",
                      "litellm.cost_calculator", "litellm.proxy"):
     logging.getLogger(_logger_name).setLevel(logging.ERROR)
@@ -169,17 +202,23 @@ class EmbeddingModel:
         return self.usage_counter
 
     def get_embeddings(self, texts: list[str]) -> list[list[float]]:
-        """Sync embedding call. Returns ``list[list[float]]``."""
-        response, cost = self.embedding_handler.get_embedding_and_cost(texts)
-        self._record_usage(response, cost)
-        return self._extract_vectors(response)
+        """Sync embedding calls in bounded batches. Returns ``list[list[float]]``."""
+        vectors = []
+        for batch in _iter_embedding_batches(texts):
+            response, cost = self.embedding_handler.get_embedding_and_cost(batch)
+            self._record_usage(response, cost)
+            vectors.extend(self._extract_vectors(response))
+        return vectors
 
     async def aget_embeddings(self, texts: list[str]) -> list[list[float]]:
-        """Async embedding call with concurrency control."""
-        async with self.embedding_semaphore:
-            response, cost = await self.embedding_handler.aget_embedding_and_cost(texts)
-        self._record_usage(response, cost)
-        return self._extract_vectors(response)
+        """Async embedding calls in bounded batches with concurrency control."""
+        vectors = []
+        for batch in _iter_embedding_batches(texts):
+            async with self.embedding_semaphore:
+                response, cost = await self.embedding_handler.aget_embedding_and_cost(batch)
+            self._record_usage(response, cost)
+            vectors.extend(self._extract_vectors(response))
+        return vectors
     
     def _extract_vectors(self, response: EmbeddingResponse) -> list[list[float]]:
         """Return ``list[list[float]]`` regardless of whether items in
