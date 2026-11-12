@@ -10,6 +10,7 @@ import re
 import json
 import math
 import bisect
+from functools import lru_cache
 from itertools import accumulate
 
 import numpy as np
@@ -21,6 +22,93 @@ import pandas as pd
 _DEFAULT_UNIT_NORMALIZATION_PATH = os.path.join(
     os.path.dirname(__file__), "data", "unit_normalization_dict.csv"
 )
+_DEFAULT_UNIT_CLASSIFIER_PATH = os.path.join(
+    os.path.dirname(__file__), "data", "unit_harmonization_voting_classifier.joblib"
+)
+
+
+def _extract_quantity_keyword(text: str) -> str:
+    """Extract the quantity marker used by the unit normalization model."""
+    text = text.lower()
+    if re.search(
+        r"\b(tsd\.?|thousand|1,?000|10.?3t?|kilo|kt|tt|million kg|tausend|ktons|kiloton(ne)?s?)\b|\bkt(?=[A-Za-z])",
+        text,
+    ):
+        return "kt"
+    if re.search(
+        r"\b(million(en)?|mio\.?|1,?000,?000|mega|megaton(ne)?s?n?|mm\s*mt|mm|mn|mmt(on)?(ne)?s?)\b",
+        text,
+    ):
+        return "Mt"
+    if re.search(r"\b(kg|kilograms?)\b|\bkg(?=[A-Za-z])", text):
+        return "kg"
+    if re.search(r"\b(us[\s-]?ton(ne)?s?|ust|short tons?)\b", text):
+        return "USt"
+    if re.search(
+        r"\b(billion(s)?|milliarde(n)?|bn|1,?000,?000,?000|giga|gigaton(ne)?s?|gt)\b",
+        text,
+    ):
+        return "Gt"
+    return ""
+
+
+def _clean_unit(text: str) -> str:
+    """Remove numeric and connector tokens from a raw unit string."""
+    text = re.sub(r"[0-9\.,]+", "", text)
+    text = re.sub(r"[^\w]+", " ", text)
+    text = re.sub(r"\bof\b", "", text)
+    return text.strip().lower()
+
+
+def _create_unit_classifier_features(units: list[str]) -> pd.DataFrame:
+    raw_units = pd.Series(units, dtype="object")
+    cleaned_text = raw_units.str.lower().str.replace(
+        r"\d+[,\.]?\d*", "NUMBER", regex=True
+    )
+    return pd.DataFrame(
+        {
+            "text": (
+                cleaned_text
+                + " "
+                + raw_units.apply(_extract_quantity_keyword)
+                + " "
+                + raw_units.apply(_clean_unit)
+            ),
+            "length": raw_units.str.len(),
+        }
+    )
+
+
+@lru_cache(maxsize=1)
+def _load_unit_classifier(model_path: str):
+    """Load and cache the bundled unit classifier."""
+    import joblib
+
+    bundle = joblib.load(model_path)
+    if not isinstance(bundle, dict):
+        raise ValueError("The unit classifier file must contain a classifier bundle.")
+    if "pipeline" not in bundle or "label_encoder" not in bundle:
+        raise ValueError(
+            "The unit classifier bundle must contain 'pipeline' and 'label_encoder'."
+        )
+    pipeline = bundle["pipeline"]
+    label_encoder = bundle["label_encoder"]
+    if not callable(getattr(pipeline, "predict", None)) or not callable(
+        getattr(label_encoder, "inverse_transform", None)
+    ):
+        raise ValueError("The unit classifier bundle contains invalid components.")
+    return pipeline, label_encoder
+
+
+def _predict_unit_normalizations(units: list[str]) -> list[str]:
+    pipeline, label_encoder = _load_unit_classifier(_DEFAULT_UNIT_CLASSIFIER_PATH)
+    predictions = pipeline.predict(_create_unit_classifier_features(units))
+    normalized_units = label_encoder.inverse_transform(predictions).tolist()
+    if len(normalized_units) != len(units):
+        raise ValueError("The unit classifier returned an unexpected number of labels.")
+    if not all(isinstance(unit, str) for unit in normalized_units):
+        raise ValueError("The unit classifier returned a non-string unit label.")
+    return normalized_units
 
 
 def remove_decimal_commas_in_numbers(raw_number: str) -> str:
@@ -317,7 +405,7 @@ def get_unit_normalization_mapping(df: pd.DataFrame,
                                    unit_col_name: str,
                                    pipeline_output_flag: bool,
                                    unit_normalization_path: str = _DEFAULT_UNIT_NORMALIZATION_PATH) -> pd.DataFrame:
-    """Adds a normalized unit column to the df"""
+    """Add normalized units using the dictionary first and classifier as fallback."""
     unit_normalization_dict = pd.read_csv(unit_normalization_path)
     # Create a mapping/dictionary from `unit_normalization_df`
     unit_mapping = dict(
@@ -325,23 +413,40 @@ def get_unit_normalization_mapping(df: pd.DataFrame,
             unit_normalization_dict["normalized_unit"])
     )
 
-    # Find unit in dict and set normalized value according to mapping
     unit_normalized_col_name = unit_col_name + "_normalized"
+    unit_normalization_method_col_name = unit_col_name + "_normalization_method"
 
     def map_unit(row):
-        unit = row[unit_col_name]
+        unit = row
         if pd.isna(unit):  # Case 1: If the unit is NaN
-            return pd.NA
+            return pd.NA, None, pd.NA
         # Case 2: If no unit was extracted
         elif (unit == 'Nothing extracted. No Regex match') or (unit == 'Not specified'):
-            return pd.NA
-        elif unit.strip() not in unit_mapping:  # Case 2: If the unit is not in the dictionary
-            return "Unknown"
-        else:  # Case 3: If the unit exists in the dictionary
-            return unit_mapping[unit.strip()]
+            return pd.NA, None, pd.NA
+        elif not isinstance(unit, str):
+            return "Unknown", None, pd.NA
 
-    # Apply the `map_unit` function row-wise
-    df[unit_normalized_col_name] = df.apply(map_unit, axis=1)
+        stripped_unit = unit.strip()
+        if stripped_unit in unit_mapping:
+            return unit_mapping[stripped_unit], None, "dictionary"
+        if not stripped_unit:
+            return "Unknown", None, pd.NA
+        return "Unknown", unit, "classifier"
+
+    mapped_units = [map_unit(unit) for unit in df[unit_col_name]]
+    unmatched_units = list(dict.fromkeys(
+        unit for _, unit, _ in mapped_units if unit is not None
+    ))
+    predictions = dict(zip(
+        unmatched_units, _predict_unit_normalizations(unmatched_units)
+    )) if unmatched_units else {}
+    df[unit_normalized_col_name] = [
+        predictions.get(unmatched, normalized)
+        for normalized, unmatched, _ in mapped_units
+    ]
+    df[unit_normalization_method_col_name] = [
+        method for _, _, method in mapped_units
+    ]
 
     return df
 

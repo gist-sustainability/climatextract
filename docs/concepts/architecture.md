@@ -61,7 +61,10 @@ Relevant pages are passed to a large language model:
 
 Raw LLM output is cleaned and structured:
 
-- Unit normalization (e.g., "tonnes" → "tCO2e")
+- Unit normalization first uses the normalization dictionary, then the trained
+  classifier for units not in the dictionary (e.g., "tonnes" → "tCO2e"); see
+  the [unit_harmonization repository](https://github.com/gist-sustainability/unit_harmonization).
+  Results record whether the dictionary or classifier provided the normalized unit.
 - Duplicate resolution across pages
 - Multiple Scope X values for a given years are not allowed. Use priority rules to determine a single value.
 - Value standardization and validation

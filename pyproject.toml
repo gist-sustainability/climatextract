@@ -31,6 +31,8 @@ dependencies = [
     "python-dotenv",
     "pandas",
     "numpy",
+    "joblib",
+    "scikit-learn==1.9.1",
 ]
 
 [project.optional-dependencies]
@@ -47,4 +49,4 @@ docs = ["zensical", "mkdocs-material", "mkdocstrings[python]", "mkdocs-click"]
 include = ["climatextract*"]
 
 [tool.setuptools.package-data]
-climatextract = ["data/*.csv"]
+climatextract = ["data/*.csv", "data/*.joblib"]

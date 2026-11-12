@@ -337,6 +337,8 @@ def concat_prepare_co2emissions_from(raw_results: List[dict]):
     co2_emission_table = pd.concat(
         [report_results['co2_emissions'] for report_results in raw_results
          if report_results and 'co2_emissions' in report_results], ignore_index=True)
+    if "unit_normalization_method" not in co2_emission_table:
+        co2_emission_table["unit_normalization_method"] = pd.NA
     co2_emission_table = co2_emission_table.rename(
         columns={"page_label": "page_number_used_by_llm",
                  "year": "extracted_year_from_llm_orig",
@@ -417,7 +419,7 @@ def prepare_long_format_output_table_from(
     target_cols = [
         'report_id', 'year', 'indicator', 'value_std', 'value_raw', 'value_score',
         'unit_std', 'unit_raw', 'unit_score', 'unit_cat', 'extraction_context',
-        'dupl_flag', 'select_flag', 'page'
+        'unit_normalization_method', 'dupl_flag', 'select_flag', 'page'
     ]
     long_format_df = df[target_cols]
     return long_format_df
@@ -469,7 +471,8 @@ def prepare_wide_format_output_table_from(
 
     # Pivot table: one row per report_id and year, columns per scope type
     pivot_cols = ['value_std', 'value_raw', 'value_score',
-                  'unit_raw', 'unit_score', 'unit_cat', 'page', 'dupl_reason',
+                  'unit_raw', 'unit_score', 'unit_cat',
+                  'unit_normalization_method', 'page', 'dupl_reason',
                   'extraction_context']
     scopes = sorted(df['extracted_scope_from_llm'].dropna().unique())
     df_pivot = df.pivot_table(
@@ -503,7 +506,8 @@ def prepare_wide_format_output_table_from(
     def _reorder_columns(df_local):
         base_cols = ['report_id', 'year']
         suffixes = ['value_std', 'value_raw', 'value_score', 'unit_std',
-                    'unit_raw', 'unit_score', 'unit_cat', 'extraction_context',
+                    'unit_raw', 'unit_score', 'unit_cat',
+                    'unit_normalization_method', 'extraction_context',
                     'dupl_reason', 'page']
         ordered_cols = base_cols + \
             [f'scope_{scope}_{suffix}' for suffix in suffixes for scope in scopes]
