@@ -405,9 +405,12 @@ def prepare_long_format_output_table_from(
     # Create indicator field by joining "scope" and the scope column
     df['indicator'] = "scope " + df['extracted_scope_from_llm'].astype(str)
 
-    # Assign 't CO2e' to unit_std if "scope" is in indicator, else None
-    df['unit_std'] = df['indicator'].apply(
-        lambda x: 't CO2e' if 'scope' in str(x) else None)
+    # Assign a standardized unit only for scope indicators with a value.
+    df['unit_std'] = df.apply(
+        lambda row: 't CO2e'
+        if 'scope' in str(row['indicator']) and pd.notna(row['value_std'])
+        else None,
+        axis=1)
 
     # Final output columns in requested order
     target_cols = [
