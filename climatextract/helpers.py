@@ -111,6 +111,33 @@ def _predict_unit_normalizations(units: list[str]) -> list[str]:
     return normalized_units
 
 
+def _correct_ambiguous_mt_unit(unit: str, value, scope) -> str | None:
+    """Return a corrected category for ambiguous ``m t`` units, if needed."""
+    if not isinstance(unit, str):
+        return None
+    if re.search(r"\b(?:millions?|millionen?|mio\.?|mega)", unit, re.IGNORECASE):
+        return None
+    if not re.search(
+        r"\bm\s*\.?\s*(?:t(?=\s|$|[-/().,:;]|co2|co₂)|tons?|tonnes?)",
+        unit,
+        re.IGNORECASE,
+    ):
+        return None
+
+    scope_value = str(scope).strip().lower() if pd.notna(scope) else ""
+    if scope_value == "3":
+        threshold = 1000
+    elif scope_value in {"1", "2mb", "2lb"}:
+        threshold = 100
+    else:
+        return None
+
+    numeric_value = pd.to_numeric(value, errors="coerce")
+    if pd.isna(numeric_value) or numeric_value < threshold:
+        return None
+    return "t CO2e"
+
+
 def remove_decimal_commas_in_numbers(raw_number: str) -> str:
     """Remove commas in numbers (e.g: 53,452,349 -> 53452349)
 
@@ -444,9 +471,36 @@ def get_unit_normalization_mapping(df: pd.DataFrame,
         predictions.get(unmatched, normalized)
         for normalized, unmatched, _ in mapped_units
     ]
-    df[unit_normalization_method_col_name] = [
+    unit_normalization_methods = [
         method for _, _, method in mapped_units
     ]
+    if pipeline_output_flag:
+        required_columns = {"value", "extracted_scope_from_llm"}
+        missing_columns = required_columns.difference(df.columns)
+        if missing_columns:
+            raise ValueError(
+                "Pipeline unit correction requires columns: "
+                + ", ".join(sorted(missing_columns))
+            )
+        corrected_units = []
+        corrected_methods = []
+        for unit, value, scope, normalized, method in zip(
+            df[unit_col_name],
+            df["value"],
+            df["extracted_scope_from_llm"],
+            df[unit_normalized_col_name],
+            unit_normalization_methods,
+        ):
+            if isinstance(normalized, str) and normalized == "Mt CO2e":
+                corrected = _correct_ambiguous_mt_unit(unit, value, scope)
+                if corrected is not None:
+                    normalized = corrected
+                    method = f"{method} (corrected from Mt CO2e to t CO2e)"
+            corrected_units.append(normalized)
+            corrected_methods.append(method)
+        df[unit_normalized_col_name] = corrected_units
+        unit_normalization_methods = corrected_methods
+    df[unit_normalization_method_col_name] = unit_normalization_methods
 
     return df
 
