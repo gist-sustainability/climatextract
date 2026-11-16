@@ -1,682 +1,1825 @@
 unit,normalized_unit,factor
-,,
-kg CO2e,kg CO2e,0.001
-kg CO₂e,kg CO2e,0.001
-Kg CO2e,kg CO2e,0.001
-ktCO₂eq,kt CO2e,1000.0
-Thousands Metric tons CO2e,kt CO2e,1000.0
-thousand tonnes,kt CO2e,1000.0
-"1,000 tonnes",kt CO2e,1000.0
-kt CO2e,kt CO2e,1000.0
-kilotonnes of CO2-equivalent,kt CO2e,1000.0
-kt CO2,kt CO2e,1000.0
-Kt CO2e,kt CO2e,1000.0
-thousand t-CO2,kt CO2e,1000.0
-metric kilotons CO2e,kt CO2e,1000.0
-1’000 tonnes,kt CO2e,1000.0
-"1,000 tons-CO2",kt CO2e,1000.0
-t CO 2 equivalents in thousands,kt CO2e,1000.0
-t CO2 equivalents in thousands,kt CO2e,1000.0
-"1,000 t CO2",kt CO2e,1000.0
-"1,000 t-CO2",kt CO2e,1000.0
-thousand t-CO 2,kt CO2e,1000.0
-10^3 tonnes CO2e,kt CO2e,1000.0
-10^3 tonnes,kt CO2e,1000.0
-1’000 tonnes CO2e,kt CO2e,1000.0
-KtCO2e,kt CO2e,1000.0
-MM MT CO2e,MM Mt CO2e,1000000000000.0
-MT CO2e,Mt CO2e,1000000.0
-MtCO2e,Mt CO2e,1000000.0
-MTCO2e,Mt CO2e,1000000.0
-million metric tons,Mt CO2e,1000000.0
-million metric tons CO2,Mt CO2e,1000000.0
-m metric t CO2,Mt CO2e,1000000.0
-MT of CO2e,Mt CO2e,1000000.0
-MT C02e,Mt CO2e,1000000.0
-m tCO2e,Mt CO2e,1000000.0
-"tCO2e/Revenue Passenger Miles (000,000) and 140.2",Other,
-"tCO2e/Revenue Passenger Miles (000,000) and 139.7",Other,
-"tCO2e/Revenue Passenger Miles (000,000) and 139.4",Other,
-"tCO2e/Revenue Passenger Miles (000,000) and 140 tC",Other,
-"tCO2e/Revenue Passenger Miles (000,000) and 137 tC",Other,
-emissions,Unknown,
-Tonnes of carbon dioxide (Scope 1) produced per $1,Other,
-MWh,Other,
-tonnes CO2e,t CO2e,1.0
-tonnes,t CO2e,1.0
-tonnes of CO2e,t CO2e,1.0
-"tonnes (Rental cars only, rail travel not specifie",t CO2e,1.0
-t CO2 eq.,t CO2e,1.0
-t CO2eq,t CO2e,1.0
-"t CO2eq (for Spain, London, Luxembourg, Zurich, Po",t CO2e,1.0
-t CO2e,t CO2e,1.0
-metric tons CO2 equivalents per CHF million revenu,t CO2e,1.0
-ton CO2 (Including JVs),t CO2e,1.0
-metric tons CO2e,t CO2e,1.0
-metric tons CO2 equivalent,t CO2e,1.0
-metric tons CO2 equivalent (Air travel Scope 3) +,t CO2e,1.0
-t CO2-e,t CO2e,1.0
-tonnes CO₂e,t CO2e,1.0
-tonnes of CO2 equivalents,t CO2e,1.0
-US Tons,USt CO2e,0.907185
-Tonnes CO2e,t CO2e,1.0
-Metric tonnes of CO2 equivalent,t CO2e,1.0
-metric tons of CO2e,t CO2e,1.0
-Tonnes,t CO2e,1.0
-tCO2e,t CO2e,1.0
-"tCO2e (sum of Plastic, Third-party transport, and",t CO2e,1.0
-Metric tons (t) CO2e,t CO2e,1.0
-t-CO2,t CO2e,1.0
-t-CO₂,t CO2e,1.0
-tons,t CO2e,1.0
-mtCO2e,t CO2e,1.0
-t-CO2e,t CO2e,1.0
-tonnes CO2,t CO2e,1.0
-CO2-eq t,t CO2e,1.0
-metric tons,t CO2e,1.0
-metric tons CO₂ eqv,t CO2e,1.0
-Tonne CO2e,t CO2e,1.0
-tonnes CO2-e,t CO2e,1.0
-metric tons CO2 equivalents,t CO2e,1.0
-metric tons of CO2 equivalents,t CO2e,1.0
-t CO2 eq,t CO2e,1.0
-ton CO2,t CO2e,1.0
-ton CO 2,t CO2e,1.0
-metric tons of carbon dioxide equivalents (CO2e),t CO2e,1.0
-Metric tons of CO2e,t CO2e,1.0
-tons CO2 equivalent,t CO2e,1.0
-CO2 equivalents (US tons),USt CO2e,0.907185
-CO2e in metric tons,t CO2e,1.0
-t-CO₂e,t CO2e,1.0
-CO2e in tons,t CO2e,1.0
 C02e in tons,t CO2e,1.0
+CO2 eq t,t CO2e,1.0
+CO2 in t,t CO2e,1.0
+CO2e,t CO2e,1.0
+CO2e [t],t CO2e,1.0
 CO2e emissions in tons,t CO2e,1.0
-tonnes CO2e emissions,t CO2e,1.0
-CO2 Equivalents (US Tons),USt CO2e,0.907185
-ton CO2e,t CO2e,1.0
-ton CO 2e,t CO2e,1.0
-tCO2-e,t CO2e,1.0
-000 tCOâ‚‚e,kt CO2e,1000.0
-('000 tonnes CO2e),kt CO2e,1000.0
+kt CO2e,kt CO2e,1000.0
+CO2e in metric tons,t CO2e,1.0
+CO2e in tons,t CO2e,1.0
+CO2-e tonnes,t CO2e,1.0
+CO₂e tonnes,t CO2e,1.0
+CO2e tons,t CO2e,1.0
+CO2-eq t,t CO2e,1.0
+CO2eq Tn,t CO2e,1.0
+COÂ²e tonnes,t CO2e,1.0
+metric ton,t CO2e,1.0
+(million t),Mt CO2e,1000000.0
+Metric Ton CO2e,t CO2e,1.0
+ktons CO2e,kt CO2e,1000.0
+Metric ton CO₂e,t CO2e,1.0
+thousand tonnes CO2e,kt CO2e,1000.0
+metric tonnes,t CO2e,1.0
+CO2 eq (MTons),Mt CO2e,1000000.0
+metric tonnes (t) CO2,t CO2e,1.0
+Metric tonnes (t) CO2,t CO2e,1.0
+m metric t CO2,Mt CO2e,1000000.0
+metric tonnes CO2,t CO2e,1.0
+Metric Tonnes CO₂,t CO2e,1.0
+metric tonnes CO2 equivalent,t CO2e,1.0
+Tsd. t CO2e,kt CO2e,1000.0
+M metric tons CO2e,Mt CO2e,1000000.0
+kilotons CO2e,kt CO2e,1000.0
+metric tonnes CO₂ equivalent,t CO2e,1.0
+m t,Mt CO2e,1000000.0
+m t CO₂ equivalents,Mt CO2e,1000000.0
+kt CO2,kt CO2e,1000.0
+metric tonnes CO2 equivalents,t CO2e,1.0
+m tCO2e,Mt CO2e,1000000.0
+metric tonnes CO2e,t CO2e,1.0
+kt,kt CO2e,1000.0
+Metric tonnes CO2e,t CO2e,1.0
+m tonnes CO2e,Mt CO2e,1000000.0
+kt CO2eq,kt CO2e,1000.0
+ktCO2e,kt CO2e,1000.0
+Metric Tonnes CO₂e,t CO2e,1.0
+metric tonnes CO2eq,t CO2e,1.0
+Ktons,kt CO2e,1000.0
+thousand tonnes,kt CO2e,1000.0
+thousand tons CO2,kt CO2e,1000.0
+metric tonnes of CO2,t CO2e,1.0
+Metric tonnes of CO2 equivalent,t CO2e,1.0
 "(1,000 t)",kt CO2e,1000.0
-"(1,000 tCO2e)",kt CO2e,1000.0
-"(1,000 tonnes CO2e)",kt CO2e,1000.0
-"(1,000 tonnes COâ‚‚e)",kt CO2e,1000.0
-(10Â³ tCO2e),kt CO2e,1000.0
-(thousands of tCO2e),kt CO2e,1000.0
-(â€˜000 tonnes CO2e),kt CO2e,1000.0
-000s tonnes CO2e,kt CO2e,1000.0
-"1,000 metric tons of CO2e emissions",kt CO2e,1000.0
+(unit not specified),Other,
+metric tonnes of CO2 equivalent,t CO2e,1.0
+M tons CO2-eq,Mt CO2e,1000000.0
 "1,000 t",kt CO2e,1000.0
-"1,000 tCO2e",kt CO2e,1000.0
+metric tonnes of CO2e,t CO2e,1.0
+thousand tons,kt CO2e,1000.0
+metric tonnes of CO₂e,t CO2e,1.0
+"metric tonnes of CO₂e (net corporate emissions, pr",t CO2e,1.0
+metric tonnes of CO2eq,t CO2e,1.0
+M tons of CO2 eq.,Mt CO2e,1000000.0
+thousand metric tons CO2e,kt CO2e,1000.0
+metric tons,t CO2e,1.0
+Megatonnen CO2-Äquivalent,Mt CO2e,1000000.0
+Metric tons (t) CO2e,t CO2e,1.0
+Megatonnen CO2‐Äquivalent,Mt CO2e,1000000.0
+Tt CO2,kt CO2e,1000.0
+"(1,000 tons CO₂e)",kt CO2e,1000.0
+×10^3 t-CO2e,kt CO2e,1000.0
+metric Mtons CO2e,Mt CO2e,1000000.0
+metric tons (t) CO2e,t CO2e,1.0
+metric tons (t) CO2-e,t CO2e,1.0
+million CO2e,Mt CO2e,1000000.0
+metric tons CO2,t CO2e,1.0
+metric tons CO2 equivalent,t CO2e,1.0
+metric tons CO₂ equivalent,t CO2e,1.0
+metric tons CO2 equivalent (based on 2016 data),t CO2e,1.0
+million metric tonnes,Mt CO2e,1000000.0
+million metric tonnes CO2e,Mt CO2e,1000000.0
+Tsd t CO2-Äquivalente,kt CO2e,1000.0
+kg CO2,kg CO2e,0.001
+Million metric tonnes CO2e,Mt CO2e,1000000.0
+metric tons CO2 equivalents,t CO2e,1.0
+metric tons CO₂ eqv,t CO2e,1.0
+metric tons CO2e,t CO2e,1.0
+million metric tonnes CO2-e,Mt CO2e,1000000.0
+Metric Tons CO2e,t CO2e,1.0
+thousand tonnes CO₂e,kt CO2e,1000.0
+kg CO2e,kg CO2e,0.001
+metric tons CO₂e,t CO2e,1.0
+"(1,000 t CO2)",kt CO2e,1000.0
+thousands of tonnes CO2e,kt CO2e,1000.0
+Metric Tons CO₂e,t CO2e,1.0
+Tsd. t CO2eq,kt CO2e,1000.0
+metric tons CO₂e (target),t CO2e,1.0
+million metric tonnes CO₂e,Mt CO2e,1000000.0
+million metric tonnes CO2e (market-based),Mt CO2e,1000000.0
+metric tons CO2eq,t CO2e,1.0
+Tsd. t,kt CO2e,1000.0
+million metric tonnes CO2e (restated baseline),Mt CO2e,1000000.0
+million metric tonnes of CO2e,Mt CO2e,1000000.0
+thousand t-CO2,kt CO2e,1000.0
+‘000 tonnes CO2e,kt CO2e,1000.0
+kilotonnes CO2e,kt CO2e,1000.0
+million metric tonnes of CO2eq,Mt CO2e,1000000.0
+million metric tons,Mt CO2e,1000000.0
+million metric tons (location-based),Mt CO2e,1000000.0
+metric tons CO₂eq,t CO2e,1.0
+"1,000 t CO2",kt CO2e,1000.0
+KTons,kt CO2e,1000.0
+"million metric tons (total GHG emissions, includin",Mt CO2e,1000000.0
+Metric Tons COâ‚‚e,t CO2e,1.0
+Tsd Tonnen,kt CO2e,1000.0
+metric tons COâ‚‚e,t CO2e,1.0
+million metric tons CO2,Mt CO2e,1000000.0
+million metric tons CO₂,Mt CO2e,1000000.0
+metric tons COâ‚‚eq,t CO2e,1.0
+"1,000 metric tons of CO2 equivalents",kt CO2e,1000.0
+million metric tons CO2 eq.,Mt CO2e,1000000.0
+MWh,Other,
+metric tons of carbon dioxide equivalents (CO2e),t CO2e,1.0
+metric tons of CO2 equivalent,t CO2e,1.0
+thousand tonnes CO₂ equivalent,kt CO2e,1000.0
+thousand tons-CO2e,kt CO2e,1000.0
+metric tons of CO2 equivalents,t CO2e,1.0
+metric tons of CO₂ equivalents,t CO2e,1.0
+metric tons of CO2e,t CO2e,1.0
+"1,000 tonnes CO2eq",kt CO2e,1000.0
+million metric tons CO2 equivalent,Mt CO2e,1000000.0
+million metric tons CO₂ equivalent,Mt CO2e,1000000.0
+million metric tons CO2 equivalents,Mt CO2e,1000000.0
+million metric tons CO2e,Mt CO2e,1000000.0
+million metric tons CO₂e,Mt CO2e,1000000.0
+million metric tons CO2e (Base Year Value),Mt CO2e,1000000.0
+Metric tons of CO2e,t CO2e,1.0
+metric tons of CO₂e,t CO2e,1.0
+metric tons of CO2e emissions,t CO2e,1.0
+metric tons of CO2eq,t CO2e,1.0
+metric tons of CO2-equivalents (t CO2e),t CO2e,1.0
+1’000 tonnes,kt CO2e,1000.0
+kg ton CO2-equivalent,kg CO2e,0.001
+million kg CO2eq/annum,kt CO2e,1000.0
+metric tons of COâ‚‚ equivalents,t CO2e,1.0
+thousand metric tons CO2 equivalents,kt CO2e,1000.0
+thousand metric tons CO₂e,kt CO2e,1000.0
+thousand tonnes CO2,kt CO2e,1000.0
+metric tons/year,t CO2e,1.0
+t,t CO2e,1.0
+Tsd. Tonnen CO2e,kt CO2e,1000.0
+"(1,000 t-CO2)",kt CO2e,1000.0
+"1,000 metric tons of CO2e emissions",kt CO2e,1000.0
+million metric tons CO₂e (location-based),Mt CO2e,1000000.0
+Tn,Other,
+T,t CO2e,1.0
+t CO,t CO2e,1.0
+t CO2,t CO2e,1.0
+t CO₂,t CO2e,1.0
+kilotons CO₂e,kt CO2e,1000.0
+Kt CO2e,kt CO2e,1000.0
+kton CO2,kt CO2e,1000.0
+t CO2 (CO2-Äquivalente),t CO2e,1.0
+t CO₂ (korrigiert**),t CO2e,1.0
+t CO₂ (nachkalkuliert*),t CO2e,1.0
+"(1,000 tonnes CO2e)",kt CO2e,1000.0
+"1,000 Tonnen CO2äq",kt CO2e,1000.0
+"1,000 tonnes",kt CO2e,1000.0
+10^3 t-CO2e,kt CO2e,1000.0
+kilotons CO2 eq,kt CO2e,1000.0
+t CO2 (remaining emissions),t CO2e,1.0
+t CO2 Äq.,t CO2e,1.0
+million metric tons CO2eq,Mt CO2e,1000000.0
+million metric tons CO2EQ,Mt CO2e,1000000.0
+t CO₂ Äq.,t CO2e,1.0
+thousand metric tons,kt CO2e,1000.0
+thousand tonnes CO2 equivalent,kt CO2e,1000.0
+thousand tonnes CO2eq,kt CO2e,1000.0
+thousand tons-CO2,kt CO2e,1000.0
+t CO₂ Äquivalent,t CO2e,1.0
+tonnes CO2 equivalent/million m2 of sleeves produc,Other,
+t CO2 Äquivalente,t CO2e,1.0
+t CO2 e,t CO2e,1.0
+t CO2 ekv,t CO2e,1.0
+Tsd. t CO2-Äquivalent,kt CO2e,1000.0
+t CO2 eq,t CO2e,1.0
+million metric tons CO₂eq,Mt CO2e,1000000.0
+million metric tons COâ‚‚,Mt CO2e,1000000.0
+million metric tons COâ‚‚e,Mt CO2e,1000000.0
+t CO₂ eq,t CO2e,1.0
+Tsd. t CO2,kt CO2e,1000.0
+Tsd. Tonnen CO2eq,kt CO2e,1000.0
+"(1,000 tonnes CO2)",kt CO2e,1000.0
+metric ktons,kt CO2e,1000.0
+million metric tons of CO2,Mt CO2e,1000000.0
+million metric tons of CO₂,Mt CO2e,1000000.0
+million metric tons of CO2 eq,Mt CO2e,1000000.0
+million metric tons of CO2 eq.,Mt CO2e,1000000.0
+t CO2 / 100 t € sales,Other,
+tn CO2,Other,
+T CO₂ eq,t CO2e,1.0
+Tsd. Tonnen,kt CO2e,1000.0
+1.000 t CO2,kt CO2e,1000.0
+1000 tCO₂e,kt CO2e,1000.0
+kilotons CO2,kt CO2e,1000.0
+kt CO2-eq,kt CO2e,1000.0
+t CO2 eq.,t CO2e,1.0
+million metric tons of CO2 eq. (Pro forma),Mt CO2e,1000000.0
+million metric tons of CO2 equivalent,Mt CO2e,1000000.0
+million metric tons of CO2 equivalents,Mt CO2e,1000000.0
+t CO2 equivalent,t CO2e,1.0
+t CO2 equivalents,t CO2e,1.0
+t CO2/a,t CO2e,1.0
+thousand metric tons CO₂-equivalent,kt CO2e,1000.0
+Thousand tons-CO2e,kt CO2e,1000.0
+t CO2/CO2e,t CO2e,1.0
+t CO₂ä,t CO2e,1.0
+t CO2-Äq,t CO2e,1.0
+t CO2-Äq.,t CO2e,1.0
+‘000 tCO2e,kt CO2e,1000.0
+'000 tonnes CO2e,kt CO2e,1000.0
+"1,000 t CO2-eq",kt CO2e,1000.0
+1000 tCO2e,kt CO2e,1000.0
+t CO2-Äquivalent,t CO2e,1.0
+kgCO2e,kg CO2e,0.001
+kt CO₂e,kt CO2e,1000.0
+million metric tons of CO2 equivalents (base year),Mt CO2e,1000000.0
+million metric tons of CO2 equivalents (combined S,Mt CO2e,1000000.0
+million metric tons of CO2e,Mt CO2e,1000000.0
+million metric tons of CO₂e,Mt CO2e,1000000.0
+t CO₂-Äquivalent,t CO2e,1.0
+t/a,Other,
+t CO2-Äquivalente,t CO2e,1.0
+ten thousand tons,10 kt CO2e,10000.0
+Thousand tCO2e,kt CO2e,1000.0
+TJ,Other,
+t CO₂-Äquivalente,t CO2e,1.0
+tonnes CO2e (goods transportation only),Other,
+t CO2-Äquivalenten,t CO2e,1.0
+t CO2e,t CO2e,1.0
+million metric tons of CO2eq,Mt CO2e,1000000.0
+million metric tons of COâ‚‚,Mt CO2e,1000000.0
+Rs. 000,Other,
+T CO2e,t CO2e,1.0
+thousand metric tons CO₂ equivalents,kt CO2e,1000.0
+thousand t CO₂,kt CO2e,1000.0
+thousand t CO2e,kt CO2e,1000.0
+t CO2-e,t CO2e,1.0
+t CO₂e,t CO2e,1.0
+Tsd t CO2e,kt CO2e,1000.0
+"(1,000 tons-CO2)",kt CO2e,1000.0
+(10 kt),10 kt CO2e,10000.0
+"1,000 Tonnen CO2e",kt CO2e,1000.0
+1000 t CO2,kt CO2e,1000.0
+GWh,Other,
+kg CO₂-e,kg CO2e,0.001
+kg ton CO2-e,kg CO2e,0.001
+ktCO₂,kt CO2e,1000.0
+kton CO2e,kt CO2e,1000.0
+T CO₂e,t CO2e,1.0
+Mg CO2e,Other,
+million metric tons of COâ‚‚e,Mt CO2e,1000000.0
+Millionen Tonnen CO2-Äquivalente (combined Scope 1,Other,
+million mt,Mt CO2e,1000000.0
+million mt CO2e,Mt CO2e,1000000.0
+million t,Mt CO2e,1000000.0
+"MWh (energy consumption, not direct emissions)",Other,
+t CO2e (after restatement),t CO2e,1.0
+t CO2e (baseline year),t CO2e,1.0
+t CO2e/Umsatz in Mio. Euro (absolute value not spe,Other,
+t CO2e (Bestand absolut),t CO2e,1.0
+Tausend Tonnen CO₂,kt CO2e,1000.0
+t CO₂e (Forecast),t CO2e,1.0
+ten thousand tons of CO2,10 kt CO2e,10000.0
+thousand tonnes CO2 / CO2-equivalents,kt CO2e,1000.0
+thousands of t-CO2-e,kt CO2e,1000.0
+t CO2e (total Scope 3 emissions),t CO2e,1.0
+Tonnen CO2-Äquivalenten (Dienstreisen),Other,
+"tonnes (business travel, air travel only)",Other,
+t CO2eq,t CO2e,1.0
+t CO2-eq,t CO2e,1.0
+t CO₂eq,t CO2e,1.0
+Tsd t,kt CO2e,1000.0
+Tsd. Tonnen CO2 (CO2-Äquivalente),kt CO2e,1000.0
+Tsd. Tonnen CO2eq (Market-based),kt CO2e,1000.0
+Tt,Other,
 "1,000 tonnes CO2e",kt CO2e,1000.0
+kg CO₂,kg CO2e,0.001
+kg/t product,Other,
+kTons CO2 eq,kt CO2e,1000.0
+Ktons CO2 eq,kt CO2e,1000.0
+million t CO2,Mt CO2e,1000000.0
+million t CO2 eq,Mt CO2e,1000000.0
+million tonnes CO2eq (from use of sold products),Other,
+million t CO2e,Mt CO2e,1000000.0
+million t CO₂e,Mt CO2e,1000000.0
+million t CO2e (baseline year),Mt CO2e,1000000.0
+million t CO2e (Category 3),Mt CO2e,1000000.0
+t CO₂-eq,t CO2e,1.0
+t CO2e (Scope 1 and 2 combined),Other,
+Tonnen CO₂ pro Million Euro Umsatz,Other,
+Tsd. t CO₂e,kt CO2e,1000.0
+Tsd. Tonnen CO2-Äquivalente,kt CO2e,1000.0
+Tt CO2e,kt CO2e,1000.0
+"1,000 metric tons CO2e",kt CO2e,1000.0
+"1,000 t CO2 (sum of all listed categories)",kt CO2e,1000.0
+1.000 t,kt CO2e,1000.0
+kg CO2 Äq,kg CO2e,0.001
+kg CO₂e,kg CO2e,0.001
+kg CO2-eq.,kg CO2e,0.001
+kilotons,kt CO2e,1000.0
+ktonnes CO2 fossil,kt CO2e,1000.0
+"ktonnes CO2 fossil, grid electricity",Other,
+Million t CO2e (Upstream and Downstream),Mt CO2e,1000000.0
+t CO₂-Eq,t CO2e,1.0
+t CO₂-eq (location-based),t CO2e,1.0
+Million t CO2eq,Mt CO2e,1000000.0
+million t CO2eq,Mt CO2e,1000000.0
+million t CO2-equivalent,Mt CO2e,1000000.0
+million t COâ‚‚e,Mt CO2e,1000000.0
+million t-CO2,Mt CO2e,1000000.0
+million t-CO₂,Mt CO2e,1000000.0
+t CO2-eq emitted,t CO2e,1.0
+t COâ‚‚,t CO2e,1.0
+T COâ‚‚ eq,t CO2e,1.0
+t COâ‚‚e,t CO2e,1.0
+t COâ‚‚eq,t CO2e,1.0
+t COâ‚‚-eq,t CO2e,1.0
+tCO2e (carbon emissions from procured steel),Other,
+t eq. CO2 (new methodology),t CO2e,1.0
+thousand metric tons CO2eq,kt CO2e,1000.0
+thousand t CO2 equivalents,kt CO2e,1000.0
+t of CO2 e.,t CO2e,1.0
+t of CO2e,t CO2e,1.0
+Tonnen CO2 pro 1.000 verkaufte Tonnen Lagerware,Other,
+t CO₂e/Jahr,t CO2e,1.0
+t. CO2e,t CO2e,1.0
+"tonnes CO₂ equivalent (aseptic carton business, su",Other,
+tonnes CO₂e (business flights only),Other,
+tonnes CO2-equivalent (business flights),Other,
+TSD Tonnen,kt CO2e,1000.0
+TSD Tonnen CO2-Äquivalente,kt CO2e,1000.0
+"Tsd. MWh (energy consumption, not direct CO₂ emiss",Other,
+(1000 tCO2e),kt CO2e,1000.0
+"(Scope 3, Category 11)",Other,
+tCO2,t CO2e,1.0
+gCO2/kWh,Other,
+kg (uvex safety group); 0 kg (uvex Winter Holding),Other,
+kg CO2-Äquivalent,kg CO2e,0.001
+kg ton CO2-e (business travel by plane),Other,
+Kilotons CO2 eq,kt CO2e,1000.0
+KT CO2e,kt CO2e,1000.0
+"ktons CO2e (Use of Sold Products – Comm. aircraft,",Other,
+million t-CO2 (Target),Mt CO2e,1000000.0
+TCO2,t CO2e,1.0
+t-CO2,t CO2e,1.0
+million metric tonnes CO₂e (E.ON),Other,
+million tCO2e,Mt CO2e,1000000.0
+"Millionen Tonnen CO2-Äquivalente (sum of CO2, N2O,",Other,
+million t-CO2-e,Mt CO2e,1000000.0
+Mio. kWh,Other,
+million tCO₂e,Mt CO2e,1000000.0
+"MtCO₂ (Scope 3b, aviation in the Netherlands, loca",Other,
+million tCO2e (adjusted),Mt CO2e,1000000.0
+"t CO2 (Upstream), 501,870 t CO2 (Downstream)",Other,
+tCO₂,t CO2e,1.0
+t-CO₂,t CO2e,1.0
+tCO2 (baseline value),t CO2e,1.0
+t CO2e (only for business air travel),Other,
+t CO2e/t,Other,
+"tCO2 (transport downstream, selected countries)",Other,
+tCO2 (biogenic emissions),t CO2e,1.0
+tCO2e (flight travel only),Other,
+tCO2 eq,t CO2e,1.0
+tCO2e/$m,Other,
+tCO2e/million CHF,Other,
+tCO2eq (associated with transportation),Other,
+thousand t CO2e (upstream total),kt CO2e,1000.0
+thousand t-CO2-e,kt CO2e,1000.0
+thousand tCO2-eq.,kt CO2e,1000.0
+thousand tonnes CO2 eq,kt CO2e,1000.0
+thousand tons CO2eq,kt CO2e,1000.0
+Thousands Metric tons CO2e,kt CO2e,1000.0
+tCO₂ eq,t CO2e,1.0
+"Tonnen (sum of Gas, Diesel, Benzin, Sonstiges)",Other,
+tCO2 eq.,t CO2e,1.0
+tons (FCA Mass-Market Vehicles Assembly and Stampi,Other,
+tCO2-Äquivalente,t CO2e,1.0
+"tons of CO2 (per passenger, excluding aircraft sou",Other,
+tCO2-Äquivalenten,t CO2e,1.0
+tons of CO2eq (business travel only),Other,
+Tsd. t CO2 (Scope 3.1: purchased goods and service,Other,
+million tCO2e (baseline year),Mt CO2e,1000000.0
+"(Mton CO₂e, use of sold products)",Other,
+(Null-Emissionen Scope 1 und 2 im Werk Kirkenær; e,Other,
+(per m² Ladenfläche),Other,
+"+ 36,0 = 42,0 Mio. t CO2eq",Other,
+"+ 42,6 = 49,8 Mio. t CO2eq",Other,
+"1,000 metric tons CO2e (downstream), 9,230 1,000 m",Other,
+"1,000 metric tons of CO2e",kt CO2e,1000.0
+"1,000 tCO2e (purchased goods and services, Scope 3",Other,
+"1,000 tons of CO2eq",kt CO2e,1000.0
+"1,000 tons-CO2",kt CO2e,1000.0
+"GWh (energy consumption, not direct CO2e emissions",Other,
+"kg CO2 per kg purchased raw material (Scope 3.1, e",Other,
+kg CO2 per tonne cementitious material,Other,
+kg CO2-Äquivalenten,kg CO2e,0.001
+kg CO2e (Dienstreisen),Other,
+kt CO₂,kt CO2e,1000.0
+ktCO2,kt CO2e,1000.0
+ktCO2e (excluding acquisitions),Other,
+ktCO2e (Non-Biogenic),Other,
+million tCO₂e (restated baseline),Mt CO2e,1000000.0
+metric kilotons CO2e,kt CO2e,1000.0
+tCO2e,t CO2e,1.0
+Million tCO2eq,Mt CO2e,1000000.0
+million tCO2eq,Mt CO2e,1000000.0
+million tCOâ‚‚e,Mt CO2e,1000000.0
+million tCOâ‚‚e (restated baseline),Mt CO2e,1000000.0
+million Tonnen CO2-Äquivalente,Mt CO2e,1000000.0
+million Tonnen CO2e,Mt CO2e,1000000.0
+million tonnes,Mt CO2e,1000000.0
+"Mio. t (Mercedes-Benz Cars, absolute)",Other,
+mt CO2e (AMG Silicon only; AMG Group total not spe,Other,
+MtCO2e (use of sold products on a fossil fuel base,Other,
+"Mton CO₂e (use of sold products, Scope 3.11)",Other,
+t (from flight travel),Other,
+t CO₂ (business air travel only),Other,
+"t CO2 (business air travel, estimated)",Other,
+"t CO2 (business travel by air), 0 t CO2 (business",Other,
+t CO₂ (CONTSHIP Italia),Other,
+TCO2e,t CO2e,1.0
+"t CO2 (Upstream), 399,223 t CO2 (Downstream)",Other,
+TCo2e,t CO2e,1.0
+tCO2-e,t CO2e,1.0
+"t CO2 per vehicle (Mercedes-Benz Cars), 0.3 t CO2",Other,
+t CO2e (calculated Scope-3 emissions for container,Other,
+"t CO2e (Grüner Strom, Strom aus erneuerbaren Quell",Other,
+t CO₂e (only for seven sites; not fully comparable,Other,
+"t CO2e (partial, maritime logistics of rice divisi",Other,
+"t CO2e (total Scope 1+2 location-based, not separa",Other,
+t CO2e per tonne processed material,Other,
+"t CO2e/MWh (intensity only, absolute value not spe",Other,
+t CO2e/MWh (intensity),Other,
+t of CO2 (Scopes 1 and 2 combined; individual valu,Other,
+t-CO2e,t CO2e,1.0
+tCO₂e,t CO2e,1.0
+tCO₂-e,t CO2e,1.0
+t-CO₂e,t CO2e,1.0
+tCO2e (combined Scope 1 and 2; individual value no,Other,
+"tCO2e (Underlying Business), 178,682 tCO2e (Whole",Other,
+"tCO2e (Underlying Business), 387,581 tCO2e (Whole",Other,
+tCO2e/€ millions revenue,Other,
+tCO2e (2019-2020 disclosed),t CO2e,1.0
+"tCO2eq (Europe, established scope, new factors); 7",Other,
+tCO2e (2020-2021 disclosed),t CO2e,1.0
+thousand metric tons CO2 equivalents (external inp,Other,
+thousand metric tons CO2 equivalents (net),kt CO2e,1000.0
+Tm CO2e,Other,
+tCO2e (adjusted methodology),t CO2e,1.0
+Tonnen CO2 (Leasingflotte),Other,
+Tonnen CO2 je Million Euro Umsatz,Other,
+Tonnen CO2 pro Million Euro Umsatz,Other,
+"Tonnen CO2e (Kategorie 3.4, Versandwege)",Other,
+tCO2e (baseline emissions value prior to re-baseli,t CO2e,1.0
+tonnes CO2 (Aéroports de Paris only),Other,
+Tonnes CO2 (Business Travel by air only),Other,
+Tonnes CO2 per million Euro revenue,Other,
+tCO2e (baseline year),t CO2e,1.0
+tCO2e (baseline),t CO2e,1.0
+tons (for three production facilities only),Other,
+"tons (Malpensa), 55 tons (Linate)",Other,
+"tons (Malpensa), 66 tons (Linate)",Other,
+tons CO₂ (business travel),Other,
+TSD t CO2e,kt CO2e,1000.0
+Tsd. t (ohne Fahrstrom),Other,
+Tsd. Tonnen CO2 (sum of listed Scope 3 categories,Other,
+10 Kiloton CO2e,10 kt CO2e,10000.0
+10 Kiloton CO₂e,10 kt CO2e,10000.0
+10 Kilotonnes CO2e,10 kt CO2e,10000.0
+10 Kilotonnes CO₂e,10 kt CO2e,10000.0
+10 Kilotons CO2e,10 kt CO2e,10000.0
+10 Kilotons CO₂e,10 kt CO2e,10000.0
+10 kT CO2 eq,10 kt CO2e,10000.0
+10 kt CO2 eq,10 kt CO2e,10000.0
+10 kT CO₂ eq,10 kt CO2e,10000.0
+10 kt CO₂ eq,10 kt CO2e,10000.0
+10 kT CO2 equivalent,10 kt CO2e,10000.0
+10 KT CO2 equivalent,10 kt CO2e,10000.0
+10 kt CO2 equivalent,10 kt CO2e,10000.0
+10 KT CO₂ equivalent,10 kt CO2e,10000.0
+10 kt CO₂ equivalent,10 kt CO2e,10000.0
+10 kT CO₂ equivalent,10 kt CO2e,10000.0
+10 kt CO2-Äq,10 kt CO2e,10000.0
+10 kT CO2-Äq,10 kt CO2e,10000.0
+10 kT CO₂-Äq,10 kt CO2e,10000.0
+10 kt CO₂-Äq,10 kt CO2e,10000.0
+10 KT CO2e,10 kt CO2e,10000.0
+10 kT CO2e,10 kt CO2e,10000.0
+10 kt CO2e,10 kt CO2e,10000.0
+10 kT CO₂e,10 kt CO2e,10000.0
+10 kt CO₂e,10 kt CO2e,10000.0
+10 KT CO₂e,10 kt CO2e,10000.0
+10 kT CO2eq,10 kt CO2e,10000.0
+10 KT CO2eq,10 kt CO2e,10000.0
+10 kt CO2eq,10 kt CO2e,10000.0
+10 kt CO2-Eq,10 kt CO2e,10000.0
+10 kT CO2-Eq,10 kt CO2e,10000.0
+10 KT CO₂eq,10 kt CO2e,10000.0
+10 kT CO₂eq,10 kt CO2e,10000.0
+10 kt CO₂eq,10 kt CO2e,10000.0
+10 kT CO₂-Eq,10 kt CO2e,10000.0
+10 kt CO₂-Eq,10 kt CO2e,10000.0
+10 kT CO2-equivalent,10 kt CO2e,10000.0
+10 KT CO2-equivalent,10 kt CO2e,10000.0
+10 KT CO2-Equivalent,10 kt CO2e,10000.0
+10 kT CO2-Equivalent,10 kt CO2e,10000.0
+10 kt CO2-equivalent,10 kt CO2e,10000.0
+10 KT CO₂-Equivalent,10 kt CO2e,10000.0
+10 kt CO₂-equivalent,10 kt CO2e,10000.0
+10 kT CO₂-equivalent,10 kt CO2e,10000.0
+10 kT CO₂-Equivalent,10 kt CO2e,10000.0
+10 KT CO₂-equivalent,10 kt CO2e,10000.0
+"10,000 t CO2 eq",10 kt CO2e,10000.0
+"10,000 t CO₂ eq",10 kt CO2e,10000.0
+"10,000 t CO2e",10 kt CO2e,10000.0
+"10,000 t CO₂e",10 kt CO2e,10000.0
+"10,000 t CO2eq",10 kt CO2e,10000.0
+"10,000 t CO2-Eq",10 kt CO2e,10000.0
+"10,000 t CO₂eq",10 kt CO2e,10000.0
+"10,000 t CO₂-Eq",10 kt CO2e,10000.0
+"10,000t CO2 eq",10 kt CO2e,10000.0
+"10,000t CO₂ eq",10 kt CO2e,10000.0
+"10,000t CO2e",10 kt CO2e,10000.0
+"10,000t CO₂e",10 kt CO2e,10000.0
+"10,000t CO2eq",10 kt CO2e,10000.0
+"10,000t CO2-Eq",10 kt CO2e,10000.0
+"10,000t CO₂eq",10 kt CO2e,10000.0
+"10,000t CO₂-Eq",10 kt CO2e,10000.0
+10kt CO2 eq,10 kt CO2e,10000.0
+10KT CO2 eq,10 kt CO2e,10000.0
+10kT CO2 eq,10 kt CO2e,10000.0
+10kT CO₂ eq,10 kt CO2e,10000.0
+10kt CO₂ eq,10 kt CO2e,10000.0
+10KT CO₂ eq,10 kt CO2e,10000.0
+10KT CO2 equivalent,10 kt CO2e,10000.0
+10kT CO2 equivalent,10 kt CO2e,10000.0
+10kT CO₂ equivalent,10 kt CO2e,10000.0
+10KT CO₂ equivalent,10 kt CO2e,10000.0
+10KT CO2-Äq,10 kt CO2e,10000.0
+10kT CO2-Äq,10 kt CO2e,10000.0
+10kt CO2-Äq,10 kt CO2e,10000.0
+10kT CO₂-Äq,10 kt CO2e,10000.0
+10kt CO₂-Äq,10 kt CO2e,10000.0
+10KT CO₂-Äq,10 kt CO2e,10000.0
+10KT CO2e,10 kt CO2e,10000.0
+10kt CO2e,10 kt CO2e,10000.0
+10kT CO2e,10 kt CO2e,10000.0
+10kt CO₂e,10 kt CO2e,10000.0
+10KT CO₂e,10 kt CO2e,10000.0
+10kT CO₂e,10 kt CO2e,10000.0
+10kt CO2eq,10 kt CO2e,10000.0
+10KT CO2eq,10 kt CO2e,10000.0
+10kT CO2eq,10 kt CO2e,10000.0
+10KT CO2-Eq,10 kt CO2e,10000.0
+10kt CO2-Eq,10 kt CO2e,10000.0
+10kT CO2-Eq,10 kt CO2e,10000.0
+10kT CO₂eq,10 kt CO2e,10000.0
+10kt CO₂eq,10 kt CO2e,10000.0
+10KT CO₂eq,10 kt CO2e,10000.0
+10kt CO₂-Eq,10 kt CO2e,10000.0
+10kT CO₂-Eq,10 kt CO2e,10000.0
+10KT CO₂-Eq,10 kt CO2e,10000.0
+10KT CO2-equivalent,10 kt CO2e,10000.0
+10kT CO2-equivalent,10 kt CO2e,10000.0
+10kt CO2-Equivalent,10 kt CO2e,10000.0
+10kT CO2-Equivalent,10 kt CO2e,10000.0
+10kT CO₂-Equivalent,10 kt CO2e,10000.0
+10kT CO₂-equivalent,10 kt CO2e,10000.0
+10kt CO₂-Equivalent,10 kt CO2e,10000.0
+10KT CO₂-equivalent,10 kt CO2e,10000.0
+10ktCO2e,10 kt CO2e,10000.0
+10ktCO₂e,10 kt CO2e,10000.0
+B metric tonnes CO2,Gt CO2e,1000000000.0
+B metric tonnes CO₂,Gt CO2e,1000000000.0
+B metric tons CO2,Gt CO2e,1000000000.0
+B metric tons CO₂,Gt CO2e,1000000000.0
+B tonnes CO2,Gt CO2e,1000000000.0
+B tonnes CO₂,Gt CO2e,1000000000.0
+B tons CO2,Gt CO2e,1000000000.0
+B tons CO₂,Gt CO2e,1000000000.0
+billion metric ton CO2,Gt CO2e,1000000000.0
+billion metric ton CO₂,Gt CO2e,1000000000.0
+billion metric tonne CO2,Gt CO2e,1000000000.0
+billion metric tonne CO₂,Gt CO2e,1000000000.0
+Billion metric tonnes CO2,Gt CO2e,1000000000.0
+billion metric tonnes CO2,Gt CO2e,1000000000.0
+Billion metric tonnes CO₂,Gt CO2e,1000000000.0
+billion metric tonnes CO₂,Gt CO2e,1000000000.0
+Billion metric tons CO2,Gt CO2e,1000000000.0
+billion metric tons CO2,Gt CO2e,1000000000.0
+Billion metric tons CO₂,Gt CO2e,1000000000.0
+billion metric tons CO₂,Gt CO2e,1000000000.0
+billion ton CO2,Gt CO2e,1000000000.0
+billion ton CO₂,Gt CO2e,1000000000.0
+billion tonne CO2,Gt CO2e,1000000000.0
+billion tonne CO₂,Gt CO2e,1000000000.0
+Billion tonnes CO2,Gt CO2e,1000000000.0
+billion tonnes CO2,Gt CO2e,1000000000.0
+Billion tonnes CO₂,Gt CO2e,1000000000.0
+billion tonnes CO₂,Gt CO2e,1000000000.0
+Billion tons CO2,Gt CO2e,1000000000.0
+billion tons CO2,Gt CO2e,1000000000.0
+billion tons CO₂,Gt CO2e,1000000000.0
+Billion tons CO₂,Gt CO2e,1000000000.0
+bn metric tonnes CO2,Gt CO2e,1000000000.0
+bn metric tonnes CO₂,Gt CO2e,1000000000.0
+bn metric tons CO2,Gt CO2e,1000000000.0
+bn metric tons CO₂,Gt CO2e,1000000000.0
+bn tonnes CO2,Gt CO2e,1000000000.0
+bn tonnes CO₂,Gt CO2e,1000000000.0
+bn tons CO2,Gt CO2e,1000000000.0
+bn tons CO₂,Gt CO2e,1000000000.0
+co2 eq kg,kg CO2e,0.001
+CO2 eq kg,kg CO2e,0.001
+co2 eq KG,kg CO2e,0.001
+co₂ eq kg,kg CO2e,0.001
+co₂ eq KG,kg CO2e,0.001
+CO₂ eq kg,kg CO2e,0.001
+CO2-Äq kg,kg CO2e,0.001
+CO₂-Äq kg,kg CO2e,0.001
+CO2E kg,kg CO2e,0.001
+co2e kg,kg CO2e,0.001
+CO2e kg,kg CO2e,0.001
+CO₂E kg,kg CO2e,0.001
+CO₂e kg,kg CO2e,0.001
+co₂e kg,kg CO2e,0.001
+CO2eq kg,kg CO2e,0.001
+CO2Eq kg,kg CO2e,0.001
+co2eq kg,kg CO2e,0.001
+CO2EQ kg,kg CO2e,0.001
+CO2-Eq kg,kg CO2e,0.001
+CO₂Eq kg,kg CO2e,0.001
+CO₂eq kg,kg CO2e,0.001
+co₂eq kg,kg CO2e,0.001
+CO₂EQ kg,kg CO2e,0.001
+CO₂-Eq kg,kg CO2e,0.001
+gigaton CO 2,Gt CO2e,1000000000.0
+gigaton CO ₂,Gt CO2e,1000000000.0
+Gigaton CO2,Gt CO2e,1000000000.0
+GIGATON CO2,Gt CO2e,1000000000.0
+gigaton CO2,Gt CO2e,1000000000.0
+GIGATON CO₂,Gt CO2e,1000000000.0
+gigaton CO₂,Gt CO2e,1000000000.0
+Gigaton CO₂,Gt CO2e,1000000000.0
+gigaton-CO2,Gt CO2e,1000000000.0
+gigaton-CO₂,Gt CO2e,1000000000.0
+gigatonne CO 2,Gt CO2e,1000000000.0
+gigatonne CO ₂,Gt CO2e,1000000000.0
+Gigatonne CO2,Gt CO2e,1000000000.0
+gigatonne CO2,Gt CO2e,1000000000.0
+Gigatonne CO₂,Gt CO2e,1000000000.0
+gigatonne CO₂,Gt CO2e,1000000000.0
+gigatonne-CO2,Gt CO2e,1000000000.0
+gigatonne-CO₂,Gt CO2e,1000000000.0
+gigatonnes CO 2,Gt CO2e,1000000000.0
+gigatonnes CO ₂,Gt CO2e,1000000000.0
+gigatonnes CO2,Gt CO2e,1000000000.0
+Gigatonnes CO2,Gt CO2e,1000000000.0
+GIGATONNES CO2,Gt CO2e,1000000000.0
+GIGATONNES CO₂,Gt CO2e,1000000000.0
+gigatonnes CO₂,Gt CO2e,1000000000.0
+Gigatonnes CO₂,Gt CO2e,1000000000.0
+gigatonnes-CO2,Gt CO2e,1000000000.0
+gigatonnes-CO₂,Gt CO2e,1000000000.0
+gigatons CO 2,Gt CO2e,1000000000.0
+gigatons CO ₂,Gt CO2e,1000000000.0
+gigatons CO2,Gt CO2e,1000000000.0
+Gigatons CO2,Gt CO2e,1000000000.0
+Gigatons CO₂,Gt CO2e,1000000000.0
+gigatons CO₂,Gt CO2e,1000000000.0
+gigatons-CO2,Gt CO2e,1000000000.0
+gigatons-CO₂,Gt CO2e,1000000000.0
+Gt CO 2,Gt CO2e,1000000000.0
+Gt CO2,Gt CO2e,1000000000.0
+gt CO2,Gt CO2e,1000000000.0
+GT CO2,Gt CO2e,1000000000.0
+Gt CO₂,Gt CO2e,1000000000.0
+GT CO₂,Gt CO2e,1000000000.0
+gt CO₂,Gt CO2e,1000000000.0
+Gt CO2.,Gt CO2e,1000000000.0
+Gt CO₂.,Gt CO2e,1000000000.0
+GTCO2,Gt CO2e,1000000000.0
+GtCO2,Gt CO2e,1000000000.0
+gtCO2,Gt CO2e,1000000000.0
+Gt-CO2,Gt CO2e,1000000000.0
+GT-CO2,Gt CO2e,1000000000.0
+GTCO₂,Gt CO2e,1000000000.0
+gtCO₂,Gt CO2e,1000000000.0
+GtCO₂,Gt CO2e,1000000000.0
+Gt-CO₂,Gt CO2e,1000000000.0
+GT-CO₂,Gt CO2e,1000000000.0
+Kg CO2 EQ,kg CO2e,0.001
+KG CO2 eq,kg CO2e,0.001
+kg CO2 eq,kg CO2e,0.001
+kg CO₂ eq,kg CO2e,0.001
+kg CO2 equivalent,kg CO2e,0.001
+KG CO2 equivalent,kg CO2e,0.001
+kg CO₂ equivalent,kg CO2e,0.001
+KG CO₂ equivalent,kg CO2e,0.001
+kg CO2-Äq,kg CO2e,0.001
+kg CO₂-Äq,kg CO2e,0.001
+KG CO2e,kg CO2e,0.001
+KG CO2-E,kg CO2e,0.001
+KG CO₂e,kg CO2e,0.001
+Kg CO₂E,kg CO2e,0.001
+KG CO2eq,kg CO2e,0.001
+Kg CO2eq,kg CO2e,0.001
+KG CO2EQ,kg CO2e,0.001
+Kg CO2-EQ,kg CO2e,0.001
+Kg CO2-Eq,kg CO2e,0.001
+kg CO2-EQ,kg CO2e,0.001
+kg CO₂eq,kg CO2e,0.001
+KG CO₂eq,kg CO2e,0.001
+Kg CO₂EQ,kg CO2e,0.001
+kg CO₂-EQ,kg CO2e,0.001
+Kg CO₂-EQ,kg CO2e,0.001
+KG CO2Equiv,kg CO2e,0.001
+kg CO2Equiv,kg CO2e,0.001
+kg CO2-Equiv,kg CO2e,0.001
+kg CO₂-Equiv,kg CO2e,0.001
+kg CO2-equivalent,kg CO2e,0.001
+KG CO2-Equivalent,kg CO2e,0.001
+kg CO₂-equivalent,kg CO2e,0.001
+KG CO₂-Equivalent,kg CO2e,0.001
+kg. eq. CO2,kg CO2e,0.001
+kg_CO2e,kg CO2e,0.001
+kg_CO₂e,kg CO2e,0.001
+kgCO2,kg CO2e,0.001
+KgCO2,kg CO2e,0.001
+kgCO₂,kg CO2e,0.001
+KgCO₂,kg CO2e,0.001
+kgCO2_e,kg CO2e,0.001
+kgCO₂_e,kg CO2e,0.001
+kgCO2_Eq,kg CO2e,0.001
+kgCO₂_EQ,kg CO2e,0.001
+KgCO2_Equivalent,kg CO2e,0.001
+KgCO₂_Equivalent,kg CO2e,0.001
+kgCO2-Äq,kg CO2e,0.001
+kgCO₂-Äq,kg CO2e,0.001
+kgCO2E,kg CO2e,0.001
+KGCO2e,kg CO2e,0.001
+kgCO2-e,kg CO2e,0.001
+KG-CO2e,kg CO2e,0.001
+kg-Co2e,kg CO2e,0.001
+kg-CO2e,kg CO2e,0.001
+Kg-Co2e,kg CO2e,0.001
+kgCO₂e,kg CO2e,0.001
+KGCO₂e,kg CO2e,0.001
+kgCO₂E,kg CO2e,0.001
+kgCO₂-e,kg CO2e,0.001
+KG-CO₂e,kg CO2e,0.001
+Kg-CO₂e,kg CO2e,0.001
+KgCO2e_,kg CO2e,0.001
+KgCO₂e_,kg CO2e,0.001
+KgCO2eq,kg CO2e,0.001
+KGCO2-Eq,kg CO2e,0.001
+kgCO2-Eq,kg CO2e,0.001
+KgCO2-Eq,kg CO2e,0.001
+KgCO₂eq,kg CO2e,0.001
+KgCO₂-Eq,kg CO2e,0.001
+kgCO2Equiv,kg CO2e,0.001
+kgCO₂Equiv,kg CO2e,0.001
+Kilogram CO2e,kg CO2e,0.001
+KILOGRAM CO2e,kg CO2e,0.001
+kilogram CO2e,kg CO2e,0.001
+KILOGRAM CO₂e,kg CO2e,0.001
+Kilogram CO₂e,kg CO2e,0.001
+kilogram CO₂e,kg CO2e,0.001
+metric gigatonnes CO2,Gt CO2e,1000000000.0
+metric gigatonnes CO₂,Gt CO2e,1000000000.0
+metric gigatons CO2,Gt CO2e,1000000000.0
+metric gigatons CO₂,Gt CO2e,1000000000.0
+ten kiloton CO2e,10 kt CO2e,10000.0
+ten kiloton CO₂e,10 kt CO2e,10000.0
+ten kilotonnes CO2e,10 kt CO2e,10000.0
+ten kilotonnes CO₂e,10 kt CO2e,10000.0
+ten kilotons CO2e,10 kt CO2e,10000.0
+ten kilotons CO₂e,10 kt CO2e,10000.0
+ten thousand tonnes CO2e,10 kt CO2e,10000.0
+ten thousand tonnes CO₂e,10 kt CO2e,10000.0
+ten thousand tons CO2e,10 kt CO2e,10000.0
+ten thousand tons CO₂e,10 kt CO2e,10000.0
+US ton CO2 eq,USt CO2e,0.907185
+US ton CO₂ eq,USt CO2e,0.907185
+US ton CO2 equivalent,USt CO2e,0.907185
+us ton CO2-Äq,USt CO2e,0.907185
+US ton CO2-Äq,USt CO2e,0.907185
+us ton CO₂-Äq,USt CO2e,0.907185
+US ton CO₂-Äq,USt CO2e,0.907185
+US ton CO2e,USt CO2e,0.907185
+us ton CO2e,USt CO2e,0.907185
+us ton CO₂e,USt CO2e,0.907185
+US ton CO₂e,USt CO2e,0.907185
+us ton CO2EQ,USt CO2e,0.907185
+US ton CO2EQ,USt CO2e,0.907185
+us ton CO2Eq,USt CO2e,0.907185
+US ton CO2eq,USt CO2e,0.907185
+US ton CO₂eq,USt CO2e,0.907185
+us ton CO₂Eq,USt CO2e,0.907185
+US ton CO₂Eq,USt CO2e,0.907185
+us ton CO₂eq,USt CO2e,0.907185
+US ton CO2-equivalent,USt CO2e,0.907185
+US ton CO2-Equivalent,USt CO2e,0.907185
+US ton CO₂-Equivalent,USt CO2e,0.907185
+US ton CO₂-equivalent,USt CO2e,0.907185
+US tonne CO2 eq,USt CO2e,0.907185
+US tonne CO₂ eq,USt CO2e,0.907185
+US tonne CO2 equivalent,USt CO2e,0.907185
+US tonne CO₂ equivalent,USt CO2e,0.907185
+US tonne CO2-Äq,USt CO2e,0.907185
+US tonne CO₂-Äq,USt CO2e,0.907185
+us tonne CO₂-Äq,USt CO2e,0.907185
+us tonne CO2e,USt CO2e,0.907185
+US tonne CO2e,USt CO2e,0.907185
+US tonne CO₂E,USt CO2e,0.907185
+US tonne CO₂e,USt CO2e,0.907185
+us tonne CO2Eq,USt CO2e,0.907185
+US tonne CO2Eq,USt CO2e,0.907185
+US tonne CO₂eq,USt CO2e,0.907185
+US tonne CO₂Eq,USt CO2e,0.907185
+US tonne CO2-Equivalent,USt CO2e,0.907185
+US tonne CO2-equivalent,USt CO2e,0.907185
+US tonne CO₂-equivalent,USt CO2e,0.907185
+US tonne CO₂-Equivalent,USt CO2e,0.907185
+us tons CO2 eq,USt CO2e,0.907185
+us tons CO₂ eq,USt CO2e,0.907185
+US tons CO₂ eq,USt CO2e,0.907185
+US tons CO2 equivalent,USt CO2e,0.907185
+US tons CO₂ equivalent,USt CO2e,0.907185
+US tons CO2-Äq,USt CO2e,0.907185
+us tons CO₂-Äq,USt CO2e,0.907185
+US tons CO₂-Äq,USt CO2e,0.907185
+US tons CO2e,USt CO2e,0.907185
+US tons CO₂E,USt CO2e,0.907185
+US tons CO₂e,USt CO2e,0.907185
+us tons CO2Eq,USt CO2e,0.907185
+US tons CO2Eq,USt CO2e,0.907185
+US tons CO2eq,USt CO2e,0.907185
+us tons CO₂Eq,USt CO2e,0.907185
+US tons CO₂eq,USt CO2e,0.907185
+US tons CO₂Eq,USt CO2e,0.907185
+US tons CO2-equivalent,USt CO2e,0.907185
+US tons CO2-Equivalent,USt CO2e,0.907185
+US tons CO₂-equivalent,USt CO2e,0.907185
+UST CO2 eq,USt CO2e,0.907185
+UST CO₂ eq,USt CO2e,0.907185
+UST CO2 equivalent,USt CO2e,0.907185
+UST CO₂ equivalent,USt CO2e,0.907185
+USt CO2e,USt CO2e,0.907185
+UST CO2e,USt CO2e,0.907185
+USt CO2eq,USt CO2e,0.907185
+UST CO2EQ,USt CO2e,0.907185
+UST CO2Eq,USt CO2e,0.907185
+UST CO2-Eq,USt CO2e,0.907185
+UST CO₂EQ,USt CO2e,0.907185
+UST CO₂eq,USt CO2e,0.907185
+UST CO₂Eq,USt CO2e,0.907185
+UST CO₂-Eq,USt CO2e,0.907185
+UST CO2-Equivalent,USt CO2e,0.907185
+UST CO2-equivalent,USt CO2e,0.907185
+UST CO₂-Equivalent,USt CO2e,0.907185
+UST CO₂-equivalent,USt CO2e,0.907185
+('000 tonnes CO2e),kt CO2e,1000.0
+"(1,000 tCO2e)",kt CO2e,1000.0
+"(1,000 tonnes COâ‚‚e)",kt CO2e,1000.0
+(10³ tCO2e),kt CO2e,1000.0
+(10Â³ tCO2e),kt CO2e,1000.0
+(â€˜000 tonnes CO2e),kt CO2e,1000.0
+(carbon neutral production by using 100% renewable,Other,
+(for Dienstreisen/Business travel only),Other,
+"(fuel combustion) + 3,469 (halogenated hydrocarbon",Other,
+"(fuel combustion) + 4,746 (halogenated hydrocarbon",Other,
+"(fuel combustion) + 4,872 (halogenated hydrocarbon",Other,
+"(fuel combustion) + 5,973 (halogenated hydrocarbon",Other,
+(Germany only),Other,
+(thousand t-CO2e),kt CO2e,1000.0
+(thousands of tCO2e),kt CO2e,1000.0
+"(unit not specified, likely metric tons CO2-equiva",Other,
+"+ 1,578 = 4,802 tons",Other,
+"+ 115,240 = 576,989 tons",Other,
+"+ 12,084 = 63,300 tons",Other,
+"+ 13,6 = 16,9 Mio. t CO2eq",Other,
+"+ 13,910 = 61,755 tons",Other,
+"+ 132,380 = 676,209 tons",Other,
+"+ 22,6 = 26,6 Mio. t CO2eq",Other,
+"+ 3,556 = 21,766 tons",Other,
+"+ 31,8 = 37,7 Mio. t CO2eq",Other,
+"+ 36,477 = 128,637 tons",Other,
+"+ 4,802 = 27,735 tons",Other,
++ 49 = 440 tons,Other,
+"+ 52,0 = 60,9 Mio. t CO2eq",Other,
+"+ 627,673 = 4,090,022 tons",Other,
+"+ 65,401 = 190,045 tons",Other,
++ 87 = 777 tons,Other,
+'000 tCO2e,kt CO2e,1000.0
+'000 tCO₂e,kt CO2e,1000.0
+000 tCOâ‚‚e,kt CO2e,1000.0
+'000 tonnes,kt CO2e,1000.0
+'000 tonnes CO2eq,kt CO2e,1000.0
+000s tonnes CO2e,kt CO2e,1000.0
+000s tonnes CO2e (buildings),Other,
+000s tonnes CO2e (from owned and leased vehicles),Other,
+"1,000 metric tons CO2e (downstream), 9,182 1,000 m",Other,
+"1,000 metric tons CO2e (downstream), 9,238 1,000 m",Other,
+"1,000 t-CO2",kt CO2e,1000.0
+"1,000 tCO2e",kt CO2e,1000.0
+"1,000 tonnes CO2",kt CO2e,1000.0
+"1,000 tonnes CO₂e",kt CO2e,1000.0
+"1,000tCO2e",kt CO2e,1000.0
+1’000 tonnes CO2e,kt CO2e,1000.0
+10 kt,10 kt CO2e,10000.0
+10^3 tonnes,kt CO2e,1000.0
+10^3 tonnes CO2e,kt CO2e,1000.0
 103 tCO2eq,kt CO2e,1000.0
+10³ tCO2eq,kt CO2e,1000.0
 103 tonnes CO2,kt CO2e,1000.0
 103t CO2eq,kt CO2e,1000.0
 103tCO2,kt CO2e,1000.0
 10Â³ tCO2eq,kt CO2e,1000.0
 1â€™000 tonnes CO2e,kt CO2e,1000.0
-CO2 (market-based method),Unknown,
-CO2-e tonnes,t CO2e,1.0
-CO2e tons,t CO2e,1.0
-COÂ²e tonnes,t CO2e,1.0
-GJ,Other,
-GWh,Other,
-KTons,kt CO2e,1000.0
-Kilotonnes CO2e,kt CO2e,1000.0
-KtCO2eq,kt CO2e,1000.0
-KtCOâ‚‚e,kt CO2e,1000.0
-Ktonnes,kt CO2e,1000.0
-Ktons,kt CO2e,1000.0
-Ktons CO2e,kt CO2e,1000.0
-M tons CO2-eq,Mt CO2e,1000000.0
-M tons of CO2 eq.,Mt CO2e,1000000.0
-MTons CO2 eq,Mt CO2e,1000000.0
-Metric Tons COâ‚‚e,t CO2e,1.0
-Mg CO2 e,t CO2e,1.0
-Mg CO2e,t CO2e,1.0
-Mg CO2e (electricity only),t CO2e,1.0
-MgCO2e,t CO2e,1.0
-Million metric tonnes CO2e,Mt CO2e,1000000.0
-Million t CO2eq,Mt CO2e,1000000.0
-Million tCO2eq,Mt CO2e,1000000.0
+231 520 kg CO2-eq.,Other,
+333 tCO2eq,Other,
+391 kg CO2-eq.,Other,
+536 tCO2eq,Other,
+593 kg CO2-eq.,Other,
+640 tCO2e,Other,
+722 kg CO2-eq.,Other,
+758 tCO2e,Other,
+billion metric tons CO2e,Gt CO2e,1000000000.0
+tCO2e (Baseline),t CO2e,1.0
+CO2 (market-based method),Other,
 Million tonnes,Mt CO2e,1000000.0
-Million tonnes CO2e,Mt CO2e,1000000.0
-Mt,Mt CO2e,1000000.0
-Mt CO2,Mt CO2e,1000000.0
-Mt CO2 eq,Mt CO2e,1000000.0
-Mt CO2 eq.,Mt CO2e,1000000.0
-Mt CO2(e),Mt CO2e,1000000.0
-Mt CO2-eq,Mt CO2e,1000000.0
-Mt CO2e,Mt CO2e,1000000.0
-Mt CO2eq,Mt CO2e,1000000.0
-Mt COâ‚‚e,Mt CO2e,1000000.0
-MtCO2,Mt CO2e,1000000.0
-MtCO2 (baseline),Mt CO2e,1000000.0
-MtCO2e (baseline),Mt CO2e,1000000.0
-MtCO2eq,Mt CO2e,1000000.0
-MtCO2eq.,Mt CO2e,1000000.0
-MtCOâ‚‚e,Mt CO2e,1000000.0
-Mtonnes,Mt CO2e,1000000.0
-Mtonnes CO2e,Mt CO2e,1000000.0
-T COâ‚‚ eq,t CO2e,1.0
-TCO2e,t CO2e,1.0
-TeqCO,t CO2e,1.0
-TeqCO2,t CO2e,1.0
-Tg COâ‚‚,kg CO2e,0.001
-Thousands tCO2e,kt CO2e,1000.0
-Ton CO2eq,t CO2e,1.0
-Tonnes CO2eq,t CO2e,1.0
-Tonnes of CO2e,t CO2e,1.0
-Tsd. t CO2e,kt CO2e,1000.0
-"Tt CO2 eq,Unknown",kt CO2e,1000.0
+tCO₂e (Baseline),t CO2e,1.0
+CO2 equivalents (US tons),USt CO2e,0.907185
+CO2 Equivalents (US Tons),USt CO2e,0.907185
+tCO2e (corporate baseline),t CO2e,1.0
+tCO2e (forecast),t CO2e,1.0
+tCO2e (Global incl UK),t CO2e,1.0
+tCO2e (Global),t CO2e,1.0
+"tCO2e (gross total, w/o removals)",t CO2e,1.0
+tCO2e (market-based),t CO2e,1.0
+tCO2e (preliminary),t CO2e,1.0
+tCO2e (restated),t CO2e,1.0
+tCO2e (sum of all Scope 3 categories provided),t CO2e,1.0
+tCO2e (target corridor),t CO2e,1.0
+emissions,Other,
 g CO2e/kWh,Other,
 gCO2e/MJ,Other,
+GJ,Other,
+grammes per vehicle/km; 42 million tons (absolute),Other,
 k metric tons,kt CO2e,1000.0
 k mt CO2eq,kt CO2e,1000.0
 k tonnes CO2 eq,kt CO2e,1000.0
+K tons,kt CO2e,1000.0
 k tons of CO2 eq.,kt CO2e,1000.0
-kT CO2eq,kt CO2e,1000.0
-kTon,kt CO2e,1000.0
-kTon CO2e,kt CO2e,1000.0
-kTons (base year),kt CO2e,1000.0
-kTons CO2 eq (Baseline),kt CO2e,1000.0
+kg,kg CO2e,0.001
+"kg (sum of gasverbrauch in CO2 for all sites: 2,04",Other,
+"kg (uvex safety group); 210,169 kg (uvex Winter Ho",Other,
+"kg (uvex safety group); 218,827 kg (uvex Winter Ho",Other,
+"kg (uvex safety group); 220,061 kg (uvex Winter Ho",Other,
+"kg (ViVoChem, Almelo only; all other sites: 0)",Other,
+"kg CO2 (like-for-like basis compared to 2018); 1,8",Other,
+"kg CO2 (like-for-like basis compared to 2018); 3,9",Other,
+"kg CO2 per m2 selling, office and delivery space",Other,
+kg CO2 pro VE,Other,
 kg CO2/kWh,Other,
+kg CO₂/t zementartigem Material,Other,
+kg CO2Äq,kg CO2e,0.001
+kg CO2-Äquivalente,kg CO2e,0.001
+Kg CO2e,kg CO2e,0.001
+kg CO2-e,kg CO2e,0.001
 kg CO2e/MWh generated,Other,
 kg CO2e/t,Other,
 kg CO2eq,kg CO2e,0.001
+kg CO2-eq,kg CO2e,0.001
 kg CO2eq per year,kg CO2e,0.001
 kg of CO2e,kg CO2e,0.001
+kg. eq. CO₂,kg CO2e,0.001
 kg/mÂ³ CO2 intensity,Other,
 kgCO2 eq,kg CO2e,0.001
 kgCO2e/sq ft,Other,
 kgCO2e/sqm*year,Other,
+kilograms,kg CO2e,0.001
+kilograms CO2-equivalent,kg CO2e,0.001
+kiloton CO2 eq,kt CO2e,1000.0
+kiloton CO2e,kt CO2e,1000.0
 kilotonnes,kt CO2e,1000.0
 kilotonnes (baseline),kt CO2e,1000.0
-"kilotonnes (baseline, combined Scope 1 and 2)",kt CO2e,1000.0
+"kilotonnes (baseline, combined Scope 1 and 2)",Other,
 kilotonnes CO2,kt CO2e,1000.0
-kilotonnes CO2e,kt CO2e,1000.0
-kilotons,kt CO2e,1000.0
+kilotonnes CO2 eq,kt CO2e,1000.0
+kilotonnes CO2 equivalent (CO2e),kt CO2e,1000.0
+Kilotonnes CO2e,kt CO2e,1000.0
+kilotonnes CO2-e,kt CO2e,1000.0
+kilotonnes of CO2e,kt CO2e,1000.0
+kilotonnes of CO2-equivalent,kt CO2e,1000.0
 kilotons (adjusted baseline),kt CO2e,1000.0
+kilotons CO₂e (adjusted for portfolio changes),kt CO2e,1000.0
+"kilotons CO2e (gross emissions, including Scope 1,",Other,
 kilotons COâ‚‚e,kt CO2e,1000.0
 kilotons COâ‚‚e (adjusted for portfolio changes),kt CO2e,1000.0
-kt,kt CO2e,1000.0
-kt CO2 eq,kt CO2e,1000.0
+kt (business travel only),Other,
+"kt (nachgelagerte Lieferkette) + 4,995 kt (vorgela",Other,
+kt (sum of categories provided),kt CO2e,1000.0
+"kt CO (carbon monoxide), 0.48 kt NOx (nitrogen oxi",Other,
 kt CO2 Ã„q.,kt CO2e,1000.0
-kt CO2eq,kt CO2e,1000.0
+kt CO2 Äq.,kt CO2e,1000.0
+kt CO2 eq,kt CO2e,1000.0
+"kt CO2e (Germany only, from electricity consumptio",Other,
+kt CO2e (mid- and downstream oil & gas portfolio),Other,
+kt CO2e (not audited),kt CO2e,1000.0
+kt CO2e (Scope 1 and 2 combined),Other,
+kt CO2e (sum of all categories listed for 2022),Other,
+kt CO2e (upstream oil & gas portfolio),Other,
+"kt CO2e (upstream) + 5,679 kt CO2e (downstream)",Other,
+kt CO2e (without consideration of green electricit,Other,
+kT CO2eq,kt CO2e,1000.0
 kt COâ‚‚e,kt CO2e,1000.0
-ktCO2,kt CO2e,1000.0
-ktCO2 (sum of upstream and downstream emissions),kt CO2e,1000.0
-ktCO2e,kt CO2e,1000.0
-ktCO2e (Baseline value for financed Scope 1 emissi,kt CO2e,1000.0
+ktCO2 (sum of upstream and downstream emissions),Other,
+ktCO₂ eq,kt CO2e,1000.0
+KtCO2e,kt CO2e,1000.0
+ktCO₂e,kt CO2e,1000.0
+KtCO₂e,kt CO2e,1000.0
+ktCO2e (Baseline value for financed Scope 1 emissi,Other,
+ktCO2e (Electricity),Other,
+ktCO2e (Fleet) + 202 ktCO2e (Heat) + 38 ktCO2e (F-,Other,
+"ktCO2e (Old), 267 ktCO2e (New)",Other,
+"ktCO2e (Old), 297 ktCO2e (New)",Other,
+"ktCO2e (Old), 939 ktCO2e (New)",Other,
 ktCO2e (restated baseline),kt CO2e,1000.0
-"ktCO2e (restated baseline, combined Scope 1 and 2)",kt CO2e,1000.0
+"ktCO2e (restated baseline, combined Scope 1 and 2)",Other,
 ktCO2e (restated),kt CO2e,1000.0
+ktCO2e (sum of all Scope 3 categories listed),kt CO2e,1000.0
+"ktCO2e (total, baseline year)",kt CO2e,1000.0
 ktCO2e in 2022,kt CO2e,1000.0
+KtCO2eq,kt CO2e,1000.0
 ktCO2eq,kt CO2e,1000.0
+kTCO2eq,kt CO2e,1000.0
+ktCO₂eq,kt CO2e,1000.0
 ktCO2eq (base year),kt CO2e,1000.0
+KtCOâ‚‚e,kt CO2e,1000.0
 ktCOâ‚‚e,kt CO2e,1000.0
 ktCOâ‚‚eq,kt CO2e,1000.0
-ktonnes CO2 fossil,kt CO2e,1000.0
-ktonnes CO2 fossil (grid electricity),kt CO2e,1000.0
-ktonnes CO2e (company vehicles),kt CO2e,1000.0
-"ktonnes CO2e (market-based, on-site)",kt CO2e,1000.0
-"ktonnes CO2e (purchased goods and services, catego",kt CO2e,1000.0
+kTon,kt CO2e,1000.0
+kton,kt CO2e,1000.0
+kTon CO2e,kt CO2e,1000.0
+Kton CO2e,kt CO2e,1000.0
+kton CO₂e,kt CO2e,1000.0
+Ktonnes,kt CO2e,1000.0
+ktonnes CO2 fossil (grid electricity),Other,
+ktonnes CO2e (company vehicles),Other,
+"ktonnes CO2e (machines sold, category 11)",Other,
+"ktonnes CO2e (market-based, on-site)",Other,
+"ktonnes CO2e (purchased goods and services, catego",Other,
 ktonnes CO2e (restated base year),kt CO2e,1000.0
+ktonnes CO2-eq,kt CO2e,1000.0
 ktons,kt CO2e,1000.0
-"ktons (SAF scenario), 494,893 ktons (""no SAF"" scen",kt CO2e,1000.0
-ktons CO2e,kt CO2e,1000.0
-kts,Unknown,
-m t,t CO2e,1.0
-metric Mtons CO2e,Mt CO2e,1000000.0
-metric ktons CO2e (combined with Scope 1),kt CO2e,1000.0
-metric ktons CO2e (combined with Scope 2),kt CO2e,1000.0
-metric tonnes (t) CO2,t CO2e,1.0
-metric tonnes CO2,t CO2e,1.0
-metric tonnes CO2 equivalents,t CO2e,1.0
-metric tonnes CO2e,t CO2e,1.0
-metric tonnes of CO2,t CO2e,1.0
-metric tonnes of CO2e,t CO2e,1.0
-metric tonnes of CO2eq,t CO2e,1.0
+kTons,kt CO2e,1000.0
+kTons (base year),kt CO2e,1000.0
+"ktons (SAF scenario), 494,893 ktons (""no SAF"" scen",Other,
+kTons CO₂,kt CO2e,1000.0
+kTons CO2 eq (Baseline),kt CO2e,1000.0
+Ktons CO2e,kt CO2e,1000.0
+ktons CO2e (combined with Scope 1),Other,
+"ktons CO2e (commercial aircraft, SAF scenario)",Other,
+ktons CO₂e (Scope 1 & 2 combined),Other,
+ktons CO2e (target),kt CO2e,1000.0
+kts,Other,
+kts CO2e,kt CO2e,1000.0
+million tonnes CO2,Mt CO2e,1000000.0
+million tonnes CO₂,Mt CO2e,1000000.0
+million tonnes CO2 (MT),Mt CO2e,1000000.0
+million tonnes CO2 equivalent,Mt CO2e,1000000.0
+million tonnes CO2e,Mt CO2e,1000000.0
+"m tonnes CO2e (Global, excluding Vodafone UK); 0.1",Other,
+Million tonnes CO2e,Mt CO2e,1000000.0
+million tonnes CO₂e,Mt CO2e,1000000.0
+metric ktons CO2e,kt CO2e,1000.0
+metric ktons CO2e (combined with Scope 1),Other,
+metric ktons CO2e (combined with Scope 2),Other,
+million tonnes CO2e (equity),Mt CO2e,1000000.0
+"tCO2e (total gross emissions, market-based)",t CO2e,1.0
+tCO2e*,t CO2e,1.0
+tCO2e/year,t CO2e,1.0
+tCO2eq,t CO2e,1.0
+TCO2eq,t CO2e,1.0
+TCO2EQ,t CO2e,1.0
+tCO2-eq,t CO2e,1.0
+tCO₂eq,t CO2e,1.0
+tCO₂-eq,t CO2e,1.0
+tCO2eq (base year),t CO2e,1.0
+tCO2eq (baseline value),t CO2e,1.0
+tCO2-eq (biogenic emissions),t CO2e,1.0
+tCO2eq (location-based),t CO2e,1.0
+tCO2eq (market-based),t CO2e,1.0
+metric tonnes of CO2eq (Other indirect emissions),Other,
+"metric tons (sum of: Paper mill, Sweden 10,868; Co",Other,
+"metric tons (sum of: Paper mill, Sweden 13,112; Co",Other,
+"metric tons (sum of: Paper mill, Sweden 162,737; C",Other,
+"metric tons (sum of: Paper mill, Sweden 196,218; C",Other,
+tCO2eq (restated baseline),t CO2e,1.0
+tCO2equ,t CO2e,1.0
+tCO2equivalents,t CO2e,1.0
 "metric tons (x 1,000)",kt CO2e,1000.0
-metric tons CO2eq,t CO2e,1.0
-metric tons COâ‚‚e,t CO2e,1.0
-metric tons COâ‚‚eq,t CO2e,1.0
-metric tons of CO2 equivalent,t CO2e,1.0
-metric tons of CO2-equivalents (t CO2e),t CO2e,1.0
-metric tons of CO2e emissions,t CO2e,1.0
-metric tons of CO2eq,t CO2e,1.0
-metric tons of COâ‚‚ equivalents,t CO2e,1.0
-metric tons/year,t CO2e,1.0
-million CO2e,Mt CO2e,1000000.0
+metric tons CO₂ (including freight data),Other,
+tCOâ‚‚,t CO2e,1.0
+metric tons CO2 equivalent (Air travel Scope 3) +,Other,
+metric tons CO2 equivalent (annual estimate based,Other,
+tCOâ‚‚e,t CO2e,1.0
+metric tons CO2 equivalents per CHF million revenu,Other,
+tCOâ‚‚-e,t CO2e,1.0
+"metric tons CO2e (plus S1: 38,428 metric tons CO2e",Other,
+metric tons CO2e (sum of categories listed for 201,Other,
+metric tons CO2e (sum of categories listed for 202,Other,
+metric tons CO₂e (target for Scope 1 and 2 combine,Other,
+tCOâ‚‚e (Baseline),t CO2e,1.0
+"metric tons CO2e (upstream transport), 434,326 met",Other,
+tCOâ‚‚-e (market-based),t CO2e,1.0
+tCOâ‚‚eq,t CO2e,1.0
+metric tons CO2eq (sum of individual Scope 3 sourc,Other,
+tCOe,t CO2e,1.0
+TeqCO,t CO2e,1.0
+teqCO2,t CO2e,1.0
+TeqCO2,t CO2e,1.0
+TeqCO₂,t CO2e,1.0
+teqCO2e,t CO2e,1.0
+thousand tCO2e,t CO2e,1.0
+to CO2e,t CO2e,1.0
+ton,t CO2e,1.0
+ton CO 2,t CO2e,1.0
+ton CO 2e,t CO2e,1.0
+ton CO2,t CO2e,1.0
+ton CO2 eq.,t CO2e,1.0
+ton CO2e,t CO2e,1.0
+Mg CO2 e,Other,
+Mg CO2e (electricity only),Other,
+MgCO2e,Other,
+million tonnes CO2e (operational),Mt CO2e,1000000.0
 million kg CO2,kt CO2e,1000.0
 million kgCO2,kt CO2e,1000.0
-million megawatt hours,Unknown,
-million metric tonnes CO2-e,Mt CO2e,1000000.0
-million metric tonnes CO2e,Mt CO2e,1000000.0
-million metric tonnes CO2e (restated baseline),Mt CO2e,1000000.0
-million metric tonnes of CO2e,Mt CO2e,1000000.0
-million metric tons CO2 equivalents,Mt CO2e,1000000.0
-million metric tons CO2e,Mt CO2e,1000000.0
-million metric tons CO2e (Base Year Value),Mt CO2e,1000000.0
-million metric tons COâ‚‚,Mt CO2e,1000000.0
-million metric tons COâ‚‚e,Mt CO2e,1000000.0
-million metric tons of CO2,Mt CO2e,1000000.0
-million metric tons of CO2 eq. (Pro forma),Mt CO2e,1000000.0
-million metric tons of CO2 equivalent,Mt CO2e,1000000.0
-million metric tons of CO2 equivalents,Mt CO2e,1000000.0
-million metric tons of CO2 equivalents (base year),Mt CO2e,1000000.0
-million metric tons of CO2 equivalents (combined S,Mt CO2e,1000000.0
-million metric tons of CO2e,Mt CO2e,1000000.0
-million metric tons of CO2eq,Mt CO2e,1000000.0
-million metric tons of COâ‚‚,Mt CO2e,1000000.0
-million metric tons of COâ‚‚e,Mt CO2e,1000000.0
-million mt CO2e,Mt CO2e,1000000.0
-million t,Mt CO2e,1000000.0
-million t CO2e,Mt CO2e,1000000.0
-million t CO2e (baseline year),Mt CO2e,1000000.0
-million t CO2eq,Mt CO2e,1000000.0
-million t COâ‚‚e,Mt CO2e,1000000.0
-million tCO2e,Mt CO2e,1000000.0
-million tCO2e (adjusted),Mt CO2e,1000000.0
-million tCO2e (baseline year),Mt CO2e,1000000.0
-million tCO2e (sale of methane gas),Mt CO2e,1000000.0
-"million tCO2e (sale of methane gas, adjusted)",Mt CO2e,1000000.0
-"million tCO2e (total Scope 1, Scope 2, and Scope 3",Mt CO2e,1000000.0
-million tCOâ‚‚e,Mt CO2e,1000000.0
-million tCOâ‚‚e (restated baseline),Mt CO2e,1000000.0
-million tonnes,Mt CO2e,1000000.0
-million tonnes CO2,Mt CO2e,1000000.0
-million tonnes CO2 equivalent,Mt CO2e,1000000.0
-million tonnes CO2-eq,Mt CO2e,1000000.0
-million tonnes CO2-equivalent,Mt CO2e,1000000.0
-million tonnes CO2e,Mt CO2e,1000000.0
+million megawatt hours,Other,
+million tonnes CO2e (recalculated),Mt CO2e,1000000.0
 million tonnes CO2eq,Mt CO2e,1000000.0
+million tonnes CO2-eq,Mt CO2e,1000000.0
 million tonnes CO2eq.,Mt CO2e,1000000.0
+million tonnes CO2-equivalent,Mt CO2e,1000000.0
+million metric tons (Scope 1 and market-based Scop,Other,
 million tonnes COâ‚‚e,Mt CO2e,1000000.0
+million tonnes of CO2,Mt CO2e,1000000.0
+million tonnes of CO2e,Mt CO2e,1000000.0
+Million tonnes of CO2e,Mt CO2e,1000000.0
+million tonnes/year,Mt CO2e,1000000.0
+"million metric tons CO₂e (use of sold products, ca",Other,
 million tons,Mt CO2e,1000000.0
 million tons CO2 equivalents,Mt CO2e,1000000.0
+million tons CO₂ equivalents,Mt CO2e,1000000.0
 million tons CO2e,Mt CO2e,1000000.0
-million tons of CO2-eq,Mt CO2e,1000000.0
+Million tons CO2e,Mt CO2e,1000000.0
+million tons CO2eq,Mt CO2e,1000000.0
+million tons CO2-eq,Mt CO2e,1000000.0
+million tons CO₂eq,Mt CO2e,1000000.0
+million tons of CO2,Mt CO2e,1000000.0
+million tons of CO2 equivalent,Mt CO2e,1000000.0
 million tons of CO2e,Mt CO2e,1000000.0
+million tons of CO2-eq,Mt CO2e,1000000.0
+Millionen Tonnen CO2,Mt CO2e,1000000.0
+Millionen Tonnen CO₂,Mt CO2e,1000000.0
+Millionen Tonnen CO2-Äquivalente,Mt CO2e,1000000.0
+Millionen Tonnen CO2e,Mt CO2e,1000000.0
+Mio t,Mt CO2e,1000000.0
+Mio t CO2,Mt CO2e,1000000.0
+Mio t CO2e,Mt CO2e,1000000.0
+Mio Tonnen CO₂-Äquivalente,Mt CO2e,1000000.0
+Mio Tonnen CO₂-Äquivalente (standortbasiert),Mt CO2e,1000000.0
+Mio. t,Mt CO2e,1000000.0
+Mio. t CO2,Mt CO2e,1000000.0
+Mio. t CO₂,Mt CO2e,1000000.0
+Mio. t CO2-Äquivalente,Mt CO2e,1000000.0
+Mio. t CO2-Äquivalenten,Mt CO2e,1000000.0
+Mio. t CO2e,Mt CO2e,1000000.0
+Mio. t CO₂e,Mt CO2e,1000000.0
+Mio. t CO₂e (calculated as 17.8% of 22.0 Mio. t CO,Mt CO2e,1000000.0
+Mio. t CO₂e (calculated as 18.4% of 20.8 Mio. t CO,Mt CO2e,1000000.0
+Mio. t CO₂e (calculated as 18.9% of 20.0 Mio. t CO,Mt CO2e,1000000.0
+Mio. t CO₂e (calculated as 58.9% of 22.0 Mio. t CO,Mt CO2e,1000000.0
+Mio. t CO₂e (calculated as 61.1% of 20.8 Mio. t CO,Mt CO2e,1000000.0
+Mio. t CO₂e (calculated as 61.4% of 20.0 Mio. t CO,Mt CO2e,1000000.0
+million tCO2e (sale of methane gas),Other,
+"million tCO2e (sale of methane gas, adjusted)",Other,
+"million tCO2e (total Scope 1, Scope 2, and Scope 3",Other,
+Mio. t CO2eq,Mt CO2e,1000000.0
+Mio. t/a,Mt CO2e,1000000.0
+Mio. Tonnen,Mt CO2e,1000000.0
+Mio. Tonnen CO2,Mt CO2e,1000000.0
+Mio. Tonnen CO₂,Mt CO2e,1000000.0
+Mio. Tonnen CO2e,Mt CO2e,1000000.0
+Mio. Tonnen CO₂e,Mt CO2e,1000000.0
+"million tonnes CO2 equivalent (for Scopes 1, 2, an",Other,
+million tonnes CO2 equivalent (sum of 10.6 + 4.1 +,Other,
+Mln tCO2e,Mt CO2e,1000000.0
+MM MT CO2e,Mt CO2e,1000000.0
+MMT CO₂e,Mt CO2e,1000000.0
 mmtonnes CO2eq,Mt CO2e,1000000.0
+million tonnes CO2e (Scope 1 and 2 combined),Other,
+"million tonnes CO2e (Scopes 1, 2, and 3a combined;",Other,
+"million tonnes CO2e (target for 2030, baseline 201",Other,
 mn t CO2 equivalent,Mt CO2e,1000000.0
 mn t CO2e (baseline value),Mt CO2e,1000000.0
 mn t CO2e total,Mt CO2e,1000000.0
-mt CO2,t CO2e,1.0
-mtCO2e (base year),t CO2e,1.0
+mn tonnes CO2 eq,Mt CO2e,1000000.0
+"million tons CO2 (Category 11, Scope 3, energy usa",Other,
+million tons CO2 equivalent (for vehicles sold in,Other,
+mt,Mt CO2e,1000000.0
+million tons CO2e (combined with Scope 1),Other,
+Mt,Mt CO2e,1000000.0
+MT C02e,Mt CO2e,1000000.0
+Mt CO2,Mt CO2e,1000000.0
+MT CO2,Mt CO2e,1000000.0
+"Mio t (purchased goods and services), 3.4 Mio t (p",Other,
+"Mio t (purchased goods and services), 3.5 Mio t (p",Other,
+"Mio t (purchased goods and services), 3.7 Mio t (p",Other,
+mt CO2,Mt CO2e,1000000.0
+Mt CO2 eq,Mt CO2e,1000000.0
+Mt CO2 eq.,Mt CO2e,1000000.0
+mt CO2 equivalent,Mt CO2e,1000000.0
+Mt CO2(e),Mt CO2e,1000000.0
+MT CO2e,Mt CO2e,1000000.0
+Mio. t CO2e (logistics emissions),Other,
+Mio. t CO2e higher than 2020 (absolute value not s,Other,
+"Mio. t CO2eq (upstream) / 10,5 Mio. t CO2eq (downs",Other,
+"Mio. t CO2eq (upstream) / 13,6 Mio. t CO2eq (downs",Other,
+"Mio. t CO2eq (upstream) / 21,6 Mio. t CO2eq (downs",Other,
+"Mio. t CO2eq (upstream) / 36,0 Mio. t CO2eq (downs",Other,
+"Mio. t CO2eq (upstream) / 42,6 Mio. t CO2eq (downs",Other,
+"Mio. t CO2eq (vorgelagerte), 13,6 Mio. t CO2eq (na",Other,
+"Mio. t CO2eq (vorgelagerte), 21,6 Mio. t CO2eq (na",Other,
+"Mio. t CO2eq (vorgelagerte), 36,0 Mio. t CO2eq (na",Other,
+"Mio. Tonnen CO₂ (for German sites, from combustion",Other,
+Mt CO2e,Mt CO2e,1000000.0
+mt CO2e,Mt CO2e,1000000.0
+mt CO₂e,Mt CO2e,1000000.0
+Mt CO₂e,Mt CO2e,1000000.0
+Mt CO2eq,Mt CO2e,1000000.0
+Mt CO2-eq,Mt CO2e,1000000.0
+Mt COâ‚‚e,Mt CO2e,1000000.0
+MT of CO2e,Mt CO2e,1000000.0
+MtCO2,Mt CO2e,1000000.0
+"Mt CO2 eq. (Scopes 1, 2, and 3 combined)",Other,
+MtCO2 (baseline),Mt CO2e,1000000.0
+mtCO2e,Mt CO2e,1000000.0
+MtCO2e,Mt CO2e,1000000.0
+MTCO2e,Mt CO2e,1000000.0
+MtCO₂e,Mt CO2e,1000000.0
+mtCO2e (base year),Mt CO2e,1000000.0
+MtCO2e (baseline),Mt CO2e,1000000.0
+MtCO2e (Financed emissions baseline),Mt CO2e,1000000.0
+MtCO₂e (Total AUM),Mt CO2e,1000000.0
+MtCO2eq,Mt CO2e,1000000.0
+MtCO2eq.,Mt CO2e,1000000.0
+"MtCO2e (Financed emissions, decreased by 10% vs 20",Other,
+"MtCO2e (fossil fuel based pathway), 70.1 MtCO2e (s",Other,
+MtCO2e (included in own operations emissions),Other,
+"MtCO₂e (Oil and Gas sector, total financed emissio",Other,
+"MtCO2e (Scope 3a, global)",Other,
+MtCO2e (supply chain emissions),Other,
+MtCOâ‚‚e,Mt CO2e,1000000.0
+Mton CO₂e,Mt CO2e,1000000.0
+Mtonnes,Mt CO2e,1000000.0
+Mtonnes CO2e,Mt CO2e,1000000.0
+MTons CO2 eq,Mt CO2e,1000000.0
+"MWh (Strom); 2,003.6 MWh (Fernwärme)",Other,
+MWh (Strom); k.A. (Fernwärme),Other,
 per km/ton of product,Other,
-t,t CO2e,1.0
-t CO2,t CO2e,1.0
-t CO2 e,t CO2e,1.0
-t CO2 ekv,t CO2e,1.0
-t CO2 equivalent,t CO2e,1.0
-t CO2e (after restatement),t CO2e,1.0
-t CO2e (baseline year),t CO2e,1.0
-t CO2e (combined Scope 1 and Scope 2 market-based,t CO2e,1.0
+"t (163 t landseitig + 33,217 t seeseitig)",Other,
+"t (235 t landseitig + 28,111 t seeseitig)",Other,
+"t (535 t landseitig + 21,669 t seeseitig)",Other,
+"t (748 t landseitig + 21,581 t seeseitig)",Other,
+t (CO2 Produktion und Verwaltung) + 261 t (CO2 Mob,Other,
+t (CO2 Produktion und Verwaltung) + 287 t (CO2 Mob,Other,
+t (CO2-neutraler Strom),Other,
+"t (Erdgas) + 1,954 t (Fahrzeuge) = 12,181.83 t CO₂",Other,
+"t (Erdgas) + 2,281 t (Fahrzeuge) = 14,973.36 t CO₂",Other,
+"t (sum of 1,638.6 t Europe + 1,166.4 t Asia + 254.",Other,
+"t (sum of 2,924.5 t Europe + 108.5 t Asia + 224.2",Other,
+"t + 633 t = 1,978 t",Other,
+"t + 643 t = 1,938 t",Other,
+"t + 646 t = 1,745 t",Other,
+"t + 647 t = 1,817 t",Other,
+ton CO2eq,t CO2e,1.0
+t CO 2 equivalents in thousands,kt CO2e,1000.0
+"t CO2 (1,243 Flug + 5 Bahn + 84 Mietwagen)",Other,
+"t CO2 (1,471 Flug + 6 Bahn + 76 Mietwagen)",Other,
+t CO2 (155 Flug + 3 Bahn + 22 Mietwagen + 231 Rech,Other,
+t CO2 (155 Flugreisen + 0 Zugreisen + 22 Mietwagen,Other,
+t CO2 (26 t CO2 land transport + 250 t CO2 air fre,Other,
+t CO2 (52 Flugreisen + 0 Zugreisen + 16 Mietwagen,Other,
+t CO2 (532 Flugreisen + 0 Zugreisen + 4 Mietwagen,Other,
+t CO2 (Gasverbrauch),Other,
+t CO2 (Linienflüge) + 12 t CO2 (Mietfahrzeuge) + 0,Other,
+t CO2 (Linienflüge) + 130 t CO2 (Mietfahrzeuge) +,Other,
+t CO2 (Linienflüge) + 6 t CO2 (Mietfahrzeuge) + 0,Other,
+t CO2 (Linienflüge) + 63 t CO2 (Mietfahrzeuge) + 2,Other,
+Ton CO2eq,t CO2e,1.0
+"t CO2 (only for team flights, not total Scope 3)",Other,
+Ton CO2-eq,t CO2e,1.0
+"t CO2 (Strom) + 1,420 t CO2 (Wärme) = 1,420 t CO2",Other,
+"t CO2 (Strom) + 1,752 t CO2 (Wärme) = 1,768 t CO2",Other,
+"t CO2 (Strom) + 1,759 t CO2 (Wärme) = 4,981 t CO2",Other,
+"t CO2 (Strom) + 6,108 t CO2 (Wärme) = 6,124 t CO2",Other,
+"t CO2 (sum of 1,088 + 63 + 2)",Other,
+"t CO2 (sum of 1,554 + 50 + 0)",Other,
+t CO2 (sum of 122 + 12 + 0),Other,
+t CO2 (sum of 152 + 6 + 0),Other,
+"t CO2 (sum of 2,636 + 686 + 98 + 769 + 1,421)",Other,
+"t CO2 (sum of 3,082 + 1,541 + 188 + 1,021)",Other,
+"t CO2 (sum of 4,565 + 924 + 142 + 921 + 1,759)",Other,
+"t CO2 (sum of 6,949 + 800 + 101 + 757 + 1,751)",Other,
+"t CO2 (sum of 8,274 + 1,469 + 177 + 993 + 1,318 [2",Other,
+t CO2 (sum of 873 + 45 + 0),Other,
+"t CO2 (sum of Flugreisen 1,471 + Zugreisen 6 + Mie",Other,
+t CO2 (sum of Flugreisen 155 + Zugreisen 0 + Mietw,Other,
+t CO2 (sum of Flugreisen 52 + Zugreisen 0 + Mietwa,Other,
+"t CO₂ (sum of Scope 3.1, 3.3, 3.4, 3.5: 4,944,867",Other,
+t CO2 (team flights only),Other,
+"t CO2 (team flights only); 1,307 t CO2e (Scope-3 s",Other,
+"t CO2 (Upstream), 356,531 t CO2 (Downstream)",Other,
+"t CO2 (Upstream), 363,471 t CO2 (Downstream)",Other,
+"t CO2 (Upstream), 450,079 t CO2 (Downstream)",Other,
+"t CO2 (vehicle fleet only, 2021/2022)",Other,
+"t CO2 (worldwide total, from self-generated and pu",Other,
+ton CO2-eq,t CO2e,1.0
+ton CO₂eq,t CO2e,1.0
+tonCO2,t CO2e,1.0
+"t CO₂ eq (Audiological Care) + 11,065 t CO₂ eq (Wh",Other,
+"t CO₂ eq (Audiological Care) + 12,679 t CO₂ eq (Wh",Other,
+"t CO₂ eq (Audiological Care) + 5,049 t CO₂ eq (Who",Other,
+"t CO₂ eq (Audiological Care) + 5,245 t CO₂ eq (Who",Other,
+"t CO₂ eq (Audiological Care) + 5,446 t CO₂ eq (Who",Other,
+"t CO₂ eq (Audiological Care) + 8,203 t CO₂ eq (Who",Other,
+"t CO2 eq (Group excluding concessions, France and",Other,
+"T CO2 eq. (Eiffage Construction, upstream, estimat",Other,
+"t CO2 eq. (Upstream), 1,732,218 t CO2 eq. (Downstr",Other,
+"t CO2 eq. (Upstream), 1,853,718 t CO2 eq. (Downstr",Other,
+tonCO2e,t CO2e,1.0
+t CO2 equivalent (50Hertz),Other,
+"t CO2 equivalent (50Hertz), 258,000 t CO2 equivale",Other,
+t CO2 equivalents in thousands,kt CO2e,1000.0
+t CO2 per t Kupferkathode,Other,
+"t CO2/CO2e (alt: 130,090 t CO2/CO2e)",Other,
+"t CO2/CO2e (alt: 354,095 t CO2/CO2e)",Other,
+"t CO2/CO2e (alt: 678,403 t CO2/CO2e)",Other,
+tonCO2eq,t CO2e,1.0
+"t CO₂-Äquivalenten (BayWa AG); 1,271,760 t CO₂-Äqu",Other,
+"t CO₂-Äquivalenten (BayWa AG); 124,283 t CO₂-Äquiv",Other,
+"t CO₂-Äquivalenten (BayWa AG); 130,572 t CO₂-Äquiv",Other,
+"t CO2-Äquivalenten (BayWa AG); 19,985 t CO2-Äquiva",Other,
+"t CO₂-Äquivalenten (BayWa AG); 21,155 t CO₂-Äquiva",Other,
+"t CO₂-Äquivalenten (BayWa AG); 220,643,583 t CO₂-Ä",Other,
+"t CO₂-Äquivalenten (BayWa AG); 23,642 t CO₂-Äquiva",Other,
+"t CO2-Äquivalenten (BayWa AG); 3,210 t CO2-Äquival",Other,
+"t CO₂-Äquivalenten (BayWa AG); 63,900 t CO₂-Äquiva",Other,
+"t CO₂-Äquivalenten (BayWa AG); 64,310 t CO₂-Äquiva",Other,
+"t CO2-Äquivalenten (BayWa AG); 74,976 t CO2-Äquiva",Other,
+"t CO2-Äquivalenten (BayWa AG); 77,031 t CO2-Äquiva",Other,
+toneladas de CO2e,t CO2e,1.0
+tonne,t CO2e,1.0
+"t CO₂e (Basisjahr 2019, calculated from 2023 value",Other,
+t CO2e (business travel by train and plane only; o,Other,
+"t CO2e (calculated from 54,000 t CO2e = 10.7% of g",Other,
+t CO2e (Category 3.1 – Purchased goods and service,Other,
+t CO2e (category 3.9 Transportation and distributi,Other,
+t CO2e (combined Scope 1 and Scope 2 market-based,Other,
+Tonne CO2,t CO2e,1.0
+"t CO2e (from maritime logistics, partial Scope 3 o",Other,
+"t CO2e (from national letter and parcel shipping,",Other,
+"t CO2e (NZWL Leipzig), 1,041 t CO2e (ZWL SK Sućany",Other,
+"t CO2e (NZWL Leipzig), 1,108 t CO2e (ZWL SK Sućany",Other,
+"t CO2e (NZWL Leipzig), 112 t CO2e (ZWL SK Sućany),",Other,
+"t CO2e (NZWL Leipzig), 157 t CO2e (ZWL SK Sućany),",Other,
+"t CO2e (NZWL Leipzig), 171 t CO2e (ZWL SK Sućany),",Other,
+"t CO2e (NZWL Leipzig), 18 t CO2e (ZWL SK Sućany),",Other,
+"t CO2e (NZWL Leipzig), 47 t CO2e (ZWL SK Sućany),",Other,
+"t CO2e (NZWL Leipzig), 49 t CO2e (ZWL SK Sućany),",Other,
+"t CO2e (NZWL Leipzig), 56 t CO2e (ZWL SK Sućany),",Other,
+"t CO2e (NZWL Leipzig), 605 t CO2e (ZWL SK Sućany),",Other,
+"t CO2e (NZWL Leipzig), 630 t CO2e (ZWL SK Sućany),",Other,
+"t CO2e (NZWL Leipzig), 69 t CO2e (ZWL SK Sućany),",Other,
+t CO2e (offset for national mail and parcel shippi,Other,
+t CO2e (offset for national parcel shipping),Other,
+t CO2e (offset through national parcel shipping),Other,
+t CO2e (sum of all relevant categories from Table,Other,
+"t CO2e (sum of Strom 84,390 + Fernwärme 4,419)",Other,
+t CO2e (sum of Wärme 109.40 + Strom für Eigenbedar,Other,
+tonne CO2e,t CO2e,1.0
+t CO2e (Wärme) + 0 t CO2e (Strom für Eigenbedarf),Other,
 t CO2e/million euros,Other,
-t CO2eq (adjusted for refrigerants from the compan,t CO2e,1.0
-t CO2eq (adjusted for subsidiary Gravis operations,t CO2e,1.0
-t CO2eq (biogenic emissions),t CO2e,1.0
-t COâ‚‚,t CO2e,1.0
-t COâ‚‚-eq,t CO2e,1.0
-t COâ‚‚e,t CO2e,1.0
-t COâ‚‚eq,t CO2e,1.0
-t eq. CO2 (new methodology),t CO2e,1.0
-t of CO2 e.,t CO2e,1.0
-tCO2,t CO2e,1.0
-tCO2 (baseline value),t CO2e,1.0
-"tCO2 (baseline value, combined Scope 1 and 2)",t CO2e,1.0
-tCO2 (biogenic emissions only),t CO2e,1.0
-tCO2 eq,t CO2e,1.0
-tCO2-eq,t CO2e,1.0
-tCO2e (Business travel),t CO2e,1.0
-"tCO2e (Emissions-reporting companies - Scope 1, 2",t CO2e,1.0
-tCO2e (Emissions-reporting companies scope 1 and 2,t CO2e,1.0
-tCO2e (Upstream leased assets),t CO2e,1.0
-tCO2e (adjusted methodology),t CO2e,1.0
-tCO2e (baseline emissions value prior to re-baseli,t CO2e,1.0
-tCO2e (baseline year),t CO2e,1.0
-tCO2e (baseline),t CO2e,1.0
-tCO2e (combined Scope 1 and 2),t CO2e,1.0
-tCO2e (combined Scope 1 and Scope 2 market-based e,t CO2e,1.0
-tCO2e (combined with Scope 1),t CO2e,1.0
-tCO2e (corporate baseline),t CO2e,1.0
-"tCO2e (gross total, w/o removals)",t CO2e,1.0
-tCO2e (restated),t CO2e,1.0
-tCO2e (to be adjusted in 2025 after full carbon in,t CO2e,1.0
-"tCO2e (total gross emissions, market-based)",t CO2e,1.0
-tCO2e (upstream activities),t CO2e,1.0
-tCO2e/year,t CO2e,1.0
-tCO2eq,t CO2e,1.0
-tCO2eq (baseline value for purchased goods and ser,t CO2e,1.0
-tCO2eq (baseline value),t CO2e,1.0
-"tCO2eq (baseline value, combined with Scope 1)",t CO2e,1.0
-tCO2eq (location-based),t CO2e,1.0
-"tCO2eq (location-based), 151,769 tCO2eq (market-ba",t CO2e,1.0
-tCO2eq (market-based),t CO2e,1.0
-tCO2eq (restated baseline),t CO2e,1.0
-tCOe,t CO2e,1.0
-tCOâ‚‚,t CO2e,1.0
-tCOâ‚‚-e,t CO2e,1.0
-tCOâ‚‚-e (market-based),t CO2e,1.0
-tCOâ‚‚e,t CO2e,1.0
-tCOâ‚‚e (Baseline),t CO2e,1.0
-tCOâ‚‚e (combined Scope 1 and 2 emissions),t CO2e,1.0
-tCOâ‚‚eq,t CO2e,1.0
-teqCO2,t CO2e,1.0
-teqCO2e,t CO2e,1.0
+Tonne CO2e,t CO2e,1.0
+"t CO2eq (1,212,261 upstream + 1,386,102 downstream",Other,
+"t CO2eq (1,430,525 upstream + 1,226,653 downstream",Other,
+"t CO2eq (1,759,241 upstream + 1,927,176 downstream",Other,
+t CO2eq (109.40 + 3.35),Other,
+t CO2eq (132.36 + 0.69),Other,
+t CO2eq (adjusted for refrigerants from the compan,Other,
+t CO2eq (adjusted for subsidiary Gravis operations,Other,
+t CO2eq (biogenic emissions),Other,
+t CO2eq (commuting incl. home office) + 150.24 t C,Other,
+"t CO2eq (for Spain, London, Luxembourg, Zurich, Po",Other,
+t CO2eq (from Maschinen) + 924 t CO2eq (eigene Flu,Other,
+Tonne CO2-eqv.,t CO2e,1.0
+"t CO2eq (Maschinen) + 1,469 t CO2eq (eigene Flugze",Other,
+t CO2eq (Maschinen) + 686 t CO2eq (eigene Flugzeug,Other,
+t CO2eq (Maschinen) + 800 t CO2eq (eigene Flugzeug,Other,
+tonneCO2e,t CO2e,1.0
+t CO2-Equivalents (Scope 1 & 2 market-based; produ,Other,
+Tonnen,t CO2e,1.0
+Tonnen (adjusted reference value),t CO2e,1.0
+Tonnen CO2,t CO2e,1.0
+Tonnen CO₂,t CO2e,1.0
+Tonnen CO2 eq.,t CO2e,1.0
+Tonnen CO2äq,t CO2e,1.0
+t million CO2e,Mt CO2e,1000000.0
+t of CO2 (offset),Other,
+Tonnen CO2-Äquivalent,t CO2e,1.0
+t.CO2-eq. (combined Scope 1 and 2),Other,
+Tonnen CO₂-Äquivalent,t CO2e,1.0
+Tonnen CO2-Äquivalent (basis year emissions),t CO2e,1.0
+"tCO2 (baseline value, combined Scope 1 and 2)",Other,
+tCO2 (biogenic emissions only),Other,
+Tonnen CO2-Äquivalente,t CO2e,1.0
+"t-CO2 (Emissions only, covering domestic business",Other,
+tCO2 (for CIA only; FCO is location-based),Other,
+t-CO2 (Scope 1 and 2 combined for Nippon Express C,Other,
+"t-CO2 (Scope 3 Category 1, non-consolidated)",Other,
+"tCO2 (sum of 412 tCO2 for Business Trips and 14,86",Other,
+"tCO2 (without aircraft cruise) / 1,693,271 tCO2 (w",Other,
+"tCO2 (without aircraft cruise) / 3,722,019 tCO2 (w",Other,
+Tonnen CO₂-Äquivalente,t CO2e,1.0
+Tonnen CO²-Äquivalente,t CO2e,1.0
+"tCO2 equivalent (for four countries: France, Germa",Other,
+Tonnen CO2-Äquivalenten,t CO2e,1.0
+Tonnen CO₂-Äquivalenten,t CO2e,1.0
+Tonnen CO2e,t CO2e,1.0
+Tonnen CO₂e,t CO2e,1.0
+Tonnen CO₂e (baseline year),t CO2e,1.0
+Tonnen CO2e (corrected),t CO2e,1.0
+Tonnen CO2eq,t CO2e,1.0
+tCO2e (business air travel emissions),Other,
+"tCO2e (business loans, scopes 1 & 2)",Other,
+tCO2e (Business travel),Other,
+tCO2e (Category 6: Business travel emissions),Other,
+tCO2e (combined Scope 1 & 2 emissions),Other,
+tCO2e (combined Scope 1 and 2),Other,
+tCO2e (combined Scope 1 and Scope 2 market-based e,Other,
+tCO2e (combined with Scope 1),Other,
+Tonnen CO2-eq,t CO2e,1.0
+"tCO2e (Eingekaufte Güter und Dienstleistungen, Sco",Other,
+"tCO2e (Elia Belgium); 9,797 tCO2e (50Hertz Germany",Other,
+"tCO2e (Elia Belgium); 913,399 tCO2e (50Hertz Germa",Other,
+"tCO2e (Emissions-reporting companies - Scope 1, 2",Other,
+tCO2e (Emissions-reporting companies scope 1 and 2,Other,
+tCO2e (excluding investments),Other,
+tCO2e (flight travel),Other,
+"tCO2e (flight travel), 634 tCO2e (rental car use)",Other,
+"tCO2e (flight travel), 694 tCO2e (rental car use)",Other,
+Tonnen CO₂eq,t CO2e,1.0
+"tCO2e (Global incl UK, Car Travel only)",Other,
+Tonnen CO₂-eq,t CO2e,1.0
+"tCO2e (location-based), 210,532 tCO2e (market-base",Other,
+Tonnen CO2-eq netto,t CO2e,1.0
+"tCO2e (portfolio emissions, including Scope 1, 2 &",Other,
+Tonnen**,t CO2e,1.0
+"tCO2e (Purchased goods and services, Category 1)",Other,
+tonnes,t CO2e,1.0
+"tCO2e (Scope 1 and 2 combined, market-based, 2021)",Other,
+"tCO2e (Scope 1 and 2 combined, market-based, 2022)",Other,
+"tCO2e (Strom 0 tCO2e + Fernwärme 1,446 tCO2e) [Not",Other,
+"tCO2e (Strom 43,191 tCO2e + Fernwärme 3,017 tCO2e)",Other,
+"tCO2e (Strom 73,511 tCO2e + Fernwärme 2,843 tCO2e)",Other,
+"tCO2e (Strom) + 2,982 tCO2e (Wärme) = 4,589 tCO2e",Other,
+tCO2e (Strom) + 219 tCO2e (Wärme) = 583 tCO2e,Other,
+"tCO2e (Strom) + 283 tCO2e (Wärme) = 1,204 tCO2e",Other,
+"tCO2e (Strom) + 283 tCO2e (Wärme) = 1,447 tCO2e",Other,
+"tCO2e (sum of all categories listed: 25,343,626 +",Other,
+tCO2e (sum of all listed categories),Other,
+tCO2e (sum of all Scope 3 categories listed),Other,
+Tonnes,t CO2e,1.0
+"tCO2e (sum of all specified categories: 23,787,293",Other,
+"tCO2e (sum of Plastic, Third-party transport, and",Other,
+tonnes (biogenic CO2 emissions),t CO2e,1.0
+tCO2e (to be adjusted in 2025 after full carbon in,Other,
+"tCO2e (total carbon footprint, includes all scopes",Other,
+"tCO2e (total emissions, including Scope 1, 2, and",Other,
+tonnes (market-based),t CO2e,1.0
+"tCO2e (UK), 175.51 tCO2e (Global)",Other,
+"tCO2e (UK), 244.75 tCO2e (Global)",Other,
+"tCO2e (UK), 314.89 tCO2e (Global)",Other,
+"tCO2e (UK), 43.40 tCO2e (Global)",Other,
+"tCO2e (Underlying Business), 515,813 tCO2e (Whole",Other,
+tCO2e (upstream activities),Other,
+tCO2e (Upstream leased assets),Other,
+"tCO2e (upstream), 28 M tCO2e (downstream)",Other,
+tonnes (restated),t CO2e,1.0
+"tCO2e/Revenue Passenger Miles (000,000) and 137 tC",Other,
+"tCO2e/Revenue Passenger Miles (000,000) and 139.4",Other,
+"tCO2e/Revenue Passenger Miles (000,000) and 139.7",Other,
+"tCO2e/Revenue Passenger Miles (000,000) and 140 tC",Other,
+"tCO2e/Revenue Passenger Miles (000,000) and 140.2",Other,
+tonnes CO2,t CO2e,1.0
+Tonnes CO2,t CO2e,1.0
+tCO2eq (baseline value for purchased goods and ser,Other,
+tonnes CO₂,t CO2e,1.0
+"tCO2eq (baseline value, combined with Scope 1)",Other,
+tonnes CO2 equiv,t CO2e,1.0
+tCO2-eq (Business Travel and Employees' Commute),Other,
+tCO2eq (combined with Scope 1),Other,
+tCO2eq (combined with Scope 2),Other,
+"tCO2eq (Germany), 1,501,971 tCO2eq (Netherlands)",Other,
+"tCO2eq (Germany), 14,130 tCO2eq (Netherlands)",Other,
+"tCO2eq (Germany), 2,307,310 tCO2eq (Netherlands)",Other,
+tCO2-eq (including customer gas consumption),Other,
+"tCO2eq (including GrandVision) / 45,317 tCO2eq (ex",Other,
+"tCO2eq (including GrandVision) / 681,890 tCO2eq (e",Other,
+tonnes CO2 equivalent,t CO2e,1.0
+"tCO2eq (location-based), 151,769 tCO2eq (market-ba",Other,
+tonnes CO2 equivalents,t CO2e,1.0
+tonnes CO2e,t CO2e,1.0
+"tCO2eq (restated), 293,958 tCO2eq (disclosed)",Other,
+tCO2-eq (scopes 1 and 2 combined),Other,
+Tonnes CO2e,t CO2e,1.0
+tonnes CO2-e,t CO2e,1.0
+tonnes CO₂e,t CO2e,1.0
+tonnes CO2e (adjusted baseline),t CO2e,1.0
+tonnes CO2-e (baseline),t CO2e,1.0
+tCOâ‚‚e (combined Scope 1 and 2 emissions),Other,
+tonnes CO2e (corrected),t CO2e,1.0
+Tonnes CO2e (corrected),t CO2e,1.0
+tonnes CO₂e (due to 100% renewable energy use),t CO2e,1.0
+tonnes CO2e (Global),t CO2e,1.0
+tonnes CO2e (gross),t CO2e,1.0
+tonnes CO2e (market-based),t CO2e,1.0
+tonnes CO2e emissions,t CO2e,1.0
+Tg COâ‚‚,Other,
+th. t CO2 Eq.,kt CO2e,1000.0
+Thou. t CO2eq,kt CO2e,1000.0
+thousand metric tons (127.6 from electricity + 5.0,Other,
+thousand metric tons CO2e (combined Scope 1 and 2,Other,
 thousand metric tons CO2-eq,kt CO2e,1000.0
-thousand metric tons CO2e,kt CO2e,1000.0
 thousand metric tons COâ‚‚e,kt CO2e,1000.0
 thousand metric tons of CO2 equivalent,kt CO2e,1000.0
+thousand metric tons of CO₂ equivalents,kt CO2e,1000.0
 thousand metric tons of CO2e,kt CO2e,1000.0
+thousand metric tons of CO₂-equivalent,kt CO2e,1000.0
 thousand metric tons of COâ‚‚ equivalents,kt CO2e,1000.0
 thousand metric tons of COâ‚‚-equivalent,kt CO2e,1000.0
-thousand t CO2e,kt CO2e,1000.0
+thousand t CO₂ (2023/24),kt CO2e,1000.0
+"thousand t CO₂ (2023/24), 4,457 thousand t CO₂ (20",Other,
+"thousand t CO₂ (2023/24), 522 thousand t CO₂ (2023",Other,
+"thousand t CO₂ (2023/24), 561 thousand t CO₂ (2023",Other,
+thousand t CO2-e,kt CO2e,1000.0
 thousand t CO2eq,kt CO2e,1000.0
-thousand tCO2e,t CO2e,1.0
-thousand tCO2e (Â± uncertainty: high),t CO2e,1.0
-thousand tonnes CO2 eq,kt CO2e,1000.0
-thousand tonnes CO2e,kt CO2e,1000.0
+thousand t CO2-eq,kt CO2e,1000.0
+thousand t-CO 2,kt CO2e,1000.0
+tonnes CO2e*,t CO2e,1.0
+thousand t-CO2e,kt CO2e,1000.0
+thousand tCO2e (Â± uncertainty: high),kt CO2e,1000.0
+Thousand tonnes CO2e,kt CO2e,1000.0
 thousand tonnes CO2e (ABF total Scope 3 emissions),kt CO2e,1000.0
-thousand tonnes CO2e (third-party transport only),kt CO2e,1000.0
-thousand tonnes CO2eq,kt CO2e,1000.0
-thousand tonnes of CO2-eq.,kt CO2e,1000.0
+thousand tonnes CO2e (third-party transport only),Other,
+thousand tonnes CO2-equivalent,kt CO2e,1000.0
+thousand tonnes of CO2,kt CO2e,1000.0
 thousand tonnes of CO2e,kt CO2e,1000.0
-"thousand tonnes of CO2e (combined Scope 1 & 2, mar",kt CO2e,1000.0
+"thousand tonnes of CO2e (combined Scope 1 & 2, mar",Other,
+thousand tonnes of CO2e (Global),kt CO2e,1000.0
+thousand tonnes of CO2-eq.,kt CO2e,1000.0
+"thousand tons (Scope 1+2, see below)",Other,
 thousand tons CO2 eq,kt CO2e,1000.0
 thousand tons CO2e,kt CO2e,1000.0
 thousand tons of CO2e,kt CO2e,1000.0
 thousand tons of CO2eq,kt CO2e,1000.0
-thousands of tonnes CO2e,kt CO2e,1000.0
-tonCO2,t CO2e,1.0
-tonCO2eq,t CO2e,1.0
-tonne,t CO2e,1.0
-tonneCO2e,t CO2e,1.0
-tonnes (restated),t CO2e,1.0
-tonnes (use phase products sold),t CO2e,1.0
-tonnes CO2 equivalent,t CO2e,1.0
-tonnes CO2 equivalents,t CO2e,1.0
-tonnes CO2-e (baseline),t CO2e,1.0
-tonnes CO2-eq,t CO2e,1.0
-tonnes CO2-equivalent,t CO2e,1.0
-tonnes CO2e (100% renewable energy purchased),t CO2e,1.0
-tonnes CO2e (Business Travel â€“ flights),t CO2e,1.0
-tonnes CO2e (Category 1: Purchased goods and servi,t CO2e,1.0
-tonnes CO2e (adjusted baseline),t CO2e,1.0
-tonnes CO2e (corrected),t CO2e,1.0
-tonnes CO2e (market-based),t CO2e,1.0
-tonnes CO2e*,t CO2e,1.0
+Thousands tCO2e,kt CO2e,1000.0
+to 30 MtCO2e,Other,
+tonnes CO2e**,t CO2e,1.0
 tonnes CO2eq,t CO2e,1.0
-tonnes COâ‚‚-e,t CO2e,1.0
-tonnes COâ‚‚-e (Category 11 - Use of sold products),t CO2e,1.0
-tonnes COâ‚‚e,t CO2e,1.0
-tonnes COâ‚‚eq,t CO2e,1.0
-tonnes of CO2,t CO2e,1.0
-tonnes of CO2 (offset by wind power),t CO2e,1.0
-tonnes of CO2 Eq,t CO2e,1.0
-tonnes of CO2 equivalent (tCO2eq),t CO2e,1.0
-tonnes of CO2 equivalents (restated),t CO2e,1.0
-tonnes of CO2e (market-based),t CO2e,1.0
-tonnes of COÂ²-eq,t CO2e,1.0
-tonnes of COÂ²-eq.,t CO2e,1.0
-tonnes of COâ‚‚-eq (Category 2: Capital goods),t CO2e,1.0
-tonnes of COâ‚‚e,t CO2e,1.0
-"tonnes of GES (base comparable, sector numÃ©rique)",t CO2e,1.0
-tonnes-CO2e,t CO2e,1.0
-tons CO2-equivalent,t CO2e,1.0
-tons CO2e,t CO2e,1.0
-tons CO2e (Base year),t CO2e,1.0
-tons CO2e (base year),t CO2e,1.0
-tons CO2e (restated),t CO2e,1.0
-tons CO2e per MUSD value added,Unknown,
-tons CO2eq,t CO2e,1.0
-tons COâ‚‚e,t CO2e,1.0
-tons of CO2,t CO2e,1.0
-"tons of CO2 (Scopes 1, 2, and 3 combined)",t CO2e,1.0
-tons of CO2 equivalent,t CO2e,1.0
-tons of CO2-eq,t CO2e,1.0
-tons of CO2-eq (2023 data provided for comparison),t CO2e,1.0
-tons of CO2e,t CO2e,1.0
-tons of CO2eq,t CO2e,1.0
-tons of carbon,t CO2e,1.0
-"x 1,000 tonnes",kt CO2e,1000.0
-tCO₂e,t CO2e,1.0
-tCO₂eq,t CO2e,1.0
-tCO₂,t CO2e,1.0
-ktCO₂e,kt CO2e,1000.0
-t CO₂e,t CO2e,1.0
-metric tons of CO₂ equivalents,t CO2e,1.0
-million tonnes CO₂e,Mt CO2e,1000000.0
-tons CO₂e,t CO2e,1.0
-kilotons CO₂e,kt CO2e,1000.0
-'000 tonnes,kt CO2e,1000.0
-metric tons CO₂eq,t CO2e,1.0
-million metric tonnes of CO2eq,Mt CO2e,1000000.0
-million metric tons CO₂e,Mt CO2e,1000000.0
-KtCO₂e,kt CO2e,1000.0
-thousand metric tons of CO₂ equivalents,kt CO2e,1000.0
-tonnes of CO₂e,t CO2e,1.0
-kilotonnes CO2 eq,kt CO2e,1000.0
-'000 tCO₂e,kt CO2e,1000.0
-"1,000 tonnes CO₂e",kt CO2e,1000.0
-T CO₂ eq,t CO2e,1.0
-t. CO2e,t CO2e,1.0
-tCO₂-e,t CO2e,1.0
+ton CO2 (Including JVs),Other,
+"ton CO2 (Malpensa 107,830 + Linate 56,730)",Other,
+"ton CO2 (Malpensa 124,644 + Linate 65,401)",Other,
+"ton CO2 (Malpensa 18,210 + Linate 3,556)",Other,
+ton CO2 (Malpensa 199 + Linate 33),Other,
+"ton CO2 (Malpensa 22,933 + Linate 4,802)",Other,
+"ton CO2 (Malpensa 259,426 + Linate 50,350)",Other,
+ton CO2 (Malpensa 335 + Linate 55),Other,
+ton CO2 (Malpensa 391 + Linate 49),Other,
+"ton CO2 (Malpensa 461,749 + Linate 115,240)",Other,
+"ton CO2 (Malpensa 543,829 + Linate 132,380)",Other,
+ton CO2 (Malpensa 690 + Linate 87),Other,
+"ton CO2 (Malpensa 92,160 + Linate 36,477)",Other,
+Tonnes CO2eq,t CO2e,1.0
+tonnes CO2-eq,t CO2e,1.0
 tonnes CO₂eq,t CO2e,1.0
-Tt CO2 eq,t CO2e,1.0
-kt CO₂e,kt CO2e,1000.0
-thousand metric tons of CO₂-equivalent,kt CO2e,1000.0
-tonnes of CO²-eq.,t CO2e,1.0
-'000 tCO2e,kt CO2e,1000.0
-000s tonnes CO2e (buildings),kt CO2e,1000.0
-Metric Tons CO₂e,t CO2e,1.0
-Metric tonnes CO2e,t CO2e,1.0
-Thou. t CO2eq,kt CO2e,1000.0
-tCO2equ,t CO2e,1.0
-tonCO2e,t CO2e,1.0
-tonnes of carbon dioxide equivalent,t CO2e,1.0
-kilotons CO2e,kt CO2e,1000.0
-t CO₂,t CO2e,1.0
-thousand metric tons CO₂e,kt CO2e,1000.0
-(10³ tCO2e),t CO2e,1.0
-10³ tCO2eq,t CO2e,1.0
-CO₂e tonnes,t CO2e,1.0
-Mt CO₂e,Mt CO2e,1000000.0
-Tonnen CO2e,t CO2e,1.0
-Tonnen CO₂-Äquivalent,t CO2e,1.0
-million metric tons of CO₂,Mt CO2e,1000000.0
-million tonnes of CO2,Mt CO2e,1000000.0
-million tonnes of CO2e,Mt CO2e,1000000.0
-t CO₂-eq,t CO2e,1.0
-t CO₂-eq (location-based),t CO2e,1.0
-tCO2e (preliminary),t CO2e,1.0
-toneladas de CO2e,t CO2e,1.0
-tonnes of CO²-eq,t CO2e,1.0
-"tonnes of GES (base comparable, established in 202",t CO2e,1.0
-tonnes CO2e (Business Travel - flights),t CO2e,1.0
-tonnes CO₂e (due to 100% renewable energy use),t CO2e,1.0
-'000 tonnes CO2eq,kt CO2e,1000.0
-Thousand tonnes CO2e,kt CO2e,1000.0
-kg. eq. CO₂,kg CO2e,0.001
-kilotons CO2,kt CO2e,1000.0
-ktCO₂ eq,kt CO2e,1000.0
-metric tonnes,t CO2e,1.0
-million metric tons of CO2 eq,Mt CO2e,1000000.0
-million tCO₂e,Mt CO2e,1000000.0
-t CO₂eq,t CO2e,1.0
-t million CO2e,Mt CO2e,1000000.0
-tCO2 eq.,t CO2e,1.0
-tCO2e*,t CO2e,1.0
-tCO2eq (combined with Scope 1),t CO2e,1.0
-"tonnes CO2e (combined Scope 1 and 2, market-based)",t CO2e,1.0
-tonnes of CO2e (market-based)**,t CO2e,1.0
-tons of eqCO2,t CO2e,1.0
-000s tonnes CO2e (from owned and leased vehicles),kt CO2e,1000.0
-Metric Tonnes CO₂e,t CO2e,1.0
-Metric tonnes (t) CO2,t CO2e,1.0
-MtCO₂e,Mt CO2e,1000000.0
-"MtCO₂e (Oil and Gas sector, total financed emissio",Mt CO2e,1000000.0
-TCO2,t CO2e,1.0
-TCO2EQ,t CO2e,1.0
-TeqCO₂,t CO2e,1.0
-kt CO2 Äq.,kt CO2e,1000.0
-"ktonnes CO2e (machines sold, category 11)",kt CO2e,1000.0
-kts CO2e,kt CO2e,1000.0
-metric tons CO₂e,t CO2e,1.0
-million metric tons of CO₂e,Mt CO2e,1000000.0
-t CO₂e (Forecast),t CO2e,1.0
-tCO2-eq (biogenic emissions),t CO2e,1.0
-tCO2-eq (including customer gas consumption),t CO2e,1.0
-tCO2e (excluding investments),t CO2e,1.0
-thousand tonnes of CO2e (Global),kt CO2e,1000.0
-tonnes of CO2 equivalent,t CO2e,1.0
-tonnes of CO2-eq,t CO2e,1.0
-tonnes of CO²-eq (Category 3: Fuel- and energy-rel,t CO2e,1.0
-tonnes of CO₂ eq,t CO2e,1.0
-tons CO₂,t CO2e,1.0
-CO2 in t,t CO2e,1.0
-CO2e,t CO2e,1.0
-Metric Ton CO2e,t CO2e,1.0
-Million t CO2e (Upstream and Downstream),Mt CO2e,1000000.0
-MtCO₂e (Total AUM),t CO2e,1.0
-kTCO2eq,kt CO2e,1000.0
-kiloton CO2e,kt CO2e,1000.0
-kt CO2e (mid- and downstream oil & gas portfolio),kt CO2e,1000.0
-kt CO2e (upstream oil & gas portfolio),kt CO2e,1000.0
-ktonnes CO2-eq,kt CO2e,1000.0
-ktons CO2e (combined with Scope 1),kt CO2e,1000.0
-"ktons CO2e (commercial aircraft, SAF scenario)",kt CO2e,1000.0
-m t CO₂ equivalents,t CO2e,1.0
-metric tons CO₂ equivalent,t CO2e,1.0
-million t CO₂e,Mt CO2e,1000000.0
-million tonnes CO2e (recalculated),Mt CO2e,1000000.0
-t CO2-eq,t CO2e,1.0
-t of CO2e,t CO2e,1.0
-tCO2 (biogenic emissions),t CO2e,1.0
-tCO2-eq (Business Travel and Employees' Commute),t CO2e,1.0
-tCO2e (Category 6: Business travel emissions),t CO2e,1.0
-"tCO2e (Purchased goods and services, Category 1)",t CO2e,1.0
-tCO2e (business air travel emissions),t CO2e,1.0
-"tCO2e (business loans, scopes 1 & 2)",t CO2e,1.0
-tCO2e (combined Scope 1 & 2 emissions),t CO2e,1.0
-tCO2e (market-based),t CO2e,1.0
-"tCO2e (portfolio emissions, including Scope 1, 2 &",t CO2e,1.0
-"tCO2e (total emissions, including Scope 1, 2, and",t CO2e,1.0
-tCO2eq (base year),t CO2e,1.0
-tCO2eq (combined with Scope 2),t CO2e,1.0
-tCO₂ eq,t CO2e,1.0
-thousand t CO2-eq,kt CO2e,1000.0
-thousand tonnes of CO2,kt CO2e,1000.0
-tonnes (biogenic CO2 emissions),t CO2e,1.0
-tonnes CO2-equivalent (location-based),t CO2e,1.0
-tonnes CO2e (Parent company only),t CO2e,1.0
-tonnes CO2e (combined Scope 1 and Scope 2 emission,t CO2e,1.0
-tonnes CO₂e (covered by offsets),t CO2e,1.0
-tonnes of CO2e (market-based and location-based)**,t CO2e,1.0
-tonnes of biogenic CO2,t CO2e,1.0
-tonnes of biogenic CO₂,t CO2e,1.0
-tons CO2eq (private label products),t CO2e,1.0
-tons of CO2e per FTE,t CO2e,1.0
-tons of biogenic CO2 emissions,t CO2e,1.0
-CO2 eq (MTons),Mt CO2e,1000000.0
-CO2eq Tn,t CO2e,1.0
-M metric tons CO2e,Mt CO2e,1000000.0
-Metric Tonnes CO₂,t CO2e,1.0
-"Mt CO2 eq. (Scopes 1, 2, and 3 combined)",Mt CO2e,1000000.0
-MtCO2e (Financed emissions baseline),Mt CO2e,1000000.0
-"MtCO2e (Financed emissions, decreased by 10% vs 20",Mt CO2e,1000000.0
-MtCO2e (included in own operations emissions),Mt CO2e,1000000.0
-MtCO2e (supply chain emissions),Mt CO2e,1000000.0
-Tonnes CO2e (corrected),t CO2e,1.0
-kTons,kt CO2e,1000.0
-kTons CO2 eq,kt CO2e,1000.0
-kTons CO₂,kt CO2e,1000.0
-kilotonnes CO2 equivalent (CO2e),kt CO2e,1000.0
-kilotonnes CO2-e,kt CO2e,1000.0
-"kilotons CO2e (gross emissions, including Scope 1,",kt CO2e,1000.0
-kilotons CO₂e (adjusted for portfolio changes),kt CO2e,1000.0
-kt (sum of categories provided),kt CO2e,1000.0
-ktCO2e (sum of all Scope 3 categories listed),kt CO2e,1000.0
-ktons CO₂e (Scope 1 & 2 combined),kt CO2e,1000.0
-metric ktons CO2e,kt CO2e,1000.0
-metric tonnes of CO2eq (Other indirect emissions),t CO2e,1.0
-"metric tonnes of CO₂e (net corporate emissions, pr",t CO2e,1.0
-metric tons (t) CO2-e,t CO2e,1.0
-metric tons CO2eq (sum of individual Scope 3 sourc,t CO2e,1.0
-metric tons CO₂e (target for Scope 1 and 2 combine,t CO2e,1.0
-metric tons CO₂e (target),t CO2e,1.0
-metric tons of CO₂e,t CO2e,1.0
-million metric tonnes CO2e (market-based),Mt CO2e,1000000.0
-million metric tons of CO2 eq.,Mt CO2e,1000000.0
-million t CO2,Mt CO2e,1000000.0
-million t CO2e (Category 3),Mt CO2e,1000000.0
-million tCO2eq,Mt CO2e,1000000.0
-million tCO₂e (restated baseline),Mt CO2e,1000000.0
-million tonnes CO2 (MT),Mt CO2e,1000000.0
-million tonnes CO2e (equity),Mt CO2e,1000000.0
-million tonnes CO2e (operational),Mt CO2e,1000000.0
-million tons CO2e (combined with Scope 1),Mt CO2e,1000000.0
-million tons of CO2 equivalent,Mt CO2e,1000000.0
-t CO2 (remaining emissions),t CO2e,1.0
-t CO2-eq emitted,t CO2e,1.0
-t CO2e (total Scope 3 emissions),t CO2e,1.0
-tCO2e (Baseline),t CO2e,1.0
-tCO₂e (Baseline),t CO2e,1.0
-thousand metric tons,kt CO2e,1000.0
-tonne CO2e,t CO2e,1.0
+tonnes CO₂-eq,t CO2e,1.0
+Tonnes CO2eq.,t CO2e,1.0
+tonnes CO2-equivalent,t CO2e,1.0
+"Tonnen (absolute), 154,730 Tonnen (bereinigt)",Other,
+"Tonnen (absolute), 166,392 Tonnen (bereinigt)",Other,
+"Tonnen (absolute), 188,119 Tonnen (bereinigt)",Other,
+Tonnes CO₂-equivalent,t CO2e,1.0
+"Tonnen (calculated: 621,918 kWh × 0.435 kg/kWh = 2",Other,
+"Tonnen (combined Scope 1 and 2, market-based)",Other,
+Tonnen (flight) + 408 Tonnen (car) = 455 Tonnen (p,Other,
+Tonnen (flight) + 678 Tonnen (car) = 978 Tonnen (m,Other,
+Tonnen (from flight travel) + 408 Tonnen (from car,Other,
+Tonnen (Mietwagen) + 0 Tonnen (Bahnreisen) = 23.6,Other,
+Tonnen (Mietwagen) + 0 Tonnen (Bahnreisen) = 35.2,Other,
+"Tonnen (Strom) + 0 (Fernwärme, not specified) = 63",Other,
+"Tonnen (Strom) + 0 (Fernwärme, not specified) = 68",Other,
+"Tonnen (Strom) + 0 Tonnen (Fernwärme) = 63,666 Ton",Other,
+"Tonnen (Strom) + 0 Tonnen (Fernwärme) = 68,476 Ton",Other,
+"Tonnen (Strom) + 1,686 Tonnen (Fernwärme) = 48,668",Other,
+"Tonnen (Strom) + 919 Tonnen (Fernwärme) = 46,263 T",Other,
+"Tonnen (Strom) + 967 Tonnen (Fernwärme) = 55,397 T",Other,
+"Tonnen (sum of Gas: 32,818, Diesel: 96,336, Benzin",Other,
+"Tonnen (upstream, categories 1–6, spend-based, for",Other,
+Tonnen CO2 (Chambéry site only),Other,
+Tonnen CO2 (combined Scope 1 and Scope 2 baseline),Other,
+Tonnen CO2 (commuting emissions only),Other,
+"Tonnen CO2 (estimated total Scope 1, 2, and 3 Upst",Other,
+"Tonnen CO2 (Flughafen Frankfurt, LTO-Zyklus)",Other,
+Tonnen CO2 (for production and office energy use),Other,
+Tonnen CO2 (Scope 1+2 combined),Other,
+Tonnen CO2 (Wilkhahn-Fuhrpark only; total direct e,Other,
+Tonnen CO2 pro Fahrzeug Mercedes-Benz Cars (averag,Other,
+Tonnen CO2 pro Mitarbeitendem,Other,
+Tonnen CO2 pro Mitarbeitendem; 598 Tonnen CO2 (Lie,Other,
+tonnes CO₂-equivalent,t CO2e,1.0
+Tonnen CO2-Äquivalente (459.3 + 207.4),Other,
+Tonnen CO2-Äquivalente (502.1 + 181.9),Other,
+Tonnen CO2-Äquivalente (Flugreisen),Other,
+"Tonnen CO²-Äquivalente (Strom) + 1,377 Tonnen CO²-",Other,
 tonnes CO2-equivalent (baseline),t CO2e,1.0
 tonnes CO2-equivalent (interim target),t CO2e,1.0
-tonnes CO2e**,t CO2e,1.0
-tons CO2e*,t CO2e,1.0
-tons of CO2 equivalent (tCO2e),t CO2e,1.0
-metric tonnes of CO2 equivalent,t CO2e,1.0
-t CO,t CO2e,1.0
-tCO2equivalents,t CO2e,1.0
-Tsd. t CO2-Äquivalent,kt CO2e,1000.0
-Tsd. t CO2-e,kt CO2e,1000.0
-"1,000 metric tons of CO2e",kt CO2e,1000.0
-million Tonnen CO2e,Mt CO2e,1000000.0
-Tonnen CO2-Äquivalent,t CO2e,1.0
-Tonnen CO2-Äquivalent (basis year emissions),t CO2e,1.0
-Tonnen CO2e (corrected),t CO2e,1.0
-tonnes (market-based),t CO2e,1.0
-thousand t CO2-e,kt CO2e,1000.0
-t CO2-Äq,t CO2e,1.0
-t CO2-Äq.,t CO2e,1.0
-Tonnen,t CO2e,1.0
-Tonnen (adjusted reference value),t CO2e,1.0
-kg CO2,kg CO2e,0.001
-kg CO2-Äquivalenten,kg CO2e,0.001
-kg CO2 Äq,kg CO2e,0.001
-kilograms CO2-equivalent,kg CO2e,0.001
-kg CO2-eq,kg CO2e,0.001
-kg CO2Äq,kg CO2e,0.001
-kg CO2-Äquivalente,kg CO2e,0.001
-Mio. Tonnen,Mt CO2e,1000000.0
-Mio. t CO2e,Mt CO2e,1000000.0
-Tonnen CO2-Äquivalenten,t CO2e,1.0
-kilograms,kg CO2e,0.001
-kg CO₂-e,kg CO2e,0.001
-kg CO2-e,kg CO2e,0.001
-Tonnen CO2-eq netto,t CO2e,1.0
-Tonnen CO2,t CO2e,1.0
-tCO2e (sum of all Scope 3 categories provided),t CO2e,1.0
-Mio. t CO2,Mt CO2e,1000000.0
+Tonnen CO2e (Scope 1 and Scope 2 combined),Other,
+tonnes CO2-equivalent (location-based),t CO2e,1.0
+tonnes COâ‚‚e,t CO2e,1.0
+tonnes COâ‚‚-e,t CO2e,1.0
+tonnes COâ‚‚eq,t CO2e,1.0
+"tonnes (Rental cars only, rail travel not specifie",Other,
+tonnes of biogenic CO2,t CO2e,1.0
+tonnes (use phase products sold),Other,
+tonnes of biogenic CO₂,t CO2e,1.0
+tonnes CO2 (business travel),Other,
+"tonnes CO2 (Business Travel), 185,500 tonnes CO2 (",Other,
+"tonnes CO2 (Business Travel), 198,526 tonnes CO2 (",Other,
+"tonnes CO2 (combined Scope 1 & 2, market-based)",Other,
+"tonnes CO2 (employee commuting), 35,000 tonnes CO2",Other,
+"tonnes CO2 (purchasing, scope 3 upstream)",Other,
+tonnes CO2e (100% renewable energy purchased),Other,
+tonnes of carbon dioxide equivalent,t CO2e,1.0
+tonnes of carbon equivalent,t CO2e,1.0
+Tonnes CO2e (business travel – flights only),Other,
+tonnes CO2e (Business Travel - flights),Other,
+tonnes CO2e (Business Travel â€“ flights),Other,
+tonnes CO2e (business travel by plane),Other,
+tonnes CO2e (Category 1: Purchased goods and servi,Other,
+"tonnes CO2e (combined Scope 1 and 2, market-based)",Other,
+tonnes CO2e (combined Scope 1 and Scope 2 emission,Other,
+tonnes of CO2,t CO2e,1.0
+tonnes of CO₂,t CO2e,1.0
+tonnes CO₂e (covered by offsets),Other,
+tonnes CO2e (direct material supplier emissions to,Other,
+tonnes of CO2 Eq,t CO2e,1.0
+"tonnes CO2e (from fuel combustion) + 55,151 tonnes",Other,
+"tonnes CO2e (goods transportation only), 12,954 to",Other,
+"tonnes CO2e (goods transportation only), 3,584 ton",Other,
+tonnes of CO₂ eq,t CO2e,1.0
+tonnes of CO2 equivalent,t CO2e,1.0
+tonnes CO2e (Parent company only),Other,
+tonnes CO2e (partial: well-to-tank and transmissio,Other,
+tonnes CO2e (Scope 1 and 2 combined),Other,
+tonnes of CO2 equivalent (tCO2eq),t CO2e,1.0
+tonnes of CO2 equivalents,t CO2e,1.0
+tonnes of CO2 equivalents (restated),t CO2e,1.0
+Tonnes of CO2e,t CO2e,1.0
+tonnes of CO2e,t CO2e,1.0
+tonnes of CO₂e,t CO2e,1.0
+"tonnes CO2-equivalent (fuel combustion) + 3,469 to",Other,
+"tonnes CO2-equivalent (fuel combustion) + 4,746 to",Other,
+"tonnes CO2-equivalent (fuel combustion) + 5,973 to",Other,
+"tonnes CO2-equivalent (fuel combustion) + 6,463 to",Other,
+tonnes of CO2e (market-based and location-based)**,t CO2e,1.0
+tonnes of CO2e (market-based),t CO2e,1.0
+tonnes of CO2e (market-based)**,t CO2e,1.0
+tonnes of CO2eq,t CO2e,1.0
+tonnes COâ‚‚-e (Category 11 - Use of sold products),Other,
+tonnes of CO2-eq,t CO2e,1.0
+tonnes of CO²-eq,t CO2e,1.0
+tonnes of CO²-eq.,t CO2e,1.0
+Tonnes of carbon dioxide (Scope 1) produced per $1,Other,
+tonnes of COâ‚‚e,t CO2e,1.0
+tonnes of CO2 (offset by wind power),Other,
+tonnes of COÂ²-eq,t CO2e,1.0
+tonnes of COÂ²-eq.,t CO2e,1.0
+tonnes-CO2e,t CO2e,1.0
+tons,t CO2e,1.0
 tons CO2,t CO2e,1.0
-kt CO2e (not audited),kt CO2e,1000.0
-tonnes CO₂-equivalent,t CO2e,1.0
+tons CO₂,t CO2e,1.0
+tons CO2 eq.,t CO2e,1.0
+tons CO2 equivalent,t CO2e,1.0
+tons CO2 equivalents,t CO2e,1.0
+tons CO2e,t CO2e,1.0
+Tons CO2e,t CO2e,1.0
+tons CO₂e,t CO2e,1.0
+tons CO2e (Base year),t CO2e,1.0
+tons CO2e (base year),t CO2e,1.0
+tonnes of CO²-eq (Category 3: Fuel- and energy-rel,Other,
+tons CO2e (restated),t CO2e,1.0
+tons CO2e*,t CO2e,1.0
+tonnes of COâ‚‚-eq (Category 2: Capital goods),Other,
+tons CO2e/year,t CO2e,1.0
+tons CO2eq,t CO2e,1.0
+"tonnes of GES (base comparable, established in 202",Other,
+"tonnes of GES (base comparable, sector numÃ©rique)",Other,
+Tons CO2-equivalent,t CO2e,1.0
+tons (combined with Scope 1),Other,
+"tons (Malpensa), 255 tons (Linate)",Other,
+"tons (Malpensa), 87 tons (Linate)",Other,
+tons (transportation only),Other,
+"tons CO2 (Boryszew S.A.), 29,137 tons CO2 (Impexme",Other,
+"tons CO2 (Boryszew S.A.), 30,665 tons CO2 (Impexme",Other,
+"tons CO₂ (Electricity 17,773 + District heating 23",Other,
+"tons CO₂ (Electricity 17,783 + District heating 18",Other,
+"tons CO₂ (Electricity 19,915 + District heating 26",Other,
+"tons CO₂ (Electricity: 10,498 + District heating:",Other,
+"tons CO₂ (Electricity: 12,568 + District heating:",Other,
+"tons CO2 (from transport operations, first calenda",Other,
+tons CO2-equivalent,t CO2e,1.0
+tons CO2-equivalents,t CO2e,1.0
+tons CO₂e (Purchased goods & services only),Other,
+tons COâ‚‚e,t CO2e,1.0
+"tons CO2e (revised), 45,620 tons CO2e (reported)",Other,
+tons CO2e per MUSD value added,Other,
+tons of biogenic CO2 emissions,t CO2e,1.0
+tons CO2eq (private label products),Other,
+tons of carbon,t CO2e,1.0
+"tons CO2-equivalents (Norway), 65,779 tons CO2-equ",Other,
+tons of CO2,t CO2e,1.0
+tons of CO2 equivalent,t CO2e,1.0
+tons of CO2 equivalent (tCO2e),t CO2e,1.0
 tons of CO2 equivalents,t CO2e,1.0
-"1,000tCO2e",kt CO2e,1000.0
-K tons,kt CO2e,1000.0
-Kton CO2e,kt CO2e,1000.0
-MMT CO₂e,Mt CO2e,1000000.0
-Mio t CO2,Mt CO2e,1000000.0
-T,t CO2e,1.0
-kg,kg CO2e,0.001
-kiloton CO2 eq,kt CO2e,1000.0
-kton,kt CO2e,1000.0
-million metric tons CO2EQ,Mt CO2e,1000000.0
-million mt,Mt CO2e,1000000.0
-million tonnes/year,Mt CO2e,1000000.0
+"tons of CO2 (Scopes 1, 2, and 3 combined)",Other,
+tons of CO2e,t CO2e,1.0
+tons of CO2eq,t CO2e,1.0
+tons of CO2e per FTE,Other,
+tons of CO2-eq,t CO2e,1.0
+tons of CO2-eq (2023 data provided for comparison),t CO2e,1.0
+tons of eqCO2,t CO2e,1.0
+Tsd. t CO2-e,kt CO2e,1000.0
+Tsd. t CO2e (gekaufte Metalle) + 103 Tsd. t CO2e (,Other,
+Tsd. t CO2e (gekaufte Metalle) + 361 Tsd. t CO2e (,Other,
+Tsd. Tonnen CO2,kt CO2e,1000.0
+Tt CO2 eq,kt CO2e,1000.0
+"Tt CO2 eq,Unknown",kt CO2e,1000.0
+US Tons,USt CO2e,0.907185
+US tons CO2,USt CO2e,0.907185
+"x 1,000 tonnes",kt CO2e,1000.0
+short ton CO2e,USt CO2e,0.907185
+short tons CO2e,USt CO2e,0.907185
+short ton CO?e,USt CO2e,0.907185
+short tons CO?e,USt CO2e,0.907185
+short ton CO2 eq,USt CO2e,0.907185
+short tons CO2 eq,USt CO2e,0.907185
+short ton CO2 equivalent,USt CO2e,0.907185
+short tons CO2 equivalent,USt CO2e,0.907185
+short ton of CO2 equivalent,USt CO2e,0.907185
+short tons of CO2 equivalent,USt CO2e,0.907185
+short ton of carbon dioxide equivalent,USt CO2e,0.907185
+short tons of carbon dioxide equivalent,USt CO2e,0.907185
+US short ton CO2e,USt CO2e,0.907185
+US short tons CO2e,USt CO2e,0.907185
+US short ton CO2 equivalent,USt CO2e,0.907185
+US short tons CO2 equivalent,USt CO2e,0.907185
+US short ton of CO2 equivalent,USt CO2e,0.907185
+US short tons of CO2 equivalent,USt CO2e,0.907185
+U.S. short ton CO2e,USt CO2e,0.907185
+U.S. short tons CO2e,USt CO2e,0.907185
+U.S. short ton of CO2 equivalent,USt CO2e,0.907185
+U.S. short tons of CO2 equivalent,USt CO2e,0.907185
+American ton CO2e,USt CO2e,0.907185
+American tons CO2e,USt CO2e,0.907185
+American ton CO2 equivalent,USt CO2e,0.907185
+American tons CO2 equivalent,USt CO2e,0.907185
+American ton of CO2 equivalent,USt CO2e,0.907185
+American tons of CO2 equivalent,USt CO2e,0.907185
+ton CO2e (US),USt CO2e,0.907185
+tons CO2e (US),USt CO2e,0.907185
+t CO2e (US short ton),USt CO2e,0.907185
+t CO2e (US short tons),USt CO2e,0.907185
+CO2e in US short tons,USt CO2e,0.907185
+CO2 equivalent in US short tons,USt CO2e,0.907185
+US ton of CO2e,USt CO2e,0.907185
+US tons of CO2e,USt CO2e,0.907185
+US ton of CO2 equivalent,USt CO2e,0.907185
+US tons of CO2 equivalent,USt CO2e,0.907185
+US ton of carbon dioxide equivalent,USt CO2e,0.907185
+US tons of carbon dioxide equivalent,USt CO2e,0.907185
+short ton CO? equivalent,USt CO2e,0.907185
+short tons CO? equivalent,USt CO2e,0.907185
+short ton CO? eq,USt CO2e,0.907185
+short tons CO? eq,USt CO2e,0.907185
+US short ton CO?e,USt CO2e,0.907185
+US short tons CO?e,USt CO2e,0.907185
+U.S. ton CO?e,USt CO2e,0.907185
+U.S. tons CO?e,USt CO2e,0.907185
+US ton CO2-eq,USt CO2e,0.907185
+US tons CO2-eq,USt CO2e,0.907185

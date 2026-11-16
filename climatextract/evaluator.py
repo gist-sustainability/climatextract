@@ -220,6 +220,7 @@ class EvaluatorData:
             'extraction_context',
             # do normalized units match?
             'normalized_unit_from_dictionary', 'unit_man_normalized', 'unit_normalized_match',
+            'unit_normalization_method', 'unit_man_normalization_method',
             # do values and units (normalized) match?
             'value_and_unit_match', 'value_and_unit_normalized_match',
             # other info from manual annotation
@@ -241,6 +242,13 @@ class EvaluatorData:
             # Insert after the extracted unit column for logical order
             selected_columns.insert(selected_columns.index(
                 'extracted_unit_from_llm') + 1, 'unit_probability')
+
+        for column in (
+            'unit_normalization_method',
+            'unit_man_normalization_method',
+        ):
+            if column not in self.small_results.columns:
+                self.small_results[column] = pd.NA
 
         # Now select
         self.small_results = self.small_results[selected_columns]
