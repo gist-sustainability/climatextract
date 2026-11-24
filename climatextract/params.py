@@ -94,6 +94,10 @@ class PipelineParams:
     input_mode: str = field(default='text')
     embed_only: bool = field(default=False)
 
+    # Maximum number of PDFs processed concurrently (parsing, embedding,
+    # LLM extraction). Bounds memory use.
+    max_concurrent_pdfs: int = field(default=20)
+
 
 @dataclass
 class ExperimentParams:

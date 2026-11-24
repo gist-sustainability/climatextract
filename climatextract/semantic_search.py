@@ -2,11 +2,12 @@
 and provide basic search functionality (vector search, full text search)."""
 
 import asyncio
+from concurrent.futures import ProcessPoolExecutor
 from dataclasses import dataclass, field
 import datetime
 from hashlib import sha256
 import logging
-import os.path
+import os
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 import tiktoken
 
@@ -25,6 +26,19 @@ from climatextract.llm_embedding_api_bridge import EmbeddingModel
 
 if TYPE_CHECKING:
     from climatextract.console import Console
+
+# Launch multiple parallel multiple Worker processes for compute-intense work (PDF parsing).
+_parse_pool: Optional[ProcessPoolExecutor] = None
+
+
+def _get_parse_pool() -> ProcessPoolExecutor:
+    global _parse_pool
+    if _parse_pool is None:
+        # process_cpu_count() (Python 3.13+) respects CPU limits/affinity;
+        # leave one core for the main process (embedding I/O, DB writes).
+        cpus = getattr(os, "process_cpu_count", os.cpu_count)() or 1
+        _parse_pool = ProcessPoolExecutor(max_workers=max(1, cpus - 1))
+    return _parse_pool
 
 
 class Page:
@@ -617,7 +631,7 @@ class Pdfdoc:
             # if hasattr(embed_model, 'token_counter'):
             #     print(f"Counting tokens for existing PDF content...")
             #     # Load the same way we would for new content to count tokens
-            #     pages_nodes = self._load_raw_text_pagewise_from_pdf()
+            #     pages_nodes = self._load_raw_text_pagewise_from_pdf(self.filename)
 
             #     total_tokens = 0
             #     for node in pages_nodes:
@@ -629,7 +643,10 @@ class Pdfdoc:
             # return True
         else:
             try:
-                pages_nodes = self._load_raw_text_pagewise_from_pdf()
+                # PDF parsing is CPU-bound: run it in a worker process so it
+                # does not block the event loop and uses all CPU cores.
+                pages_nodes = await asyncio.get_running_loop().run_in_executor(
+                    _get_parse_pool(), Pdfdoc._load_raw_text_pagewise_from_pdf, self.filename)
             except Exception as e:
                 # print(f"Fehler beim Laden von {self.filename}: {str(e)}")
                 self._handle_problematic_pdf(str(e))
@@ -692,7 +709,8 @@ class Pdfdoc:
         """Remove this PDF file from the database."""
         self._repository.remove_pdf(self.short_filename)
 
-    def _load_raw_text_pagewise_from_pdf(self):
+    @staticmethod
+    def _load_raw_text_pagewise_from_pdf(filename: str):
         """
         Load PDF file (each page is one document) and convert documents to nodes.
         (pure llama.index functionality)
@@ -711,7 +729,7 @@ class Pdfdoc:
             ]
         )
 
-        pages_from_pdf = reader.load_data(self.filename)
+        pages_from_pdf = reader.load_data(filename)
         pages_nodes = page_is_node_ingest_pipeline.run(
             documents=pages_from_pdf)
 
