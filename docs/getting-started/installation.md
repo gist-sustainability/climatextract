@@ -122,7 +122,13 @@ Install the `azure_authentication` package:
 pip install "azure_authentication@git+https://github.com/soda-lmu/azure-auth-helper-python.git"
 ```
 
-Add to your `.env` file:
+The simplest option is the [Azure CLI](https://learn.microsoft.com/cli/azure/install-azure-cli): run `az login` once and remove `API_KEY` from your `.env` file. No further variables are needed. Your Azure account needs access to the deployed models (typically the role *Cognitive Services OpenAI User*).
+
+```bash
+az login
+```
+
+Alternatively, add your credentials to your `.env` file:
 
 ```bash
 AZURE_USERNAME=your-username

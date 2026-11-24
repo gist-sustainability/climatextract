@@ -1,0 +1,26 @@
+# Optional dev setup for users of mise (https://mise.jdx.dev). Not required:
+# the plain venv + pip setup in the README works just as well.
+#
+# What it does when you `cd` into the repo:
+#   - installs Python 3.13 and uv if missing
+#   - creates and activates the virtualenv in .venv
+#   - exports the variables from .env into your shell (so e.g. the `az` CLI
+#     sees them too; the Python code loads .env on its own anyway)
+#
+# First time:
+#   mise trust && mise install
+#   mise run install
+
+[tools]
+python = "3.13"
+uv = "latest"
+
+[env]
+_.python.venv = { path = ".venv", create = true, uv_create_args = ["--seed"] }
+_.file = ".env"
+
+# Run with `mise run <task>`, e.g. `mise run test`
+[tasks]
+install = { run = 'pip install -e ".[dev,docs]"', description = "Install package with dev and docs extras" }
+test = { run = "python -m pytest", description = "Run tests (acceptance tests need LLM credentials in .env)" }
+docs = { run = "mkdocs serve", description = "Serve the docs locally" }

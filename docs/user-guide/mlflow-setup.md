@@ -14,6 +14,10 @@ Add the following to your ``.env`` file:
 # Use "databricks" if you are using Databricks on Azure.
 MLFLOW_TRACKING_URI=sqlite:///mlflow.db
 
+# If using "./mlruns" (the default when MLFLOW_TRACKING_URI is unset),
+# recent MLflow versions require explicitly allowing the file store:
+# MLFLOW_ALLOW_FILE_STORE=true
+
 # If using databricks on Azure, add the following:
 DATABRICKS_HOST=https://<your-databricks-instance>.azuredatabricks.net/
 DATABRICKS_TOKEN=personal-access-token
