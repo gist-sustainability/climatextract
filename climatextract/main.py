@@ -5,6 +5,7 @@ from importlib.util import find_spec
 import json
 import logging
 import os
+import sys
 try:
     import tomllib
 except ImportError:
@@ -379,6 +380,14 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         pdf_cache_status=pdf_cache_status if console.verbose else None
     )
 
+    # New PDFs make DuckDB rebuild the full-text index over all pages (at the next
+    # search, or at the next start after an embed_only run). Warn if that
+    # probably needs more RAM than DuckDB may use.
+    if (database_exists and pdfs_needing_embedding
+            and not _confirm_fts_index_rebuild(embeddings_repo)):
+        logger.warning("Stopped before embedding: not enough RAM for the full-text index.")
+        return None
+
     if not data_lake_manager.execute_complete_workflow(
         filename_list=pdf_files,
         embeddings_repo=embeddings_repo,
@@ -685,6 +694,42 @@ def _ensure_table_dependencies(input_mode: str, embed_only: bool = False) -> Non
             "See our installation guide: "
             "https://gist-sustainability.github.io/climatextract/getting-started/installation/"
         )
+
+
+def _confirm_fts_index_rebuild(embeddings_repo) -> bool:
+    """Ask the user before a full-text index rebuild that probably needs more RAM
+    than DuckDB may use (40%). Returns False if the user does not want to continue."""
+    with embeddings_repo.connection() as con:
+        pages = con.execute("SELECT COUNT(*) FROM pages").fetchone()[0]
+    # Measured peak: 24 GB for 1.68 million pages, about 15 KB per page
+    needed_gb = pages * 15_000 / 1e9
+    warning = (f"New PDFs require rebuilding the full-text index over all {pages:,} pages "
+               f"of the database. This needs about {needed_gb:.0f} GB RAM")
+    try:
+        ram_gb = os.sysconf("SC_PAGE_SIZE") * os.sysconf("SC_PHYS_PAGES") / 1e9
+    except (AttributeError, ValueError, OSError):  # e.g. Windows: RAM size unknown
+        if needed_gb <= 1:  # fits on any current machine
+            return True
+        warning += (f". DuckDB may use only 40% of the RAM: with less than "
+                    f"{needed_gb / 0.4:.0f} GB RAM the rebuild may be very slow or fail.")
+    else:
+        limit_gb = 0.4 * ram_gb
+        if needed_gb <= limit_gb:
+            return True
+        warning += (f", but DuckDB may use only {limit_gb:.0f} GB (40% of {ram_gb:.0f} GB): "
+                    f"the rebuild may be very slow or fail.")
+    warning += (" Recommended: process only PDFs that are already in the database"
+                " (remove the new files from the input).")
+    # Workaround for runs without a terminal (scripts, batch jobs)
+    if os.getenv("CLIMATEXTRACT_ALLOW_FTS_REBUILD") == "1":
+        logger.warning("%s Continuing: CLIMATEXTRACT_ALLOW_FTS_REBUILD=1.", warning)
+        return True
+    if not sys.stdin.isatty():  # nobody can answer: stop
+        logger.warning("%s Stopping: no terminal to ask. Set "
+                       "CLIMATEXTRACT_ALLOW_FTS_REBUILD=1 to continue anyway.", warning)
+        return False
+    response = input(f"{warning}\nContinue anyway? [y/N] ").strip().lower()
+    return response in ("y", "yes")
 
 
 def _resolve_pdf_input(pdf_input: str | List[str]) -> List[str]:

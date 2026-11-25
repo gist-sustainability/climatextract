@@ -339,7 +339,19 @@ class EmbeddingsRepository:
             self._rebuild_fts_index()
 
     def _rebuild_fts_index(self) -> None:
-        """Rebuild the full-text search index over the whole pages table."""
+        """Rebuild the full-text search index over the whole pages table.
+        In interactive use the user may skip a large rebuild: the index then
+        stays outdated for this run (new pages get no bm25 score)."""
+        if sys.stdin.isatty():
+            with self.connection() as con:
+                pages = con.execute("SELECT COUNT(*) FROM pages").fetchone()[0]
+            needed_gb = pages * 15_000 / 1e9  # measured: 24 GB for 1.68 million pages
+            if needed_gb > 1:
+                answer = input(f"Search index is outdated. Rebuild the full-text index over all {pages:,} pages "
+                               f"(required: about {needed_gb:.0f} GB RAM)? [Y/n] ").strip().lower()
+                if answer in ("n", "no"):
+                    self._fts_index_stale = False  # do not ask again in this run
+                    return
         with self.connection() as con:
             con.execute(
                 """PRAGMA create_fts_index('pages', 'id', 'page_content', overwrite=1);""")
