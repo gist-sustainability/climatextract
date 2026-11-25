@@ -3,6 +3,7 @@ and provide basic search functionality (vector search, full text search)."""
 
 import asyncio
 from concurrent.futures import ProcessPoolExecutor
+from contextlib import contextmanager
 from dataclasses import dataclass, field
 import datetime
 from hashlib import sha256
@@ -87,6 +88,7 @@ class EmbeddingsRepository:
 
     def __init__(self, database_name: str):
         self.database_name = database_name
+        self._con: Optional[duckdb.DuckDBPyConnection] = None
         self.database_existent = False
         # Check if database exists (sets self.database_existent)
         self.database_exists()
@@ -110,6 +112,48 @@ class EmbeddingsRepository:
         (which may or may not exist)."""
         return self.database_name
 
+    def _open_connection(self) -> duckdb.DuckDBPyConnection:
+        """Open a new connection. DuckDB may use at most 40% of RAM."""
+        con = duckdb.connect(self.database_name)
+        con.execute("SET memory_limit = '40%'")
+        return con
+
+    @contextmanager
+    def keep_connection_open(self):
+        """Keep a single database connection open for the block: methods called inside reuse it
+        (~0.6 ms per call instead of ~20 ms for opening a new connection)."""
+        if self._con is not None:  # nested block: reuse the outer connection
+            yield
+            return
+        self._con = self._open_connection()
+        try:
+            yield
+        finally:
+            self._con.close()
+            self._con = None
+
+    def connection(self) -> duckdb.DuckDBPyConnection:
+        """Handle for one database call, always used as `with self.connection() as con:`.
+
+        Inside a keep_connection_open() block it is a cursor on the open connection,
+        otherwise a new connection. The `with` closes either one; closing
+        discards an uncommitted transaction."""
+        if self._con is not None:
+            return self._con.cursor()
+        return self._open_connection()
+
+    @contextmanager
+    def transaction(self):
+        """Run whole SQL block as one single transaction: commit on success, rollback on any error."""
+        with self.connection() as con:
+            con.begin()
+            try:
+                yield con
+                con.commit()
+            except BaseException:
+                con.rollback()
+                raise
+
     def create_database(self, embed_dim: int) -> None:
         """Create database schema (tables, indexes) if needed."""
 
@@ -117,7 +161,7 @@ class EmbeddingsRepository:
         if not os.path.exists(database_path):
             os.makedirs(database_path)
 
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             # Create the tables only if they don't exist
             con.execute(f"""
                 CREATE TABLE IF NOT EXISTS pages(
@@ -158,7 +202,7 @@ class EmbeddingsRepository:
         """Insert a single record into search_embeddings table."""
 
         if not self.search_query_exists(search_query):
-            with duckdb.connect(self.database_name) as con:
+            with self.connection() as con:
                 con.execute(
                     "INSERT INTO search_query_embeddings VALUES (?, ?, ?, ?)",
                     [search_query, embedding, embed_created_by, embed_created_at]
@@ -166,14 +210,14 @@ class EmbeddingsRepository:
 
     def remove_search_query_record(self, search_query: str, embed_created_at: str) -> None:
         """Remove search_query from database."""
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             con.execute("""DELETE FROM search_query_embeddings
                             WHERE search_query = ?
                             AND embed_created_at = ?""", [search_query, embed_created_at])
 
     def search_query_exists(self, search_query: str) -> bool:
         """Check if search_query already exists in database."""
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             con.execute(
                 "SELECT COUNT(*) FROM search_query_embeddings WHERE search_query = ?",
                 [search_query]
@@ -183,7 +227,7 @@ class EmbeddingsRepository:
 
     def get_search_query_embedding(self, search_query: str) -> List[float]:
         """Retrieve the embedding for a given search_query."""
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             res = con.execute(
                 "SELECT embedding FROM search_query_embeddings WHERE search_query = ?",
                 [search_query]
@@ -192,7 +236,7 @@ class EmbeddingsRepository:
 
     def get_search_query_embedding_creation_date(self, search_query: str) -> str:
         """Retrieve the creation date for a given search_query embedding."""
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             res = con.execute(
                 "SELECT embed_created_at FROM search_query_embeddings WHERE search_query = ?",
                 [search_query]
@@ -201,7 +245,7 @@ class EmbeddingsRepository:
 
     def pdf_exists(self, short_file_name: str) -> bool:
         """Check if a PDF file (by short_file_name) already exists in database."""
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             con.execute(
                 "SELECT COUNT(*) FROM pdf_files WHERE short_file_name = ?",
                 [short_file_name]
@@ -211,7 +255,7 @@ class EmbeddingsRepository:
 
     def get_embedded_pdf_short_names(self) -> set:
         """Get short file names of all PDFs in the database."""
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             return {row[0] for row in con.execute(
                 "SELECT short_file_name FROM pdf_files").fetchall()}
 
@@ -235,19 +279,16 @@ class EmbeddingsRepository:
             page_rows.append([page_id, short_file_name, page_index, page_label,
                               page_content, embedding, embed_created_by, embed_created_at])
 
-        # One connection and one transaction per PDF:
-        # The PDF is only stored if no errors happen
-        with duckdb.connect(self.database_name) as con:
-            con.begin()
+        # One transaction per PDF: the PDF is only stored if no errors happen
+        with self.transaction() as con:
             con.execute("INSERT INTO pdf_files VALUES (?, ?, ?)", pdf_record)
             con.executemany("INSERT INTO pages VALUES (?, ?, ?, ?, ?, ?, ?, ?)", page_rows)
-            con.commit()
 
         self._fts_index_stale = True
 
     def remove_pdf(self, short_file_name: str) -> None:
-        """Remove short_file_name from database."""
-        with duckdb.connect(self.database_name) as con:
+        """Remove short_file_name from database (both tables or neither)."""
+        with self.transaction() as con:
             con.execute("DELETE FROM pdf_files WHERE short_file_name = ?", [
                         short_file_name])
             con.execute("DELETE FROM pages WHERE short_file_name = ?", [
@@ -258,7 +299,7 @@ class EmbeddingsRepository:
         """Check the database: rebuild the full-text search index if it is missing
         or does not cover every row of the pages table (e.g. an earlier run added
         PDFs but never ran a full-text search)."""
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             try:
                 indexed = con.execute(
                     "SELECT COUNT(*) FROM fts_main_pages.docs").fetchone()[0]
@@ -279,7 +320,7 @@ class EmbeddingsRepository:
 
     def _rebuild_fts_index(self) -> None:
         """Rebuild the full-text search index over the whole pages table."""
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             con.execute(
                 """PRAGMA create_fts_index('pages', 'id', 'page_content', overwrite=1);""")
         self._fts_index_stale = False
@@ -296,7 +337,7 @@ class EmbeddingsRepository:
         using either array_cosine_similarity (descending)
         or array_distance (ascending).
         """
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             if similarity == "cosine":
                 base_query = f"""
                     FROM pages
@@ -356,7 +397,7 @@ class EmbeddingsRepository:
         Perform a full-text search  inside "short_file_name" using the FTS extension in DuckDB.
         """
         self.ensure_fts_index()
-        with duckdb.connect(self.database_name) as con:
+        with self.connection() as con:
             # Subquery: DuckDB refuses to filter on the match_bm25 alias in the same
             # SELECT ("expression has side effects").
             return con.execute("""
@@ -412,7 +453,7 @@ class EmbeddingsRepository:
         else:
             # bm25_similarity needs an up-to-date full-text index
             self.ensure_fts_index()
-            with duckdb.connect(self.database_name) as con:
+            with self.connection() as con:
                 # Eucledian distance not implmented here
                 return con.execute(f"""
                     FROM pages

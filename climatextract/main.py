@@ -416,12 +416,13 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     console.start_extraction_progress(len(pdf_files))
     http_error_log = start_http_error_log(path_to_results)
     try:
-        results = asyncio.run(
-            retriever_pipeline.retrieve_values_for_doc_list(
-                filename_list=pdf_files,
-                path_to_results=path_to_results
+        with embeddings_repo.keep_connection_open():
+            results = asyncio.run(
+                retriever_pipeline.retrieve_values_for_doc_list(
+                    filename_list=pdf_files,
+                    path_to_results=path_to_results
+                )
             )
-        )
     finally:
         stop_http_error_log(http_error_log)
         console.stop_embedding_progress()
