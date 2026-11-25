@@ -48,10 +48,10 @@ emb_model = "text-embedding-ada-002"
 max_parallel_llm_prompts_running = 100
 
 # Maximum number of concurrent embedding API calls.
+# If you need to embed thousands of documents this should match the avaiable quota.
 # Suggested values per model:
-#   - text-embedding-ada-002: 30
-#   - text-embedding-3-large: 50
-max_parallel_embedding_calls = 30
+#   - text-embedding-ada-002: 15
+max_parallel_embedding_calls = 15
 
 # LLM sampling temperature. Default if omitted: 0.0.
 # For reasoning models that reject 0.0 (e.g. gpt-5.2), LiteLLM silently
