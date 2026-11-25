@@ -9,6 +9,7 @@ import datetime
 from hashlib import sha256
 import logging
 import os
+import sys
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 import tiktoken
 
@@ -33,8 +34,22 @@ def _get_parse_pool() -> ProcessPoolExecutor:
         # process_cpu_count() (Python 3.13+) respects CPU limits/affinity;
         # leave one core for the main process (embedding I/O, DB writes).
         cpus = getattr(os, "process_cpu_count", os.cpu_count)() or 1
-        _parse_pool = ProcessPoolExecutor(max_workers=max(1, cpus - 1))
+        _parse_pool = ProcessPoolExecutor(max_workers=max(1, cpus - 1),
+                                          initializer=_init_parse_worker)
     return _parse_pool
+
+
+def _init_parse_worker() -> None:
+    """Runs once in each new worker process.
+
+    Forked workers inherit the parent's rich console (its log handler and
+    the sys.stdout/sys.stderr replacements of the progress display). A lock
+    held by the parent at fork time makes the worker hang on its first output
+    (our log messages, pypdf's warnings). Use the plain streams instead."""
+    sys.stdout, sys.stderr = sys.__stdout__, sys.__stderr__
+    root_logger = logging.getLogger()
+    root_logger.handlers.clear()
+    root_logger.addHandler(logging.StreamHandler(sys.__stderr__))
 
 
 @dataclass
