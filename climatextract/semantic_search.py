@@ -90,6 +90,11 @@ class EmbeddingsRepository:
         self.database_existent = False
         # Check if database exists (sets self.database_existent)
         self.database_exists()
+        # Stale whenever pages are added or removed; 
+        # requires building/syncing the full-text index, done next.
+        self._fts_index_stale = True
+        if self.database_existent:
+            self.sync_fts_index()
 
     def database_exists(self) -> bool:
         """Checks if a file named 'database_name' already exists."""
@@ -230,17 +235,16 @@ class EmbeddingsRepository:
                 doc_id, tail, index, page_label, page_content,
                 embedding, embed_created_by, embed_created_at)
 
-        self._update_fts_index()
+        self._fts_index_stale = True
 
     def remove_pdf(self, short_file_name: str) -> None:
-        """Remove short_file_name from database. Update index for full text search."""
+        """Remove short_file_name from database."""
         with duckdb.connect(self.database_name) as con:
             con.execute("DELETE FROM pdf_files WHERE short_file_name = ?", [
                         short_file_name])
             con.execute("DELETE FROM pages WHERE short_file_name = ?", [
                         short_file_name])
-            con.execute(
-                """PRAGMA create_fts_index('pages', 'id', 'page_content', overwrite=1);""")
+        self._fts_index_stale = True
 
     def _insert_pdf_record(self, short_file_name: str,
                            complete_file_path: str, number_of_pages: int) -> None:
@@ -269,11 +273,35 @@ class EmbeddingsRepository:
                     page_content, embedding, embed_created_by, embed_created_at]
             )
 
-    def _update_fts_index(self) -> None:
-        """Update Full Text Search index after each insert if you want it always fresh"""
+    def sync_fts_index(self) -> None:
+        """Check the database: rebuild the full-text search index if it is missing
+        or does not cover every row of the pages table (e.g. an earlier run added
+        PDFs but never ran a full-text search)."""
+        with duckdb.connect(self.database_name) as con:
+            try:
+                indexed = con.execute(
+                    "SELECT COUNT(*) FROM fts_main_pages.docs").fetchone()[0]
+                pages = con.execute("SELECT COUNT(*) FROM pages").fetchone()[0]
+                in_sync = indexed == pages
+            except duckdb.CatalogException:
+                in_sync = False  # no index yet
+        if in_sync:
+            self._fts_index_stale = False
+        else:
+            self._rebuild_fts_index()
+
+    def ensure_fts_index(self) -> None:
+        """Rebuild the full-text search index if pages were added or removed
+        since it was last built (cheap when nothing changed: no database access)."""
+        if self._fts_index_stale:
+            self._rebuild_fts_index()
+
+    def _rebuild_fts_index(self) -> None:
+        """Rebuild the full-text search index over the whole pages table."""
         with duckdb.connect(self.database_name) as con:
             con.execute(
                 """PRAGMA create_fts_index('pages', 'id', 'page_content', overwrite=1);""")
+        self._fts_index_stale = False
 
     def pdf_vector_search(self,
                           short_file_name: str,
@@ -346,19 +374,24 @@ class EmbeddingsRepository:
         """
         Perform a full-text search  inside "short_file_name" using the FTS extension in DuckDB.
         """
+        self.ensure_fts_index()
         with duckdb.connect(self.database_name) as con:
+            # Subquery: DuckDB refuses to filter on the match_bm25 alias in the same
+            # SELECT ("expression has side effects").
             return con.execute("""
-                FROM pages
-                LEFT JOIN pdf_files
-                    ON (pdf_files.short_file_name = pages.short_file_name)
-                SELECT
-                    pdf_files.complete_file_path,
-                    page_index,
-                    page_label,
-                    page_content,
-                    fts_main_pages.match_bm25(id, $searchTerm, fields := 'page_content') AS similarity
-                WHERE pages.short_file_name = ($file_name)
-                    AND similarity IS NOT NULL
+                FROM (
+                    FROM pages
+                    LEFT JOIN pdf_files
+                        ON (pdf_files.short_file_name = pages.short_file_name)
+                    SELECT
+                        pdf_files.complete_file_path,
+                        page_index,
+                        page_label,
+                        page_content,
+                        fts_main_pages.match_bm25(id, $searchTerm, fields := 'page_content') AS similarity
+                    WHERE pages.short_file_name = ($file_name)
+                )
+                WHERE similarity IS NOT NULL
                 ORDER BY similarity DESC
                 LIMIT ($limit)
             """, {
@@ -396,6 +429,8 @@ class EmbeddingsRepository:
                                          "bm25_similarity",
                                          "is_adjacent"])
         else:
+            # bm25_similarity needs an up-to-date full-text index
+            self.ensure_fts_index()
             with duckdb.connect(self.database_name) as con:
                 # Eucledian distance not implmented here
                 return con.execute(f"""
