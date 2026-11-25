@@ -214,26 +214,28 @@ class EmbeddingsRepository:
         """Inserts records for all pages of a PDF file and summary information 
         about the file into the database."""
 
-        file_path = pages_nodes[0].metadata["file_name"]
-        _, tail = os.path.split(file_path)
+        complete_file_path = pages_nodes[0].metadata["file_name"]
+        _, short_file_name = os.path.split(complete_file_path)
         number_of_pages = len(pages_nodes)
 
-        page_embeddings = [(page, embedding)
-                           for page, embedding in zip(pages_nodes, embeddings)]
-
-        self._insert_pdf_record(tail, file_path, number_of_pages)
-
-        for index, (document, embedding) in enumerate(page_embeddings):
-
+        pdf_record = [short_file_name, complete_file_path, number_of_pages]
+        page_rows = []
+        for page_index, (document, embedding) in enumerate(zip(pages_nodes, embeddings)):
             page_label = document.metadata["page_label"]
             page_content = document.get_text()
             doc_identity = str(page_content) + str(document.metadata)
-            doc_id = str(sha256(doc_identity.encode(
+            page_id = str(sha256(doc_identity.encode(
                 "utf-8", "surrogatepass")).hexdigest())
+            page_rows.append([page_id, short_file_name, page_index, page_label,
+                              page_content, embedding, embed_created_by, embed_created_at])
 
-            self._insert_pdf_page_record(
-                doc_id, tail, index, page_label, page_content,
-                embedding, embed_created_by, embed_created_at)
+        # One connection and one transaction per PDF:
+        # The PDF is only stored if no errors happen
+        with duckdb.connect(self.database_name) as con:
+            con.begin()
+            con.execute("INSERT INTO pdf_files VALUES (?, ?, ?)", pdf_record)
+            con.executemany("INSERT INTO pages VALUES (?, ?, ?, ?, ?, ?, ?, ?)", page_rows)
+            con.commit()
 
         self._fts_index_stale = True
 
@@ -245,33 +247,6 @@ class EmbeddingsRepository:
             con.execute("DELETE FROM pages WHERE short_file_name = ?", [
                         short_file_name])
         self._fts_index_stale = True
-
-    def _insert_pdf_record(self, short_file_name: str,
-                           complete_file_path: str, number_of_pages: int) -> None:
-        """Insert a single record into pdf_files table."""
-        with duckdb.connect(self.database_name) as con:
-            con.execute(
-                "INSERT INTO pdf_files VALUES (?, ?, ?)",
-                [short_file_name, complete_file_path, number_of_pages]
-            )
-
-    def _insert_pdf_page_record(self,
-                                page_id: str,
-                                short_file_name: str,
-                                page_index: int,
-                                page_label: str,
-                                page_content: str,
-                                embedding: List[float],
-                                embed_created_by: str,
-                                embed_created_at: str
-                                ) -> None:
-        """Insert a single record into the pages table."""
-        with duckdb.connect(self.database_name) as con:
-            con.execute(
-                "INSERT INTO pages VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                [page_id, short_file_name, page_index, page_label,
-                    page_content, embedding, embed_created_by, embed_created_at]
-            )
 
     def sync_fts_index(self) -> None:
         """Check the database: rebuild the full-text search index if it is missing
@@ -719,7 +694,14 @@ class Pdfdoc:
             processed_texts = ["empty parsed page" if t == "" else t for t in processed_texts]
 
             try:
-                embeddings = await embed_model.aget_embeddings(processed_texts)
+                # The API accepts at most 300,000 tokens per request: split
+                # reports in chunks of 35 pages (35 x max_tokens = 286,720).
+                embeddings = []
+                for i in range(0, len(processed_texts), 35):
+                    embeddings += await embed_model.aget_embeddings(processed_texts[i:i + 35])
+                if len(embeddings) != len(processed_texts):
+                    raise RuntimeError(
+                        f"got {len(embeddings)} embeddings for {len(processed_texts)} pages")
             except Exception as e:
                 logging.getLogger(__name__).warning(
                     "Embedding failed for %s: %s", self.filename, e)
