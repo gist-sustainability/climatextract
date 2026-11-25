@@ -718,7 +718,13 @@ class Pdfdoc:
             # workaround in case no text got extracted from a page
             processed_texts = ["empty parsed page" if t == "" else t for t in processed_texts]
 
-            embeddings = await embed_model.aget_embeddings(processed_texts)
+            try:
+                embeddings = await embed_model.aget_embeddings(processed_texts)
+            except Exception as e:
+                logging.getLogger(__name__).warning(
+                    "Embedding failed for %s: %s", self.filename, e)
+                self._handle_problematic_pdf(f"Embedding failed: {e}")
+                return False
 
             # Save results
             embed_model_repr = repr(embed_model)
