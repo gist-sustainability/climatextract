@@ -209,6 +209,12 @@ class EmbeddingsRepository:
             pdf_in_database = bool(con.fetchall()[0][0])
             return pdf_in_database
 
+    def get_embedded_pdf_short_names(self) -> set:
+        """Get short file names of all PDFs in the database."""
+        with duckdb.connect(self.database_name) as con:
+            return {row[0] for row in con.execute(
+                "SELECT short_file_name FROM pdf_files").fetchall()}
+
     def persist_pdf_with_pages_in_database(self, pages_nodes, embeddings,
                                            embed_created_by: str, embed_created_at: str) -> None:
         """Inserts records for all pages of a PDF file and summary information 

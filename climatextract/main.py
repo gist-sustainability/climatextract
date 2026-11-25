@@ -356,9 +356,10 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     pdfs_needing_embedding = 0
     pdf_cache_status = {}
     if database_exists:
+        embedded_pdfs = embeddings_repo.get_embedded_pdf_short_names()
         for filepath in pdf_files:
             short_filename = os.path.basename(filepath)
-            cached = embeddings_repo.pdf_exists(short_filename)
+            cached = short_filename in embedded_pdfs
             pdf_cache_status[short_filename] = cached
             if not cached:
                 pdfs_needing_embedding += 1
