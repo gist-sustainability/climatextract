@@ -15,12 +15,7 @@ import tiktoken
 import pandas as pd
 import numpy as np
 
-from llama_index.readers.file import PDFReader
-from llama_index.core.node_parser import SentenceSplitter
-from llama_index.core.ingestion import IngestionPipeline
-# we might want to try to use reader integrations directly, so only importing the following?
-# https://github.com/run-llama/llama_index/tree/main/llama-index-integrations/readers/llama-index-readers-file
-
+import pypdf
 import duckdb
 
 from climatextract.llm_embedding_api_bridge import EmbeddingModel
@@ -40,6 +35,16 @@ def _get_parse_pool() -> ProcessPoolExecutor:
         cpus = getattr(os, "process_cpu_count", os.cpu_count)() or 1
         _parse_pool = ProcessPoolExecutor(max_workers=max(1, cpus - 1))
     return _parse_pool
+
+
+@dataclass
+class ParsedPage:
+    """Text and metadata (page_label, file_name) of one PDF page, as parsed from the file."""
+    text: str
+    metadata: Dict[str, str]
+
+    def get_text(self) -> str:
+        return self.text
 
 
 class Page:
@@ -782,26 +787,34 @@ class Pdfdoc:
     @staticmethod
     def _load_raw_text_pagewise_from_pdf(filename: str):
         """
-        Load PDF file (each page is one document) and convert documents to nodes.
-        (pure llama.index functionality)
+        Load PDF file: one ParsedPage per page, in page order.
+
+        Same text and metadata as the earlier llama-index code (PDFReader, then
+        SentenceSplitter in an IngestionPipeline), so stored pages and page ids
+        do not change. But a page whose text pypdf cannot extract does not
+        discard the whole PDF: it stays in the list with a placeholder text,
+        so that page indices still match the PDF.
+
+        # this code is a copy of the earlier llama-index code, but it didn's support pagewise errors.
+        # from llama_index.readers.file import PDFReader
+        # from llama_index.core.node_parser import SentenceSplitter
+        # from llama_index.core.ingestion import IngestionPipeline
+        # we might want to try to use reader integrations directly, so only importing the following?
+        # https://github.com/run-llama/llama_index/tree/main/llama-index-integrations/readers/llama-index-readers-file
         """
-        # every page is loaded as a separate document
-        reader = PDFReader(return_full_document=False)
-
-        # Each node should represent a page. Chunk size should be large enough,
-        # so that we map every document
-        # (in our case this is a page) to its own node.
-        page_is_node_ingest_pipeline = IngestionPipeline(
-            transformations=[
-                SentenceSplitter(chunk_size=100000),
-                # extractors.TitleExtractor(),
-                # Extract `document_title` metadata field using our llm?
-            ]
-        )
-
-        pages_from_pdf = reader.load_data(filename)
-        pages_nodes = page_is_node_ingest_pipeline.run(
-            documents=pages_from_pdf)
+        pdf = pypdf.PdfReader(filename)
+        pages_nodes = []
+        for page_index, page in enumerate(pdf.pages):
+            try:
+                page_text = page.extract_text()
+            except Exception as e:
+                logging.getLogger(__name__).warning(
+                    "PdfReader cannot read page %s of %s: %s", page_index, filename, e)
+                page_text = "pypdf.PdfReader cannot read page"
+            metadata = {"page_label": pdf.page_labels[page_index],
+                        "file_name": os.path.basename(filename)}
+            # strip(): the SentenceSplitter removed leading/trailing whitespace
+            pages_nodes.append(ParsedPage(text=page_text.strip(), metadata=metadata))
 
         return pages_nodes
 
