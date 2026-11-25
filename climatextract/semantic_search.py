@@ -807,6 +807,8 @@ class Pdfdoc:
         for page_index, page in enumerate(pdf.pages):
             try:
                 page_text = page.extract_text()
+                # Accept only valid UTF-8 characters, replace invalid ones with `?`
+                page_text = page_text.encode("utf-8", "replace").decode("utf-8")
             except Exception as e:
                 logging.getLogger(__name__).warning(
                     "PdfReader cannot read page %s of %s: %s", page_index, filename, e)
