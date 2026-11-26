@@ -339,22 +339,22 @@ class EmbeddingsRepository:
             self._rebuild_fts_index()
 
     def _rebuild_fts_index(self) -> None:
-        """Rebuild the full-text search index over the whole pages table.
-        In interactive use the user may skip a large rebuild: the index then
-        stays outdated for this run (new pages get no bm25 score)."""
-        if sys.stdin.isatty():
-            with self.connection() as con:
-                pages = con.execute("SELECT COUNT(*) FROM pages").fetchone()[0]
-            needed_gb = pages * 15_000 / 1e9  # measured: 24 GB for 1.68 million pages
-            if needed_gb > 1:
-                answer = input(f"Search index is outdated. Rebuild the full-text index over all {pages:,} pages "
-                               f"(required: about {needed_gb:.0f} GB RAM)? [Y/n] ").strip().lower()
-                if answer in ("n", "no"):
-                    self._fts_index_stale = False  # do not ask again in this run
-                    return
+        """Rebuild the full-text search index over the whole pages table."""
         with self.connection() as con:
-            con.execute(
-                """PRAGMA create_fts_index('pages', 'id', 'page_content', overwrite=1);""")
+            try:
+                con.execute(
+                    """PRAGMA create_fts_index('pages', 'id', 'page_content', overwrite=1);""")
+            except duckdb.OutOfMemoryException as e:
+                raise duckdb.OutOfMemoryException(
+                    f"Not enough RAM to rebuild the full-text search index of {self.database_name} "
+                    "(DuckDB may use at most 40% of RAM). The previous search index remains "
+                    "unchanged. "
+                    "Remove the new entries from the database or build the index on a machine with more RAM. "
+                    "To remove all PDFs added since the last index build, run in DuckDB:\n"
+                    "  DELETE FROM pdf_files WHERE short_file_name IN (SELECT short_file_name FROM pages "
+                    "WHERE id NOT IN (SELECT name FROM fts_main_pages.docs));\n"
+                    "  DELETE FROM pages WHERE short_file_name NOT IN (SELECT short_file_name FROM pdf_files);"
+                    ) from e
         self._fts_index_stale = False
 
     def pdf_vector_search(self,
