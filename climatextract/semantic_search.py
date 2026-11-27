@@ -112,11 +112,8 @@ class EmbeddingsRepository:
         self.database_existent = False
         # Check if database exists (sets self.database_existent)
         self.database_exists()
-        # Stale whenever pages are added or removed; 
-        # requires building/syncing the full-text index, done next.
-        self._fts_index_stale = True
-        if self.database_existent:
-            self.sync_fts_index()
+        # True whenever pdfs are added or removed, before rebuidling the fts_index. None: not checked yet.
+        self._fts_index_stale: Optional[bool] = None
 
     def database_exists(self) -> bool:
         """Checks if a file named 'database_name' already exists."""
@@ -317,14 +314,15 @@ class EmbeddingsRepository:
 
     def sync_fts_index(self) -> None:
         """Check the database: rebuild the full-text search index if it is missing
-        or does not cover every row of the pages table (e.g. an earlier run added
-        PDFs but never ran a full-text search)."""
+        or does not cover exactly the pages in the pages table (e.g. an earlier run
+        added PDFs but never ran a full-text search)."""
         with self.connection() as con:
             try:
-                indexed = con.execute(
-                    "SELECT COUNT(*) FROM fts_main_pages.docs").fetchone()[0]
-                pages = con.execute("SELECT COUNT(*) FROM pages").fetchone()[0]
-                in_sync = indexed == pages
+                in_sync = con.execute("""
+                    SELECT (SELECT COUNT(*) FROM fts_main_pages.docs) = (SELECT COUNT(*) FROM pages)
+                       AND NOT EXISTS (SELECT 1 FROM pages
+                                       WHERE id NOT IN (SELECT name FROM fts_main_pages.docs))
+                """).fetchone()[0]
             except duckdb.CatalogException:
                 in_sync = False  # no index yet
         if in_sync:
@@ -334,8 +332,11 @@ class EmbeddingsRepository:
 
     def ensure_fts_index(self) -> None:
         """Rebuild the full-text search index if pages were added or removed
-        since it was last built (cheap when nothing changed: no database access)."""
-        if self._fts_index_stale:
+        since it was last built (cheap when nothing changed: no database access).
+        The first call checks the database."""
+        if self._fts_index_stale is None:
+            self.sync_fts_index()
+        elif self._fts_index_stale:
             self._rebuild_fts_index()
 
     def _rebuild_fts_index(self) -> None:
