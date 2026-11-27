@@ -23,38 +23,18 @@ from litellm import EmbeddingResponse, ModelResponse
 import tiktoken
 
 logger = logging.getLogger(__name__)
-_MAX_EMBEDDING_BATCH_TOKENS = 250_000
-_MAX_EMBEDDING_BATCH_INPUTS = 2_048
 
+# Azure OpenAI /embeddings limits, valid for all embedding models
+# (https://learn.microsoft.com/en-us/azure/ai-services/openai/quotas-limits):
+#   - 8,192 tokens per input text
+#   - 2,048 input texts per request
+#   - 300,000 tokens per request, summed across all inputs
+_MAX_TOKENS_PER_TEXT = 8_192
+_MAX_TOKENS_PER_REQUEST = 250_000
+_MAX_TEXTS_PER_REQUEST = 2_048
+# Used when tiktoken does not know the embedding model.
+_FALLBACK_ENCODING = "cl100k_base"
 
-def _iter_embedding_batches(texts: list[str]) -> Iterator[list[str]]:
-    """Split embedding inputs into requests below provider token and item limits."""
-    encoding = tiktoken.get_encoding("cl100k_base")
-    batch: list[str] = []
-    batch_tokens = 0
-
-    for text in texts:
-        token_count = len(encoding.encode(text))
-        if token_count > _MAX_EMBEDDING_BATCH_TOKENS:
-            raise ValueError(
-                f"Embedding input contains {token_count} tokens; "
-                f"the maximum supported batch size is "
-                f"{_MAX_EMBEDDING_BATCH_TOKENS} tokens per request."
-            )
-
-        if batch and (
-            batch_tokens + token_count > _MAX_EMBEDDING_BATCH_TOKENS
-            or len(batch) >= _MAX_EMBEDDING_BATCH_INPUTS
-        ):
-            yield batch
-            batch = []
-            batch_tokens = 0
-
-        batch.append(text)
-        batch_tokens += token_count
-
-    if batch:
-        yield batch
 for _logger_name in ("LiteLLM", "litellm", "litellm.utils", "litellm.main",
                      "litellm.cost_calculator", "litellm.proxy"):
     logging.getLogger(_logger_name).setLevel(logging.ERROR)
@@ -192,9 +172,69 @@ class EmbeddingModel:
         # Cached once to make repr() and get_embed_dimension() cheap.
         self._cached_model_name: Optional[str] = None
         self._cached_embed_dimension: Optional[int] = None
+        self._encoding: Optional[tiktoken.Encoding] = None
 
     def __repr__(self) -> str:
         return f"EmbeddingModel(model_name={self.get_model_name()!r})"
+
+    def encode(self, text: str) -> list[int]:
+        """Token ids of ``text`` for this embedding model.
+
+        Uses the model's tiktoken encoding; models tiktoken does not know
+        (e.g. sentence-transformers) are encoded with ``cl100k_base`` as an
+        approximation.
+        """
+        if self._encoding is None:
+            # "azure/text-embedding-3-large" -> "text-embedding-3-large"
+            model_name = self.get_model_name().split("/")[-1]
+            try:
+                self._encoding = tiktoken.encoding_for_model(model_name)
+            except KeyError:
+                logger.info("tiktoken does not know embedding model %r; counting tokens with %s",
+                            model_name, _FALLBACK_ENCODING)
+                self._encoding = tiktoken.get_encoding(_FALLBACK_ENCODING)
+        return self._encoding.encode(text)
+
+    def count_tokens(self, text: str) -> int:
+        """Number of tokens in ``text`` for this embedding model."""
+        return len(self.encode(text))
+
+    def truncate(self, text: str, max_tokens: int = _MAX_TOKENS_PER_TEXT) -> str:
+        """Return ``text`` cut to at most ``max_tokens`` tokens (unchanged if shorter)."""
+        tokens = self.encode(text)
+        if len(tokens) <= max_tokens:
+            return text
+        return self._encoding.decode(tokens[:max_tokens])
+
+    def _iter_requests(self, texts: list[str]) -> Iterator[list[str]]:
+        """Yield consecutive batches of ``texts`` that each fit in one request."""
+        if not texts:
+            raise ValueError("No texts to embed: got an empty list.")
+
+        batch: list[str] = []
+        batch_tokens = 0
+
+        for text in texts:
+            token_count = self.count_tokens(text)
+            if token_count > _MAX_TOKENS_PER_TEXT:
+                raise ValueError(
+                    f"Embedding input contains {token_count} tokens; the maximum is "
+                    f"{_MAX_TOKENS_PER_TEXT} tokens per text. Use truncate() first."
+                )
+
+            if batch and (
+                batch_tokens + token_count > _MAX_TOKENS_PER_REQUEST
+                or len(batch) >= _MAX_TEXTS_PER_REQUEST
+            ):
+                yield batch
+                batch = []
+                batch_tokens = 0
+
+            batch.append(text)
+            batch_tokens += token_count
+
+        if batch:
+            yield batch
 
     @property
     def token_counter(self) -> UsageCounter:
@@ -204,7 +244,7 @@ class EmbeddingModel:
     def get_embeddings(self, texts: list[str]) -> list[list[float]]:
         """Sync embedding calls in bounded batches. Returns ``list[list[float]]``."""
         vectors = []
-        for batch in _iter_embedding_batches(texts):
+        for batch in self._iter_requests(texts):
             response, cost = self.embedding_handler.get_embedding_and_cost(batch)
             self._record_usage(response, cost)
             vectors.extend(self._extract_vectors(response))
@@ -213,7 +253,7 @@ class EmbeddingModel:
     async def aget_embeddings(self, texts: list[str]) -> list[list[float]]:
         """Async embedding calls in bounded batches with concurrency control."""
         vectors = []
-        for batch in _iter_embedding_batches(texts):
+        for batch in self._iter_requests(texts):
             async with self.embedding_semaphore:
                 response, cost = await self.embedding_handler.aget_embedding_and_cost(batch)
             self._record_usage(response, cost)
