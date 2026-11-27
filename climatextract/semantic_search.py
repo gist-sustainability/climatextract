@@ -2,7 +2,7 @@
 and provide basic search functionality (vector search, full text search)."""
 
 import asyncio
-from concurrent.futures import ProcessPoolExecutor
+from concurrent.futures import Executor
 from contextlib import contextmanager
 from dataclasses import dataclass, field
 import datetime
@@ -24,18 +24,34 @@ from climatextract.llm_embedding_api_bridge import EmbeddingModel
 if TYPE_CHECKING:
     from climatextract.console import Console
 
-# Launch multiple parallel multiple Worker processes for compute-intense work (PDF parsing).
-_parse_pool: Optional[ProcessPoolExecutor] = None
+# Workers for compute-intense work (PDF parsing).
+_parse_pool: Optional[Executor] = None
 
 
-def _get_parse_pool() -> ProcessPoolExecutor:
+def _get_parse_pool() -> Executor:
     global _parse_pool
     if _parse_pool is None:
-        # process_cpu_count() (Python 3.13+) respects CPU limits/affinity;
-        # leave one core for the main process (embedding I/O, DB writes).
-        cpus = getattr(os, "process_cpu_count", os.cpu_count)() or 1
-        _parse_pool = ProcessPoolExecutor(max_workers=max(1, cpus - 1),
-                                          initializer=_init_parse_worker)
+        # Workaround, different per platform. Worker processes started with spawn
+        # (Windows, macOS) or forkserver (Linux default from Python 3.14) re-run the
+        # user's script, which fails without an `if __name__ == "__main__":` guard.
+        # InterpreterPoolExecutor (Python 3.14+) would parse in parallel on every
+        # platform without a guard, but does not work yet: pypdf needs cryptography
+        # for AES-encrypted PDFs, which cannot load in subinterpreters.
+        if sys.platform == "linux":
+            from concurrent.futures import ProcessPoolExecutor
+            import multiprocessing
+            # Linux: worker processes, always started with fork.
+            # process_cpu_count() (Python 3.13+) respects CPU limits/affinity;
+            # leave one core for the main process (embedding I/O, DB writes).
+            cpus = getattr(os, "process_cpu_count", os.cpu_count)() or 1
+            _parse_pool = ProcessPoolExecutor(max_workers=max(1, cpus - 1),
+                                              initializer=_init_parse_worker,
+                                              mp_context=multiprocessing.get_context("fork"))
+        else:
+            # Windows and macOS have no safe fork: parse in one thread of the main process
+            # (keeps the event loop free; more threads would not parse faster).
+            from concurrent.futures import ThreadPoolExecutor
+            _parse_pool = ThreadPoolExecutor(max_workers=1)
     return _parse_pool
 
 
