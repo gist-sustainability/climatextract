@@ -130,16 +130,26 @@ class DataLakeManager:
         # Handle embedding database
         if not embeddings_repo.database_exists():
             logging.getLogger(__name__).info("Embedding database not found locally")
-            response = input("Download database from data lake? [y/N] ").strip().lower()
             embeddings_db_path = embeddings_repo.get_database_name()
+            container, prefix = self._split_blob_path(self.blob_path_embeddings)
+            blob_name = prefix + os.path.basename(embeddings_db_path)
+            blob_client = blob_service.get_container_client(container).get_blob_client(blob_name)
+
+            try:
+                size_mb = int(blob_client.get_blob_properties().size or 0) / (1024 * 1024)
+            except Exception:
+                size_mb = 0  # If we can't get the size (e.g. blob missing), proceed as before
+            if size_mb > 600:
+                logging.getLogger(__name__).warning(
+                    "Embedding database in data lake is %.0f MB, too large to download here. "
+                    "Download %s/%s manually to %s.",
+                    size_mb, container, blob_name, embeddings_db_path)
+                return False
+
+            response = input("Download database from data lake? [y/N] ").strip().lower()
 
             if response == "y":
                 try:
-                    container, prefix = self._split_blob_path(self.blob_path_embeddings)
-                    container_client = blob_service.get_container_client(container)
-                    blob_name = prefix + os.path.basename(embeddings_db_path)
-                    blob_client = container_client.get_blob_client(blob_name)
-
                     dir_path = os.path.dirname(embeddings_db_path)
                     if dir_path:
                         os.makedirs(dir_path, exist_ok=True)
@@ -147,9 +157,7 @@ class DataLakeManager:
                         blob_client.download_blob().readinto(f)
                 except Exception as e:
                     logging.getLogger(__name__).warning(
-                        "Embedding database download failed (%s). "
-                        "A new database will be created locally at %s",
-                        e, embeddings_db_path)
+                        "Embedding database download failed (%s).", e)
                     # Remove the partial download so an empty/corrupt file is
                     # not later mistaken for a valid database.
                     try:
@@ -157,6 +165,7 @@ class DataLakeManager:
                             os.remove(embeddings_db_path)
                     except OSError:
                         pass
+                    return False
 
         return True
     
@@ -219,6 +228,12 @@ class DataLakeManager:
         """
         if not files_to_download:
             return True
+
+        if len(files_to_download) > 200:
+            logging.getLogger(__name__).warning(
+                "%d PDFs missing locally, too many to download from the data lake.",
+                len(files_to_download))
+            return False
 
         blob_service = self._get_blob_service()
         if not blob_service:

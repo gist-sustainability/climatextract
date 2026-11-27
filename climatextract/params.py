@@ -36,6 +36,7 @@ class ConfigParams:
     """Parameters for the configuration."""
     gold_standard: str = field(default=None)
     filename_list: list[str] = field(default=None)
+    use_all_files_from_database: bool = field(default=False)
 
 
 @dataclass

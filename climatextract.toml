@@ -11,6 +11,8 @@
 filename_list = ["data/pdfs/test_report/report.pdf"]
 # Or a directory path (processes all PDFs in it):
 #    filename_list = "./data/pdfs/sample_160"
+# Or all PDFs in embeddings_repository (requires input_mode = "text"):
+# use_all_files_from_database = true
 
 # =============================================================================
 # MODELS - LLM and embedding model selection
