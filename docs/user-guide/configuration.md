@@ -6,7 +6,7 @@ climatextract uses a TOML configuration file (`climatextract.toml`) to control a
 
 ## Configuration File
 
-Create a `climatextract.toml` file in your working directory. You can specify a different path:
+Copy `climatextract.example.toml` to `climatextract.toml` in your working directory. You can specify a different path:
 
 ```python
 from climatextract import extract

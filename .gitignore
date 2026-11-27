@@ -37,3 +37,5 @@ data/docs/
 problematic_pdfs_log.txt
 *.egg-info/
 .claude/
+
+climatextract.toml

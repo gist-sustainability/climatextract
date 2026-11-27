@@ -36,10 +36,11 @@ If you need to use `input_mode = "text+table"` (discouraged), also install the t
 pip install -e ".[tables]"
 ```
 
-Then copy `.env.example` to `.env` and fill in the credentials for your model provider:
+Then copy `.env.example` to `.env` and fill in the credentials for your model provider, and copy the example configuration:
 
 ```bash
 cp .env.example .env
+cp climatextract.example.toml climatextract.toml
 ```
 
 See the [Installation guide](https://gist-sustainability.github.io/climatextract/getting-started/installation/) for additional steps and alternative deployment options you have.
