@@ -8,7 +8,6 @@ from hashlib import sha256
 import logging
 import os.path
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
-import tiktoken
 
 import pandas as pd
 import numpy as np
@@ -606,27 +605,6 @@ class Pdfdoc:
 
         if self._repository.pdf_exists(self.short_filename):
             return True
-
-            # Typically, we don't create embeddings for the pdfs everytime
-            # Current code already counts embedding tokens when they are created
-            # (in config -> EmbeddingModel.get_embeddings())
-            # If we would still like to count embedding tokens every time, uncomment this code
-            # Currently commented because counting embedding tokens everytime,
-            # just like creating embeddings everytime, is time costly
-
-            # if hasattr(embed_model, 'token_counter'):
-            #     print(f"Counting tokens for existing PDF content...")
-            #     # Load the same way we would for new content to count tokens
-            #     pages_nodes = self._load_raw_text_pagewise_from_pdf()
-
-            #     total_tokens = 0
-            #     for node in pages_nodes:
-            #         tokens = embed_model.token_counter.count_tokens(node.get_text())
-            #         total_tokens += tokens
-
-            #     embed_model.token_counter.add_embedding_tokens(total_tokens)
-
-            # return True
         else:
             try:
                 pages_nodes = self._load_raw_text_pagewise_from_pdf()
@@ -641,32 +619,29 @@ class Pdfdoc:
                 self._handle_problematic_pdf(msg)
                 return False
 
-            # Tokenization setup
-            encoding = tiktoken.get_encoding("cl100k_base")
-            max_tokens = 8192
             processed_texts = []
-
-            truncated_count = 0  # Initialize counter
-
             for page in pages_nodes:
-                original_text = page.get_text()
-                tokens = encoding.encode(original_text)
-
-                if len(tokens) > max_tokens:
-                    truncated_text = encoding.decode(tokens[:max_tokens])
-                    processed_texts.append(truncated_text)
-                    truncated_count += 1  # Increment counter
-                    # Write to log file
+                # Empty pages would make the embedding API reject the whole request.
+                # Embedding models limit the number of tokens per request -> truncate
+                text = page.get_text() or "empty parsed page"
+                truncated = embed_model.truncate(text)
+                if truncated != text:
                     with open("problematic_pdfs_log.txt", encoding="utf-8", mode="a") as f:
                         f.write(
                             f"PDF: {self.filename}, Page: {page.metadata['page_label']}\n")
-                else:
-                    processed_texts.append(original_text)
+                processed_texts.append(truncated)
 
-            # workaround in case no text got extracted from a page
-            processed_texts = ["empty parsed page" if t == "" else t for t in processed_texts]
+            try:
 
-            embeddings = await embed_model.aget_embeddings(processed_texts)
+                embeddings = await embed_model.aget_embeddings(processed_texts)
+                if len(embeddings) != len(processed_texts):
+                    raise RuntimeError(
+                        f"got {len(embeddings)} embeddings for {len(processed_texts)} pages")
+            except Exception as e:
+                logging.getLogger(__name__).warning(
+                    "Embedding failed for %s: %s", self.filename, e)
+                self._handle_problematic_pdf(f"Embedding failed: {e}")
+                return False
 
             # Save results
             embed_model_repr = repr(embed_model)
