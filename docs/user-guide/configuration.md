@@ -6,7 +6,7 @@ climatextract uses a TOML configuration file (`climatextract.toml`) to control a
 
 ## Configuration File
 
-Create a `climatextract.toml` file in your working directory. You can specify a different path:
+Copy `climatextract.example.toml` to `climatextract.toml` in your working directory. You can specify a different path:
 
 ```python
 from climatextract import extract
@@ -30,6 +30,10 @@ filename_list = [
 
 # Option 2: Process all PDFs in a directory
 # filename_list = "./data/pdfs/"
+
+# Option 3: All PDFs in embeddings_repository, no PDF files needed
+# use_all_files_from_database = true
+# (This works only with input_mode = "text" and embeddings_repository must be set below)
 ```
 
 ---

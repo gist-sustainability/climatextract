@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 
 # Optional Azure imports for data lake downloads
 try:
+    from azure.core.exceptions import ResourceNotFoundError
     from azure.storage.blob import BlobServiceClient
 except Exception:
     BlobServiceClient = None
@@ -114,52 +115,75 @@ class DataLakeManager:
         return self.download_missing_pdfs(files_to_download)
     
     def handle_embedding_database(self, embeddings_repo) -> bool:
-        """Step 1: Handle embedding database download if needed.
+        """Step 1: Make sure the embedding database is available, downloading it if needed. The complete run stops if False is returned.
 
         Args:
             embeddings_repo: Repository object to check if database exists.
 
         Returns:
-            bool: True if database is available or successfully downloaded, False on failure.
+            bool: True if the database exists locally, was downloaded, or does not exist
+                in the data lake (a new one will be created). False if the run should stop:
+                download declined or failed, database too large, or data lake check failed.
         """
+        if embeddings_repo.database_exists():
+            return True
+
         blob_service = self._get_blob_service()
         if not blob_service:
             logging.getLogger(__name__).info("Data lake not configured — database will be created locally if needed")
             return True
 
-        # Handle embedding database
-        if not embeddings_repo.database_exists():
-            logging.getLogger(__name__).info("Embedding database not found locally")
-            response = input("Download database from data lake? [y/N] ").strip().lower()
-            embeddings_db_path = embeddings_repo.get_database_name()
+        logging.getLogger(__name__).info("Embedding database not found locally")
+        embeddings_db_path = embeddings_repo.get_database_name()
+        container, prefix = self._split_blob_path(self.blob_path_embeddings)
+        blob_name = prefix + os.path.basename(embeddings_db_path)
+        blob_client = blob_service.get_container_client(container).get_blob_client(blob_name)
 
-            if response == "y":
-                try:
-                    container, prefix = self._split_blob_path(self.blob_path_embeddings)
-                    container_client = blob_service.get_container_client(container)
-                    blob_name = prefix + os.path.basename(embeddings_db_path)
-                    blob_client = container_client.get_blob_client(blob_name)
+        try:
+            size_mb = int(blob_client.get_blob_properties().size or 0) / (1000 * 1000)
+        except ResourceNotFoundError as e:
+            if e.error_code != "BlobNotFound":  # e.g. ContainerNotFound: wrong config
+                logging.getLogger(__name__).warning(
+                    "Could not check the embedding database in the data lake (%s).", e.error_code)
+                return False
+            logging.getLogger(__name__).info(
+                "No database in data lake, a new one will be created at %s", embeddings_db_path)
+            return True
+        except Exception as e:
+            logging.getLogger(__name__).warning(
+                "Could not check the embedding database in the data lake (%s).", e)
+            return False
+        if size_mb > 600:
+            logging.getLogger(__name__).warning(
+                "Embedding database in data lake is %.0f MB, too large to download here. "
+                "Download %s/%s manually to %s.",
+                size_mb, container, blob_name, embeddings_db_path)
+            return False
 
-                    dir_path = os.path.dirname(embeddings_db_path)
-                    if dir_path:
-                        os.makedirs(dir_path, exist_ok=True)
-                    with open(embeddings_db_path, "wb") as f:
-                        blob_client.download_blob().readinto(f)
-                except Exception as e:
-                    logging.getLogger(__name__).warning(
-                        "Embedding database download failed (%s). "
-                        "A new database will be created locally at %s",
-                        e, embeddings_db_path)
-                    # Remove the partial download so an empty/corrupt file is
-                    # not later mistaken for a valid database.
-                    try:
-                        if os.path.exists(embeddings_db_path):
-                            os.remove(embeddings_db_path)
-                    except OSError:
-                        pass
+        response = input(f"Download database {blob_name} ({size_mb:.0f} MB) "
+                         "from data lake? [y/N] ").strip().lower()
+        if response != "y":
+            return False
 
-        return True
-    
+        try:
+            dir_path = os.path.dirname(embeddings_db_path)
+            if dir_path:
+                os.makedirs(dir_path, exist_ok=True)
+            with open(embeddings_db_path, "wb") as f:
+                blob_client.download_blob().readinto(f)
+            return True
+        except Exception as e:
+            logging.getLogger(__name__).warning(
+                "Embedding database download failed (%s).", e)
+            # Remove the partial download so an empty/corrupt file is
+            # not later mistaken for a valid database.
+            try:
+                if os.path.exists(embeddings_db_path):
+                    os.remove(embeddings_db_path)
+            except OSError:
+                pass
+            return False
+
     def check_files_needing_embedding(self, filename_list: List[str], embeddings_repo) -> List[str]:
         """Step 2: Check which files need embedding.
         
@@ -220,6 +244,12 @@ class DataLakeManager:
         if not files_to_download:
             return True
 
+        if len(files_to_download) > 200:
+            logging.getLogger(__name__).warning(
+                "%d PDFs missing locally, too many to download from the data lake.",
+                len(files_to_download))
+            return False
+
         blob_service = self._get_blob_service()
         if not blob_service:
             logging.getLogger(__name__).warning("PDF files needed but data lake is not available")
@@ -240,7 +270,7 @@ class DataLakeManager:
             total_size_bytes = 0  # If we can't get sizes, proceed anyway
 
         # Convert to readable format
-        total_size_mb = total_size_bytes / (1024 * 1024)
+        total_size_mb = total_size_bytes / (1000 * 1000)
 
         if total_size_mb > 0:
             logging.getLogger(__name__).info(
@@ -323,7 +353,7 @@ class DataLakeManager:
             logging.getLogger(__name__).info("No PDFs found in data lake under '%s'", prefix)
             return False
 
-        total_size_mb = sum(b.size or 0 for b in blobs) / (1024 * 1024)
+        total_size_mb = sum(b.size or 0 for b in blobs) / (1000 * 1000)
         logging.getLogger(__name__).info(
             "Found %d PDFs (%.1f MB) in data lake under '%s'", len(blobs), total_size_mb, prefix)
 

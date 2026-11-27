@@ -278,22 +278,8 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         blob_path_embeddings=datalake_config["blob_path_embeddings"],
     )
 
-    # If input is a directory (existing but empty, or not yet created), try populating from data lake
-    raw_input = pdf_input if pdf_input is not None else config_params.filename_list
-    if isinstance(raw_input, str) and not raw_input.endswith(".pdf"):
-        input_path = Path(raw_input)
-        is_empty_dir = input_path.is_dir() and not any(input_path.glob("*.pdf"))
-        is_missing_dir = not input_path.exists()
-        if is_empty_dir or is_missing_dir:
-            data_lake_manager.download_directory_from_blob(raw_input)
-
-    # Resolve PDF files: argument takes priority, then config
-    if pdf_input is not None:
-        pdf_files = _resolve_pdf_input(pdf_input)
-    elif config_params.filename_list:
-        pdf_files = _resolve_pdf_input(config_params.filename_list)
-    else:
-        raise ValueError("No PDF files specified in argument or config file.")
+    pdf_files = _resolve_input_files(
+        pdf_input, config_params, experiment_params, data_lake_manager)
 
     # Check for missing PDFs upfront and offer to download
     data_lake_manager.download_pdfs_if_not_locally_available(pdf_files)
@@ -320,17 +306,8 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
 
     # Set up components
     # Use custom embeddings repository if specified, otherwise fall back to default
-    if experiment_params.semantic_search_params.embeddings_repository:
-        embeddings_repo = semantic_search.EmbeddingsRepository(
-            database_name=experiment_params.semantic_search_params.embeddings_repository
-        )
-    else:
-        embeddings_repo = semantic_search.EmbeddingsRepository(
-            database_name=(
-                f"data/processed/embeddings/"
-                f"{experiment_params.semantic_search_params.emb_model}"
-                f"_from_2025_12_23.duckdb")
-        )
+    embeddings_repo = semantic_search.EmbeddingsRepository(
+        database_name=_embeddings_repository_path(experiment_params))
 
     # Build handlers: caller-supplied > default Foundry handler.
     if embedder is None:
@@ -384,7 +361,7 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
         embeddings_repo=embeddings_repo,
         input_mode=experiment_params.pipeline_params.input_mode
     ):
-        logger.warning("Data lake workflow failed.")
+        logger.warning("Stopping: required PDFs or the embeddings database are not available.")
         return None
 
     if not search_query.embed_search_query_and_save_to_database(embed_model):
@@ -508,24 +485,8 @@ def _extract_and_evaluate_with_metadata(
         blob_path_pdfs=datalake_config["blob_path_pdfs"],
         blob_path_embeddings=datalake_config["blob_path_embeddings"],
     )
-    raw_input = pdf_input if pdf_input is not None else config_params.filename_list
-    if isinstance(raw_input, str) and not raw_input.endswith(".pdf"):
-        input_path = Path(raw_input)
-        is_empty_dir = input_path.is_dir() and not any(input_path.glob("*.pdf"))
-        is_missing_dir = not input_path.exists()
-        if is_empty_dir or is_missing_dir:
-            data_lake_manager.download_directory_from_blob(raw_input)
-
-    # Resolve PDF files: argument takes priority, then config
-    if pdf_input is not None:
-        pdf_files = _resolve_pdf_input(pdf_input)
-    elif config_params.filename_list:
-        pdf_files = _resolve_pdf_input(config_params.filename_list)
-    else:
-        raise ValueError("No PDF files specified in argument or config file.")
-
-    # Check for missing PDFs upfront and offer to download
-    data_lake_manager.download_pdfs_if_not_locally_available(pdf_files)
+    pdf_files = _resolve_input_files(
+        pdf_input, config_params, experiment_params, data_lake_manager)
 
     # Determine gold standard: argument > config
     gs_path = gold_standard_path if gold_standard_path else config_params.gold_standard
@@ -685,6 +646,72 @@ def _ensure_table_dependencies(input_mode: str, embed_only: bool = False) -> Non
             "See our installation guide: "
             "https://gist-sustainability.github.io/climatextract/getting-started/installation/"
         )
+
+
+def _embeddings_repository_path(experiment_params: ExperimentParams) -> str:
+    """Custom embeddings repository from config, otherwise the default path."""
+    search_params = experiment_params.semantic_search_params
+    if search_params.embeddings_repository:
+        return search_params.embeddings_repository
+    return (f"data/processed/embeddings/"
+            f"{search_params.emb_model}_from_2025_12_23.duckdb")
+
+
+def _resolve_input_files(pdf_input: str | List[str] | None,
+                         config_params: ConfigParams,
+                         experiment_params: ExperimentParams,
+                         data_lake_manager: DataLakeManager) -> List[str]:
+    """Decide which PDFs to process.
+
+    Priority: ``pdf_input`` argument, then ``filename_list`` from config, then
+    (only if ``use_all_files_from_database`` is set) every PDF in the embeddings database.
+    ``use_all_files_from_database`` requires ``embeddings_repository`` to be set in the config.
+    """
+    if (config_params.use_all_files_from_database
+            and not experiment_params.semantic_search_params.embeddings_repository):
+        raise ValueError("use_all_files_from_database = true requires embeddings_repository "
+                         "to be set in the [extraction] section of the config file.")
+
+    raw_input = pdf_input if pdf_input is not None else config_params.filename_list
+
+    if not raw_input:
+        if config_params.use_all_files_from_database:
+            return _pdf_files_from_database(experiment_params)
+        else:
+            raise ValueError("No PDF files specified in argument or config file. "
+                             "Set use_all_files_from_database = true (together with "
+                             "embeddings_repository) to process all PDFs in the embeddings database.")
+
+
+    if config_params.use_all_files_from_database:
+        logger.info("use_all_files_from_database is ignored because PDF files were specified.")
+
+    # If input is a directory (existing but empty, or not yet created), try populating from data lake
+    if isinstance(raw_input, str) and not raw_input.endswith(".pdf"):
+        input_path = Path(raw_input)
+        is_empty_dir = input_path.is_dir() and not any(input_path.glob("*.pdf"))
+        is_missing_dir = not input_path.exists()
+        if is_empty_dir or is_missing_dir:
+            data_lake_manager.download_directory_from_blob(raw_input)
+
+    return _resolve_pdf_input(raw_input)
+
+
+def _pdf_files_from_database(experiment_params: ExperimentParams) -> List[str]:
+    """All PDFs in embeddings_repository, as paths in data/pdfs/ (text mode never opens the PDFs)."""
+    if experiment_params.pipeline_params.input_mode != "text":
+        raise ValueError("use_all_files_from_database requires input_mode = \"text\".")
+
+    db_path = experiment_params.semantic_search_params.embeddings_repository
+    if not os.path.isfile(db_path):
+        raise FileNotFoundError(f"Embeddings database not found: {db_path}")
+
+    pdf_files = [os.path.join("data", "pdfs", name) for name in
+                 sorted(semantic_search.EmbeddingsRepository(db_path).get_embedded_pdf_short_names())]
+    if not pdf_files:
+        raise ValueError(f"Embeddings database contains no PDFs: {db_path}")
+    logger.info("Using all %d PDFs from %s", len(pdf_files), db_path)
+    return pdf_files
 
 
 def _resolve_pdf_input(pdf_input: str | List[str]) -> List[str]:

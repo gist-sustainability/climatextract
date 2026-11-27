@@ -71,7 +71,7 @@ Or check out our gold-standard dataset: [Paper](https://doi.org/10.1038/s41597-0
 
 ## Using a Configuration File
 
-For more control, create a `climatextract.toml` configuration file:
+For more control, copy `climatextract.example.toml` to `climatextract.toml` and adjust it:
 
 ```python
 from climatextract import extract
