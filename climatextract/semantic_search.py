@@ -847,6 +847,7 @@ class Pdfdoc:
         # https://github.com/run-llama/llama_index/tree/main/llama-index-integrations/readers/llama-index-readers-file
         """
         pdf = pypdf.PdfReader(filename)
+        page_labels = pdf.page_labels
         pages_nodes = []
         for page_index, page in enumerate(pdf.pages):
             try:
@@ -857,7 +858,7 @@ class Pdfdoc:
                 logging.getLogger(__name__).warning(
                     "PdfReader cannot read page %s of %s: %s", page_index, filename, e)
                 page_text = "pypdf.PdfReader cannot read page"
-            metadata = {"page_label": pdf.page_labels[page_index],
+            metadata = {"page_label": page_labels[page_index],
                         "file_name": os.path.basename(filename)}
             # strip(): the SentenceSplitter removed leading/trailing whitespace
             pages_nodes.append(ParsedPage(text=page_text.strip(), metadata=metadata))
