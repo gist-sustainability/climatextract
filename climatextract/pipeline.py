@@ -41,7 +41,7 @@ class ValueRetrieverPipeline():
         self.input_mode = experiment_params.pipeline_params.input_mode
         self.embed_only = experiment_params.pipeline_params.embed_only
 
-        max_concurrent_pdfs = 20
+        max_concurrent_pdfs = experiment_params.pipeline_params.max_concurrent_pdfs
         self.pipeline_semaphore = asyncio.Semaphore(max_concurrent_pdfs)
 
         self.page_extractor = None

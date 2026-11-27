@@ -356,9 +356,10 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     pdfs_needing_embedding = 0
     pdf_cache_status = {}
     if database_exists:
+        embedded_pdfs = embeddings_repo.get_embedded_pdf_short_names()
         for filepath in pdf_files:
             short_filename = os.path.basename(filepath)
-            cached = embeddings_repo.pdf_exists(short_filename)
+            cached = short_filename in embedded_pdfs
             pdf_cache_status[short_filename] = cached
             if not cached:
                 pdfs_needing_embedding += 1
@@ -415,12 +416,13 @@ def _extract_with_metadata(pdf_input: str | List[str] | None = None,
     console.start_extraction_progress(len(pdf_files))
     http_error_log = start_http_error_log(path_to_results)
     try:
-        results = asyncio.run(
-            retriever_pipeline.retrieve_values_for_doc_list(
-                filename_list=pdf_files,
-                path_to_results=path_to_results
+        with embeddings_repo.keep_connection_open():
+            results = asyncio.run(
+                retriever_pipeline.retrieve_values_for_doc_list(
+                    filename_list=pdf_files,
+                    path_to_results=path_to_results
+                )
             )
-        )
     finally:
         stop_http_error_log(http_error_log)
         console.stop_embedding_progress()

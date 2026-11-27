@@ -48,10 +48,10 @@ emb_model = "text-embedding-ada-002"
 max_parallel_llm_prompts_running = 100
 
 # Maximum number of concurrent embedding API calls.
+# If you need to embed thousands of documents this should match the avaiable quota.
 # Suggested values per model:
-#   - text-embedding-ada-002: 30
-#   - text-embedding-3-large: 50
-max_parallel_embedding_calls = 30
+#   - text-embedding-ada-002: 15
+max_parallel_embedding_calls = 15
 
 # LLM sampling temperature. Default if omitted: 0.0.
 # For reasoning models that reject 0.0 (e.g. gpt-5.2), LiteLLM silently
@@ -83,6 +83,14 @@ input_mode = "text"
 
 # Whether to only embed documents without extraction
 embed_only = false
+
+# Maximum number of PDFs processed concurrently (default: 20). Each PDF in
+# flight holds its pages in memory and sends similarity_top_k LLM prompts.
+# Rules of thumb:
+#   - LLM extraction: >= max_parallel_llm_prompts_running / similarity_top_k
+#   - embedding:  ~ CPU cores + max_parallel_embedding_calls + a small buffer
+# Too high only increases memory use; too low leaves the API limits unused.
+max_concurrent_pdfs = 20
 
 # Prompt type: "default" or "structured_json"
 prompt_type = "structured_json"

@@ -141,6 +141,9 @@ class AzureAIFoundryEmbeddingHandler(EmbeddingModelHandler):
         self.model_name = params.emb_model or self.MODEL
         ensure_litellm_metadata_registered(self.model_name, our_prefix="azure")
         self.model_dict = _common_model_dict(self.model_name)
+        # Retries in the openai SDK on 429/5xx (exponential backoff, honours
+        # Retry-After). LiteLLM's default is 2.
+        self.model_dict["max_retries"] = 8
         self.max_concurrent_calls = params.max_parallel_embedding_calls or 1
 
     def get_model_dict(self) -> dict:

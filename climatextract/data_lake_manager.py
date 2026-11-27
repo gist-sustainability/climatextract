@@ -172,9 +172,10 @@ class DataLakeManager:
         """
         missing_files = []
         if embeddings_repo.database_exists():
+            embedded_pdfs = embeddings_repo.get_embedded_pdf_short_names()
             for filepath in filename_list:
                 short_filename = os.path.basename(filepath)
-                if not embeddings_repo.pdf_exists(short_filename):
+                if short_filename not in embedded_pdfs:
                     missing_files.append(filepath)
         else:
             missing_files = filename_list.copy()
