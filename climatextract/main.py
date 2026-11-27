@@ -698,7 +698,7 @@ def _resolve_input_files(pdf_input: str | List[str] | None,
 
 
 def _pdf_files_from_database(experiment_params: ExperimentParams) -> List[str]:
-    """All PDFs in embeddings_repository, as bare file names (text mode never opens the PDFs)."""
+    """All PDFs in embeddings_repository, as paths in data/pdfs/ (text mode never opens the PDFs)."""
     if experiment_params.pipeline_params.input_mode != "text":
         raise ValueError("use_all_files_from_database requires input_mode = \"text\".")
 
@@ -706,7 +706,8 @@ def _pdf_files_from_database(experiment_params: ExperimentParams) -> List[str]:
     if not os.path.isfile(db_path):
         raise FileNotFoundError(f"Embeddings database not found: {db_path}")
 
-    pdf_files = sorted(semantic_search.EmbeddingsRepository(db_path).get_embedded_pdf_short_names())
+    pdf_files = [os.path.join("data", "pdfs", name) for name in
+                 sorted(semantic_search.EmbeddingsRepository(db_path).get_embedded_pdf_short_names())]
     if not pdf_files:
         raise ValueError(f"Embeddings database contains no PDFs: {db_path}")
     logger.info("Using all %d PDFs from %s", len(pdf_files), db_path)
